@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: const MyHomePage(title: 'BattleItOut!'),
+      home: const MyHomePage(title: 'Turn Order'),
     );
   }
 }
@@ -29,17 +29,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final List<String> entries = <String>['A', 'B', 'C'];
+  final List<int> colorCodes = <int>[600, 500, 400];
 
-  void _incrementCounter() {
+  void _append() {
     setState(() {
-      _counter++;
+      entries.add("Hm");
+      colorCodes.add(300);
     });
   }
 
-  void _decrementCounter() {
+  void _pop(int index) {
     setState(() {
-      _counter--;
+      entries.removeAt(index);
+      colorCodes.removeAt(index);
     });
   }
 
@@ -50,33 +53,31 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                FloatingActionButton(
-                  onPressed: _incrementCounter,
-                  tooltip: 'Increment',
-                  child: const Icon(Icons.plus_one),
+        child: ListView.builder(
+          padding: const EdgeInsets.all(12),
+          itemCount: entries.length,
+          itemBuilder: (BuildContext context, int index) {
+            return InkWell(
+              child: Container(
+                margin: const EdgeInsets.all(4.0),
+                height: 48,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  color: Colors.red[colorCodes[index]],
                 ),
-                FloatingActionButton(
-                  onPressed: _decrementCounter,
-                  tooltip: 'Decrement',
-                  child: const Icon(Icons.exposure_minus_1),
-                ),
-              ],
-            )
-          ],
-        ),
+                child: Center(child: Text('Player ${entries[index]}')),
+              ),
+              onTap: () {
+                _pop(index);
+              }
+            );
+          }
+        )
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _append,
+        tooltip: 'Add',
+        child: const Icon(Icons.add),
       ),
     );
   }
