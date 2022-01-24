@@ -75,7 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
             return InkWell(
                 child: entries[index],
                 onTap: () {
-                  _pop(index);
+                  if (entries[index] is CharacterListItem) {
+                    _pop(index);
+                  }
                 }
             );
           }
