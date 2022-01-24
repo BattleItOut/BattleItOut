@@ -38,17 +38,15 @@ class CharacterListItem extends ListItem {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<ListItem> entries = <ListItem>[
-    ListItem(name: 'Current'),
+  List<CharacterListItem> characters = <CharacterListItem>[
     CharacterListItem(name: 'Player A', colorCode: 600),
-    ListItem(name: 'Next'),
     CharacterListItem(name: 'Player B', colorCode: 500),
-    CharacterListItem(name: 'Player C', colorCode: 400),
+    CharacterListItem(name: 'Player D', colorCode: 400),
   ];
 
   void _append() {
     setState(() {
-      entries.add(CharacterListItem(
+      characters.add(CharacterListItem(
         name: 'Player Hm',
         colorCode: 300,
       ));
@@ -57,15 +55,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _pop(int index) {
     setState(() {
-      entries.removeAt(index);
+      characters.removeAt(index);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    List<ListItem> entries = <ListItem>[];
+    for (int i = 0; i < characters.length; i++) {
+      if (i == 0) {
+        entries.add(ListItem(name: 'Current'));
+      } if (i == 1) {
+        entries.add(ListItem(name: 'Next'));
+      }
+      entries.add(characters[i]);
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Center(child: Text(widget.title)),
       ),
       body: Center(
         child: ListView.builder(
@@ -76,7 +83,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: entries[index],
                 onTap: () {
                   if (entries[index] is CharacterListItem) {
-                    _pop(index);
+                    int actualIndex = index;
+                    if (index > 1) {
+                      actualIndex--;
+                    } if (index > 0) {
+                      actualIndex--;
+                    }
+                    _pop(actualIndex);
                   }
                 }
             );
