@@ -37,6 +37,15 @@ class CharacterListItem extends ListItem {
   );
 }
 
+void rotateLeft(List<dynamic> container) {
+  dynamic first = container[0];
+  int i;
+  for (i = 0; i < container.length - 1; i++) {
+    container[i] = container[i+1];
+  }
+  container[i] = first;
+}
+
 class _MyHomePageState extends State<MyHomePage> {
   List<CharacterListItem> characters = <CharacterListItem>[
     CharacterListItem(name: 'Player A', colorCode: 600),
@@ -50,6 +59,12 @@ class _MyHomePageState extends State<MyHomePage> {
         name: 'Player Hm',
         colorCode: 300,
       ));
+    });
+  }
+
+  void _next() {
+    setState(() {
+      rotateLeft(characters);
     });
   }
 
@@ -82,6 +97,11 @@ class _MyHomePageState extends State<MyHomePage> {
             return InkWell(
                 child: entries[index],
                 onTap: () {
+                  if (entries[index] is CharacterListItem) {
+                    _next();
+                  }
+                },
+                onDoubleTap: () {
                   if (entries[index] is CharacterListItem) {
                     int actualIndex = index;
                     if (index > 1) {
