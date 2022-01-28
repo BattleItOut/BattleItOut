@@ -6,34 +6,43 @@ import 'package:sqflite/sqflite.dart';
 
 import 'DTO/talent.dart';
 
-Future<Database> dbConnect(String assetDBPath) async {
-  var dbDir = await getDatabasesPath();
-  var dbPath = join(dbDir, "database.sqlite");
+class WFRPDatabase {
+  Database? _database;
 
-  // Delete any existing database:
-  await deleteDatabase(dbPath);
+  static Future<WFRPDatabase> create(String assetDBPath) async {
+    var component = WFRPDatabase();
+    component._database = await _connect(assetDBPath);
+    return component;
+  }
+  static Future<Database> _connect(String assetDBPath) async {
+    var dbDir = await getDatabasesPath();
+    var dbPath = join(dbDir, "database.sqlite");
 
-  // Create the writable database file from the bundled demo database file:
-  ByteData data = await rootBundle.load(assetDBPath);
-  List<int> bytes =
-      data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-  await File(dbPath).writeAsBytes(bytes);
+    // Delete any existing database:
+    await deleteDatabase(dbPath);
 
-  // Return database
-  return await openDatabase(dbPath);
-}
+    // Create the writable database file from the bundled demo database file:
+    ByteData data = await rootBundle.load(assetDBPath);
+    List<int> bytes =
+    data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    await File(dbPath).writeAsBytes(bytes);
 
-Future<List<Talent>> getTalents(Database database) async {
-  final List<Map<String, dynamic>> maps = await database.query("talents");
+    // Return database
+    return await openDatabase(dbPath);
+  }
 
-  return List.generate(maps.length, (i) {
-    return Talent(
-        id: maps[i]['ID'],
-        name: maps[i]['NAME'],
-        nameEng: maps[i]['NAME_ENG'],
-        maxLvl: maps[i]['MAX_LVL'],
-        constLvl: maps[i]['CONST_LVL'],
-        descr: maps[i]['DESCR'],
-        grouped: maps[i]['GROUPED']);
-  });
+  Future<List<Talent>> getTalents() async {
+    final List<Map<String, dynamic>> maps = await _database!.query("talents");
+
+    return List.generate(maps.length, (i) {
+      return Talent(
+          id: maps[i]['ID'],
+          name: maps[i]['NAME'],
+          nameEng: maps[i]['NAME_ENG'],
+          maxLvl: maps[i]['MAX_LVL'],
+          constLvl: maps[i]['CONST_LVL'],
+          descr: maps[i]['DESCR'],
+          grouped: maps[i]['GROUPED']);
+    });
+  }
 }

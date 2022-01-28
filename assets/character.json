@@ -1,0 +1,45 @@
+{
+  "name": "Dietmar",
+  "exp": 125,
+  "subrace_id": 1,
+  "profession_id": 3,
+  "attributes": [
+    {
+      "id": 1,
+      "base": 31,
+      "advances": 5
+    },
+    {
+      "id": 2,
+      "base": 31,
+      "advances": 5
+    },
+    {
+      "id": 3,
+      "base": 31,
+      "advances": 5
+    }
+  ],
+  "skills": [
+    {
+      "skill_id": 13,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 13,
+      "advances": 5,
+      "advancable": true
+    }
+  ],
+  "talents": [
+    {
+      "talent_id": 1,
+      "lvl": 1,
+      "advancable": true
+    }
+  ],
+  "weapons": [
+
+  ]
+}

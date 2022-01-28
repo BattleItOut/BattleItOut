@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 
 import 'DTO/talent.dart';
 import 'database_connection.dart';
-import 'my_home_page.dart';
+import 'homepage.dart';
 
 void main() async {
   runApp(const MyApp());
-  final Database database = await dbConnect("assets/database/database.sqlite");
-  List<Talent> list = await getTalents(database);
+  WFRPDatabase database = await WFRPDatabase.create("assets/database/database.sqlite");
+  List<Talent> list = await database.getTalents();
   for (Talent talent in list) {
     if (!talent.isGrouped()) {
       print(talent);
