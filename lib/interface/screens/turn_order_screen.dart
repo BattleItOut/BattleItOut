@@ -1,3 +1,4 @@
+import 'package:battle_it_out/interface/screens/character_selection_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../components/list_items.dart';
@@ -15,16 +16,19 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
   List<CharacterListItem> characters = <CharacterListItem>[
     CharacterListItem(name: 'Player A', colorCode: 600),
     CharacterListItem(name: 'Player B', colorCode: 500),
-    CharacterListItem(name: 'Player D', colorCode: 400),
+    CharacterListItem(name: 'Player D', colorCode: 300),
   ];
 
-  void _append() {
-    setState(() {
-      characters.add(CharacterListItem(
-        name: 'Player Hm',
-        colorCode: 300,
-      ));
-    });
+  void _append() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CharacterSelectionScreen()),
+    );
+    if (result != null) {
+      setState(() {
+        characters.add(result);
+      });
+    }
   }
 
   void _next() {
