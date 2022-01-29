@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'DTO/talent.dart';
 import 'database_connection.dart';
-import 'homepage.dart';
+import 'interface/screens/turn_order_screen.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: const MyHomePage(title: 'Turn Order'),
+      home: const TurnOrderScreen(title: 'Turn Order'),
     );
   }
 }
