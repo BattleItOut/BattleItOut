@@ -17,6 +17,17 @@ class Talent {
     required this.grouped
   });
 
+  static fromMap(Map<String, dynamic> map) {
+    return Talent(
+        id: map['ID'],
+        name: map['NAME'],
+        nameEng: map['NAME_ENG'],
+        maxLvl: map['MAX_LVL'],
+        constLvl: map['CONST_LVL'],
+        descr: map['DESCR'],
+        grouped: map['GROUPED']);
+  }
+
   bool isGrouped() {
     return grouped == 1;
   }

@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:battle_it_out/DTO/attribute.dart';
+import 'package:battle_it_out/DTO/profession.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -23,26 +25,30 @@ class WFRPDatabase {
 
     // Create the writable database file from the bundled demo database file:
     ByteData data = await rootBundle.load(assetDBPath);
-    List<int> bytes =
-    data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     await File(dbPath).writeAsBytes(bytes);
 
     // Return database
     return await openDatabase(dbPath);
   }
 
+  Future<Attribute> getAttribute(int id) async {
+    final List<Map<String, dynamic>> map = await _database!.query("attributes",
+        where: "ATTRIBUTES.ID = ?",
+        whereArgs: [id]);
+    return Attribute.fromMap(map[0]);
+  }
+  Future<Profession> getProfession(int id) async {
+    final List<Map<String, dynamic>> map = await _database!.query("professions",
+        where: "PROFESSIONS.PROFESSION_ID = ?",
+        whereArgs: [id]);
+    return Profession.fromMap(map[0]);
+  }
   Future<List<Talent>> getTalents() async {
     final List<Map<String, dynamic>> maps = await _database!.query("talents");
 
     return List.generate(maps.length, (i) {
-      return Talent(
-          id: maps[i]['ID'],
-          name: maps[i]['NAME'],
-          nameEng: maps[i]['NAME_ENG'],
-          maxLvl: maps[i]['MAX_LVL'],
-          constLvl: maps[i]['CONST_LVL'],
-          descr: maps[i]['DESCR'],
-          grouped: maps[i]['GROUPED']);
+      return Talent.fromMap(maps[i]);
     });
   }
 }
