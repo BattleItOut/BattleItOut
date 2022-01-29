@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:battle_it_out/DTO/attribute.dart';
-import 'package:battle_it_out/DTO/profession.dart';
+import 'package:battle_it_out/persistence/DTO/attribute.dart';
+import 'package:battle_it_out/persistence/DTO/profession.dart';
+import 'package:battle_it_out/persistence/DTO/talent.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'DTO/talent.dart';
 
 class WFRPDatabase {
   Database? _database;

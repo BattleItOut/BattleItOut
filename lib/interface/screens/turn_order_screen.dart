@@ -1,70 +1,39 @@
+import 'package:battle_it_out/interface/screens/character_selection_screen.dart';
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+import '../components/list_items.dart';
+
+class TurnOrderScreen extends StatefulWidget {
+  const TurnOrderScreen({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<TurnOrderScreen> createState() => _TurnOrderScreenState();
 }
 
-class ListItem extends Container {
-  ListItem({
-    Key? key,
-    required String name,
-    EdgeInsets? margin,
-    double? height,
-    BoxDecoration? decoration
-  }) : super(
-    key: key,
-    margin: const EdgeInsets.all(4.0),
-    height: height,
-    decoration: decoration,
-    child: Center(child: Text(name))
-  );
-}
-
-class CharacterListItem extends ListItem {
-  CharacterListItem({Key? key, required String name, required int colorCode}) : super(
-      key: key,
-      name: name,
-      height: 48,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-        color: Colors.red[colorCode],
-      ),
-  );
-}
-
-void rotateLeft(List<dynamic> container) {
-  dynamic first = container[0];
-  int i;
-  for (i = 0; i < container.length - 1; i++) {
-    container[i] = container[i+1];
-  }
-  container[i] = first;
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _TurnOrderScreenState extends State<TurnOrderScreen> {
   List<CharacterListItem> characters = <CharacterListItem>[
     CharacterListItem(name: 'Player A', colorCode: 600),
     CharacterListItem(name: 'Player B', colorCode: 500),
-    CharacterListItem(name: 'Player D', colorCode: 400),
+    CharacterListItem(name: 'Player D', colorCode: 300),
   ];
 
-  void _append() {
-    setState(() {
-      characters.add(CharacterListItem(
-        name: 'Player Hm',
-        colorCode: 300,
-      ));
-    });
+  void _append() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CharacterSelectionScreen()),
+    );
+    if (result != null) {
+      setState(() {
+        characters.add(result);
+      });
+    }
   }
 
   void _next() {
     setState(() {
-      rotateLeft(characters);
+      characters.rotateLeft();
     });
   }
 
@@ -79,9 +48,9 @@ class _MyHomePageState extends State<MyHomePage> {
     List<ListItem> entries = <ListItem>[];
     for (int i = 0; i < characters.length; i++) {
       if (i == 0) {
-        entries.add(ListItem(name: 'Current'));
+        entries.add(LabelListItem(name: 'Current'));
       } if (i == 1) {
-        entries.add(ListItem(name: 'Next'));
+        entries.add(LabelListItem(name: 'Next'));
       }
       entries.add(characters[i]);
     }

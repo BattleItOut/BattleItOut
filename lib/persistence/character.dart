@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'package:battle_it_out/wfrp_database.dart';
+import 'package:battle_it_out/persistence/wfrp_database.dart';
 import 'package:flutter/services.dart';
-import 'DTO/skill.dart';
 
 import 'DTO/attribute.dart';
-import 'DTO/talent.dart';
 import 'DTO/trait.dart';
 import 'DTO/profession.dart';
 

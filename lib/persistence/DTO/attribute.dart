@@ -1,4 +1,4 @@
-import 'package:battle_it_out/wfrp_database.dart';
+import 'package:battle_it_out/persistence/wfrp_database.dart';
 
 class Attribute {
   int id;

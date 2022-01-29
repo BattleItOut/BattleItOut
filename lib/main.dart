@@ -1,9 +1,9 @@
-import 'package:battle_it_out/character.dart';
+import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/persistence/wfrp_database.dart';
 import 'package:flutter/material.dart';
 
-import 'DTO/talent.dart';
-import 'wfrp_database.dart';
-import 'homepage.dart';
+import 'persistence/DTO/talent.dart';
+import 'interface/screens/turn_order_screen.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: const MyHomePage(title: 'Turn Order'),
+      home: const TurnOrderScreen(title: 'Turn Order'),
     );
   }
 }
