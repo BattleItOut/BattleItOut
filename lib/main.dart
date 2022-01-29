@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'DTO/talent.dart';
-import 'database_connection.dart';
+import 'persistence/DTO/talent.dart';
+import 'persistence/database_connection.dart';
 import 'interface/screens/turn_order_screen.dart';
 
 void main() async {
