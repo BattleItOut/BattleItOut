@@ -102,6 +102,18 @@ class WFRPDatabase {
         size: map[0]["SIZE"],
         source: map[0]["SRC"]);
   }
+  Future<Subrace> getSubrace(int id) async {
+    final List<Map<String, dynamic>> map = await _database!.query("subraces",
+        where: "ID = ?",
+        whereArgs: [id]);
+
+    return Subrace(
+        id: map[0]["ID"],
+        name: map[0]["NAME"],
+        source: map[0]["SRC"],
+        randomTalents: map[0]["RANDOM_TALENTS"],
+        defaultSubrace: map[0]["DEF"] == 1);
+  }
 
   Future<List<Talent>> getTalents() async {
     final List<Map<String, dynamic>> maps = await _database!.query("talents");
@@ -113,8 +125,9 @@ class WFRPDatabase {
         nameEng: maps[i]['NAME_ENG'],
         maxLvl: maps[i]['MAX_LVL'],
         constLvl: maps[i]['CONST_LVL'],
-        descr: maps[i]['DESCR'],
-        grouped: maps[i]['GROUPED']);
+        description: maps[i]['DESCR'],
+        grouped: maps[i]['GROUPED'] == 1);
     });
   }
+
 }

@@ -13,3 +13,22 @@ class Race {
     return race;
   }
 }
+class Subrace {
+  int id;
+  String name;
+  String source;
+  int randomTalents;
+  bool defaultSubrace;
+
+  Subrace({
+    required this.id,
+    required this.name,
+    required this.source,
+    required this.randomTalents,
+    required this.defaultSubrace});
+
+  static loadFromDatabase({required int id, required WFRPDatabase database}) async {
+    Subrace subrace = await database.getSubrace(id);
+    return subrace;
+  }
+}

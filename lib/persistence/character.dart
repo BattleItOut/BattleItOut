@@ -9,7 +9,7 @@ import 'DTO/race.dart';
 class Character {
   String name;
   Race race;
-  int subrace;
+  Subrace subrace;
   Profession profession;
   Map<int, Attribute> attributes;
   // List<Skill> skills;
@@ -28,7 +28,7 @@ class Character {
     Character character = Character(
       name: json['name'],
       race: await Race.loadFromDatabase(id: json["race_id"], database: database),
-      subrace: json['subrace_id'],
+      subrace: await Subrace.loadFromDatabase(id: json["subrace_id"], database: database),
       profession: await Profession.loadFromDatabase(id: json["profession_id"], database: database),
       attributes: await database.getAttributesByRace(json["race_id"]));
     _updateAttributes(json, character);

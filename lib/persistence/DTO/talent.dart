@@ -4,8 +4,8 @@ class Talent {
   final String nameEng;
   final int? maxLvl;
   final int? constLvl;
-  final String? descr;
-  final int grouped;
+  final String? description;
+  final bool grouped;
 
   Talent({
     required this.id,
@@ -13,13 +13,9 @@ class Talent {
     required this.nameEng,
     this.maxLvl,
     this.constLvl,
-    this.descr,
+    this.description,
     required this.grouped
   });
-
-  bool isGrouped() {
-    return grouped == 1;
-  }
 
   @override
   String toString() {
