@@ -22,14 +22,13 @@ class Character {
     return Character(
         name: json['name'],
         subrace: json['subrace_id'],
-        profession: await Profession.create(id: json["profession_id"], database: database),
+        profession: await Profession.loadFromDatabase(id: json["profession_id"], database: database),
         attributes: await _createAttributes(json, database));
   }
-
   static Future<Map<int, Attribute>> _createAttributes(json, WFRPDatabase database) async {
     final Map<int, Attribute> attributes = {};
     for (var attribute in json['attributes']) {
-      attributes[attribute["id"]] = await Attribute.create(
+      attributes[attribute["id"]] = await Attribute.loadFromDatabase(
           id: attribute["id"],
           database: database,
           base: attribute["base"],

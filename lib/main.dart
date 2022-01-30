@@ -13,6 +13,7 @@ void main() async {
   WFRPDatabase database = await WFRPDatabase.create("assets/database/database.sqlite");
 
   List<Character> templateCharacters = await loadTemplates(database);
+  print("Done");
 }
 
 Future<List<Character>> loadTemplates(WFRPDatabase database) async {
