@@ -38,9 +38,32 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
   }
 
   void _pop(int index) {
-    setState(() {
-      characters.removeAt(index);
-    });
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Remove a character"),
+          content: const Text("Are you sure you want to remove this character from the fight?"),
+          actions: [
+            TextButton(
+              child: const Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text("Proceed"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  characters.removeAt(index);
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
