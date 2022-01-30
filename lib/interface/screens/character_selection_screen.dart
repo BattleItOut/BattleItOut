@@ -1,3 +1,4 @@
+import 'package:battle_it_out/app_cache.dart';
 import 'package:flutter/material.dart';
 
 import '../components/list_items.dart';
@@ -12,11 +13,13 @@ class CharacterSelectionScreen extends StatefulWidget {
 }
 
 class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
-  List<CharacterListItem> characters = <CharacterListItem>[
-    CharacterListItem(name: 'Player C', colorCode: 400),
-    CharacterListItem(name: 'Player E', colorCode: 200),
-    CharacterListItem(name: 'Player F', colorCode: 100),
-  ];
+  var characters = List<CharacterListItem>.generate(
+      AppCache().characters.length,
+      (index) => CharacterListItem(
+        name: AppCache().characters[index].name,
+        colorCode: 500
+      )
+  );
 
   void _select(int index) {
     Navigator.pop(context, characters[index]);

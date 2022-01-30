@@ -19,7 +19,7 @@ class LabelListItem extends ListItem {
   LabelListItem({Key? key, required String name}) : super(
       key: key,
       name: name,
-      height: 48
+      height: 32
   );
 
 }

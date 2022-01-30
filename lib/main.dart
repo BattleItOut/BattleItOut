@@ -1,11 +1,11 @@
 import 'dart:convert';
 
+import 'package:battle_it_out/app_cache.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/wfrp_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'persistence/DTO/talent.dart';
 import 'interface/screens/turn_order_screen.dart';
 
 void main() async {
@@ -13,6 +13,7 @@ void main() async {
   WFRPDatabase database = await WFRPDatabase.create("assets/database/database.sqlite");
 
   List<Character> templateCharacters = await loadTemplates(database);
+  AppCache.init(characters: templateCharacters);
 }
 
 Future<List<Character>> loadTemplates(WFRPDatabase database) async {
