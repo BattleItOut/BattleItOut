@@ -13,11 +13,7 @@ class TurnOrderScreen extends StatefulWidget {
 }
 
 class _TurnOrderScreenState extends State<TurnOrderScreen> {
-  List<CharacterListItem> characters = <CharacterListItem>[
-    CharacterListItem(name: 'Player A', colorCode: 600),
-    CharacterListItem(name: 'Player B', colorCode: 500),
-    CharacterListItem(name: 'Player D', colorCode: 300),
-  ];
+  List<CharacterListItem> characters = <CharacterListItem>[];
 
   void _append() async {
     final result = await Navigator.push(
@@ -26,7 +22,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
     );
     if (result != null) {
       setState(() {
-        characters.add(CharacterListItem(name: result.name, colorCode: 300));
+        characters.add(CharacterListItem(name: result.name, context: context));
       });
     }
   }

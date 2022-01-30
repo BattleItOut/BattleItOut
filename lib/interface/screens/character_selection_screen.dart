@@ -18,11 +18,11 @@ class CharacterSelectionScreen extends StatefulWidget {
 class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
   List<CharacterListItem> _generateCharacters() {
     return List<CharacterListItem>.generate(
-        widget.characters.length,
-            (index) => CharacterListItem(
-            name: widget.characters[index].name,
-            colorCode: 500
-        )
+      widget.characters.length,
+      (index) => CharacterListItem(
+        name: widget.characters[index].name,
+        context: context
+      )
     );
   }
 

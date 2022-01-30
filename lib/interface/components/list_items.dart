@@ -21,17 +21,16 @@ class LabelListItem extends ListItem {
       name: name,
       height: 32
   );
-
 }
 
 class CharacterListItem extends ListItem {
-  CharacterListItem({Key? key, required String name, required int colorCode}) : super(
+  CharacterListItem({Key? key, required String name, required BuildContext context}) : super(
     key: key,
     name: name,
     height: 48,
     decoration: BoxDecoration(
       borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-      color: Colors.red[colorCode],
+      color: Theme.of(context).primaryColor
     ),
   );
 }
