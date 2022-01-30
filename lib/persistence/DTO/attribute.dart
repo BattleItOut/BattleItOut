@@ -9,14 +9,7 @@ class Attribute {
   int advances = 0;
 
   Attribute({required this.id, required this.name, required this.rollable, required this.importance, this.base = 0});
-  static fromMap(Map<String, dynamic> map) {
-    return Attribute(
-        id: map['ID'],
-        name: map['NAME'],
-        rollable: map['ROLLABLE'],
-        importance: map['IMPORTANCE']);
-  }
-  static create({required int id, required WFRPDatabase database, base, advances}) async {
+  static loadFromDatabase({required int id, required WFRPDatabase database, base, advances}) async {
     Attribute attribute = await database.getAttribute(id);
     attribute.base = base;
     attribute.advances = advances;
