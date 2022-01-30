@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: const TurnOrderScreen(title: 'Turn Order'),
+      home: const TurnOrderScreen(),
     );
   }
 }

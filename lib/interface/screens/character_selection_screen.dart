@@ -1,32 +1,44 @@
 import 'package:battle_it_out/app_cache.dart';
+import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
+import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
 import '../components/list_items.dart';
 
 class CharacterSelectionScreen extends StatefulWidget {
-  const CharacterSelectionScreen({Key? key}) : super(key: key);
+  CharacterSelectionScreen({Key? key}) : super(key: key);
 
   final String title = "Select a character";
+  final List<Character> characters = AppCache().characters;
 
   @override
   State<CharacterSelectionScreen> createState() => _CharacterSelectionScreenState();
 }
 
 class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
-  var characters = List<CharacterListItem>.generate(
-      AppCache().characters.length,
-      (index) => CharacterListItem(
-        name: AppCache().characters[index].name,
-        colorCode: 500
-      )
-  );
+  List<CharacterListItem> _generateCharacters() {
+    return List<CharacterListItem>.generate(
+        widget.characters.length,
+            (index) => CharacterListItem(
+            name: widget.characters[index].name,
+            colorCode: 500
+        )
+    );
+  }
 
   void _select(int index) {
-    Navigator.pop(context, characters[index]);
+    Navigator.pop(context, widget.characters[index]);
+  }
+
+  void _info(int index) {
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) => CharacterSheetScreen(character: widget.characters[index]),
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
+    var characters = _generateCharacters();
     return Scaffold(
       appBar: AppBar(
         title: Center(child: Text(widget.title)),
@@ -40,6 +52,9 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
               child: characters[index],
               onTap: () {
                 _select(index);
+              },
+              onDoubleTap: () {
+                _info(index);
               }
             );
           }

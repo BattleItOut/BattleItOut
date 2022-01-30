@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import '../components/list_items.dart';
 
 class TurnOrderScreen extends StatefulWidget {
-  const TurnOrderScreen({Key? key, required this.title}) : super(key: key);
+  const TurnOrderScreen({Key? key}) : super(key: key);
 
-  final String title;
+  final String title = "Turn order";
 
   @override
   State<TurnOrderScreen> createState() => _TurnOrderScreenState();
@@ -22,11 +22,11 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
   void _append() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const CharacterSelectionScreen()),
+      MaterialPageRoute(builder: (context) => CharacterSelectionScreen()),
     );
     if (result != null) {
       setState(() {
-        characters.add(result);
+        characters.add(CharacterListItem(name: result.name, colorCode: 300));
       });
     }
   }
