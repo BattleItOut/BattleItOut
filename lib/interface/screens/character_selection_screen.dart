@@ -53,7 +53,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
               onTap: () {
                 _select(index);
               },
-              onDoubleTap: () {
+              onLongPress: () {
                 _info(index);
               }
             );

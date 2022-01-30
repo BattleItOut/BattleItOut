@@ -70,7 +70,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
                     _next();
                   }
                 },
-                onDoubleTap: () {
+                onLongPress: () {
                   if (entries[index] is CharacterListItem) {
                     int actualIndex = index;
                     if (index > 1) {
