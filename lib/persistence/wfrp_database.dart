@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:battle_it_out/persistence/DTO/attribute.dart';
 import 'package:battle_it_out/persistence/DTO/profession.dart';
+import 'package:battle_it_out/persistence/DTO/race.dart';
 import 'package:battle_it_out/persistence/DTO/talent.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
@@ -43,6 +44,19 @@ class WFRPDatabase {
         rollable: map[0]['ROLLABLE'],
         importance: map[0]['IMPORTANCE']);
   }
+  Future<Map<int, Attribute>> getAttributesByRace(int id) async {
+    final List<Map<String, dynamic>> attributes = await _database!.query("race_attributes",
+        where: "RACE_ATTRIBUTES.RACE_ID = ?",
+        whereArgs: [id]);
+
+    Map<int, Attribute> attributesList = {};
+    for (var attributeMap in attributes) {
+      Attribute attribute = await getAttribute(attributeMap['ATTR_ID']);
+      attribute.base = attributeMap["VALUE"];
+      attributesList[attribute.id] = attribute;
+    }
+    return attributesList;
+  }
 
   Future<ProfessionClass> getProfessionClass(int id) async {
     final List<Map<String, dynamic>> map = await _database!.query("professions_classes",
@@ -75,6 +89,17 @@ class WFRPDatabase {
         level: map[0]["LEVEL"],
         source: map[0]["SRC"],
         career: await getProfessionCareer(map[0]["CAREER_ID"]));
+  }
+
+  Future<Race> getRace(int id) async {
+    final List<Map<String, dynamic>> map = await _database!.query("races",
+        where: "RACES.ID = ?",
+        whereArgs: [id]);
+
+    return Race(
+        id: map[0]["ID"],
+        name: map[0]["NAME"],
+        source: map[0]["SRC"]);
   }
 
   Future<List<Talent>> getTalents() async {

@@ -4,9 +4,11 @@ import 'package:flutter/services.dart';
 
 import 'DTO/attribute.dart';
 import 'DTO/profession.dart';
+import 'DTO/race.dart';
 
 class Character {
   String name;
+  Race race;
   int subrace;
   Profession profession;
   Map<int, Attribute> attributes;
@@ -14,26 +16,30 @@ class Character {
   // List<Talent> talents;
   // List<Trait> traits;
 
-  Character({required this.name, required this.subrace, required this.profession, required this.attributes});
+  Character({
+    required this.name,
+    required this.race,
+    required this.subrace,
+    required this.profession,
+    required this.attributes});
 
   static Future<Character> create(String jsonPath, WFRPDatabase database) async {
     var json = await _loadJson(jsonPath);
-    return Character(
-        name: json['name'],
-        subrace: json['subrace_id'],
-        profession: await Profession.loadFromDatabase(id: json["profession_id"], database: database),
-        attributes: await _createAttributes(json, database));
+    Character character = Character(
+      name: json['name'],
+      race: await Race.loadFromDatabase(id: json["race_id"], database: database),
+      subrace: json['subrace_id'],
+      profession: await Profession.loadFromDatabase(id: json["profession_id"], database: database),
+      attributes: await database.getAttributesByRace(json["race_id"]));
+    _updateAttributes(json, character);
+    return character;
   }
-  static Future<Map<int, Attribute>> _createAttributes(json, WFRPDatabase database) async {
-    final Map<int, Attribute> attributes = {};
-    for (var attribute in json['attributes']) {
-      attributes[attribute["id"]] = await Attribute.loadFromDatabase(
-          id: attribute["id"],
-          database: database,
-          base: attribute["base"],
-          advances: attribute["advances"]);
+
+  static void _updateAttributes(json, Character character) {
+    for (var attributeMap in json['attributes']) {
+      character.attributes[attributeMap["id"]]!.base = attributeMap["base"];
+      character.attributes[attributeMap["id"]]!.advances = attributeMap["advances"];
     }
-    return attributes;
   }
   static _loadJson(String jsonPath) async {
     String data = await rootBundle.loadString(jsonPath);
