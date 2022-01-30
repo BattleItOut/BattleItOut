@@ -1,5 +1,3 @@
-import 'package:battle_it_out/persistence/wfrp_database.dart';
-
 class Race {
   int id;
   String name;
@@ -8,9 +6,9 @@ class Race {
 
   Race({required this.id, required this.name, required this.size, required this.source});
 
-  static loadFromDatabase({required int id, required WFRPDatabase database}) async {
-    Race race = await database.getRace(id);
-    return race;
+  @override
+  String toString() {
+    return "Race (id=$id, name=$name)";
   }
 }
 class Subrace {
@@ -27,8 +25,8 @@ class Subrace {
     required this.randomTalents,
     required this.defaultSubrace});
 
-  static loadFromDatabase({required int id, required WFRPDatabase database}) async {
-    Subrace subrace = await database.getSubrace(id);
-    return subrace;
+  @override
+  String toString() {
+    return "Subrace (id=$id, name=$name)";
   }
 }
