@@ -1,0 +1,86 @@
+{
+  "name": "Maddock",
+  "race_id": 3,
+  "subrace_id": 1,
+  "profession_id": 1,
+  "attributes": [
+    {
+      "id": 1,
+      "base": 31,
+      "advances": 0
+    },
+    {
+      "id": 2,
+      "base": 31,
+      "advances": 0
+    },
+    {
+      "id": 3,
+      "base": 31,
+      "advances": 0
+    },
+    {
+      "id": 4,
+      "base": 31,
+      "advances": 0
+    },
+    {
+      "id": 5,
+      "base": 31,
+      "advances": 0
+    },
+    {
+      "id": 6,
+      "base": 31,
+      "advances": 0
+    },
+    {
+      "id": 7,
+      "base": 31,
+      "advances": 0
+    },
+    {
+      "id": 8,
+      "base": 31,
+      "advances": 0
+    },
+    {
+      "id": 9,
+      "base": 31,
+      "advances": 0
+    },
+    {
+      "id": 10,
+      "base": 31,
+      "advances": 0
+    }
+  ],
+  "skills": [
+    {
+      "skill_id": 13,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 13,
+      "advances": 5,
+      "advancable": true
+    }
+  ],
+  "talents": [
+    {
+      "talent_id": 1,
+      "lvl": 1,
+      "advancable": true
+    }
+  ],
+  "weapons": [
+
+  ],
+  "armour": [
+
+  ],
+  "traits": [
+
+  ]
+}

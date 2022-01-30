@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/wfrp_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'persistence/DTO/talent.dart';
 import 'interface/screens/turn_order_screen.dart';
@@ -8,13 +11,20 @@ import 'interface/screens/turn_order_screen.dart';
 void main() async {
   runApp(const MyApp());
   WFRPDatabase database = await WFRPDatabase.create("assets/database/database.sqlite");
-  Character char = await Character.create("assets/character.json", database);
-  List<Talent> list = await database.getTalents();
-  for (Talent talent in list) {
-    if (!talent.isGrouped()) {
-      print(talent);
-    }
+
+  List<Character> templateCharacters = await loadTemplates(database);
+}
+
+Future<List<Character>> loadTemplates(WFRPDatabase database) async {
+  final manifestJson = await rootBundle.loadString('AssetManifest.json');
+  final templates = json.decode(manifestJson).keys.where((String key) => key.startsWith('assets/templates'));
+
+  List<Character> templateCharacters = [];
+  for (var template in templates) {
+    Character character = await Character.create(template, database);
+    templateCharacters.add(character);
   }
+  return templateCharacters;
 }
 
 class MyApp extends StatelessWidget {
