@@ -18,10 +18,13 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
         title: Center(child: Text(widget.character.name)),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(widget.character.name),
-          Text(widget.character.subrace.toString())
+          Text("Race: ${widget.character.race.name}"),
+          Text("Subrace: ${widget.character.subrace.toString()}"),
+          Text("Size: ${widget.character.race.size}"),
+          Text("Profession: ${widget.character.profession.name}"),
         ]
       )
     );
