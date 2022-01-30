@@ -99,6 +99,7 @@ class WFRPDatabase {
     return Race(
         id: map[0]["ID"],
         name: map[0]["NAME"],
+        size: map[0]["SIZE"],
         source: map[0]["SRC"]);
   }
 
