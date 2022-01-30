@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'DTO/skill.dart';
+
 
 class WFRPDatabase {
   Database? _database;
@@ -129,5 +131,31 @@ class WFRPDatabase {
         grouped: maps[i]['GROUPED'] == 1);
     });
   }
+  getSkill(int id, Map<int, Attribute> attributes) async {
+    final List<Map<String, dynamic>> map = await _database!.query("skills",
+        where: "SKILLS.SKILL_ID = ?",
+        whereArgs: [id]);
 
+    return Skill(
+        id: map[0]["SKILL_ID"],
+        name: map[0]["NAME"],
+        attribute: attributes[map[0]["ATTR_ID"]],
+        description: map[0]["DESCR"],
+        advanced: map[0]["ADV"] == 1,
+        grouped: map[0]["GROUPED"] == 1,
+        category: map[0]["CATEGORY"]);
+  }
+  getSkillsByProfession(int id, Map<int, Attribute> attributes) async {
+    final List<Map<String, dynamic>> skills = await _database!.query("prof_skills",
+        where: "PROF_SKILLS.PROFESSION_ID = ?",
+        whereArgs: [id]);
+
+    Map<int, Skill> skillsMap = {};
+    for (var map in skills) {
+      Skill skill = await getSkill(map['SKILL_ID'], attributes);
+      skill.earning = map["EARNING"] == 1;
+      skillsMap[skill.id] = skill;
+    }
+    return skillsMap;
+  }
 }
