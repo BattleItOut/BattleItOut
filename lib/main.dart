@@ -14,7 +14,6 @@ void main() async {
 
   List<Character> templateCharacters = await loadTemplates(database);
   AppCache.init(characters: templateCharacters);
-  print("Done");
 }
 
 Future<List<Character>> loadTemplates(WFRPDatabase database) async {

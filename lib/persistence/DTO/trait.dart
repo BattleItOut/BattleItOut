@@ -1,3 +1,1 @@
-class Trait {
-
-}
+class Trait {}
