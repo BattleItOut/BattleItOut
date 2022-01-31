@@ -1,11 +1,16 @@
+import 'package:battle_it_out/persistence/DTO/attribute.dart';
+
 class Talent {
-  final int id;
-  final String name;
-  final String nameEng;
-  final int? maxLvl;
-  final int? constLvl;
-  final String? description;
-  final bool grouped;
+  int id;
+  String name;
+  String nameEng;
+  Attribute? maxLvl;
+  int? constLvl;
+  String? description;
+  bool grouped;
+
+  int currentLvl = 0;
+  bool advancable = false;
 
   Talent({
     required this.id,

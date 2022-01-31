@@ -117,6 +117,20 @@ class WFRPDatabase {
         defaultSubrace: map[0]["DEF"] == 1);
   }
 
+  Future<Talent> getTalent(int id, Map<int, Attribute> attributes) async {
+    final List<Map<String, dynamic>> map = await _database!.query("talents",
+        where: "ID = ?",
+        whereArgs: [id]);
+
+    return Talent(
+        id: map[0]['ID'],
+        name: map[0]['NAME'],
+        nameEng: map[0]['NAME_ENG'],
+        maxLvl: attributes[map[0]["MAX_LVL"]],
+        constLvl: map[0]['CONST_LVL'],
+        description: map[0]['DESCR'],
+        grouped: map[0]['GROUPED'] == 1);
+  }
   Future<List<Talent>> getTalents() async {
     final List<Map<String, dynamic>> maps = await _database!.query("talents");
 
@@ -125,13 +139,13 @@ class WFRPDatabase {
         id: maps[i]['ID'],
         name: maps[i]['NAME'],
         nameEng: maps[i]['NAME_ENG'],
-        maxLvl: maps[i]['MAX_LVL'],
         constLvl: maps[i]['CONST_LVL'],
         description: maps[i]['DESCR'],
         grouped: maps[i]['GROUPED'] == 1);
     });
   }
-  getSkill(int id, Map<int, Attribute> attributes) async {
+
+  Future<Skill> getSkill(int id, Map<int, Attribute> attributes) async {
     final List<Map<String, dynamic>> map = await _database!.query("skills",
         where: "SKILLS.SKILL_ID = ?",
         whereArgs: [id]);
@@ -145,7 +159,7 @@ class WFRPDatabase {
         grouped: map[0]["GROUPED"] == 1,
         category: map[0]["CATEGORY"]);
   }
-  getSkillsByProfession(int id, Map<int, Attribute> attributes) async {
+  Future<Map<int, Skill>> getSkillsByProfession(int id, Map<int, Attribute> attributes) async {
     final List<Map<String, dynamic>> skills = await _database!.query("prof_skills",
         where: "PROF_SKILLS.PROFESSION_ID = ?",
         whereArgs: [id]);
