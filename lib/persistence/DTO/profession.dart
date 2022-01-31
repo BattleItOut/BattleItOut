@@ -6,19 +6,20 @@ class Profession {
   String source;
   ProfessionCareer career;
 
-  Profession({
-    required this.id,
-    required this.name,
-    required this.nameEng,
-    required this.level,
-    required this.source,
-    required this.career});
+  Profession(
+      {required this.id,
+      required this.name,
+      required this.nameEng,
+      required this.level,
+      required this.source,
+      required this.career});
 
   @override
   String toString() {
     return "Profession (id=$id, name=$name, lvl=$level)";
   }
 }
+
 class ProfessionCareer {
   int id;
   String name;
@@ -31,6 +32,7 @@ class ProfessionCareer {
     return "ProfessionCareer (id=$id, name=$name)";
   }
 }
+
 class ProfessionClass {
   int id;
   String name;

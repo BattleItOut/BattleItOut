@@ -13,15 +13,14 @@ class Skill {
   bool earning = false;
   bool advancable = false;
 
-  Skill({
-    required this.id,
-    required this.name,
-    required this.attribute,
-    required this.description,
-    required this.advanced,
-    required this.grouped,
-    required this.category
-  });
+  Skill(
+      {required this.id,
+      required this.name,
+      required this.attribute,
+      required this.description,
+      required this.advanced,
+      required this.grouped,
+      required this.category});
 
   @override
   String toString() {

@@ -17,21 +17,21 @@ class Character {
   Map<int, Talent> talents = {};
   // List<Trait> traits;
 
-  Character({
-    required this.name,
-    required this.race,
-    required this.subrace,
-    required this.profession,
-    required this.attributes});
+  Character(
+      {required this.name,
+      required this.race,
+      required this.subrace,
+      required this.profession,
+      required this.attributes});
 
   static Future<Character> create(String jsonPath, WFRPDatabase database) async {
     var json = await _loadJson(jsonPath);
     Character character = Character(
-      name: json['name'],
-      race: await database.getRace(json["race_id"]),
-      subrace: await database.getSubrace(json["subrace_id"]),
-      profession: await database.getProfession(json["profession_id"]),
-      attributes: await _getAttributes(json, database));
+        name: json['name'],
+        race: await database.getRace(json["race_id"]),
+        subrace: await database.getSubrace(json["subrace_id"]),
+        profession: await database.getProfession(json["profession_id"]),
+        attributes: await _getAttributes(json, database));
     character.skills = await _getSkills(json, character.attributes, database);
     character.talents = await _getTalents(json, character.attributes, database);
     return character;
@@ -48,6 +48,7 @@ class Character {
     }
     return skillsMap;
   }
+
   static Future<Map<int, Talent>> _getTalents(json, Map<int, Attribute> attributes, WFRPDatabase database) async {
     Map<int, Talent> talentsMap = {};
     for (var map in json['talents']) {
@@ -58,6 +59,7 @@ class Character {
     }
     return talentsMap;
   }
+
   static Future<Map<int, Attribute>> _getAttributes(json, WFRPDatabase database) async {
     Map<int, Attribute> attributes = await database.getAttributesByRace(json["race_id"]);
 
@@ -68,6 +70,7 @@ class Character {
 
     return attributes;
   }
+
   static _loadJson(String jsonPath) async {
     String data = await rootBundle.loadString(jsonPath);
     return jsonDecode(data);

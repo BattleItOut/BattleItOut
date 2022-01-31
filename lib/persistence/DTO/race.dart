@@ -11,6 +11,7 @@ class Race {
     return "Race (id=$id, name=$name)";
   }
 }
+
 class Subrace {
   int id;
   String name;
@@ -18,12 +19,12 @@ class Subrace {
   int randomTalents;
   bool defaultSubrace;
 
-  Subrace({
-    required this.id,
-    required this.name,
-    required this.source,
-    required this.randomTalents,
-    required this.defaultSubrace});
+  Subrace(
+      {required this.id,
+      required this.name,
+      required this.source,
+      required this.randomTalents,
+      required this.defaultSubrace});
 
   @override
   String toString() {

@@ -12,15 +12,14 @@ class Talent {
   int currentLvl = 0;
   bool advancable = false;
 
-  Talent({
-    required this.id,
-    required this.name,
-    required this.nameEng,
-    this.maxLvl,
-    this.constLvl,
-    this.description,
-    required this.grouped
-  });
+  Talent(
+      {required this.id,
+      required this.name,
+      required this.nameEng,
+      this.maxLvl,
+      this.constLvl,
+      this.description,
+      required this.grouped});
 
   @override
   String toString() {

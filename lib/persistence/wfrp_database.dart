@@ -10,7 +10,6 @@ import 'package:sqflite/sqflite.dart';
 
 import 'DTO/skill.dart';
 
-
 class WFRPDatabase {
   Database? _database;
 
@@ -19,6 +18,7 @@ class WFRPDatabase {
     component._database = await _connect(assetDBPath);
     return component;
   }
+
   static Future<Database> _connect(String assetDBPath) async {
     var dbDir = await getDatabasesPath();
     var dbPath = join(dbDir, "database.sqlite");
@@ -36,20 +36,16 @@ class WFRPDatabase {
   }
 
   Future<Attribute> getAttribute(int id) async {
-    final List<Map<String, dynamic>> map = await _database!.query("attributes",
-        where: "ATTRIBUTES.ID = ?",
-        whereArgs: [id]);
+    final List<Map<String, dynamic>> map =
+        await _database!.query("attributes", where: "ATTRIBUTES.ID = ?", whereArgs: [id]);
 
     return Attribute(
-        id: map[0]['ID'],
-        name: map[0]['NAME'],
-        rollable: map[0]['ROLLABLE'],
-        importance: map[0]['IMPORTANCE']);
+        id: map[0]['ID'], name: map[0]['NAME'], rollable: map[0]['ROLLABLE'], importance: map[0]['IMPORTANCE']);
   }
+
   Future<Map<int, Attribute>> getAttributesByRace(int id) async {
-    final List<Map<String, dynamic>> attributes = await _database!.query("race_attributes",
-        where: "RACE_ATTRIBUTES.RACE_ID = ?",
-        whereArgs: [id]);
+    final List<Map<String, dynamic>> attributes =
+        await _database!.query("race_attributes", where: "RACE_ATTRIBUTES.RACE_ID = ?", whereArgs: [id]);
 
     Map<int, Attribute> attributesList = {};
     for (var attributeMap in attributes) {
@@ -61,28 +57,23 @@ class WFRPDatabase {
   }
 
   Future<ProfessionClass> getProfessionClass(int id) async {
-    final List<Map<String, dynamic>> map = await _database!.query("professions_classes",
-        where: "PROFESSIONS_CLASSES.ID = ?",
-        whereArgs: [id]);
+    final List<Map<String, dynamic>> map =
+        await _database!.query("professions_classes", where: "PROFESSIONS_CLASSES.ID = ?", whereArgs: [id]);
 
-    return ProfessionClass(
-        id: map[0]["ID"],
-        name: map[0]["NAME"]);
+    return ProfessionClass(id: map[0]["ID"], name: map[0]["NAME"]);
   }
+
   Future<ProfessionCareer> getProfessionCareer(int id) async {
-    final List<Map<String, dynamic>> map = await _database!.query("professions_careers",
-        where: "PROFESSIONS_CAREERS.CAREER_ID = ?",
-        whereArgs: [id]);
+    final List<Map<String, dynamic>> map =
+        await _database!.query("professions_careers", where: "PROFESSIONS_CAREERS.CAREER_ID = ?", whereArgs: [id]);
 
     return ProfessionCareer(
-        id: map[0]["CAREER_ID"],
-        name: map[0]["NAME"],
-        professionClass: await getProfessionClass(map[0]["CLASS_ID"]));
+        id: map[0]["CAREER_ID"], name: map[0]["NAME"], professionClass: await getProfessionClass(map[0]["CLASS_ID"]));
   }
+
   Future<Profession> getProfession(int id) async {
-    final List<Map<String, dynamic>> map = await _database!.query("professions",
-        where: "PROFESSIONS.PROFESSION_ID = ?",
-        whereArgs: [id]);
+    final List<Map<String, dynamic>> map =
+        await _database!.query("professions", where: "PROFESSIONS.PROFESSION_ID = ?", whereArgs: [id]);
 
     return Profession(
         id: map[0]["PROFESSION_ID"],
@@ -94,20 +85,13 @@ class WFRPDatabase {
   }
 
   Future<Race> getRace(int id) async {
-    final List<Map<String, dynamic>> map = await _database!.query("races",
-        where: "RACES.ID = ?",
-        whereArgs: [id]);
+    final List<Map<String, dynamic>> map = await _database!.query("races", where: "RACES.ID = ?", whereArgs: [id]);
 
-    return Race(
-        id: map[0]["ID"],
-        name: map[0]["NAME"],
-        size: map[0]["SIZE"],
-        source: map[0]["SRC"]);
+    return Race(id: map[0]["ID"], name: map[0]["NAME"], size: map[0]["SIZE"], source: map[0]["SRC"]);
   }
+
   Future<Subrace> getSubrace(int id) async {
-    final List<Map<String, dynamic>> map = await _database!.query("subraces",
-        where: "ID = ?",
-        whereArgs: [id]);
+    final List<Map<String, dynamic>> map = await _database!.query("subraces", where: "ID = ?", whereArgs: [id]);
 
     return Subrace(
         id: map[0]["ID"],
@@ -118,9 +102,7 @@ class WFRPDatabase {
   }
 
   Future<Talent> getTalent(int id, Map<int, Attribute> attributes) async {
-    final List<Map<String, dynamic>> map = await _database!.query("talents",
-        where: "ID = ?",
-        whereArgs: [id]);
+    final List<Map<String, dynamic>> map = await _database!.query("talents", where: "ID = ?", whereArgs: [id]);
 
     return Talent(
         id: map[0]['ID'],
@@ -131,24 +113,24 @@ class WFRPDatabase {
         description: map[0]['DESCR'],
         grouped: map[0]['GROUPED'] == 1);
   }
+
   Future<List<Talent>> getTalents() async {
     final List<Map<String, dynamic>> maps = await _database!.query("talents");
 
     return List.generate(maps.length, (i) {
       return Talent(
-        id: maps[i]['ID'],
-        name: maps[i]['NAME'],
-        nameEng: maps[i]['NAME_ENG'],
-        constLvl: maps[i]['CONST_LVL'],
-        description: maps[i]['DESCR'],
-        grouped: maps[i]['GROUPED'] == 1);
+          id: maps[i]['ID'],
+          name: maps[i]['NAME'],
+          nameEng: maps[i]['NAME_ENG'],
+          constLvl: maps[i]['CONST_LVL'],
+          description: maps[i]['DESCR'],
+          grouped: maps[i]['GROUPED'] == 1);
     });
   }
 
   Future<Skill> getSkill(int id, Map<int, Attribute> attributes) async {
-    final List<Map<String, dynamic>> map = await _database!.query("skills",
-        where: "SKILLS.SKILL_ID = ?",
-        whereArgs: [id]);
+    final List<Map<String, dynamic>> map =
+        await _database!.query("skills", where: "SKILLS.SKILL_ID = ?", whereArgs: [id]);
 
     return Skill(
         id: map[0]["SKILL_ID"],
@@ -159,10 +141,10 @@ class WFRPDatabase {
         grouped: map[0]["GROUPED"] == 1,
         category: map[0]["CATEGORY"]);
   }
+
   Future<Map<int, Skill>> getSkillsByProfession(int id, Map<int, Attribute> attributes) async {
-    final List<Map<String, dynamic>> skills = await _database!.query("prof_skills",
-        where: "PROF_SKILLS.PROFESSION_ID = ?",
-        whereArgs: [id]);
+    final List<Map<String, dynamic>> skills =
+        await _database!.query("prof_skills", where: "PROF_SKILLS.PROFESSION_ID = ?", whereArgs: [id]);
 
     Map<int, Skill> skillsMap = {};
     for (var map in skills) {
