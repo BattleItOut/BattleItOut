@@ -2,9 +2,10 @@ class Race {
   int id;
   String name;
   int size;
+  int extraPoints;
   String source;
 
-  Race({required this.id, required this.name, required this.size, required this.source});
+  Race({required this.id, required this.name, required this.size, required this.extraPoints, required this.source});
 
   @override
   String toString() {

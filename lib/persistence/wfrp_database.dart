@@ -87,7 +87,12 @@ class WFRPDatabase {
   Future<Race> getRace(int id) async {
     final List<Map<String, dynamic>> map = await _database!.query("races", where: "RACES.ID = ?", whereArgs: [id]);
 
-    return Race(id: map[0]["ID"], name: map[0]["NAME"], size: map[0]["SIZE"], source: map[0]["SRC"]);
+    return Race(
+        id: map[0]["ID"],
+        name: map[0]["NAME"],
+        extraPoints: map[0]["EXTRA_POINTS"],
+        size: map[0]["SIZE"],
+        source: map[0]["SRC"]);
   }
 
   Future<Subrace> getSubrace(int id) async {

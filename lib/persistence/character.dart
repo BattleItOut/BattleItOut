@@ -65,7 +65,7 @@ class Character {
 
     for (var attributeMap in json['attributes']) {
       attributes[attributeMap["id"]]!.base = attributeMap["base"];
-      attributes[attributeMap["id"]]!.advances = attributeMap["advances"];
+      attributes[attributeMap["id"]]!.advances = attributeMap["advances"] ?? 0;
     }
 
     return attributes;
@@ -74,5 +74,9 @@ class Character {
   static _loadJson(String jsonPath) async {
     String data = await rootBundle.loadString(jsonPath);
     return jsonDecode(data);
+  }
+
+  List<Attribute> getAttributes() {
+    return List.of(attributes.values);
   }
 }
