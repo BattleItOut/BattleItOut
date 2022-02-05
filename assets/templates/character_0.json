@@ -2,7 +2,7 @@
   "name": "Dietmar Drauwulf",
   "race_id": 1,
   "subrace_id": 1,
-  "profession_id": 1,
+  "profession_id": 229,
   "attributes": [
     {
       "id": 1,
@@ -58,6 +58,14 @@
       "id": 11,
       "base": 4,
       "advances": 0
+    },
+    {
+      "id": 12,
+      "base": 3
+    },
+    {
+      "id": 13,
+      "base": 3
     }
   ],
   "skills": [
@@ -133,7 +141,42 @@
   ],
   "talents": [
     {
-      "talent_id": 7,
+      "talent_id": 21,
+      "lvl": 1
+    },
+    {
+      "talent_id": 195,
+      "lvl": 1
+    },
+    {
+      "talent_id": 199,
+      "lvl": 1
+    },
+    {
+      "talent_id": 123,
+      "lvl": 1
+    },
+    {
+      "talent_id": 233,
+      "lvl": 1
+    },
+    {
+      "talent_id": 14,
+      "lvl": 1,
+      "advancable": true
+    },
+    {
+      "talent_id": 31,
+      "lvl": 1,
+      "advancable": true
+    },
+    {
+      "talent_id": 124,
+      "lvl": 1,
+      "advancable": true
+    },
+    {
+      "talent_id": 48,
       "lvl": 1,
       "advancable": true
     }
