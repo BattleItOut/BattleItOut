@@ -27,7 +27,28 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
   }
 
   void _select(int index) {
-    Navigator.pop(context, widget.characters[index]);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Initiative:"),
+          content: TextField(
+            onChanged: (value) {
+              widget.characters[index].initiative = int.parse(value);
+            },
+          ),
+          actions: [
+            TextButton(
+              child: const Text("Proceed"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pop(context, widget.characters[index]);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _info(int index) {

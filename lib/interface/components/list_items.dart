@@ -29,7 +29,7 @@ class CharacterListItem extends ListItem {
     key: key,
     child: ListTile(
       subtitle: Text("${character.race.name}, ${character.profession.name}"),
-      trailing: const Text("16", style: TextStyle(fontSize: 24)),
+      trailing: Text(character.initiative?.toString() ?? "", style: const TextStyle(fontSize: 24)),
       title: Text(character.name),
       dense: true,
     ),

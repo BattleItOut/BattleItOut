@@ -15,6 +15,7 @@ class Character {
   Map<int, Attribute> attributes;
   Map<int, Skill> skills = {};
   Map<int, Talent> talents = {};
+  int? initiative;
   // List<Trait> traits;
 
   Character(
