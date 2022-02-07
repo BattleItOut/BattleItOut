@@ -1,3 +1,4 @@
+import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
 class ListItem extends Container {
@@ -24,12 +25,12 @@ class LabelListItem extends ListItem {
 }
 
 class CharacterListItem extends ListItem {
-  CharacterListItem({Key? key, required String name, required BuildContext context}) : super(
+  CharacterListItem({Key? key, required Character character, required BuildContext context}) : super(
     key: key,
     child: ListTile(
-      subtitle: const Text("race, profession"),
+      subtitle: Text("${character.race.name}, ${character.profession.name}"),
       trailing: const Text("16", style: TextStyle(fontSize: 24)),
-      title: Text(name),
+      title: Text(character.name),
       dense: true,
     ),
     decoration: BoxDecoration(

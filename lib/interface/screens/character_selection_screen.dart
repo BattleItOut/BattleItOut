@@ -20,7 +20,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
     return List<CharacterListItem>.generate(
       widget.characters.length,
       (index) => CharacterListItem(
-        name: widget.characters[index].name,
+        character: widget.characters[index],
         context: context
       )
     );

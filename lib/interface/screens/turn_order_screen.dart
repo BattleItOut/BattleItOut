@@ -22,7 +22,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
     );
     if (result != null) {
       setState(() {
-        characters.add(CharacterListItem(name: result.name, context: context));
+        characters.add(CharacterListItem(character: result, context: context));
       });
     }
   }
