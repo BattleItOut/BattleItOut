@@ -25,4 +25,5 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/
+    - assets/database/database.sqlite
+    - assets/templates/
