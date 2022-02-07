@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ListItem extends Container {
   ListItem({
     Key? key,
-    required String name,
+    required Widget child,
     double? height,
     BoxDecoration? decoration
   }) : super(
@@ -11,14 +11,14 @@ class ListItem extends Container {
       margin: const EdgeInsets.all(4.0),
       height: height,
       decoration: decoration,
-      child: Center(child: Text(name))
+      child: child
   );
 }
 
 class LabelListItem extends ListItem {
   LabelListItem({Key? key, required String name}) : super(
       key: key,
-      name: name,
+      child: Center(child: Text(name)),
       height: 32
   );
 }
@@ -26,8 +26,12 @@ class LabelListItem extends ListItem {
 class CharacterListItem extends ListItem {
   CharacterListItem({Key? key, required String name, required BuildContext context}) : super(
     key: key,
-    name: name,
-    height: 48,
+    child: ListTile(
+      subtitle: const Text("race, profession"),
+      trailing: const Text("16", style: TextStyle(fontSize: 24)),
+      title: Text(name),
+      dense: true,
+    ),
     decoration: BoxDecoration(
       borderRadius: const BorderRadius.all(Radius.circular(8.0)),
       color: Theme.of(context).primaryColor
