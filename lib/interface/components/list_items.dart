@@ -50,4 +50,12 @@ extension ItemList on List<dynamic> {
     }
     this[i] = first;
   }
+
+  void rotateRight() {
+    dynamic last = this[length - 1];
+    for (int i = length - 2; i >= 0; i--) {
+      this[i+1] = this[i];
+    }
+    this[0] = last;
+  }
 }

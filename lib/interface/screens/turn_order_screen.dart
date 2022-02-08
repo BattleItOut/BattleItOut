@@ -38,6 +38,13 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
     }
   }
 
+  void _previous() {
+    setState(() {
+      // TODO: fix rounds
+      characters.rotateRight();
+    });
+  }
+
   void _next() {
     setState(() {
       if (_isNextCharacterInNextRound(0)) {
@@ -50,9 +57,12 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
   void _onNavigationTapped(int index) {
     switch (index) {
       case 0:
-        _append();
+        _previous();
         break;
       case 1:
+        _append();
+        break;
+      case 2:
         _next();
         break;
     }
@@ -137,6 +147,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.navigate_before), label: "Previous"),
           BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add"),
           BottomNavigationBarItem(icon: Icon(Icons.navigate_next), label: "Next")
         ],
