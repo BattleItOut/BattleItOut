@@ -32,6 +32,7 @@ class CharacterListItem extends ListItem {
       trailing: Text(character.initiative?.toString() ?? "", style: const TextStyle(fontSize: 24)),
       title: Text(character.name),
       dense: true,
+      textColor: Theme.of(context).floatingActionButtonTheme.foregroundColor,
     ),
     decoration: BoxDecoration(
       borderRadius: const BorderRadius.all(Radius.circular(8.0)),

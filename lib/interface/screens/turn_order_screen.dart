@@ -1,4 +1,5 @@
 import 'package:battle_it_out/interface/screens/character_selection_screen.dart';
+import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
 import '../components/list_items.dart';
@@ -13,7 +14,8 @@ class TurnOrderScreen extends StatefulWidget {
 }
 
 class _TurnOrderScreenState extends State<TurnOrderScreen> {
-  List<CharacterListItem> characters = <CharacterListItem>[];
+  var characters = <Character>[];
+  var currentRound = 0;
 
   void _append() async {
     final result = await Navigator.push(
@@ -21,8 +23,12 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
       MaterialPageRoute(builder: (context) => CharacterSelectionScreen()),
     );
     if (result != null) {
+      var index = 0;
+      while (index < characters.length && characters[index].initiative! < result.initiative!) {
+        index++;
+      }
       setState(() {
-        characters.add(CharacterListItem(character: result, context: context));
+        characters.insert(index, result);
       });
     }
   }
@@ -71,7 +77,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
       } if (i == 1) {
         entries.add(LabelListItem(name: 'Next'));
       }
-      entries.add(characters[i]);
+      entries.add(CharacterListItem(character: characters[i], context: context));
     }
     return Scaffold(
       appBar: AppBar(
