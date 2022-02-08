@@ -25,7 +25,7 @@ class Character {
       required this.subrace,
       required this.profession,
       required this.attributes,
-        this.armour = const []});
+      this.armour = const []});
 
   static Future<Character> create(String jsonPath, WFRPDatabase database) async {
     var json = await _loadJson(jsonPath);
@@ -40,6 +40,7 @@ class Character {
     character.talents = await _getTalents(json, character.attributes, database);
     return character;
   }
+
   static Future<List<Armour>> _getArmour(json, WFRPDatabase database) async {
     List<Armour> armourList = [];
     for (var map in json) {

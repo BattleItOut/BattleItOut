@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:battle_it_out/persistence/DTO/armour.dart';
 import 'package:battle_it_out/persistence/DTO/attribute.dart';
+import 'package:battle_it_out/persistence/DTO/item_quality.dart';
 import 'package:battle_it_out/persistence/DTO/profession.dart';
 import 'package:battle_it_out/persistence/DTO/race.dart';
 import 'package:battle_it_out/persistence/DTO/talent.dart';
@@ -161,6 +162,25 @@ class WFRPDatabase {
     return skillsMap;
   }
 
+  Future<ItemQuality> getQuality(int id) async {
+    final List<Map<String, dynamic>> map = await _database!.query("item_qualities", where: "ITEM_QUALITIES.ID = ?", whereArgs: [id]);
+    return ItemQuality(
+      id: map[0]['ID'],
+      name: map[0]['NAME'],
+      nameEng: map[0]['NAME_ENG'],
+      type: map[0]['TYPE'],
+      equipment: map[0]['EQUIPMENT'],
+      description: map[0]['DESCR']);
+  }
+  Future<List<ItemQuality>> getArmourQualities(int id) async {
+    final List<Map<String, dynamic>> map = await _database!.query("armour_qualities", where: "ARMOUR_QUALITIES.ARMOUR_ID = ?", whereArgs: [id]);
+    List<ItemQuality> qualities = [];
+    for (int i=0; i<map.length; i++) {
+      qualities.add(await getQuality(map[i]["QUALITY_ID"]));
+    }
+    return qualities;
+  }
+
   Future<Armour> getArmour(int id) async {
     final List<Map<String, dynamic>> map = await _database!.query("armour", where: "ARMOUR.ID = ?", whereArgs: [id]);
 
@@ -170,6 +190,7 @@ class WFRPDatabase {
         headAP: map[0]["HEAD_AP"],
         bodyAP: map[0]["BODY_AP"],
         armsAP: map[0]["ARMS_AP"],
-        legsAP: map[0]["LEGS_AP"]);
+        legsAP: map[0]["LEGS_AP"],
+        qualities: await getArmourQualities(id));
   }
 }
