@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:battle_it_out/persistence/DTO/armour.dart';
 import 'package:battle_it_out/persistence/DTO/attribute.dart';
 import 'package:battle_it_out/persistence/DTO/profession.dart';
 import 'package:battle_it_out/persistence/DTO/race.dart';
@@ -158,5 +159,17 @@ class WFRPDatabase {
       skillsMap[skill.id] = skill;
     }
     return skillsMap;
+  }
+
+  Future<Armour> getArmour(int id) async {
+    final List<Map<String, dynamic>> map = await _database!.query("armour", where: "ARMOUR.ID = ?", whereArgs: [id]);
+
+    return Armour(
+        id: map[0]["ID"],
+        name: map[0]["NAME"],
+        headAP: map[0]["HEAD_AP"],
+        bodyAP: map[0]["BODY_AP"],
+        armsAP: map[0]["ARMS_AP"],
+        legsAP: map[0]["LEGS_AP"]);
   }
 }

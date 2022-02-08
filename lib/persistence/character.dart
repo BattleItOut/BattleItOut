@@ -4,6 +4,7 @@ import 'package:battle_it_out/persistence/DTO/talent.dart';
 import 'package:battle_it_out/persistence/DTO/attribute.dart';
 import 'package:battle_it_out/persistence/DTO/profession.dart';
 import 'package:battle_it_out/persistence/DTO/race.dart';
+import 'package:battle_it_out/persistence/DTO/armour.dart';
 import 'package:battle_it_out/persistence/wfrp_database.dart';
 import 'package:flutter/services.dart';
 
@@ -15,6 +16,7 @@ class Character {
   Map<int, Attribute> attributes;
   Map<int, Skill> skills = {};
   Map<int, Talent> talents = {};
+  List<Armour> armour = [];
   // List<Trait> traits;
 
   Character(
@@ -22,7 +24,8 @@ class Character {
       required this.race,
       required this.subrace,
       required this.profession,
-      required this.attributes});
+      required this.attributes,
+        this.armour = const []});
 
   static Future<Character> create(String jsonPath, WFRPDatabase database) async {
     var json = await _loadJson(jsonPath);
@@ -31,10 +34,18 @@ class Character {
         race: await database.getRace(json["race_id"]),
         subrace: await database.getSubrace(json["subrace_id"]),
         profession: await database.getProfession(json["profession_id"]),
-        attributes: await _getAttributes(json, database));
+        attributes: await _getAttributes(json, database),
+        armour: await _getArmour(json["armour"], database));
     character.skills = await _getSkills(json, character.attributes, database);
     character.talents = await _getTalents(json, character.attributes, database);
     return character;
+  }
+  static Future<List<Armour>> _getArmour(json, WFRPDatabase database) async {
+    List<Armour> armourList = [];
+    for (var map in json) {
+      armourList.add(await database.getArmour(map["armour_id"]));
+    }
+    return armourList;
   }
 
   static Future<Map<int, Skill>> _getSkills(json, Map<int, Attribute> attributes, WFRPDatabase database) async {
