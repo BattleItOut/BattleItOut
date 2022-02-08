@@ -120,11 +120,13 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
                 },
                 onLongPress: () {
                   if (entries[index] is CharacterListItem) {
+                    var labelIndexes = <int>[];
                     int actualIndex = index;
-                    if (index > 1) {
-                      actualIndex--;
-                    } if (index > 0) {
-                      actualIndex--;
+                    for (int i = 0; i < entries.length; i++) {
+                      if (entries[i] is LabelListItem) labelIndexes.add(i);
+                    }
+                    for (int labelIndex in labelIndexes) {
+                      if (index > labelIndex) actualIndex--;
                     }
                     _pop(actualIndex);
                   }
