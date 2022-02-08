@@ -11,12 +11,12 @@ class Armour {
 
   Armour(
       {required this.id,
-        required this.name,
-        required this.headAP,
-        required this.bodyAP,
-        required this.armsAP,
-        required this.legsAP,
-        this.qualities = const []});
+      required this.name,
+      required this.headAP,
+      required this.bodyAP,
+      required this.armsAP,
+      required this.legsAP,
+      this.qualities = const []});
 
   @override
   String toString() {

@@ -163,19 +163,22 @@ class WFRPDatabase {
   }
 
   Future<ItemQuality> getQuality(int id) async {
-    final List<Map<String, dynamic>> map = await _database!.query("item_qualities", where: "ITEM_QUALITIES.ID = ?", whereArgs: [id]);
+    final List<Map<String, dynamic>> map =
+        await _database!.query("item_qualities", where: "ITEM_QUALITIES.ID = ?", whereArgs: [id]);
     return ItemQuality(
-      id: map[0]['ID'],
-      name: map[0]['NAME'],
-      nameEng: map[0]['NAME_ENG'],
-      type: map[0]['TYPE'],
-      equipment: map[0]['EQUIPMENT'],
-      description: map[0]['DESCR']);
+        id: map[0]['ID'],
+        name: map[0]['NAME'],
+        nameEng: map[0]['NAME_ENG'],
+        type: map[0]['TYPE'],
+        equipment: map[0]['EQUIPMENT'],
+        description: map[0]['DESCR']);
   }
+
   Future<List<ItemQuality>> getArmourQualities(int id) async {
-    final List<Map<String, dynamic>> map = await _database!.query("armour_qualities", where: "ARMOUR_QUALITIES.ARMOUR_ID = ?", whereArgs: [id]);
+    final List<Map<String, dynamic>> map =
+        await _database!.query("armour_qualities", where: "ARMOUR_QUALITIES.ARMOUR_ID = ?", whereArgs: [id]);
     List<ItemQuality> qualities = [];
-    for (int i=0; i<map.length; i++) {
+    for (int i = 0; i < map.length; i++) {
       qualities.add(await getQuality(map[i]["QUALITY_ID"]));
     }
     return qualities;

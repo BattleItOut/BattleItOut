@@ -6,13 +6,13 @@ class ItemQuality {
   String equipment;
   String description;
 
-  ItemQuality({
-    required this.id,
-    required this.name,
-    required this.nameEng,
-    required this.type,
-    required this.equipment,
-    required this.description});
+  ItemQuality(
+      {required this.id,
+      required this.name,
+      required this.nameEng,
+      required this.type,
+      required this.equipment,
+      required this.description});
 
   @override
   String toString() {
