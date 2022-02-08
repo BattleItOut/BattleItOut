@@ -47,6 +47,17 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
     });
   }
 
+  void _onNavigationTapped(int index) {
+    switch (index) {
+      case 0:
+        _append();
+        break;
+      case 1:
+        _next();
+        break;
+    }
+  }
+
   void _pop(int index) {
     showDialog(
       context: context,
@@ -122,10 +133,12 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
           }
         )
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _append,
-        tooltip: 'Add',
-        child: const Icon(Icons.add),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add"),
+          BottomNavigationBarItem(icon: Icon(Icons.navigate_next), label: "Next")
+        ],
+        onTap: _onNavigationTapped,
       ),
     );
   }
