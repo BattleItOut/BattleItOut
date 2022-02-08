@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:battle_it_out/persistence/DTO/melee_weapon.dart';
 import 'package:battle_it_out/persistence/DTO/skill.dart';
 import 'package:battle_it_out/persistence/DTO/talent.dart';
 import 'package:battle_it_out/persistence/DTO/attribute.dart';
@@ -17,6 +18,7 @@ class Character {
   Map<int, Skill> skills = {};
   Map<int, Talent> talents = {};
   List<Armour> armour = [];
+  List<MeleeWeapon> meleeWeapons = [];
   // List<Trait> traits;
 
   Character(
@@ -25,7 +27,8 @@ class Character {
       required this.subrace,
       required this.profession,
       required this.attributes,
-      this.armour = const []});
+      this.armour = const [],
+      this.meleeWeapons = const []});
 
   static Future<Character> create(String jsonPath, WFRPDatabase database) async {
     var json = await _loadJson(jsonPath);
@@ -36,9 +39,20 @@ class Character {
         profession: await database.getProfession(json["profession_id"]),
         attributes: await _getAttributes(json, database),
         armour: await _getArmour(json["armour"], database));
-    character.skills = await _getSkills(json, character.attributes, database);
-    character.talents = await _getTalents(json, character.attributes, database);
+    character.skills = await _getSkills(json['skills'], character.attributes, database);
+    character.talents = await _getTalents(json['talents'], character.attributes, database);
+    character.meleeWeapons = await _getMeleeWeapons(json["melee_weapons"], character.skills, database);
     return character;
+  }
+
+  static Future<List<MeleeWeapon>> _getMeleeWeapons(json, Map<int, Skill> skills, WFRPDatabase database) async {
+    List<MeleeWeapon> weaponList = [];
+    if (json != null) {
+      for (var map in json) {
+        weaponList.add(await database.getMeleeWeapon(map["weapon_id"], skills));
+      }
+    }
+    return weaponList;
   }
 
   static Future<List<Armour>> _getArmour(json, WFRPDatabase database) async {
@@ -51,23 +65,27 @@ class Character {
 
   static Future<Map<int, Skill>> _getSkills(json, Map<int, Attribute> attributes, WFRPDatabase database) async {
     Map<int, Skill> skillsMap = {};
-    for (var map in json['skills']) {
-      Skill skill = await database.getSkill(map["skill_id"], attributes);
-      map["advances"] != null ? skill.advances = map["advances"] : null;
-      map["advancable"] != null ? skill.advancable = map["advancable"] : null;
-      map["earning"] != null ? skill.earning = map["earning"] : null;
-      skillsMap[skill.id] = skill;
+    if (json != null) {
+      for (var map in json) {
+        Skill skill = await database.getSkill(map["skill_id"], attributes);
+        map["advances"] != null ? skill.advances = map["advances"] : null;
+        map["advancable"] != null ? skill.advancable = map["advancable"] : null;
+        map["earning"] != null ? skill.earning = map["earning"] : null;
+        skillsMap[skill.id] = skill;
+      }
     }
     return skillsMap;
   }
 
   static Future<Map<int, Talent>> _getTalents(json, Map<int, Attribute> attributes, WFRPDatabase database) async {
     Map<int, Talent> talentsMap = {};
-    for (var map in json['talents']) {
-      Talent talent = await database.getTalent(map["talent_id"], attributes);
-      map["lvl"] != null ? talent.currentLvl = map["lvl"] : null;
-      map["advancable"] != null ? talent.advancable = map["advancable"] : null;
-      talentsMap[talent.id] = talent;
+    if (json != null) {
+      for (var map in json) {
+        Talent talent = await database.getTalent(map["talent_id"], attributes);
+        map["lvl"] != null ? talent.currentLvl = map["lvl"] : null;
+        map["advancable"] != null ? talent.advancable = map["advancable"] : null;
+        talentsMap[talent.id] = talent;
+      }
     }
     return talentsMap;
   }

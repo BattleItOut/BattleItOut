@@ -5,6 +5,7 @@ class ItemQuality {
   String type;
   String equipment;
   String description;
+  int? value;
 
   ItemQuality(
       {required this.id,
@@ -12,10 +13,15 @@ class ItemQuality {
       required this.nameEng,
       required this.type,
       required this.equipment,
-      required this.description});
+      required this.description,
+      this.value});
 
   @override
   String toString() {
-    return "Quality(id=$id, name=$name)";
+    if (value == null) {
+      return "Quality(id=$id, name=$name)";
+    } else {
+      return "Quality(id=$id, name=$name $value)";
+    }
   }
 }

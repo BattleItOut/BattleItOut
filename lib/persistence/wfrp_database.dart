@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:battle_it_out/persistence/DTO/armour.dart';
 import 'package:battle_it_out/persistence/DTO/attribute.dart';
 import 'package:battle_it_out/persistence/DTO/item_quality.dart';
+import 'package:battle_it_out/persistence/DTO/melee_weapon.dart';
 import 'package:battle_it_out/persistence/DTO/profession.dart';
 import 'package:battle_it_out/persistence/DTO/race.dart';
 import 'package:battle_it_out/persistence/DTO/talent.dart';
@@ -171,12 +172,23 @@ class WFRPDatabase {
         nameEng: map[0]['NAME_ENG'],
         type: map[0]['TYPE'],
         equipment: map[0]['EQUIPMENT'],
-        description: map[0]['DESCR']);
+        description: map[0]['DESCR'],
+        value: map[0]["VALUE"]);
   }
 
   Future<List<ItemQuality>> getArmourQualities(int id) async {
     final List<Map<String, dynamic>> map =
         await _database!.query("armour_qualities", where: "ARMOUR_QUALITIES.ARMOUR_ID = ?", whereArgs: [id]);
+    List<ItemQuality> qualities = [];
+    for (int i = 0; i < map.length; i++) {
+      qualities.add(await getQuality(map[i]["QUALITY_ID"]));
+    }
+    return qualities;
+  }
+
+  Future<List<ItemQuality>> getMeleeWeaponQualities(int id) async {
+    final List<Map<String, dynamic>> map = await _database!
+        .query("weapons_melee_qualities", where: "WEAPONS_MELEE_QUALITIES.WEAPON_ID = ?", whereArgs: [id]);
     List<ItemQuality> qualities = [];
     for (int i = 0; i < map.length; i++) {
       qualities.add(await getQuality(map[i]["QUALITY_ID"]));
@@ -195,5 +207,18 @@ class WFRPDatabase {
         armsAP: map[0]["ARMS_AP"],
         legsAP: map[0]["LEGS_AP"],
         qualities: await getArmourQualities(id));
+  }
+
+  Future<MeleeWeapon> getMeleeWeapon(int id, Map<int, Skill> skills) async {
+    final List<Map<String, dynamic>> map =
+        await _database!.query("weapons_melee", where: "WEAPONS_MELEE.ID = ?", whereArgs: [id]);
+
+    return MeleeWeapon(
+        id: map[0]["ID"],
+        name: map[0]["NAME"],
+        length: map[0]["LENGTH"],
+        damage: map[0]["DAMAGE"],
+        skill: skills[map[0]['SKILL']],
+        qualities: await getMeleeWeaponQualities(id));
   }
 }
