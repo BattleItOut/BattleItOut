@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:battle_it_out/persistence/DTO/melee_weapon.dart';
+import 'package:battle_it_out/persistence/DTO/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/DTO/skill.dart';
 import 'package:battle_it_out/persistence/DTO/talent.dart';
 import 'package:battle_it_out/persistence/DTO/attribute.dart';
@@ -19,6 +20,7 @@ class Character {
   Map<int, Talent> talents = {};
   List<Armour> armour = [];
   List<MeleeWeapon> meleeWeapons = [];
+  List<RangedWeapon> rangedWeapons = [];
   // List<Trait> traits;
 
   Character(
@@ -28,7 +30,8 @@ class Character {
       required this.profession,
       required this.attributes,
       this.armour = const [],
-      this.meleeWeapons = const []});
+      this.meleeWeapons = const [],
+      this.rangedWeapons = const []});
 
   static Future<Character> create(String jsonPath, WFRPDatabase database) async {
     var json = await _loadJson(jsonPath);
@@ -42,7 +45,20 @@ class Character {
     character.skills = await _getSkills(json['skills'], character.attributes, database);
     character.talents = await _getTalents(json['talents'], character.attributes, database);
     character.meleeWeapons = await _getMeleeWeapons(json["melee_weapons"], character.skills, database);
+    character.rangedWeapons = await _getRangedWeapons(json["ranged_weapons"], character.skills, database);
     return character;
+  }
+
+  static Future<List<RangedWeapon>> _getRangedWeapons(json, Map<int, Skill> skills, WFRPDatabase database) async {
+    List<RangedWeapon> weaponList = [];
+    if (json != null) {
+      for (var map in json) {
+        RangedWeapon weapon = await database.getRangedWeapon(map["weapon_id"], skills);
+        weapon.ammunition = map["ammunition"] ?? 0;
+        weaponList.add(weapon);
+      }
+    }
+    return weaponList;
   }
 
   static Future<List<MeleeWeapon>> _getMeleeWeapons(json, Map<int, Skill> skills, WFRPDatabase database) async {
