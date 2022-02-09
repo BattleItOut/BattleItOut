@@ -1,8 +1,8 @@
 {
   "name": "Maddoc Wiatrownik",
   "race_id": 3,
-  "subrace_id": 1,
-  "profession_id": 1,
+  "subrace_id": 3,
+  "profession_id": 69,
   "attributes": [
     {
       "id": 1,
@@ -145,7 +145,66 @@
     }
   ],
   "talents": [
-
+    {
+      "talent_id": 21,
+      "lvl": 1
+    },
+    {
+      "talent_id": 127,
+      "lvl": 1
+    },
+    {
+      "talent_id": 203,
+      "lvl": 1
+    },
+    {
+      "talent_id": 74,
+      "lvl": 1
+    },
+    {
+      "talent_id": 49,
+      "lvl": 1
+    },
+    {
+      "talent_id": 28,
+      "lvl": 1
+    },
+    {
+      "talent_id": 163,
+      "lvl": 1
+    },
+    {
+      "talent_id": 184,
+      "lvl": 1
+    },
+    {
+      "talent_id": 31,
+      "lvl": 1,
+      "advancable": true
+    },
+    {
+      "talent_id": 50,
+      "lvl": 1,
+      "advancable": true
+    },
+    {
+      "talent_id": 92,
+      "lvl": 0,
+      "advancable": true
+    },
+    {
+      "talent_id": 179,
+      "lvl": 0,
+      "advancable": true
+    }
+  ],
+  "melee_weapons": [
+    {
+      "weapon_id": 2
+    },
+    {
+      "weapon_id": 11
+    }
   ],
   "ranged_weapons": [
     {
@@ -159,9 +218,6 @@
     }
   ],
   "armour": [
-
-  ],
-  "traits": [
 
   ]
 }
