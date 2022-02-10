@@ -20,6 +20,6 @@ class Armour {
 
   @override
   String toString() {
-    return "Skill(id=$id, name=$name, AP=$headAP/$bodyAP/$armsAP/$legsAP))";
+    return "Skill (id=$id, name=$name, AP=$headAP/$bodyAP/$armsAP/$legsAP))";
   }
 }

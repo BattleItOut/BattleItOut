@@ -79,7 +79,7 @@ class Character {
 
   static Future<List<Armour>> _getArmour(json, WFRPDatabase database) async {
     List<Armour> armourList = [];
-    for (var map in json) {
+    for (var map in json ?? []) {
       armourList.add(await database.getArmour(map["armour_id"]));
     }
     return armourList;
@@ -87,14 +87,12 @@ class Character {
 
   static Future<Map<int, Skill>> _getSkills(json, Map<int, Attribute> attributes, WFRPDatabase database) async {
     Map<int, Skill> skillsMap = {};
-    if (json != null) {
-      for (var map in json) {
-        Skill skill = await database.getSkill(map["skill_id"], attributes);
-        map["advances"] != null ? skill.advances = map["advances"] : null;
-        map["advancable"] != null ? skill.advancable = map["advancable"] : null;
-        map["earning"] != null ? skill.earning = map["earning"] : null;
-        skillsMap[skill.id] = skill;
-      }
+    for (var map in json ?? []) {
+      Skill skill = await database.getSkill(map["skill_id"], attributes);
+      map["advances"] != null ? skill.advances = map["advances"] : null;
+      map["advancable"] != null ? skill.advancable = map["advancable"] : null;
+      map["earning"] != null ? skill.earning = map["earning"] : null;
+      skillsMap[skill.id] = skill;
     }
     return skillsMap;
   }
@@ -126,7 +124,22 @@ class Character {
     return jsonDecode(data);
   }
 
+  // List getters
+
   List<Attribute> getAttributes() {
     return List.of(attributes.values);
+  }
+
+  List<Skill> getSkills() {
+    return List.of(skills.values);
+  }
+
+  List<Talent> getTalents() {
+    return List.of(talents.values);
+  }
+
+  @override
+  String toString() {
+    return "Character (name=$name, race=$race), profession=$profession";
   }
 }

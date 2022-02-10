@@ -23,6 +23,6 @@ class Talent {
 
   @override
   String toString() {
-    return "Talent(id=$id, name=$name)";
+    return "Talent (id=$id, name=$name)";
   }
 }
