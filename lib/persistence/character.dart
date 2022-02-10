@@ -25,6 +25,20 @@ class Character {
       required this.profession,
       required this.attributes});
 
+  static Character from(Character character) {
+    var newInstance = Character(
+        name: character.name,
+        race: character.race,
+        subrace: character.subrace,
+        profession: character.profession,
+        attributes: character.attributes
+    );
+    newInstance.skills = character.skills;
+    newInstance.talents = character.talents;
+    newInstance.initiative = character.initiative;
+    return newInstance;
+  }
+
   static Future<Character> create(String jsonPath, WFRPDatabase database) async {
     var json = await _loadJson(jsonPath);
     Character character = Character(
