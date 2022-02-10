@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:battle_it_out/persistence/DTO/item_quality.dart';
 import 'package:battle_it_out/persistence/DTO/melee_weapon.dart';
 import 'package:battle_it_out/persistence/DTO/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/DTO/skill.dart';
