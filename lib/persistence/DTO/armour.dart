@@ -5,8 +5,10 @@ class Armour {
   String name;
   int headAP;
   int bodyAP;
-  int armsAP;
-  int legsAP;
+  int leftArmAP;
+  int rightArmAP;
+  int leftLegAP;
+  int rightLegAP;
   List<ItemQuality> qualities;
 
   Armour(
@@ -14,12 +16,14 @@ class Armour {
       required this.name,
       required this.headAP,
       required this.bodyAP,
-      required this.armsAP,
-      required this.legsAP,
+      required this.leftArmAP,
+      required this.rightArmAP,
+      required this.leftLegAP,
+      required this.rightLegAP,
       this.qualities = const []});
 
   @override
   String toString() {
-    return "Skill (id=$id, name=$name, AP=$headAP/$bodyAP/$armsAP/$legsAP))";
+    return "Skill (id=$id, name=$name, AP=$headAP/$bodyAP/$leftArmAP/$rightArmAP/$leftLegAP/$rightLegAP))";
   }
 }

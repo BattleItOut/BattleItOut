@@ -45,15 +45,18 @@ class Character {
         armour: await _getArmour(json["armour"], database));
     character.skills = await _getSkills(json['skills'], character.attributes, database);
     character.talents = await _getTalents(json['talents'], character.attributes, database);
-    character.meleeWeapons = await _getMeleeWeapons(json["melee_weapons"], character.skills, database);
-    character.rangedWeapons = await _getRangedWeapons(json["ranged_weapons"], character.skills, database);
+    character.meleeWeapons =
+        await _getMeleeWeapons(json["melee_weapons"], character.skills, character.attributes, database);
+    character.rangedWeapons =
+        await _getRangedWeapons(json["ranged_weapons"], character.skills, character.attributes, database);
     return character;
   }
 
-  static Future<List<RangedWeapon>> _getRangedWeapons(json, Map<int, Skill> skills, WFRPDatabase database) async {
+  static Future<List<RangedWeapon>> _getRangedWeapons(
+      json, Map<int, Skill> skills, Map<int, Attribute> attributes, WFRPDatabase database) async {
     List<RangedWeapon> weaponList = [];
     for (var map in json ?? []) {
-      RangedWeapon weapon = await database.getRangedWeapon(map["weapon_id"], skills);
+      RangedWeapon weapon = await database.getRangedWeapon(map["weapon_id"], skills, attributes);
       weapon.ammunition = map["ammunition"] ?? 0;
       for (var qualityMap in map["qualities"] ?? []) {
         weapon.addQuality(await database.getQuality(qualityMap["quality_id"]));
@@ -63,10 +66,11 @@ class Character {
     return weaponList;
   }
 
-  static Future<List<MeleeWeapon>> _getMeleeWeapons(json, Map<int, Skill> skills, WFRPDatabase database) async {
+  static Future<List<MeleeWeapon>> _getMeleeWeapons(
+      json, Map<int, Skill> skills, Map<int, Attribute> attributes, WFRPDatabase database) async {
     List<MeleeWeapon> weaponList = [];
     for (var map in json ?? []) {
-      MeleeWeapon weapon = await database.getMeleeWeapon(map["weapon_id"], skills);
+      MeleeWeapon weapon = await database.getMeleeWeapon(map["weapon_id"], skills, attributes);
       map["name"] != null ? weapon.name = map["name"] : null;
       map["length"] != null ? weapon.length = map["length"] : null;
       for (var qualityMap in map["qualities"] ?? []) {
@@ -80,7 +84,14 @@ class Character {
   static Future<List<Armour>> _getArmour(json, WFRPDatabase database) async {
     List<Armour> armourList = [];
     for (var map in json ?? []) {
-      armourList.add(await database.getArmour(map["armour_id"]));
+      Armour armour = await database.getArmour(map["armour_id"]);
+      map["head_AP"] != null ? armour.headAP = map["head_AP"] : null;
+      map["body_AP"] != null ? armour.bodyAP = map["body_AP"] : null;
+      map["left_arm_AP"] != null ? armour.leftArmAP = map["left_arm_AP"] : null;
+      map["right_arm_AP"] != null ? armour.rightArmAP = map["right_arm_AP"] : null;
+      map["left_leg_AP"] != null ? armour.leftLegAP = map["left_leg_AP"] : null;
+      map["right_leg_AP"] != null ? armour.rightLegAP = map["right_leg_AP"] : null;
+      armourList.add(armour);
     }
     return armourList;
   }

@@ -187,7 +187,8 @@
   ],
   "armour": [
     {
-      "armour_id": 1
+      "armour_id": 1,
+      "right_arm_AP": 0
     },
     {
       "armour_id": 7
