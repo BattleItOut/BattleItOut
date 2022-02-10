@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:battle_it_out/persistence/DTO/item_quality.dart';
 import 'package:battle_it_out/persistence/DTO/melee_weapon.dart';
 import 'package:battle_it_out/persistence/DTO/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/DTO/skill.dart';
@@ -51,22 +52,27 @@ class Character {
 
   static Future<List<RangedWeapon>> _getRangedWeapons(json, Map<int, Skill> skills, WFRPDatabase database) async {
     List<RangedWeapon> weaponList = [];
-    if (json != null) {
-      for (var map in json) {
-        RangedWeapon weapon = await database.getRangedWeapon(map["weapon_id"], skills);
-        weapon.ammunition = map["ammunition"] ?? 0;
-        weaponList.add(weapon);
+    for (var map in json ?? []) {
+      RangedWeapon weapon = await database.getRangedWeapon(map["weapon_id"], skills);
+      weapon.ammunition = map["ammunition"] ?? 0;
+      for (var qualityMap in map["qualities"] ?? []) {
+        weapon.addQuality(await database.getQuality(qualityMap["quality_id"]));
       }
+      weaponList.add(weapon);
     }
     return weaponList;
   }
 
   static Future<List<MeleeWeapon>> _getMeleeWeapons(json, Map<int, Skill> skills, WFRPDatabase database) async {
     List<MeleeWeapon> weaponList = [];
-    if (json != null) {
-      for (var map in json) {
-        weaponList.add(await database.getMeleeWeapon(map["weapon_id"], skills));
+    for (var map in json ?? []) {
+      MeleeWeapon weapon = await database.getMeleeWeapon(map["weapon_id"], skills);
+      map["name"] != null ? weapon.name = map["name"] : null;
+      map["length"] != null ? weapon.length = map["length"] : null;
+      for (var qualityMap in map["qualities"] ?? []) {
+        weapon.addQuality(await database.getQuality(qualityMap["quality_id"]));
       }
+      weaponList.add(weapon);
     }
     return weaponList;
   }
@@ -95,13 +101,11 @@ class Character {
 
   static Future<Map<int, Talent>> _getTalents(json, Map<int, Attribute> attributes, WFRPDatabase database) async {
     Map<int, Talent> talentsMap = {};
-    if (json != null) {
-      for (var map in json) {
-        Talent talent = await database.getTalent(map["talent_id"], attributes);
-        map["lvl"] != null ? talent.currentLvl = map["lvl"] : null;
-        map["advancable"] != null ? talent.advancable = map["advancable"] : null;
-        talentsMap[talent.id] = talent;
-      }
+    for (var map in json ?? []) {
+      Talent talent = await database.getTalent(map["talent_id"], attributes);
+      map["lvl"] != null ? talent.currentLvl = map["lvl"] : null;
+      map["advancable"] != null ? talent.advancable = map["advancable"] : null;
+      talentsMap[talent.id] = talent;
     }
     return talentsMap;
   }

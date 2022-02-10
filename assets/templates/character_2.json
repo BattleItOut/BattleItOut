@@ -1,86 +1,184 @@
 {
   "name": "Matei Gwiazdowróż",
   "race_id": 6,
-  "subrace_id": 1,
-  "profession_id": 1,
+  "subrace_id": 6,
+  "profession_id": 5,
   "attributes": [
     {
       "id": 1,
-      "base": 31,
-      "advances": 0
+      "base": 29,
+      "advances": 5
     },
     {
       "id": 2,
-      "base": 31,
+      "base": 13,
       "advances": 0
     },
     {
       "id": 3,
-      "base": 31,
+      "base": 21,
       "advances": 0
     },
     {
       "id": 4,
-      "base": 31,
+      "base": 20,
       "advances": 0
     },
     {
       "id": 5,
-      "base": 31,
+      "base": 46,
       "advances": 0
     },
     {
       "id": 6,
-      "base": 31,
+      "base": 41,
       "advances": 0
     },
     {
       "id": 7,
-      "base": 31,
+      "base": 37,
       "advances": 0
     },
     {
       "id": 8,
-      "base": 31,
-      "advances": 0
+      "base": 44,
+      "advances": 7
     },
     {
       "id": 9,
-      "base": 31,
-      "advances": 0
+      "base": 57,
+      "advances": 5
     },
     {
       "id": 10,
-      "base": 31,
+      "base": 28,
       "advances": 0
     }
   ],
   "skills": [
     {
-      "skill_id": 13,
+      "skill_id": 3,
       "advances": 5,
       "advancable": true
     },
     {
-      "skill_id": 13,
+      "skill_id": 8,
+      "advances": 3,
+      "advancable": true
+    },
+    {
+      "skill_id": 12,
+      "advances": 1
+    },
+    {
+      "skill_id": 24,
       "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 161,
+      "advances": 5
+    },
+    {
+      "skill_id": 17,
+      "advances": 3
+    },
+    {
+      "skill_id": 22,
+      "advances": 5
+    },
+    {
+      "skill_id": 6,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 38,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 33,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 15,
+      "advances": 10,
+      "advancable": true
+    },
+    {
+      "skill_id": 104,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 58,
+      "advances": 15,
+      "advancable": true
+    },
+    {
+      "skill_id": 53,
+      "advances": 10
+    },
+    {
+      "skill_id": 197,
+      "advances": 3
+    },
+    {
+      "skill_id": 128,
+      "advances": 9,
       "advancable": true
     }
   ],
   "talents": [
     {
-      "talent_id": 1,
+      "talent_id": 31,
+      "lvl": 1,
+      "advancable": true
+    },
+    {
+      "talent_id": 38,
+      "lvl": 1
+    },
+    {
+      "talent_id": 90,
+      "lvl": 1
+    },
+    {
+      "talent_id": 134,
+      "lvl": 1,
+      "advancable": true
+    },
+    {
+      "talent_id": 74,
+      "lvl": 1
+    },
+    {
+      "talent_id": 68,
+      "lvl": 1
+    },
+    {
+      "talent_id": 38,
+      "lvl": 1,
+      "advancable": true
+    },
+    {
+      "talent_id": 223,
       "lvl": 1,
       "advancable": true
     }
   ],
-  "weapons": [
-
-  ],
-  "armour": [
-
-  ],
-  "traits": [
-
+  "melee_weapons": [
+    {
+      "weapon_id": 2
+    },
+    {
+      "weapon_id": 11
+    },
+    {
+      "weapon_id": 21,
+      "length": 4
+    }
   ]
 }
