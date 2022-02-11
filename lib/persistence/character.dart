@@ -21,6 +21,7 @@ class Character {
   List<Armour> armour = [];
   List<MeleeWeapon> meleeWeapons = [];
   List<RangedWeapon> rangedWeapons = [];
+  int? initiative;
   // List<Trait> traits;
 
   Character(
@@ -32,6 +33,20 @@ class Character {
       this.armour = const [],
       this.meleeWeapons = const [],
       this.rangedWeapons = const []});
+
+  static Character from(Character character) {
+    var newInstance = Character(
+        name: character.name,
+        race: character.race,
+        subrace: character.subrace,
+        profession: character.profession,
+        attributes: character.attributes
+    );
+    newInstance.skills = character.skills;
+    newInstance.talents = character.talents;
+    newInstance.initiative = character.initiative;
+    return newInstance;
+  }
 
   static Future<Character> create(String jsonPath, WFRPDatabase database) async {
     var json = await _loadJson(jsonPath);

@@ -2,6 +2,7 @@ import 'package:battle_it_out/app_cache.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../components/list_items.dart';
 
@@ -20,14 +21,39 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
     return List<CharacterListItem>.generate(
       widget.characters.length,
       (index) => CharacterListItem(
-        name: widget.characters[index].name,
+        character: widget.characters[index],
         context: context
       )
     );
   }
 
   void _select(int index) {
-    Navigator.pop(context, widget.characters[index]);
+    var character = Character.from(widget.characters[index]);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Initiative:"),
+          content: TextField(
+            onChanged: (value) {
+              character.initiative = int.parse(value);
+            },
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            TextButton(
+              child: const Text("Proceed"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pop(context, character);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _info(int index) {
