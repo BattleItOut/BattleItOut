@@ -40,6 +40,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
             },
             keyboardType: TextInputType.number,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            textAlign: TextAlign.center,
           ),
           actions: [
             TextButton(
