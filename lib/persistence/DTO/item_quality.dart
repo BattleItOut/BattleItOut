@@ -19,9 +19,9 @@ class ItemQuality {
   @override
   String toString() {
     if (value == null) {
-      return "Quality(id=$id, name=$name)";
+      return "Quality (id=$id, name=$name)";
     } else {
-      return "Quality(id=$id, name=$name $value)";
+      return "Quality (id=$id, name=$name $value)";
     }
   }
 }

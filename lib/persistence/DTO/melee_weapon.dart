@@ -16,4 +16,8 @@ class MeleeWeapon {
       required this.damage,
       required this.skill,
       this.qualities = const []});
+
+  void addQuality(ItemQuality quality) {
+    qualities.add(quality);
+  }
 }

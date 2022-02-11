@@ -215,25 +215,28 @@ class WFRPDatabase {
         name: map[0]["NAME"],
         headAP: map[0]["HEAD_AP"],
         bodyAP: map[0]["BODY_AP"],
-        armsAP: map[0]["ARMS_AP"],
-        legsAP: map[0]["LEGS_AP"],
+        leftArmAP: map[0]["LEFT_ARM_AP"],
+        rightArmAP: map[0]["RIGHT_ARM_AP"],
+        leftLegAP: map[0]["LEFT_LEG_AP"],
+        rightLegAP: map[0]["RIGHT_LEG_AP"],
         qualities: await getArmourQualities(id));
   }
 
-  Future<MeleeWeapon> getMeleeWeapon(int id, Map<int, Skill> skills) async {
+  Future<MeleeWeapon> getMeleeWeapon(int id, Map<int, Skill> skills, Map<int, Attribute> attributes) async {
     final List<Map<String, dynamic>> map =
         await _database!.query("weapons_melee", where: "WEAPONS_MELEE.ID = ?", whereArgs: [id]);
 
-    return MeleeWeapon(
+    MeleeWeapon weapon = MeleeWeapon(
         id: map[0]["ID"],
         name: map[0]["NAME"],
         length: map[0]["LENGTH"],
         damage: map[0]["DAMAGE"],
-        skill: skills[map[0]['SKILL']],
+        skill: skills[map[0]['SKILL']] ?? await getSkill(map[0]['SKILL'], attributes),
         qualities: await getMeleeWeaponQualities(id));
+    return weapon;
   }
 
-  Future<RangedWeapon> getRangedWeapon(int id, Map<int, Skill> skills) async {
+  Future<RangedWeapon> getRangedWeapon(int id, Map<int, Skill> skills, Map<int, Attribute> attributes) async {
     final List<Map<String, dynamic>> map =
         await _database!.query("weapons_ranged", where: "WEAPONS_RANGED.ID = ?", whereArgs: [id]);
 
@@ -243,7 +246,7 @@ class WFRPDatabase {
         range: map[0]["WEAPON_RANGE"],
         damage: map[0]["DAMAGE"],
         strengthBonus: map[0]["STRENGTH_BONUS"] == 1,
-        skill: skills[map[0]['SKILL']],
+        skill: skills[map[0]['SKILL']] ?? await getSkill(map[0]['SKILL'], attributes),
         qualities: await getRangedWeaponQualities(id));
   }
 }

@@ -189,9 +189,9 @@
   "melee_weapons": [
     {
       "weapon_id": 25
+    },
+    {
+      "weapon_id": 11
     }
-  ],
-  "traits": [
-
   ]
 }

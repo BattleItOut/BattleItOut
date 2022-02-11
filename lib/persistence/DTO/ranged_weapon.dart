@@ -21,4 +21,8 @@ class RangedWeapon {
       required this.skill,
       this.qualities = const [],
       this.ammunition = 0});
+
+  void addQuality(ItemQuality quality) {
+    qualities.add(quality);
+  }
 }
