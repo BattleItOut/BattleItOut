@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 
 void main() async {
   runApp(const MyApp());
-  WFRPDatabase database = await WFRPDatabase.create("assets/database/database.sqlite");
+  WFRPDatabase database = await WFRPDatabase.create("assets/database/create_db.sql");
 
   List<Character> templateCharacters = await loadTemplates(database);
   AppCache.init(characters: templateCharacters);
