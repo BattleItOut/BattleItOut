@@ -24,6 +24,6 @@ class Skill {
 
   @override
   String toString() {
-    return "Skill(id=$id, name=$name, advances=$advances)";
+    return "Skill (id=$id, name=$name, advances=$advances)";
   }
 }
