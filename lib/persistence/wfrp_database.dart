@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:battle_it_out/persistence/DTO/armour.dart';
 import 'package:battle_it_out/persistence/DTO/attribute.dart';
@@ -17,26 +18,40 @@ import 'DTO/skill.dart';
 class WFRPDatabase {
   Database? _database;
 
-  static Future<WFRPDatabase> create(String assetDBPath) async {
+  static Future<WFRPDatabase> create(String dbCreateFile) async {
     var component = WFRPDatabase();
-    component._database = await _connect(assetDBPath);
+    component._database = await _connect(dbCreateFile);
     return component;
   }
 
-  static Future<Database> _connect(String assetDBPath) async {
+  static Future<Database> _connect(String dbCreateFile) async {
     var dbDir = await getDatabasesPath();
     var dbPath = join(dbDir, "database.sqlite");
+    List<String> commands = await _splitCommands(dbCreateFile);
 
     // Delete any existing database:
     await deleteDatabase(dbPath);
 
-    // Create the writable database file from the bundled demo database file:
-    ByteData data = await rootBundle.load(assetDBPath);
-    List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-    await File(dbPath).writeAsBytes(bytes);
+    return await openDatabase(dbPath, version: 1, onCreate: (Database db, int version) async {
+      for (String command in commands) {
+        await db.execute(command);
+      }
+    });
+  }
 
-    // Return database
-    return await openDatabase(dbPath);
+  static Future<List<String>> _splitCommands(String dbCreateFile) async {
+    String dbCreateString = await rootBundle.loadString(dbCreateFile);
+    List<String> commands = [];
+    String command = "";
+    for (String line in dbCreateString.split("\n")) {
+      line = line.trim();
+      command = command + " " + line;
+      if (line != "" && line[line.length - 1] == ";") {
+        commands.add(command.trim());
+        command = "";
+      }
+    }
+    return commands;
   }
 
   Future<Attribute> getAttribute(int id) async {
