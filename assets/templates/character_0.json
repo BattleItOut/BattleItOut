@@ -181,11 +181,15 @@
       "advancable": true
     }
   ],
-  "weapons": [
-
-  ],
   "armour": [
-
+    {
+      "armour_id": 2
+    }
+  ],
+  "melee_weapons": [
+    {
+      "weapon_id": 25
+    }
   ],
   "traits": [
 

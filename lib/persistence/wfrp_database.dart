@@ -1,8 +1,12 @@
 import 'dart:io';
 
+import 'package:battle_it_out/persistence/DTO/armour.dart';
 import 'package:battle_it_out/persistence/DTO/attribute.dart';
+import 'package:battle_it_out/persistence/DTO/item_quality.dart';
+import 'package:battle_it_out/persistence/DTO/melee_weapon.dart';
 import 'package:battle_it_out/persistence/DTO/profession.dart';
 import 'package:battle_it_out/persistence/DTO/race.dart';
+import 'package:battle_it_out/persistence/DTO/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/DTO/talent.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
@@ -158,5 +162,88 @@ class WFRPDatabase {
       skillsMap[skill.id] = skill;
     }
     return skillsMap;
+  }
+
+  Future<ItemQuality> getQuality(int id) async {
+    final List<Map<String, dynamic>> map =
+        await _database!.query("item_qualities", where: "ITEM_QUALITIES.ID = ?", whereArgs: [id]);
+    return ItemQuality(
+        id: map[0]['ID'],
+        name: map[0]['NAME'],
+        nameEng: map[0]['NAME_ENG'],
+        type: map[0]['TYPE'],
+        equipment: map[0]['EQUIPMENT'],
+        description: map[0]['DESCR'],
+        value: map[0]["VALUE"]);
+  }
+
+  Future<List<ItemQuality>> getArmourQualities(int id) async {
+    final List<Map<String, dynamic>> map =
+        await _database!.query("armour_qualities", where: "ARMOUR_QUALITIES.ARMOUR_ID = ?", whereArgs: [id]);
+    List<ItemQuality> qualities = [];
+    for (int i = 0; i < map.length; i++) {
+      qualities.add(await getQuality(map[i]["QUALITY_ID"]));
+    }
+    return qualities;
+  }
+
+  Future<List<ItemQuality>> getMeleeWeaponQualities(int id) async {
+    final List<Map<String, dynamic>> map = await _database!
+        .query("weapons_melee_qualities", where: "WEAPONS_MELEE_QUALITIES.WEAPON_ID = ?", whereArgs: [id]);
+    List<ItemQuality> qualities = [];
+    for (int i = 0; i < map.length; i++) {
+      qualities.add(await getQuality(map[i]["QUALITY_ID"]));
+    }
+    return qualities;
+  }
+
+  Future<List<ItemQuality>> getRangedWeaponQualities(int id) async {
+    final List<Map<String, dynamic>> map = await _database!
+        .query("weapons_ranged_qualities", where: "WEAPONS_RANGED_QUALITIES.WEAPON_ID = ?", whereArgs: [id]);
+    List<ItemQuality> qualities = [];
+    for (int i = 0; i < map.length; i++) {
+      qualities.add(await getQuality(map[i]["QUALITY_ID"]));
+    }
+    return qualities;
+  }
+
+  Future<Armour> getArmour(int id) async {
+    final List<Map<String, dynamic>> map = await _database!.query("armour", where: "ARMOUR.ID = ?", whereArgs: [id]);
+
+    return Armour(
+        id: map[0]["ID"],
+        name: map[0]["NAME"],
+        headAP: map[0]["HEAD_AP"],
+        bodyAP: map[0]["BODY_AP"],
+        armsAP: map[0]["ARMS_AP"],
+        legsAP: map[0]["LEGS_AP"],
+        qualities: await getArmourQualities(id));
+  }
+
+  Future<MeleeWeapon> getMeleeWeapon(int id, Map<int, Skill> skills) async {
+    final List<Map<String, dynamic>> map =
+        await _database!.query("weapons_melee", where: "WEAPONS_MELEE.ID = ?", whereArgs: [id]);
+
+    return MeleeWeapon(
+        id: map[0]["ID"],
+        name: map[0]["NAME"],
+        length: map[0]["LENGTH"],
+        damage: map[0]["DAMAGE"],
+        skill: skills[map[0]['SKILL']],
+        qualities: await getMeleeWeaponQualities(id));
+  }
+
+  Future<RangedWeapon> getRangedWeapon(int id, Map<int, Skill> skills) async {
+    final List<Map<String, dynamic>> map =
+        await _database!.query("weapons_ranged", where: "WEAPONS_RANGED.ID = ?", whereArgs: [id]);
+
+    return RangedWeapon(
+        id: map[0]["ID"],
+        name: map[0]["NAME"],
+        range: map[0]["WEAPON_RANGE"],
+        damage: map[0]["DAMAGE"],
+        strengthBonus: map[0]["STRENGTH_BONUS"] == 1,
+        skill: skills[map[0]['SKILL']],
+        qualities: await getRangedWeaponQualities(id));
   }
 }
