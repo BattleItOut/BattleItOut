@@ -18,6 +18,10 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
   var characters = <Character>[];
   var currentRound = 0;
 
+  bool _isPreviousCharacterInPreviousRound() {
+    return characters[0].initiative! < characters[characters.length - 1].initiative!;
+  }
+
   bool _isNextCharacterInNextRound(int index) {
     return characters.length != index + 1 &&
         characters[index].initiative! < characters[index + 1].initiative!;
@@ -53,7 +57,9 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
 
   void _previous() {
     setState(() {
-      // TODO: fix rounds
+      if (_isPreviousCharacterInPreviousRound()) {
+        currentRound--;
+      }
       characters.rotateRight();
     });
   }
