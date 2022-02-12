@@ -3,6 +3,7 @@ import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
 import '../components/list_items.dart';
+import 'character_sheet_screen.dart';
 
 class TurnOrderScreen extends StatefulWidget {
   const TurnOrderScreen({Key? key}) : super(key: key);
@@ -20,6 +21,18 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
   bool _isNextCharacterInNextRound(int index) {
     return characters.length != index + 1 &&
         characters[index].initiative! < characters[index + 1].initiative!;
+  }
+
+  int _getActualIndex(List entries, int index) {
+    var labelIndexes = <int>[];
+    int actualIndex = index;
+    for (int i = 0; i < entries.length; i++) {
+      if (entries[i] is LabelListItem) labelIndexes.add(i);
+    }
+    for (int labelIndex in labelIndexes) {
+      if (index > labelIndex) actualIndex--;
+    }
+    return actualIndex;
   }
 
   void _append() async {
@@ -52,6 +65,12 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
       }
       characters.rotateLeft();
     });
+  }
+
+  void _info(int index) {
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) => CharacterSheetScreen(character: characters[index]),
+    ));
   }
 
   void _onNavigationTapped(int index) {
@@ -125,20 +144,12 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
                 child: entries[index],
                 onTap: () {
                   if (entries[index] is CharacterListItem) {
-                    _next();
+                    _info(_getActualIndex(entries, index));
                   }
                 },
                 onLongPress: () {
                   if (entries[index] is CharacterListItem) {
-                    var labelIndexes = <int>[];
-                    int actualIndex = index;
-                    for (int i = 0; i < entries.length; i++) {
-                      if (entries[i] is LabelListItem) labelIndexes.add(i);
-                    }
-                    for (int labelIndex in labelIndexes) {
-                      if (index > labelIndex) actualIndex--;
-                    }
-                    _pop(actualIndex);
+                    _pop(_getActualIndex(entries, index));
                   }
                 }
             );
