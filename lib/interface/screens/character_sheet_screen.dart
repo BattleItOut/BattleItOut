@@ -25,6 +25,12 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           Text("Subrace: ${widget.character.subrace.toString()}"),
           Text("Size: ${widget.character.race.size}"),
           Text("Profession: ${widget.character.profession.name}"),
+          Text("Attributes: ${widget.character.attributes.toString()}"),
+          Text("Skills: ${widget.character.skills.toString()}"),
+          Text("Talents: ${widget.character.talents.toString()}"),
+          Text("Armour: ${widget.character.armour.toString()}"),
+          Text("Melee weapons: ${widget.character.meleeWeapons.toString()}"),
+          Text("Ranged weapons: ${widget.character.rangedWeapons.toString()}")
         ]
       )
     );
