@@ -19,7 +19,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
   var currentRound = 0;
 
   bool _isPreviousCharacterInPreviousRound() {
-    return characters[0].initiative! < characters[characters.length - 1].initiative!;
+    return characters[0].initiative! > characters[characters.length - 1].initiative!;
   }
 
   bool _isNextCharacterInNextRound(int index) {
