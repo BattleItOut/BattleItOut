@@ -58,6 +58,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
   void _previous() {
     setState(() {
       if (_isPreviousCharacterInPreviousRound()) {
+        if (currentRound == 0) return;
         currentRound--;
       }
       characters.rotateRight();
@@ -127,7 +128,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
     List<ListItem> entries = <ListItem>[];
     for (int i = 0; i < characters.length; i++) {
       if (i == 0) {
-        entries.add(LabelListItem(name: 'Current'));
+        entries.add(LabelListItem(name: 'Current (Round $currentRound)'));
       }
       else if (i != 0 && _isNextCharacterInNextRound(i - 1)) {
         entries.add(LabelListItem(name: 'Round ${currentRound + 1}'));
