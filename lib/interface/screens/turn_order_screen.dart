@@ -150,12 +150,12 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
                 child: entries[index],
                 onTap: () {
                   if (entries[index] is CharacterListItem) {
-                    _info(_getActualIndex(entries, index));
+                    _pop(_getActualIndex(entries, index));
                   }
                 },
                 onLongPress: () {
                   if (entries[index] is CharacterListItem) {
-                    _pop(_getActualIndex(entries, index));
+                    _info(_getActualIndex(entries, index));
                   }
                 }
             );

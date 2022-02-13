@@ -77,10 +77,10 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
             return InkWell(
               child: characters[index],
               onTap: () {
-                _info(index);
+                _select(index);
               },
               onLongPress: () {
-                _select(index);
+                _info(index);
               }
             );
           }
