@@ -43,22 +43,33 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             columnWidths: const {
               0: FlexColumnWidth(),
               1: FixedColumnWidth(48),
-              2: FixedColumnWidth(32)
+              2: FixedColumnWidth(32),
+              3: FixedColumnWidth(32)
             },
             children: [
               for (var skill in widget.character.skills.values) TableRow(
                 children: [
                   Text(skill.name),
                   Text(skill.attribute!.name),
-                  Text((skill.attribute!.base + skill.attribute!.advances + skill.advances).toString()),
+                  Text((skill.attribute!.base + skill.attribute!.advances).toString()),
+                  Text(skill.advances.toString())
                 ]
               ),
             ],
           ),
           const Text("Talents:"),
-          Column(
+          Table(
+            columnWidths: const {
+              0: FlexColumnWidth(),
+              1: FixedColumnWidth(32)
+            },
             children: [
-              for (var talent in widget.character.talents.values) Text(talent.name)
+              for (var talent in widget.character.talents.values) TableRow(
+                  children: [
+                    Text(talent.name),
+                    Text(talent.currentLvl.toString())
+                  ]
+              ),
             ],
           ),
           const Text("Armour:"),
