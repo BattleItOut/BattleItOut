@@ -1,4 +1,4 @@
-import 'package:battle_it_out/persistence/DTO/item_quality.dart';
+import 'package:battle_it_out/persistence/entities/item_quality.dart';
 
 class Armour {
   int id;
@@ -24,6 +24,6 @@ class Armour {
 
   @override
   String toString() {
-    return "Skill (id=$id, name=$name, AP=$headAP/$bodyAP/$leftArmAP/$rightArmAP/$leftLegAP/$rightLegAP))";
+    return "Armour ($id, $name, $headAP/$bodyAP/$leftArmAP/$rightArmAP/$leftLegAP/$rightLegAP))";
   }
 }

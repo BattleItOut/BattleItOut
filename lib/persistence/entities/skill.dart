@@ -1,4 +1,4 @@
-import 'package:battle_it_out/persistence/DTO/attribute.dart';
+import 'package:battle_it_out/persistence/entities/attribute.dart';
 
 class Skill {
   int id;

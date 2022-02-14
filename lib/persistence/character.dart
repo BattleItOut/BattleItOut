@@ -1,12 +1,12 @@
 import 'dart:convert';
-import 'package:battle_it_out/persistence/DTO/melee_weapon.dart';
-import 'package:battle_it_out/persistence/DTO/ranged_weapon.dart';
-import 'package:battle_it_out/persistence/DTO/skill.dart';
-import 'package:battle_it_out/persistence/DTO/talent.dart';
-import 'package:battle_it_out/persistence/DTO/attribute.dart';
-import 'package:battle_it_out/persistence/DTO/profession.dart';
-import 'package:battle_it_out/persistence/DTO/race.dart';
-import 'package:battle_it_out/persistence/DTO/armour.dart';
+import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
+import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
+import 'package:battle_it_out/persistence/entities/skill.dart';
+import 'package:battle_it_out/persistence/entities/talent.dart';
+import 'package:battle_it_out/persistence/entities/attribute.dart';
+import 'package:battle_it_out/persistence/entities/profession.dart';
+import 'package:battle_it_out/persistence/entities/race.dart';
+import 'package:battle_it_out/persistence/entities/armour.dart';
 import 'package:battle_it_out/persistence/wfrp_database.dart';
 import 'package:flutter/services.dart';
 
@@ -40,8 +40,7 @@ class Character {
         race: character.race,
         subrace: character.subrace,
         profession: character.profession,
-        attributes: character.attributes
-    );
+        attributes: character.attributes);
     newInstance.skills = character.skills;
     newInstance.talents = character.talents;
     newInstance.initiative = character.initiative;
@@ -52,8 +51,8 @@ class Character {
     var json = await _loadJson(jsonPath);
     Character character = Character(
         name: json['name'],
-        race: await database.getRace(json["race_id"]),
-        subrace: await database.getSubrace(json["subrace_id"]),
+        race: await Race().getOne(database.database!, json["race_id"]),
+        subrace: await Subrace().getOne(database.database!, json["subrace_id"]),
         profession: await database.getProfession(json["profession_id"]),
         attributes: await _getAttributes(json, database),
         armour: await _getArmour(json["armour"], database));

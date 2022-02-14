@@ -1,5 +1,5 @@
-import 'package:battle_it_out/persistence/DTO/item_quality.dart';
-import 'package:battle_it_out/persistence/DTO/skill.dart';
+import 'package:battle_it_out/persistence/entities/item_quality.dart';
+import 'package:battle_it_out/persistence/entities/skill.dart';
 
 class MeleeWeapon {
   int id;
