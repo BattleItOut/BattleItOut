@@ -1,3 +1,4 @@
+import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
@@ -18,25 +19,36 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
         title: Center(child: Text(widget.character.name)),
       ),
       body: ListView(
-        children: <Widget>[
-          Text("Race: ${widget.character.race.name}"),
-          Text("Subrace: ${widget.character.subrace.toString()}"),
-          Text("Size: ${widget.character.race.size}"),
-          Text("Profession: ${widget.character.profession.name}"),
-          const Text("Attributes:"),
-          Table(
-            children: [
-              TableRow(
-                children: [
-                  for (var attribute in widget.character.attributes.values) Text(attribute.name)
-                ]
-              ),
-              TableRow(
-                children: [
-                  for (var attribute in widget.character.attributes.values) Text((attribute.base + attribute.advances).toString())
-                ]
-              )
-            ],
+        padding: const EdgeInsets.all(12),
+        children: [
+          CharacteristicListItem(
+            child: Column(
+              children: [
+                Text("Race: ${widget.character.race.name}"),
+                Text("Subrace: ${widget.character.subrace.name}"),
+                Text("Size: ${widget.character.race.size}"),
+                Text("Profession: ${widget.character.profession.name}")
+              ],
+            ),
+            context: context
+          ),
+          CharacteristicListItem(
+            title: "Attributes",
+            child: Table(
+              children: [
+                TableRow(
+                    children: [
+                      for (var attribute in widget.character.attributes.values) Text(attribute.name)
+                    ]
+                ),
+                TableRow(
+                    children: [
+                      for (var attribute in widget.character.attributes.values) Text((attribute.base + attribute.advances).toString())
+                    ]
+                )
+              ],
+            ),
+            context: context
           ),
           const Text("Skills:"),
           Table(
