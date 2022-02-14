@@ -63,24 +63,22 @@ class CharacteristicListItem extends TileListItem {
       child: title != null ? Column(
         children: [
           Text(title, style: const TextStyle(fontSize: 24.0)),
-          Table(
-            children: [
-              for (var row in child) TableRow(
-                children: [for (var value in row) Text(value)]
-              )
-            ],
-          )
+          CharacteristicListItem.createTable(child)
         ],
-      ) : Table(
-        children: [
-          for (var row in child) TableRow(
-            children: [for (var value in row) Text(value)]
-          )
-        ],
-      )
+      ) : CharacteristicListItem.createTable(child)
     ),
     context: context
   );
+
+  static Table createTable(List<List<String>> child) {
+    return Table(
+      children: [
+        for (var row in child) TableRow(
+            children: [for (var value in row) Text(value)]
+        )
+      ],
+    );
+  }
 }
 
 extension ItemList on List<dynamic> {
