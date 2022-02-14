@@ -24,7 +24,18 @@ class LabelListItem extends ListItem {
   );
 }
 
-class CharacterListItem extends ListItem {
+class TileListItem extends ListItem {
+  TileListItem({Key? key, required Widget child, required BuildContext context}) : super(
+    key: key,
+    child: child,
+    decoration: BoxDecoration(
+      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+      color: Theme.of(context).primaryColor
+    ),
+  );
+}
+
+class CharacterListItem extends TileListItem {
   CharacterListItem({Key? key, required Character character, required BuildContext context}) : super(
     key: key,
     child: ListTile(
@@ -34,10 +45,25 @@ class CharacterListItem extends ListItem {
       dense: true,
       textColor: Theme.of(context).floatingActionButtonTheme.foregroundColor,
     ),
-    decoration: BoxDecoration(
-      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-      color: Theme.of(context).primaryColor
-    ),
+    context: context
+  );
+}
+
+class CharacteristicListItem extends TileListItem {
+  CharacteristicListItem({
+    Key? key,
+    String? title,
+    required Widget child,
+    required BuildContext context
+  }) : super(
+    key: key,
+    child: title != null ? Column(
+      children: [
+        Text(title, style: const TextStyle(fontSize: 24.0)),
+        child
+      ],
+    ) : child,
+    context: context
   );
 }
 
