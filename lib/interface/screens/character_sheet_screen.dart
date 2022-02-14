@@ -22,32 +22,21 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
         padding: const EdgeInsets.all(12),
         children: [
           CharacteristicListItem(
-            child: Column(
-              children: [
-                Text("Race: ${widget.character.race.name}"),
-                Text("Subrace: ${widget.character.subrace.name}"),
-                Text("Size: ${widget.character.race.size}"),
-                Text("Profession: ${widget.character.profession.name}")
-              ],
-            ),
+            child: [
+              ["Race: ${widget.character.race.name}"],
+              ["Subrace: ${widget.character.subrace.name}"],
+              ["Size: ${widget.character.race.size}"],
+              ["Profession: ${widget.character.profession.name}"]
+            ],
             context: context
           ),
           CharacteristicListItem(
             title: "Attributes",
-            child: Table(
-              children: [
-                TableRow(
-                    children: [
-                      for (var attribute in widget.character.attributes.values) Text(attribute.name)
-                    ]
-                ),
-                TableRow(
-                    children: [
-                      for (var attribute in widget.character.attributes.values) Text((attribute.base + attribute.advances).toString())
-                    ]
-                )
-              ],
-            ),
+            isVertical: true,
+            child: [
+              [for (var attribute in widget.character.attributes.values) attribute.name],
+              [for (var attribute in widget.character.attributes.values) (attribute.base + attribute.advances).toString()]
+            ],
             context: context
           ),
           const Text("Skills:"),

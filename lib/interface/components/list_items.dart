@@ -53,16 +53,32 @@ class CharacteristicListItem extends TileListItem {
   CharacteristicListItem({
     Key? key,
     String? title,
-    required Widget child,
-    required BuildContext context
+    required List<List<String>> child,
+    required BuildContext context,
+    bool isVertical = true
   }) : super(
     key: key,
-    child: title != null ? Column(
-      children: [
-        Text(title, style: const TextStyle(fontSize: 24.0)),
-        child
-      ],
-    ) : child,
+    child: Container(
+      margin: const EdgeInsets.all(8.0),
+      child: title != null ? Column(
+        children: [
+          Text(title, style: const TextStyle(fontSize: 24.0)),
+          Table(
+            children: [
+              for (var row in child) TableRow(
+                children: [for (var value in row) Text(value)]
+              )
+            ],
+          )
+        ],
+      ) : Table(
+        children: [
+          for (var row in child) TableRow(
+            children: [for (var value in row) Text(value)]
+          )
+        ],
+      )
+    ),
     context: context
   );
 }
