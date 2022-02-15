@@ -58,7 +58,7 @@ class CharacteristicListItem extends TileListItem {
     required List<List<String>> children,
     List<CharacteristicType?>? columnTypes,
     required BuildContext context,
-    bool isVertical = true
+    bool isVertical = true // TODO: do something with isVertical
   }) : super(
     key: key,
     child: Container(
@@ -83,6 +83,15 @@ class CharacteristicListItem extends TileListItem {
       }
     }
 
+    TextAlign characteristicTypeToTextAlign(CharacteristicType? type) {
+      switch (type) {
+        case null: return TextAlign.center;
+        case CharacteristicType.name: return TextAlign.left;
+        case CharacteristicType.shortcut: return TextAlign.center;
+        case CharacteristicType.value: return TextAlign.center;
+      }
+    }
+
     if (children.isEmpty) return const SizedBox.shrink();
 
     if (columnTypes != null) {
@@ -97,7 +106,10 @@ class CharacteristicListItem extends TileListItem {
       },
       children: [
         for (var row in children) TableRow(
-          children: [for (var value in row) Text(value)]
+          children: [for (var value in row.asMap().entries) Text(
+            value.value,
+            textAlign: characteristicTypeToTextAlign(columnTypes[value.key])
+          )]
         )
       ],
     );
