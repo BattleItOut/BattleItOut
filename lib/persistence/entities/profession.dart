@@ -1,4 +1,6 @@
-class Profession {
+import 'package:battle_it_out/persistence/entities/dto.dart';
+
+class Profession extends DTO {
   int id;
   String name;
   String nameEng;
@@ -17,6 +19,12 @@ class Profession {
   @override
   String toString() {
     return "Profession (id=$id, name=$name, lvl=$level)";
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    // TODO: implement toMap
+    throw UnimplementedError();
   }
 }
 

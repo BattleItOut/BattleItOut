@@ -1,32 +1,17 @@
-import 'package:battle_it_out/persistence/entities/entity.dart';
+import 'package:battle_it_out/persistence/entities/dto.dart';
 
-class Race extends Entity {
-  @override
-  get tableName => "races";
+class Race extends DTO {
+  int id;
+  String name;
+  int size;
+  int extraPoints;
+  String source;
 
-  int? id;
-  String? name;
-  int? size;
-  int? extraPoints;
-  String? source;
-
-  Race({this.id, this.name, this.size, this.extraPoints, this.source});
+  Race({required this.id, required this.name, required this.size, required this.extraPoints, required this.source});
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      "ID": id,
-      "NAME": name,
-      "EXTRA_POINTS": extraPoints,
-      "SIZE": size,
-      "SRC": source
-    };
-  }
-
-  @override
-  Race fromMap(Map<String, dynamic> map) {
-    return Race(
-        id: map["ID"], name: map["NAME"], extraPoints: map["EXTRA_POINTS"], size: map["SIZE"], source: map["SRC"]);
+    return {"ID": id, "NAME": name, "EXTRA_POINTS": extraPoints, "SIZE": size, "SRC": source};
   }
 
   @override
@@ -35,37 +20,23 @@ class Race extends Entity {
   }
 }
 
-class Subrace extends Entity {
-  @override
-  get tableName => "subraces";
+class Subrace extends DTO {
+  int id;
+  String name;
+  String source;
+  int randomTalents;
+  bool defaultSubrace;
 
-  int? id;
-  String? name;
-  String? source;
-  int? randomTalents;
-  bool? defaultSubrace;
-
-  Subrace({this.id, this.name, this.source, this.randomTalents, this.defaultSubrace});
+  Subrace(
+      {required this.id,
+      required this.name,
+      required this.source,
+      required this.randomTalents,
+      required this.defaultSubrace});
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      "ID": id,
-      "NAME": name,
-      "RANDOM_TALENTS": randomTalents,
-      "DEF": defaultSubrace! ? 1 : 0,
-      "SRC": source
-    };
-  }
-
-  @override
-  Subrace fromMap(Map<String, dynamic> map) {
-    return Subrace(
-        id: map["ID"],
-        name: map["NAME"],
-        source: map["SRC"],
-        randomTalents: map["RANDOM_TALENTS"],
-        defaultSubrace: map["DEF"] == 1);
+    return {"ID": id, "NAME": name, "RANDOM_TALENTS": randomTalents, "DEF": defaultSubrace? 1 : 0, "SRC": source};
   }
 
   @override

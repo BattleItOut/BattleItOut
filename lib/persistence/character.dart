@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:battle_it_out/persistence/dao/profession_dao.dart';
+import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
 import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
@@ -51,9 +53,9 @@ class Character {
     var json = await _loadJson(jsonPath);
     Character character = Character(
         name: json['name'],
-        race: await Race().getOne(database.database!, json["race_id"]),
-        subrace: await Subrace().getOne(database.database!, json["subrace_id"]),
-        profession: await database.getProfession(json["profession_id"]),
+        race: await RaceDAO().get(database, json["race_id"]),
+        subrace: await SubraceDAO().get(database, json["subrace_id"]),
+        profession: await ProfessionDAO().get(database, json["profession_id"]),
         attributes: await _getAttributes(json, database),
         armour: await _getArmour(json["armour"], database));
     character.skills = await _getSkills(json['skills'], character.attributes, database);

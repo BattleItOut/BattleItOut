@@ -16,7 +16,9 @@ class WFRPDatabase {
 
   static Future<WFRPDatabase> create(String dbCreateFile) async {
     var component = WFRPDatabase();
+    print("Database initiated.");
     component.database = await _connect(dbCreateFile);
+    print("Database loaded.");
     return component;
   }
 
@@ -84,19 +86,6 @@ class WFRPDatabase {
 
     return ProfessionCareer(
         id: map[0]["CAREER_ID"], name: map[0]["NAME"], professionClass: await getProfessionClass(map[0]["CLASS_ID"]));
-  }
-
-  Future<Profession> getProfession(int id) async {
-    final List<Map<String, dynamic>> map =
-        await database!.query("professions", where: "PROFESSIONS.PROFESSION_ID = ?", whereArgs: [id]);
-
-    return Profession(
-        id: map[0]["PROFESSION_ID"],
-        name: map[0]["NAME"],
-        nameEng: map[0]["NAME_ENG"],
-        level: map[0]["LEVEL"],
-        source: map[0]["SRC"],
-        career: await getProfessionCareer(map[0]["CAREER_ID"]));
   }
 
   Future<Talent> getTalent(int id, Map<int, Attribute> attributes) async {
