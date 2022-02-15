@@ -66,6 +66,7 @@ class CharacteristicListItem extends TileListItem {
       child: title != null ? Column(
         children: [
           Text(title, style: const TextStyle(fontSize: 24.0)),
+          const Divider(),
           CharacteristicListItem.createTable(children, columnTypes)
         ],
       ) : CharacteristicListItem.createTable(children, columnTypes)
