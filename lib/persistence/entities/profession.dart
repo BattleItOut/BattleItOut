@@ -23,12 +23,11 @@ class Profession extends DTO {
 
   @override
   Map<String, dynamic> toMap() {
-    // TODO: implement toMap
-    throw UnimplementedError();
+    return {"ID": id, "NAME": name, "NAME_ENG": nameEng, "LEVEL": level, "SRC": source, "CAREER_ID": career.id};
   }
 }
 
-class ProfessionCareer {
+class ProfessionCareer extends DTO {
   int id;
   String name;
   ProfessionClass professionClass;
@@ -38,6 +37,11 @@ class ProfessionCareer {
   @override
   String toString() {
     return "ProfessionCareer (id=$id, name=$name)";
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {"ID": id, "NAME": name, "CLASS_ID": professionClass.id};
   }
 }
 

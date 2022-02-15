@@ -10,7 +10,6 @@ import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-
 class WFRPDatabase {
   Database? database;
 
@@ -52,40 +51,11 @@ class WFRPDatabase {
     return commands;
   }
 
-  Future<Attribute> getAttribute(int id) async {
-    final List<Map<String, dynamic>> map =
-        await database!.query("attributes", where: "ATTRIBUTES.ID = ?", whereArgs: [id]);
-
-    return Attribute(
-        id: map[0]['ID'], name: map[0]['NAME'], rollable: map[0]['ROLLABLE'], importance: map[0]['IMPORTANCE']);
-  }
-
-  Future<Map<int, Attribute>> getAttributesByRace(int id) async {
-    final List<Map<String, dynamic>> attributes =
-        await database!.query("race_attributes", where: "RACE_ATTRIBUTES.RACE_ID = ?", whereArgs: [id]);
-
-    Map<int, Attribute> attributesList = {};
-    for (var attributeMap in attributes) {
-      Attribute attribute = await getAttribute(attributeMap['ATTR_ID']);
-      attribute.base = attributeMap["VALUE"];
-      attributesList[attribute.id] = attribute;
-    }
-    return attributesList;
-  }
-
   Future<ProfessionClass> getProfessionClass(int id) async {
     final List<Map<String, dynamic>> map =
         await database!.query("professions_classes", where: "PROFESSIONS_CLASSES.ID = ?", whereArgs: [id]);
 
     return ProfessionClass(id: map[0]["ID"], name: map[0]["NAME"]);
-  }
-
-  Future<ProfessionCareer> getProfessionCareer(int id) async {
-    final List<Map<String, dynamic>> map =
-        await database!.query("professions_careers", where: "PROFESSIONS_CAREERS.CAREER_ID = ?", whereArgs: [id]);
-
-    return ProfessionCareer(
-        id: map[0]["CAREER_ID"], name: map[0]["NAME"], professionClass: await getProfessionClass(map[0]["CLASS_ID"]));
   }
 
   Future<Talent> getTalent(int id, Map<int, Attribute> attributes) async {
@@ -99,20 +69,6 @@ class WFRPDatabase {
         constLvl: map[0]['CONST_LVL'],
         description: map[0]['DESCR'],
         grouped: map[0]['GROUPED'] == 1);
-  }
-
-  Future<List<Talent>> getTalents() async {
-    final List<Map<String, dynamic>> maps = await database!.query("talents");
-
-    return List.generate(maps.length, (i) {
-      return Talent(
-          id: maps[i]['ID'],
-          name: maps[i]['NAME'],
-          nameEng: maps[i]['NAME_ENG'],
-          constLvl: maps[i]['CONST_LVL'],
-          description: maps[i]['DESCR'],
-          grouped: maps[i]['GROUPED'] == 1);
-    });
   }
 
   Future<Skill> getSkill(int id, Map<int, Attribute> attributes) async {
