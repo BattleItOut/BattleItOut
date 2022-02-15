@@ -22,7 +22,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
         padding: const EdgeInsets.all(12),
         children: [
           CharacteristicListItem(
-            child: [
+            children: [
               ["Race: ${widget.character.race.name}"],
               ["Subrace: ${widget.character.subrace.name}"],
               ["Size: ${widget.character.race.size}"],
@@ -33,78 +33,77 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           CharacteristicListItem(
             title: "Attributes",
             isVertical: true,
-            child: [
+            children: [
               [for (var attribute in widget.character.attributes.values) attribute.name],
               [for (var attribute in widget.character.attributes.values) (attribute.base + attribute.advances).toString()]
             ],
             context: context
           ),
-          const Text("Skills:"),
-          Table(
-            columnWidths: const {
-              0: FlexColumnWidth(),
-              1: FixedColumnWidth(48),
-              2: FixedColumnWidth(32),
-              3: FixedColumnWidth(32)
-            },
+          CharacteristicListItem(
+            title: "Skills",
             children: [
-              for (var skill in widget.character.skills.values) TableRow(
-                children: [
-                  Text(skill.name),
-                  Text(skill.attribute!.name),
-                  Text((skill.attribute!.base + skill.attribute!.advances).toString()),
-                  Text(skill.advances.toString())
-                ]
-              ),
+              for (var skill in widget.character.skills.values) [
+                skill.name,
+                skill.attribute!.name,
+                (skill.attribute!.base + skill.attribute!.advances).toString(),
+                skill.advances.toString()
+              ]
             ],
+            columnTypes: const [
+              CharacteristicType.name,
+              CharacteristicType.shortcut,
+              CharacteristicType.value,
+              CharacteristicType.value
+            ],
+            context: context
           ),
-          const Text("Talents:"),
-          Table(
-            columnWidths: const {
-              0: FlexColumnWidth(),
-              1: FixedColumnWidth(32)
-            },
+          CharacteristicListItem(
+            title: "Talents",
             children: [
-              for (var talent in widget.character.talents.values) TableRow(
-                  children: [
-                    Text(talent.name),
-                    Text(talent.currentLvl.toString())
-                  ]
-              ),
+              for (var talent in widget.character.talents.values) [
+                talent.name,
+                talent.currentLvl.toString()
+              ]
             ],
+            columnTypes: const [
+              CharacteristicType.name,
+              CharacteristicType.value
+            ],
+            context: context
           ),
-          const Text("Armour:"),
-          Table(
-            columnWidths: const {
-              0: FlexColumnWidth(),
-              1: FixedColumnWidth(32),
-              2: FixedColumnWidth(32),
-              3: FixedColumnWidth(32),
-              4: FixedColumnWidth(32),
-              5: FixedColumnWidth(32),
-              6: FixedColumnWidth(32)
-            },
+          CharacteristicListItem(
+            title: "Armour",
             children: [
-              for (var armour in widget.character.armour) TableRow(
-                children: [
-                  Text(armour.name),
-                  Text(armour.headAP.toString()),
-                  Text(armour.bodyAP.toString()),
-                  Text(armour.leftArmAP.toString()),
-                  Text(armour.rightArmAP.toString()),
-                  Text(armour.leftLegAP.toString()),
-                  Text(armour.rightLegAP.toString())
-                ]
-              )
+              for (var armour in widget.character.armour) [
+                armour.name,
+                armour.headAP.toString(),
+                armour.bodyAP.toString(),
+                armour.leftArmAP.toString(),
+                armour.rightArmAP.toString(),
+                armour.leftLegAP.toString(),
+                armour.rightLegAP.toString()
+              ]
             ],
+            columnTypes: const [
+              CharacteristicType.name,
+              CharacteristicType.value,
+              CharacteristicType.value,
+              CharacteristicType.value,
+              CharacteristicType.value,
+              CharacteristicType.value,
+              CharacteristicType.value
+            ],
+            context: context
           ),
-          const Text("Weapons:"),
-          Column(
+          CharacteristicListItem(
+            title: "Weapons",
             children: [
-              for (var weapon in widget.character.meleeWeapons) Text(weapon.name),
-              for (var weapon in widget.character.rangedWeapons) Text(weapon.name)
+              for (var weapon in widget.character.meleeWeapons) [weapon.name],
+              for (var weapon in widget.character.rangedWeapons) [weapon.name]
             ],
+            context: context
           )
+          // TODO: fix error occurring when character has no weapons / armour / etc.
         ]
       )
     );

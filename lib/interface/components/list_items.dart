@@ -49,11 +49,14 @@ class CharacterListItem extends TileListItem {
   );
 }
 
+enum CharacteristicType { name, shortcut, value }
+
 class CharacteristicListItem extends TileListItem {
   CharacteristicListItem({
     Key? key,
     String? title,
-    required List<List<String>> child,
+    required List<List<String>> children,
+    List<CharacteristicType?>? columnTypes,
     required BuildContext context,
     bool isVertical = true
   }) : super(
@@ -63,18 +66,36 @@ class CharacteristicListItem extends TileListItem {
       child: title != null ? Column(
         children: [
           Text(title, style: const TextStyle(fontSize: 24.0)),
-          CharacteristicListItem.createTable(child)
+          CharacteristicListItem.createTable(children, columnTypes)
         ],
-      ) : CharacteristicListItem.createTable(child)
+      ) : CharacteristicListItem.createTable(children, columnTypes)
     ),
     context: context
   );
 
-  static Table createTable(List<List<String>> child) {
+  static Table createTable(List<List<String>> children, List<CharacteristicType?>? columnTypes) {
+    TableColumnWidth characteristicTypeToTableColumnWidth(CharacteristicType? type) {
+      switch (type) {
+        case null: return const FlexColumnWidth();
+        case CharacteristicType.name: return const FlexColumnWidth();
+        case CharacteristicType.shortcut: return const FixedColumnWidth(48);
+        case CharacteristicType.value: return const FixedColumnWidth(32);
+      }
+    }
+
+    if (columnTypes != null) {
+      assert(children[0].length == columnTypes.length);
+    } else {
+      columnTypes = List.filled(children[0].length, null);
+    }
+
     return Table(
+      columnWidths: {
+        for (var i = 0; i < columnTypes.length; i++) i: characteristicTypeToTableColumnWidth(columnTypes[i]),
+      },
       children: [
-        for (var row in child) TableRow(
-            children: [for (var value in row) Text(value)]
+        for (var row in children) TableRow(
+          children: [for (var value in row) Text(value)]
         )
       ],
     );
