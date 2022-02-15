@@ -10,14 +10,14 @@ class ProfessionDAO extends DAO<Profession> {
   get tableName => 'professions';
 
   @override
-  Future<Profession> fromMap(Map<String, dynamic> map, WFRPDatabase database) async {
+  Future<Profession> fromMap(Map<String, dynamic> map) async {
     return Profession(
         id: map["ID"],
         name: map["NAME"],
         nameEng: map["NAME_ENG"],
         level: map["LEVEL"],
         source: map["SRC"],
-        career: await ProfessionCareerDAO().get(database, map["CAREER_ID"]));
+        career: await ProfessionCareerDAO().get(map["CAREER_ID"]));
   }
 }
 
@@ -26,9 +26,9 @@ class ProfessionCareerDAO extends DAO<ProfessionCareer> {
   get tableName => 'profession_careers';
 
   @override
-  fromMap(Map<String, dynamic> map, WFRPDatabase database) async {
+  fromMap(Map<String, dynamic> map) async {
     return ProfessionCareer(
-        id: map["ID"], name: map["NAME"], professionClass: await ProfessionClassDAO().get(database, map["CLASS_ID"]));
+        id: map["ID"], name: map["NAME"], professionClass: await ProfessionClassDAO().get(map["CLASS_ID"]));
   }
 }
 
@@ -37,7 +37,7 @@ class ProfessionClassDAO extends DAO<ProfessionClass> {
   get tableName => 'profession_classes';
 
   @override
-  fromMap(Map<String, dynamic> map, WFRPDatabase database) async {
+  fromMap(Map<String, dynamic> map) async {
     return ProfessionClass(id: map["ID"], name: map["NAME"]);
   }
 }

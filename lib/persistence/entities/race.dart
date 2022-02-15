@@ -1,7 +1,6 @@
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/dto.dart';
-import 'package:battle_it_out/persistence/wfrp_database.dart';
 
 class Race extends DTO {
   int id;
@@ -14,8 +13,8 @@ class Race extends DTO {
 
   Race({required this.id, required this.name, required this.size, required this.extraPoints, required this.source});
 
-  Future<Map<int, Attribute>> getAttributes(WFRPDatabase database) async {
-    raceAttributes ??= await RaceDAO().getAttributes(database, id);
+  Future<Map<int, Attribute>> getAttributes() async {
+    raceAttributes ??= await RaceDAO().getAttributes(id);
     return raceAttributes!;
   }
 

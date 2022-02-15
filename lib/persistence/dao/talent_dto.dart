@@ -12,7 +12,7 @@ class TalentDAO extends DAO<Talent> {
   get tableName => 'talents';
 
   @override
-  Talent fromMap(Map<String, dynamic> map, WFRPDatabase database) {
+  Talent fromMap(Map<String, dynamic> map) {
     return Talent(
         id: map['ID'],
         name: map['NAME'],

@@ -1,7 +1,6 @@
 import 'package:battle_it_out/persistence/dao/dao.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
-import 'package:battle_it_out/persistence/wfrp_database.dart';
 
 class SkillDAO extends DAO<Skill> {
   Map<int, Attribute> attributes;
@@ -12,7 +11,7 @@ class SkillDAO extends DAO<Skill> {
   get tableName => 'skills';
 
   @override
-  Skill fromMap(Map<String, dynamic> map, WFRPDatabase database) {
+  Skill fromMap(Map<String, dynamic> map) {
     return Skill(
         id: map["ID"],
         name: map["NAME"],

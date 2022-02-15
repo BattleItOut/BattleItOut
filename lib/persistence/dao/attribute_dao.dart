@@ -7,7 +7,7 @@ class AttributeDAO extends DAO<Attribute> {
   get tableName => 'attributes';
 
   @override
-  Attribute fromMap(Map<String, dynamic> map, WFRPDatabase database) {
+  Attribute fromMap(Map<String, dynamic> map) {
     return Attribute(id: map['ID'], name: map['NAME'], rollable: map['ROLLABLE'], importance: map['IMPORTANCE']);
   }
 }
