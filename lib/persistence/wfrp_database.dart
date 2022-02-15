@@ -1,12 +1,11 @@
+import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/item_quality.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
-import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
-import 'package:battle_it_out/persistence/entities/talent.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -52,25 +51,12 @@ class WFRPDatabase {
     return commands;
   }
 
-  Future<ItemQuality> getQuality(int id) async {
-    final List<Map<String, dynamic>> map =
-        await database!.query("item_qualities", where: "ITEM_QUALITIES.ID = ?", whereArgs: [id]);
-    return ItemQuality(
-        id: map[0]['ID'],
-        name: map[0]['NAME'],
-        nameEng: map[0]['NAME_ENG'],
-        type: map[0]['TYPE'],
-        equipment: map[0]['EQUIPMENT'],
-        description: map[0]['DESCR'],
-        value: map[0]["VALUE"]);
-  }
-
   Future<List<ItemQuality>> getArmourQualities(int id) async {
     final List<Map<String, dynamic>> map =
         await database!.query("armour_qualities", where: "ARMOUR_QUALITIES.ARMOUR_ID = ?", whereArgs: [id]);
     List<ItemQuality> qualities = [];
     for (int i = 0; i < map.length; i++) {
-      qualities.add(await getQuality(map[i]["QUALITY_ID"]));
+      qualities.add(await ItemQualityDAO().get(this, map[i]["QUALITY_ID"]));
     }
     return qualities;
   }
@@ -80,7 +66,7 @@ class WFRPDatabase {
         .query("weapons_melee_qualities", where: "WEAPONS_MELEE_QUALITIES.WEAPON_ID = ?", whereArgs: [id]);
     List<ItemQuality> qualities = [];
     for (int i = 0; i < map.length; i++) {
-      qualities.add(await getQuality(map[i]["QUALITY_ID"]));
+      qualities.add(await ItemQualityDAO().get(this, map[i]["QUALITY_ID"]));
     }
     return qualities;
   }
@@ -90,7 +76,7 @@ class WFRPDatabase {
         .query("weapons_ranged_qualities", where: "WEAPONS_RANGED_QUALITIES.WEAPON_ID = ?", whereArgs: [id]);
     List<ItemQuality> qualities = [];
     for (int i = 0; i < map.length; i++) {
-      qualities.add(await getQuality(map[i]["QUALITY_ID"]));
+      qualities.add(await ItemQualityDAO().get(this, map[i]["QUALITY_ID"]));
     }
     return qualities;
   }

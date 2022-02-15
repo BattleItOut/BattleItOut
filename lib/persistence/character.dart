@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
@@ -99,7 +100,7 @@ class Character {
       RangedWeapon weapon = await database.getRangedWeapon(map["weapon_id"], skills, attributes);
       weapon.ammunition = map["ammunition"] ?? 0;
       for (var qualityMap in map["qualities"] ?? []) {
-        weapon.addQuality(await database.getQuality(qualityMap["quality_id"]));
+        weapon.addQuality(await ItemQualityDAO().get(database, qualityMap["quality_id"]));
       }
       weaponList.add(weapon);
     }
@@ -114,7 +115,7 @@ class Character {
       map["name"] != null ? weapon.name = map["name"] : null;
       map["length"] != null ? weapon.length = map["length"] : null;
       for (var qualityMap in map["qualities"] ?? []) {
-        weapon.addQuality(await database.getQuality(qualityMap["quality_id"]));
+        weapon.addQuality(await ItemQualityDAO().get(database, qualityMap["quality_id"]));
       }
       weaponList.add(weapon);
     }
