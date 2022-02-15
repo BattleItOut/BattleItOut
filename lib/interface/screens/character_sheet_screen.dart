@@ -36,6 +36,8 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             isVertical: true,
             children: [
               [for (var attribute in widget.character.attributes.values.take(10)) attribute.name],
+              [for (var attribute in widget.character.attributes.values.take(10)) attribute.base.toString()],
+              [for (var attribute in widget.character.attributes.values.take(10)) attribute.advances.toString()],
               [for (var attribute in widget.character.attributes.values.take(10)) (attribute.base + attribute.advances).toString()]
             ],
             context: context
@@ -58,12 +60,14 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                 skill.name,
                 skill.attribute!.name,
                 (skill.attribute!.base + skill.attribute!.advances).toString(),
-                skill.advances.toString()
+                skill.advances.toString(),
+                (skill.attribute!.base + skill.attribute!.advances + skill.advances).toString()
               ]
             ],
             columnTypes: const [
               CharacteristicType.name,
               CharacteristicType.shortcut,
+              CharacteristicType.value,
               CharacteristicType.value,
               CharacteristicType.value
             ],
@@ -74,11 +78,13 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             children: [
               for (var talent in widget.character.talents.values) [
                 talent.name,
-                talent.currentLvl.toString()
+                talent.currentLvl.toString(),
+                talent.constLvl?.toString() ?? "?"
               ]
             ],
             columnTypes: const [
               CharacteristicType.name,
+              CharacteristicType.value,
               CharacteristicType.value
             ],
             context: context
