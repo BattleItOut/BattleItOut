@@ -21,6 +21,16 @@ class Talent {
       this.description,
       required this.grouped});
 
+  int? getMaxLvl() {
+    if (maxLvl != null) {
+      return maxLvl!.getTotalValue() ~/ 10;
+    }
+    if (constLvl != null) {
+      return constLvl;
+    }
+    return null;
+  }
+
   @override
   String toString() {
     return "Talent (id=$id, name=$name)";

@@ -8,6 +8,10 @@ class Attribute {
 
   Attribute({required this.id, required this.name, required this.rollable, required this.importance, this.base = 0});
 
+  int getTotalValue() {
+    return base + advances;
+  }
+
   @override
   String toString() {
     return "Attribute (id=$id, name=$name, base=$base, advances=$advances)";
