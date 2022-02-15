@@ -73,7 +73,7 @@ class CharacteristicListItem extends TileListItem {
     context: context
   );
 
-  static Table createTable(List<List<String>> children, List<CharacteristicType?>? columnTypes) {
+  static Widget createTable(List<List<String>> children, List<CharacteristicType?>? columnTypes) {
     TableColumnWidth characteristicTypeToTableColumnWidth(CharacteristicType? type) {
       switch (type) {
         case null: return const FlexColumnWidth();
@@ -82,6 +82,8 @@ class CharacteristicListItem extends TileListItem {
         case CharacteristicType.value: return const FixedColumnWidth(32);
       }
     }
+
+    if (children.isEmpty) return const SizedBox.shrink();
 
     if (columnTypes != null) {
       assert(children[0].length == columnTypes.length);
