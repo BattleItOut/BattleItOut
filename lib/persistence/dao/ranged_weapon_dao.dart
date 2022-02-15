@@ -5,7 +5,7 @@ import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/item_quality.dart';
 import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
-import 'package:battle_it_out/persistence/wfrp_database.dart';
+import 'package:battle_it_out/persistence/database_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class RangedWeaponDTO extends DAO<RangedWeapon> {

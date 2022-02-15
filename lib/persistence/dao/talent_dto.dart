@@ -1,7 +1,6 @@
 import 'package:battle_it_out/persistence/dao/dao.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
-import 'package:battle_it_out/persistence/wfrp_database.dart';
 
 class TalentDAO extends DAO<Talent> {
   Map<int, Attribute> attributes;

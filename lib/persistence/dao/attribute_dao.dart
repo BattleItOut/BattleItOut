@@ -1,6 +1,5 @@
 import 'package:battle_it_out/persistence/dao/dao.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/wfrp_database.dart';
 
 class AttributeDAO extends DAO<Attribute> {
   @override

@@ -15,7 +15,6 @@ import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
-import 'package:battle_it_out/persistence/wfrp_database.dart';
 import 'package:flutter/services.dart';
 
 class Character {

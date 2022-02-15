@@ -1,9 +1,5 @@
 import 'package:battle_it_out/persistence/dao/dao.dart';
-import 'package:battle_it_out/persistence/dao/skill_dao.dart';
-import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/profession.dart';
-import 'package:battle_it_out/persistence/entities/skill.dart';
-import 'package:battle_it_out/persistence/wfrp_database.dart';
 
 class ProfessionDAO extends DAO<Profession> {
   @override

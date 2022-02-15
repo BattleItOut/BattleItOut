@@ -2,7 +2,7 @@ import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
 import 'package:battle_it_out/persistence/dao/dao.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
-import 'package:battle_it_out/persistence/wfrp_database.dart';
+import 'package:battle_it_out/persistence/database_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class RaceDAO extends DAO<Race> {

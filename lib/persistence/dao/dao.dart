@@ -1,5 +1,5 @@
 import 'package:battle_it_out/persistence/entities/dto.dart';
-import 'package:battle_it_out/persistence/wfrp_database.dart';
+import 'package:battle_it_out/persistence/database_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 abstract class DAO<T extends DTO> {

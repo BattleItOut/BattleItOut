@@ -2,7 +2,7 @@ import 'package:battle_it_out/persistence/dao/dao.dart';
 import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
 import 'package:battle_it_out/persistence/entities/item_quality.dart';
-import 'package:battle_it_out/persistence/wfrp_database.dart';
+import 'package:battle_it_out/persistence/database_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ArmourDAO extends DAO<Armour> {
