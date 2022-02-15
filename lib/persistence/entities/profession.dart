@@ -1,4 +1,8 @@
+import 'package:battle_it_out/persistence/dao/profession_dao.dart';
+import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/dto.dart';
+import 'package:battle_it_out/persistence/entities/skill.dart';
+import 'package:battle_it_out/persistence/wfrp_database.dart';
 
 class Profession extends DTO {
   int id;
@@ -7,6 +11,8 @@ class Profession extends DTO {
   int level;
   String source;
   ProfessionCareer career;
+
+  Map<int, Skill>? professionSkills;
 
   Profession(
       {required this.id,
@@ -45,7 +51,7 @@ class ProfessionCareer extends DTO {
   }
 }
 
-class ProfessionClass {
+class ProfessionClass extends DTO {
   int id;
   String name;
 
@@ -54,5 +60,10 @@ class ProfessionClass {
   @override
   String toString() {
     return "ProfessionClass (id=$id, name=$name)";
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {"ID": id, "NAME": name};
   }
 }

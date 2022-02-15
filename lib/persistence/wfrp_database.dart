@@ -1,3 +1,4 @@
+import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/item_quality.dart';
@@ -49,53 +50,6 @@ class WFRPDatabase {
       }
     }
     return commands;
-  }
-
-  Future<ProfessionClass> getProfessionClass(int id) async {
-    final List<Map<String, dynamic>> map =
-        await database!.query("professions_classes", where: "PROFESSIONS_CLASSES.ID = ?", whereArgs: [id]);
-
-    return ProfessionClass(id: map[0]["ID"], name: map[0]["NAME"]);
-  }
-
-  Future<Talent> getTalent(int id, Map<int, Attribute> attributes) async {
-    final List<Map<String, dynamic>> map = await database!.query("talents", where: "ID = ?", whereArgs: [id]);
-
-    return Talent(
-        id: map[0]['ID'],
-        name: map[0]['NAME'],
-        nameEng: map[0]['NAME_ENG'],
-        maxLvl: attributes[map[0]["MAX_LVL"]],
-        constLvl: map[0]['CONST_LVL'],
-        description: map[0]['DESCR'],
-        grouped: map[0]['GROUPED'] == 1);
-  }
-
-  Future<Skill> getSkill(int id, Map<int, Attribute> attributes) async {
-    final List<Map<String, dynamic>> map =
-        await database!.query("skills", where: "SKILLS.SKILL_ID = ?", whereArgs: [id]);
-
-    return Skill(
-        id: map[0]["SKILL_ID"],
-        name: map[0]["NAME"],
-        attribute: attributes[map[0]["ATTR_ID"]],
-        description: map[0]["DESCR"],
-        advanced: map[0]["ADV"] == 1,
-        grouped: map[0]["GROUPED"] == 1,
-        category: map[0]["CATEGORY"]);
-  }
-
-  Future<Map<int, Skill>> getSkillsByProfession(int id, Map<int, Attribute> attributes) async {
-    final List<Map<String, dynamic>> skills =
-        await database!.query("prof_skills", where: "PROF_SKILLS.PROFESSION_ID = ?", whereArgs: [id]);
-
-    Map<int, Skill> skillsMap = {};
-    for (var map in skills) {
-      Skill skill = await getSkill(map['SKILL_ID'], attributes);
-      skill.earning = map["EARNING"] == 1;
-      skillsMap[skill.id] = skill;
-    }
-    return skillsMap;
   }
 
   Future<ItemQuality> getQuality(int id) async {
@@ -165,7 +119,7 @@ class WFRPDatabase {
         name: map[0]["NAME"],
         length: map[0]["LENGTH"],
         damage: map[0]["DAMAGE"],
-        skill: skills[map[0]['SKILL']] ?? await getSkill(map[0]['SKILL'], attributes),
+        skill: skills[map[0]['SKILL']] ?? await SkillDAO(attributes).get(this, map[0]['SKILL']),
         qualities: await getMeleeWeaponQualities(id));
     return weapon;
   }
@@ -180,7 +134,7 @@ class WFRPDatabase {
         range: map[0]["WEAPON_RANGE"],
         damage: map[0]["DAMAGE"],
         strengthBonus: map[0]["STRENGTH_BONUS"] == 1,
-        skill: skills[map[0]['SKILL']] ?? await getSkill(map[0]['SKILL'], attributes),
+        skill: skills[map[0]['SKILL']] ?? await SkillDAO(attributes).get(this, map[0]['SKILL']),
         qualities: await getRangedWeaponQualities(id));
   }
 }

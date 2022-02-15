@@ -12,8 +12,10 @@ abstract class DAO<T extends DTO> {
     return await fromMap(map[0], database);
   }
 
-  Future<List<T>> getAll(WFRPDatabase database) async {
-    final List<Map<String, dynamic>> map = await database.database!.query(tableName);
+  Future<List<T>> getAll({required WFRPDatabase database, String? where, List<Object?>? whereArgs}) async {
+    final List<Map<String, dynamic>> map =
+        await database.database!.query(tableName, where: where, whereArgs: whereArgs);
+
     List<T> outputList = [];
     for (var entry in map) {
       outputList.add(await fromMap(entry, database));

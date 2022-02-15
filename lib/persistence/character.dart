@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
+import 'package:battle_it_out/persistence/dao/skill_dao.dart';
+import 'package:battle_it_out/persistence/dao/talent_dto.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
 import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
@@ -137,7 +139,7 @@ class Character {
   static Future<Map<int, Skill>> _getSkills(WFRPDatabase database, json, Map<int, Attribute> attributes) async {
     Map<int, Skill> skillsMap = {};
     for (var map in json ?? []) {
-      Skill skill = await database.getSkill(map["skill_id"], attributes);
+      Skill skill = await SkillDAO(attributes).get(database, map["skill_id"]);
       map["advances"] != null ? skill.advances = map["advances"] : null;
       map["advancable"] != null ? skill.advancable = map["advancable"] : null;
       map["earning"] != null ? skill.earning = map["earning"] : null;
@@ -149,7 +151,7 @@ class Character {
   static Future<Map<int, Talent>> _getTalents(WFRPDatabase database, json, Map<int, Attribute> attributes) async {
     Map<int, Talent> talentsMap = {};
     for (var map in json ?? []) {
-      Talent talent = await database.getTalent(map["talent_id"], attributes);
+      Talent talent = await TalentDAO(attributes).get(database, map["talent_id"]);
       map["lvl"] != null ? talent.currentLvl = map["lvl"] : null;
       map["advancable"] != null ? talent.advancable = map["advancable"] : null;
       talentsMap[talent.id] = talent;

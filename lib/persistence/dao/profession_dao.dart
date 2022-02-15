@@ -1,5 +1,8 @@
 import 'package:battle_it_out/persistence/dao/dao.dart';
+import 'package:battle_it_out/persistence/dao/skill_dao.dart';
+import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/profession.dart';
+import 'package:battle_it_out/persistence/entities/skill.dart';
 import 'package:battle_it_out/persistence/wfrp_database.dart';
 
 class ProfessionDAO extends DAO<Profession> {
@@ -25,18 +28,16 @@ class ProfessionCareerDAO extends DAO<ProfessionCareer> {
   @override
   fromMap(Map<String, dynamic> map, WFRPDatabase database) async {
     return ProfessionCareer(
-        id: map["ID"], name: map["NAME"], professionClass: await database.getProfessionClass(map["CLASS_ID"]));
+        id: map["ID"], name: map["NAME"], professionClass: await ProfessionClassDAO().get(database, map["CLASS_ID"]));
   }
 }
 
-class ProfessionClass {
-  int id;
-  String name;
-
-  ProfessionClass({required this.id, required this.name});
+class ProfessionClassDAO extends DAO<ProfessionClass> {
+  @override
+  get tableName => 'profession_classes';
 
   @override
-  String toString() {
-    return "ProfessionClass (id=$id, name=$name)";
+  fromMap(Map<String, dynamic> map, WFRPDatabase database) async {
+    return ProfessionClass(id: map["ID"], name: map["NAME"]);
   }
 }

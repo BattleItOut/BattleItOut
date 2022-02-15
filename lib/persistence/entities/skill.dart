@@ -1,6 +1,7 @@
 import 'package:battle_it_out/persistence/entities/attribute.dart';
+import 'package:battle_it_out/persistence/entities/dto.dart';
 
-class Skill {
+class Skill extends DTO {
   int id;
   String name;
   Attribute? attribute;
@@ -25,5 +26,18 @@ class Skill {
   @override
   String toString() {
     return "Skill (id=$id, name=$name, advances=$advances)";
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      "ID": id,
+      "NAME": name,
+      "ATTR_ID": attribute?.id,
+      "DESCR": description,
+      "ADV": advanced ? 1 : 0,
+      "GROUPED": grouped ? 1 : 0,
+      "CATEGORY": category
+    };
   }
 }
