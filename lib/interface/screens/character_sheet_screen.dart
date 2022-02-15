@@ -23,10 +23,10 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
         children: [
           CharacteristicListItem(
             children: [
-              ["Race: ${widget.character.race.name}"],
-              ["Subrace: ${widget.character.subrace.name}"],
-              ["Size: ${widget.character.race.size}"],
-              ["Profession: ${widget.character.profession.name}"]
+              ["Race:", widget.character.race.name],
+              ["Subrace:", widget.character.subrace.name],
+              ["Size:", widget.character.race.size.toString()],
+              ["Profession:", widget.character.profession.name]
             ],
             context: context
           ),
@@ -103,7 +103,6 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             ],
             context: context
           )
-          // TODO: fix error occurring when character has no weapons / armour / etc.
         ]
       )
     );
