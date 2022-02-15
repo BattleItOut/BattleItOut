@@ -4,7 +4,6 @@ import 'package:battle_it_out/app_cache.dart';
 import 'package:battle_it_out/interface/themes.dart';
 import 'package:battle_it_out/interface/screens/turn_order_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
-import 'package:battle_it_out/persistence/wfrp_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
