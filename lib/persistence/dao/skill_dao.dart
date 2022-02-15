@@ -14,7 +14,7 @@ class SkillDAO extends DAO<Skill> {
   @override
   Skill fromMap(Map<String, dynamic> map, WFRPDatabase database) {
     return Skill(
-        id: map["SKILL_ID"],
+        id: map["ID"],
         name: map["NAME"],
         attribute: attributes[map["ATTR_ID"]],
         description: map["DESCR"],

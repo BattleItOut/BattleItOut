@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
+import 'package:battle_it_out/persistence/dao/melee_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
+import 'package:battle_it_out/persistence/dao/ranged_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/dao/talent_dto.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
@@ -97,7 +99,7 @@ class Character {
       WFRPDatabase database, json, Map<int, Attribute> attributes, Map<int, Skill> skills) async {
     List<RangedWeapon> weaponList = [];
     for (var map in json ?? []) {
-      RangedWeapon weapon = await database.getRangedWeapon(map["weapon_id"], skills, attributes);
+      RangedWeapon weapon = await RangedWeaponDTO(attributes, skills).get(database, map["weapon_id"]);
       weapon.ammunition = map["ammunition"] ?? 0;
       for (var qualityMap in map["qualities"] ?? []) {
         weapon.addQuality(await ItemQualityDAO().get(database, qualityMap["quality_id"]));
@@ -111,7 +113,7 @@ class Character {
       WFRPDatabase database, json, Map<int, Attribute> attributes, Map<int, Skill> skills) async {
     List<MeleeWeapon> weaponList = [];
     for (var map in json ?? []) {
-      MeleeWeapon weapon = await database.getMeleeWeapon(map["weapon_id"], skills, attributes);
+      MeleeWeapon weapon = await MeleeWeaponDAO(attributes, skills).get(database, map["weapon_id"]);
       map["name"] != null ? weapon.name = map["name"] : null;
       map["length"] != null ? weapon.length = map["length"] : null;
       for (var qualityMap in map["qualities"] ?? []) {

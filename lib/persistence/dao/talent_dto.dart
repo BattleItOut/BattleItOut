@@ -14,12 +14,12 @@ class TalentDAO extends DAO<Talent> {
   @override
   Talent fromMap(Map<String, dynamic> map, WFRPDatabase database) {
     return Talent(
-        id: map[0]['ID'],
-        name: map[0]['NAME'],
-        nameEng: map[0]['NAME_ENG'],
-        maxLvl: attributes[map[0]["MAX_LVL"]],
-        constLvl: map[0]['CONST_LVL'],
-        description: map[0]['DESCR'],
-        grouped: map[0]['GROUPED'] == 1);
+        id: map['ID'],
+        name: map['NAME'],
+        nameEng: map['NAME_ENG'],
+        maxLvl: attributes[map["MAX_LVL"]],
+        constLvl: map['CONST_LVL'],
+        description: map['DESCR'],
+        grouped: map['GROUPED'] == 1);
   }
 }
