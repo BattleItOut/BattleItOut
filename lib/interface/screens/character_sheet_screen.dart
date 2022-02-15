@@ -28,6 +28,10 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               ["Size:", widget.character.race.size.toString()],
               ["Profession:", widget.character.profession.name]
             ],
+            columnTypes: const [
+              CharacteristicType.name,
+              CharacteristicType.name
+            ],
             context: context
           ),
           // TODO: get rid of magic numbers and don't convert iterable to list
