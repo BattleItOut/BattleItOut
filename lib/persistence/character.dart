@@ -6,7 +6,7 @@ import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/dao/ranged_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
-import 'package:battle_it_out/persistence/dao/talent_dto.dart';
+import 'package:battle_it_out/persistence/dao/talent_dao.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
 import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
