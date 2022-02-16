@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/dto.dart';
 

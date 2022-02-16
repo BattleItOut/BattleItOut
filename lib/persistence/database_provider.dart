@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -15,7 +16,9 @@ class DatabaseProvider {
   }
 
   static Future<Database> _connect() async {
-    print("Database initiated");
+    if (kDebugMode) {
+      print("Database initiated");
+    }
 
     var dbDir = await getDatabasesPath();
     var dbPath = join(dbDir, "database.sqlite");
@@ -34,7 +37,9 @@ class DatabaseProvider {
       }
     });
 
-    print("Database loaded");
+    if (kDebugMode) {
+      print("Database loaded");
+    }
     return database;
   }
 
