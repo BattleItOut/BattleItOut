@@ -82,8 +82,20 @@ class Character {
     if (json["name"] != null) {
       race.name = json["name"];
     }
-    race.subrace = await SubraceDAO().get(json["subrace_id"]);
+    if (json["subrace"] != null) {
+      race.subrace = await _createSubrace(json["subrace"]);
+    } else {
+      race.subrace = await RaceDAO().getDefaultSubrace(race.id);
+    }
     return race;
+  }
+
+  static Future<Subrace> _createSubrace(json) async {
+    Subrace subrace = await SubraceDAO().get(json["subrace_id"]);
+    if (json["name"] != null) {
+      subrace.name = json["name"];
+    }
+    return subrace;
   }
 
   static Future<Map<int, Attribute>> _createAttributes(json, Race race, Profession profession) async {

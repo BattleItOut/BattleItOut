@@ -1,8 +1,7 @@
 {
   "name": "Logazgrum Odanirson",
   "race": {
-    "race_id": 2,
-    "subrace_id": 2
+    "race_id": 2
   },
   "profession_id": 241,
   "attributes": [

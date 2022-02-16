@@ -28,6 +28,10 @@ class RaceDAO extends DAO<Race> {
     }
     return attributesMap;
   }
+
+  Future<Subrace> getDefaultSubrace(int raceID) {
+    return SubraceDAO().getWhere(where: "RACE_ID = ? AND DEF = ?", whereArgs: [raceID, 1]);
+  }
 }
 
 class SubraceDAO extends DAO<Subrace> {

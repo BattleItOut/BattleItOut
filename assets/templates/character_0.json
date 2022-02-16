@@ -1,8 +1,7 @@
 {
   "name": "Dietmar Drauwulf",
   "race": {
-    "race_id": 1,
-    "subrace_id": 1
+    "race_id": 1
   },
   "profession_id": 229,
   "attributes": [

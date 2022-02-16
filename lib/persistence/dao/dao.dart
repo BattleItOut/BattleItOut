@@ -8,13 +8,17 @@ abstract class DAO<T extends DTO> {
   dynamic fromMap(Map<String, dynamic> map);
 
   Future<T> get(int id) async {
+    return getWhere(where: "ID = ?", whereArgs: [id]);
+  }
+
+  Future<T> getWhere({where, List<Object>? whereArgs}) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
-    final List<Map<String, dynamic>> map = await database!.query(tableName, where: "ID = ?", whereArgs: [id]);
+    final List<Map<String, dynamic>> map = await database!.query(tableName, where: where, whereArgs: whereArgs);
     return await fromMap(map[0]);
   }
 
-  Future<List<T>> getAll({String? where, List<Object?>? whereArgs}) async {
+  Future<List<T>> getAll({String? where, List<Object>? whereArgs}) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
     final List<Map<String, dynamic>> map = await database!.query(tableName, where: where, whereArgs: whereArgs);
