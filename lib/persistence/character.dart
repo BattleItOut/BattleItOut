@@ -60,7 +60,7 @@ class Character {
     var json = await _loadJson(jsonPath);
 
     String name = json['name'];
-    Race race = await RaceDAO().get(json["race_id"]);
+    Race race = await _createRace(json["race"]);
     Subrace subrace = await SubraceDAO().get(json["subrace_id"]);
     Profession profession = await ProfessionDAO().get(json["profession_id"]);
     Map<int, Attribute> attributes = await _createAttributes(json["attributes"], race, profession);
@@ -84,7 +84,13 @@ class Character {
 
     return character;
   }
-
+  static Future<Race> _createRace(json) async {
+    Race race = await RaceDAO().get(json["race_id"]);
+    if (json["name"] != null) {
+      race.name = json["name"];
+    }
+    return race;
+  }
   static Future<Map<int, Attribute>> _createAttributes(json, Race race, Profession profession) async {
     Map<int, Attribute> attributes = await race.getAttributes();
     for (var attributeMap in json) {
