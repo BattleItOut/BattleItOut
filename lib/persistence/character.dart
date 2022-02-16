@@ -64,11 +64,11 @@ class Character {
     Subrace subrace = await SubraceDAO().get(json["subrace_id"]);
     Profession profession = await ProfessionDAO().get(json["profession_id"]);
     Map<int, Attribute> attributes = await _createAttributes(json["attributes"], race, profession);
-    Map<int, Skill> skills = await _getSkills(json['skills'], attributes);
-    Map<int, Talent> talents = await _getTalents(json['talents'], attributes);
-    List<MeleeWeapon> meleeWeapons = await _getMeleeWeapons(json["melee_weapons"], attributes, skills);
-    List<RangedWeapon> rangedWeapons = await _getRangedWeapons(json["ranged_weapons"], attributes, skills);
-    List<Armour> armour = await _getArmour(json["armour"]);
+    Map<int, Skill> skills = await _createSkills(json['skills'], attributes);
+    Map<int, Talent> talents = await _createTalents(json['talents'], attributes);
+    List<MeleeWeapon> meleeWeapons = await _createMeleeWeapons(json["melee_weapons"], attributes, skills);
+    List<RangedWeapon> rangedWeapons = await _createRangedWeapons(json["ranged_weapons"], attributes, skills);
+    List<Armour> armour = await _createArmour(json["armour"]);
 
     Character character = Character(
         name: name,
@@ -94,7 +94,7 @@ class Character {
     return attributes;
   }
 
-  static Future<List<RangedWeapon>> _getRangedWeapons(
+  static Future<List<RangedWeapon>> _createRangedWeapons(
       json, Map<int, Attribute> attributes, Map<int, Skill> skills) async {
     List<RangedWeapon> weaponList = [];
     for (var map in json ?? []) {
@@ -108,7 +108,7 @@ class Character {
     return weaponList;
   }
 
-  static Future<List<MeleeWeapon>> _getMeleeWeapons(
+  static Future<List<MeleeWeapon>> _createMeleeWeapons(
       json, Map<int, Attribute> attributes, Map<int, Skill> skills) async {
     List<MeleeWeapon> weaponList = [];
     for (var map in json ?? []) {
@@ -123,7 +123,7 @@ class Character {
     return weaponList;
   }
 
-  static Future<List<Armour>> _getArmour(json) async {
+  static Future<List<Armour>> _createArmour(json) async {
     List<Armour> armourList = [];
     for (var map in json ?? []) {
       Armour armour = await ArmourDAO().get(map["armour_id"]);
@@ -138,7 +138,7 @@ class Character {
     return armourList;
   }
 
-  static Future<Map<int, Skill>> _getSkills(json, Map<int, Attribute> attributes) async {
+  static Future<Map<int, Skill>> _createSkills(json, Map<int, Attribute> attributes) async {
     Map<int, Skill> skillsMap = {};
     for (var map in json ?? []) {
       Skill skill = await SkillDAO(attributes).get(map["skill_id"]);
@@ -150,7 +150,7 @@ class Character {
     return skillsMap;
   }
 
-  static Future<Map<int, Talent>> _getTalents(json, Map<int, Attribute> attributes) async {
+  static Future<Map<int, Talent>> _createTalents(json, Map<int, Attribute> attributes) async {
     Map<int, Talent> talentsMap = {};
     for (var map in json ?? []) {
       Talent talent = await TalentDAO(attributes).get(map["talent_id"]);
