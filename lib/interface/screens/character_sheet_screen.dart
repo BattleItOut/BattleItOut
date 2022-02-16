@@ -22,7 +22,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text("Race: ${widget.character.race.name}"),
-          Text("Subrace: ${widget.character.subrace.toString()}"),
+          Text("Subrace: ${widget.character.race.subrace.toString()}"),
           Text("Size: ${widget.character.race.size}"),
           Text("Profession: ${widget.character.profession.name}"),
         ]

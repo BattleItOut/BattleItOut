@@ -8,10 +8,17 @@ class Race extends DTO {
   int size;
   int extraPoints;
   String source;
+  Subrace? subrace;
 
   Map<int, Attribute>? raceAttributes;
 
-  Race({required this.id, required this.name, required this.size, required this.extraPoints, required this.source});
+  Race(
+      {required this.id,
+      required this.name,
+      required this.size,
+      required this.extraPoints,
+      required this.source,
+      this.subrace});
 
   Future<Map<int, Attribute>> getAttributes() async {
     raceAttributes ??= await RaceDAO().getAttributes(id);

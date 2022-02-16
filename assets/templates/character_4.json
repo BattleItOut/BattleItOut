@@ -1,7 +1,9 @@
 {
   "name": "Maddoc Wiatrownik",
-  "race_id": 3,
-  "subrace_id": 3,
+  "race": {
+    "race_id": 3,
+    "subrace_id": 3
+  },
   "profession_id": 69,
   "attributes": [
     {

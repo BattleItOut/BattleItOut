@@ -20,7 +20,6 @@ import 'package:flutter/services.dart';
 class Character {
   String name;
   Race race;
-  Subrace subrace;
   Profession profession;
   Map<int, Attribute> attributes;
   Map<int, Skill> skills;
@@ -34,7 +33,6 @@ class Character {
   Character(
       {required this.name,
       required this.race,
-      required this.subrace,
       required this.profession,
       required this.attributes,
       this.skills = const {},
@@ -45,11 +43,7 @@ class Character {
 
   static Character from(Character character) {
     var newInstance = Character(
-        name: character.name,
-        race: character.race,
-        subrace: character.subrace,
-        profession: character.profession,
-        attributes: character.attributes);
+        name: character.name, race: character.race, profession: character.profession, attributes: character.attributes);
     newInstance.skills = character.skills;
     newInstance.talents = character.talents;
     newInstance.initiative = character.initiative;
@@ -61,7 +55,6 @@ class Character {
 
     String name = json['name'];
     Race race = await _createRace(json["race"]);
-    Subrace subrace = await SubraceDAO().get(json["subrace_id"]);
     Profession profession = await ProfessionDAO().get(json["profession_id"]);
     Map<int, Attribute> attributes = await _createAttributes(json["attributes"], race, profession);
     Map<int, Skill> skills = await _createSkills(json['skills'], attributes);
@@ -73,7 +66,6 @@ class Character {
     Character character = Character(
         name: name,
         race: race,
-        subrace: subrace,
         profession: profession,
         attributes: attributes,
         skills: skills,
@@ -84,13 +76,16 @@ class Character {
 
     return character;
   }
+
   static Future<Race> _createRace(json) async {
     Race race = await RaceDAO().get(json["race_id"]);
     if (json["name"] != null) {
       race.name = json["name"];
     }
+    race.subrace = await SubraceDAO().get(json["subrace_id"]);
     return race;
   }
+
   static Future<Map<int, Attribute>> _createAttributes(json, Race race, Profession profession) async {
     Map<int, Attribute> attributes = await race.getAttributes();
     for (var attributeMap in json) {

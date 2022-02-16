@@ -1,7 +1,9 @@
 {
   "name": "Hans 'Jaskier' Vogel",
-  "race_id": 1,
-  "subrace_id": 1,
+  "race": {
+    "race_id": 1,
+    "subrace_id": 1
+  },
   "profession_id": 137,
   "attributes": [
     {
