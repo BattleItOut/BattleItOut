@@ -1,4 +1,6 @@
-class ItemQuality {
+import 'package:battle_it_out/persistence/entities/dto.dart';
+
+class ItemQuality extends DTO {
   int id;
   String name;
   String nameEng;
@@ -23,5 +25,18 @@ class ItemQuality {
     } else {
       return "Quality (id=$id, name=$name $value)";
     }
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      "ID": id,
+      "NAME": name,
+      "NAME_ENG": nameEng,
+      "TYPE": type,
+      "EQUIPMENT": equipment,
+      "DESCRIPTION": description,
+      "VALUE": value
+    };
   }
 }
