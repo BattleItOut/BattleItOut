@@ -1,7 +1,7 @@
 import 'package:battle_it_out/persistence/dao/item_dao.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
 
-class ArmourDAO extends ItemDAO {
+class ArmourDAO extends ItemDAO<Armour> {
   @override
   get tableName => 'armour';
   @override

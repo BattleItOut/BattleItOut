@@ -4,7 +4,7 @@ import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 
-class RangedWeaponDTO extends ItemDAO {
+class RangedWeaponDTO extends ItemDAO<RangedWeapon> {
   Map<int, Skill> skills;
   Map<int, Attribute> attributes;
 

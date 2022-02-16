@@ -4,7 +4,7 @@ import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 
-class MeleeWeaponDAO extends ItemDAO {
+class MeleeWeaponDAO extends ItemDAO<MeleeWeapon> {
   Map<int, Skill> skills;
   Map<int, Attribute> attributes;
 

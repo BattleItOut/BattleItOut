@@ -5,7 +5,7 @@ import 'package:battle_it_out/persistence/entities/item.dart';
 import 'package:battle_it_out/persistence/entities/item_quality.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-abstract class ItemDAO extends DAO<Item> {
+abstract class ItemDAO<T extends Item> extends DAO<T> {
   get qualitiesTableName;
 
   Future<List<ItemQuality>> getQualities(int id) async {
