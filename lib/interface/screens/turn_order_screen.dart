@@ -3,6 +3,7 @@ import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
 import '../components/list_items.dart';
+import 'character_sheet_screen.dart';
 
 class TurnOrderScreen extends StatefulWidget {
   const TurnOrderScreen({Key? key}) : super(key: key);
@@ -17,9 +18,25 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
   var characters = <Character>[];
   var currentRound = 0;
 
+  bool _isPreviousCharacterInPreviousRound() {
+    return characters[0].initiative! > characters[characters.length - 1].initiative!;
+  }
+
   bool _isNextCharacterInNextRound(int index) {
     return characters.length != index + 1 &&
         characters[index].initiative! < characters[index + 1].initiative!;
+  }
+
+  int _getActualIndex(List entries, int index) {
+    var labelIndexes = <int>[];
+    int actualIndex = index;
+    for (int i = 0; i < entries.length; i++) {
+      if (entries[i] is LabelListItem) labelIndexes.add(i);
+    }
+    for (int labelIndex in labelIndexes) {
+      if (index > labelIndex) actualIndex--;
+    }
+    return actualIndex;
   }
 
   void _append() async {
@@ -38,6 +55,16 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
     }
   }
 
+  void _previous() {
+    setState(() {
+      if (_isPreviousCharacterInPreviousRound()) {
+        if (currentRound == 0) return;
+        currentRound--;
+      }
+      characters.rotateRight();
+    });
+  }
+
   void _next() {
     setState(() {
       if (_isNextCharacterInNextRound(0)) {
@@ -45,6 +72,26 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
       }
       characters.rotateLeft();
     });
+  }
+
+  void _info(int index) {
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) => CharacterSheetScreen(character: characters[index]),
+    ));
+  }
+
+  void _onNavigationTapped(int index) {
+    switch (index) {
+      case 0:
+        _previous();
+        break;
+      case 1:
+        _append();
+        break;
+      case 2:
+        _next();
+        break;
+    }
   }
 
   void _pop(int index) {
@@ -81,7 +128,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
     List<ListItem> entries = <ListItem>[];
     for (int i = 0; i < characters.length; i++) {
       if (i == 0) {
-        entries.add(LabelListItem(name: 'Current'));
+        entries.add(LabelListItem(name: 'Current (Round $currentRound)'));
       }
       else if (i != 0 && _isNextCharacterInNextRound(i - 1)) {
         entries.add(LabelListItem(name: 'Round ${currentRound + 1}'));
@@ -104,30 +151,25 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
                 child: entries[index],
                 onTap: () {
                   if (entries[index] is CharacterListItem) {
-                    _next();
+                    _pop(_getActualIndex(entries, index));
                   }
                 },
                 onLongPress: () {
                   if (entries[index] is CharacterListItem) {
-                    var labelIndexes = <int>[];
-                    int actualIndex = index;
-                    for (int i = 0; i < entries.length; i++) {
-                      if (entries[i] is LabelListItem) labelIndexes.add(i);
-                    }
-                    for (int labelIndex in labelIndexes) {
-                      if (index > labelIndex) actualIndex--;
-                    }
-                    _pop(actualIndex);
+                    _info(_getActualIndex(entries, index));
                   }
                 }
             );
           }
         )
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _append,
-        tooltip: 'Add',
-        child: const Icon(Icons.add),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.navigate_before), label: "Previous"),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add"),
+          BottomNavigationBarItem(icon: Icon(Icons.navigate_next), label: "Next")
+        ],
+        onTap: _onNavigationTapped,
       ),
     );
   }

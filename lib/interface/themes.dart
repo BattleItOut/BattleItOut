@@ -21,6 +21,11 @@ class Themes {
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.black)
       )
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: colour.shade600,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white
     )
   );
 
@@ -42,6 +47,11 @@ class Themes {
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.white)
       )
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: colour.shade900,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white
     )
   );
 }
