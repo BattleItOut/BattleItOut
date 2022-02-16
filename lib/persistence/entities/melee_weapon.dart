@@ -1,26 +1,19 @@
-import 'package:battle_it_out/persistence/entities/dto.dart';
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
+import 'package:battle_it_out/persistence/entities/item.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 
-class MeleeWeapon extends DTO {
-  int id;
-  String name;
+class MeleeWeapon extends Item {
   int length;
   int damage;
   Skill? skill;
-  List<ItemQuality> qualities;
 
   MeleeWeapon(
-      {required this.id,
-      required this.name,
+      {required id,
+      required name,
       required this.length,
       required this.damage,
       required this.skill,
-      required this.qualities});
-
-  void addQuality(ItemQuality quality) {
-    qualities.add(quality);
-  }
+      qualities = const []})
+      : super(id: id, name: name, qualities: qualities);
 
   @override
   Map<String, dynamic> toMap() {

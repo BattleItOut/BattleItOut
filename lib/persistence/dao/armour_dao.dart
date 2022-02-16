@@ -1,25 +1,11 @@
-import 'package:battle_it_out/persistence/dao/dao.dart';
-import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
+import 'package:battle_it_out/persistence/dao/item_dao.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
-import 'package:battle_it_out/persistence/database_provider.dart';
-import 'package:sqflite/sqflite.dart';
 
-class ArmourDAO extends DAO<Armour> {
+class ArmourDAO extends ItemDAO {
   @override
   get tableName => 'armour';
-
-  Future<List<ItemQuality>> getQualities(int id) async {
-    Database? database = await DatabaseProvider.instance.getDatabase();
-
-    final List<Map<String, dynamic>> map =
-        await database!.query("armour_qualities", where: "ARMOUR_ID = ?", whereArgs: [id]);
-    List<ItemQuality> qualities = [];
-    for (int i = 0; i < map.length; i++) {
-      qualities.add(await ItemQualityDAO().get(map[i]["QUALITY_ID"]));
-    }
-    return qualities;
-  }
+  @override
+  get qualitiesTableName => 'armour_qualities';
 
   @override
   Future<Armour> fromMap(Map<String, dynamic> map) async {
@@ -34,4 +20,5 @@ class ArmourDAO extends DAO<Armour> {
         rightLegAP: map["RIGHT_LEG_AP"],
         qualities: await getQualities(map["ID"]));
   }
+
 }

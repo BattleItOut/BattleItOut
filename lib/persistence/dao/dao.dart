@@ -18,21 +18,16 @@ abstract class DAO<T extends DTO> {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
     final List<Map<String, dynamic>> map = await database!.query(tableName, where: where, whereArgs: whereArgs);
-
-    List<T> outputList = [];
-    for (var entry in map) {
-      outputList.add(await fromMap(entry));
-    }
-    return outputList;
+    return [for (var entry in map) await fromMap(entry)];
   }
 
-  Future<int> save(T t) async {
+  Future<int> put(T t) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
     return await database!.insert(tableName, t.toMap());
   }
 
-  Future<int> update(int id, T t) async {
+  Future<int> set(int id, T t) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
     return await database!.update(tableName, t.toMap(), where: "ID = ?", whereArgs: [id]);

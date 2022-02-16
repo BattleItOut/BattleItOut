@@ -1,27 +1,24 @@
-import 'package:battle_it_out/persistence/entities/dto.dart';
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
+import 'package:battle_it_out/persistence/entities/item.dart';
 
-class Armour extends DTO {
-  int id;
-  String name;
+class Armour extends Item {
   int headAP;
   int bodyAP;
   int leftArmAP;
   int rightArmAP;
   int leftLegAP;
   int rightLegAP;
-  List<ItemQuality> qualities;
 
   Armour(
-      {required this.id,
-      required this.name,
+      {required id,
+      required name,
       required this.headAP,
       required this.bodyAP,
       required this.leftArmAP,
       required this.rightArmAP,
       required this.leftLegAP,
       required this.rightLegAP,
-      this.qualities = const []});
+      qualities = const []})
+      : super(id: id, name: name, qualities: qualities);
 
   @override
   String toString() {
