@@ -26,7 +26,11 @@ class DatabaseProvider {
 
     Database database = await openDatabase(dbPath, version: 1, onCreate: (Database db, int version) async {
       for (String command in commands) {
-        await db.execute(command);
+        try {
+          await db.execute(command);
+        } on DatabaseException {
+          // No need for logging because SQFLITE does it automatically
+        }
       }
     });
 

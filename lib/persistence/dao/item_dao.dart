@@ -12,7 +12,7 @@ abstract class ItemDAO<T extends Item> extends DAO<T> {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
     final List<Map<String, dynamic>> map =
-    await database!.query(qualitiesTableName, where: "ARMOUR_ID = ?", whereArgs: [id]);
+    await database!.query(qualitiesTableName, where: "ITEM_ID = ?", whereArgs: [id]);
     return [for (var entry in map) await ItemQualityDAO().get(entry["QUALITY_ID"])];
   }
 }
