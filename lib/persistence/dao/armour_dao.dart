@@ -8,7 +8,7 @@ class ArmourDAO extends ItemDAO<Armour> {
   get qualitiesTableName => 'armour_qualities';
 
   @override
-  Future<Armour> fromMap(Map<String, dynamic> map) async {
+  Future<Armour> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
     return Armour(
         id: map["ID"],
         name: map["NAME"],
@@ -20,5 +20,4 @@ class ArmourDAO extends ItemDAO<Armour> {
         rightLegAP: map["RIGHT_LEG_AP"],
         qualities: await getQualities(map["ID"]));
   }
-
 }

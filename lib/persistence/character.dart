@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:battle_it_out/persistence/dao/armour_dao.dart';
+import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
 import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
 import 'package:battle_it_out/persistence/dao/melee_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
@@ -78,10 +79,13 @@ class Character {
   }
 
   static Future<Race> _createRace(json) async {
-    Race race = await RaceDAO().get(json["race_id"]);
-    if (json["name"] != null) {
-      race.name = json["name"];
+    Race? race;
+    if (json["race_id"] != null) {
+      race = await RaceDAO().get(json["race_id"], {"NAME": json["name"]});
+    } else {
+      race = Race(name: json["name"]);
     }
+
     if (json["subrace"] != null) {
       race.subrace = await _createSubrace(json["subrace"]);
     } else {
@@ -91,18 +95,18 @@ class Character {
   }
 
   static Future<Subrace> _createSubrace(json) async {
-    Subrace subrace = await SubraceDAO().get(json["subrace_id"]);
-    if (json["name"] != null) {
-      subrace.name = json["name"];
-    }
+    Subrace subrace = await SubraceDAO().get(json["subrace_id"], {"NAME": json["name"]});
     return subrace;
   }
 
   static Future<Map<int, Attribute>> _createAttributes(json, Race race, Profession profession) async {
     Map<int, Attribute> attributes = await race.getAttributes();
     for (var attributeMap in json) {
-      attributes[attributeMap["id"]]!.base = attributeMap["base"];
-      attributes[attributeMap["id"]]!.advances = attributeMap["advances"] ?? 0;
+      if (attributes[attributeMap["id"]] == null) {
+        attributes[attributeMap["id"]] = await AttributeDAO().get(attributeMap["id"]);
+      }
+      attributes[attributeMap["id"]]?.base = attributeMap["base"];
+      attributes[attributeMap["id"]]?.advances = attributeMap["advances"] ?? 0;
     }
     return attributes;
   }

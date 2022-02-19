@@ -11,7 +11,7 @@ class TalentDAO extends DAO<Talent> {
   get tableName => 'talents';
 
   @override
-  Talent fromMap(Map<String, dynamic> map) {
+  Talent fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
     return Talent(
         id: map['ID'],
         name: map['NAME'],

@@ -3,7 +3,7 @@ import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/dto.dart';
 
 class Race extends DTO {
-  int id;
+  int? id;
   String name;
   int size;
   int extraPoints;
@@ -13,16 +13,19 @@ class Race extends DTO {
   Map<int, Attribute>? raceAttributes;
 
   Race(
-      {required this.id,
+      {this.id,
       required this.name,
-      required this.size,
-      required this.extraPoints,
-      required this.source,
+      this.size = 3,
+      this.extraPoints = 0,
+      this.source = "Custom",
       this.subrace});
 
   Future<Map<int, Attribute>> getAttributes() async {
-    raceAttributes ??= await RaceDAO().getAttributes(id);
-    return raceAttributes!;
+    if (id != null) {
+      raceAttributes ??= await RaceDAO().getAttributes(id!);
+      return raceAttributes!;
+    }
+    return {};
   }
 
   @override

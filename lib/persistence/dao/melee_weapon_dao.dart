@@ -16,7 +16,7 @@ class MeleeWeaponDAO extends ItemDAO<MeleeWeapon> {
   get qualitiesTableName => 'weapons_melee_qualities';
 
   @override
-  Future<MeleeWeapon> fromMap(Map<String, dynamic> map) async {
+  Future<MeleeWeapon> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
     return MeleeWeapon(
         id: map["ID"],
         name: map["NAME"],

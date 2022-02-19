@@ -1,0 +1,199 @@
+{
+  "name": "Złol Zły",
+  "race": {
+    "name": "Goblin",
+    "size": 2
+  },
+  "profession_id": 229,
+  "attributes": [
+    {
+      "id": 1,
+      "base": 34,
+      "advances": 5
+    },
+    {
+      "id": 2,
+      "base": 30,
+      "advances": 0
+    },
+    {
+      "id": 3,
+      "base": 31,
+      "advances": 0
+    },
+    {
+      "id": 4,
+      "base": 30,
+      "advances": 5
+    },
+    {
+      "id": 5,
+      "base": 32,
+      "advances": 0
+    },
+    {
+      "id": 6,
+      "base": 33,
+      "advances": 0
+    },
+    {
+      "id": 7,
+      "base": 35,
+      "advances": 0
+    },
+    {
+      "id": 8,
+      "base": 36,
+      "advances": 0
+    },
+    {
+      "id": 9,
+      "base": 30,
+      "advances": 5
+    },
+    {
+      "id": 10,
+      "base": 43,
+      "advances": 0
+    },
+    {
+      "id": 11,
+      "base": 4,
+      "advances": 0
+    },
+    {
+      "id": 12,
+      "base": 3
+    },
+    {
+      "id": 13,
+      "base": 3
+    }
+  ],
+  "skills": [
+    {
+      "skill_id": 3,
+      "advances": 5
+    },
+    {
+      "skill_id": 12,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 24,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 11,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 17,
+      "advances": 3
+    },
+    {
+      "skill_id": 4,
+      "advances": 5,
+      "advancable": true,
+      "earning": true
+    },
+    {
+      "skill_id": 38,
+      "advances": 3
+    },
+    {
+      "skill_id": 34,
+      "advances": 12,
+      "advancable": true
+    },
+    {
+      "skill_id": 13,
+      "advances": 3
+    },
+    {
+      "skill_id": 7,
+      "advances": 8,
+      "advancable": true
+    },
+    {
+      "skill_id": 197,
+      "advances": 10
+    },
+    {
+      "skill_id": 124,
+      "advances": 5
+    },
+    {
+      "skill_id": 146,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 9,
+      "advances": 12,
+      "advancable": true
+    },
+    {
+      "skill_id": 46,
+      "advances": 5
+    }
+  ],
+  "talents": [
+    {
+      "talent_id": 21,
+      "lvl": 1
+    },
+    {
+      "talent_id": 195,
+      "lvl": 1
+    },
+    {
+      "talent_id": 199,
+      "lvl": 1
+    },
+    {
+      "talent_id": 123,
+      "lvl": 1
+    },
+    {
+      "talent_id": 233,
+      "lvl": 1
+    },
+    {
+      "talent_id": 14,
+      "lvl": 1,
+      "advancable": true
+    },
+    {
+      "talent_id": 31,
+      "lvl": 1,
+      "advancable": true
+    },
+    {
+      "talent_id": 124,
+      "lvl": 1,
+      "advancable": true
+    },
+    {
+      "talent_id": 48,
+      "lvl": 1,
+      "advancable": true
+    }
+  ],
+  "armour": [
+    {
+      "armour_id": 2
+    }
+  ],
+  "melee_weapons": [
+    {
+      "weapon_id": 25
+    },
+    {
+      "weapon_id": 11
+    }
+  ]
+}

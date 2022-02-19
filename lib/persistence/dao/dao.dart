@@ -5,17 +5,17 @@ import 'package:sqflite/sqflite.dart';
 abstract class DAO<T extends DTO> {
   get tableName;
 
-  dynamic fromMap(Map<String, dynamic> map);
+  dynamic fromMap(Map<String, dynamic> map, [Map overrideMap]);
 
-  Future<T> get(int id) async {
-    return getWhere(where: "ID = ?", whereArgs: [id]);
+  Future<T> get(int id, [Map overrideMap = const {}]) async {
+    return getWhere(where: "ID = ?", whereArgs: [id], overrideMap: overrideMap);
   }
 
-  Future<T> getWhere({where, List<Object>? whereArgs}) async {
+  Future<T> getWhere({where, List<Object>? whereArgs, Map overrideMap = const {}}) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
     final List<Map<String, dynamic>> map = await database!.query(tableName, where: where, whereArgs: whereArgs);
-    return await fromMap(map[0]);
+    return await fromMap(map[0], overrideMap);
   }
 
   Future<List<T>> getAll({String? where, List<Object>? whereArgs}) async {
