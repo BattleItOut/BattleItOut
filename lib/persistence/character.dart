@@ -150,6 +150,9 @@ class Character {
       map["earning"] != null ? skill.earning = map["earning"] : null;
       skillsMap[skill.id] = skill;
     }
+    for (Skill skill in await SkillDAO(attributes).getBasicSkills()) {
+      skillsMap.putIfAbsent(skill.id, () => skill);
+    }
     return skillsMap;
   }
 
@@ -176,7 +179,9 @@ class Character {
   }
 
   List<Skill> getSkills() {
-    return List.of(skills.values);
+    List<Skill> sortedSkills = List.of(skills.values);
+    sortedSkills.sort((a, b) => a.name.compareTo(b.name));
+    return sortedSkills;
   }
 
   List<Talent> getTalents() {
