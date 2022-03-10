@@ -14,6 +14,10 @@ class Attribute extends DTO {
     return base + advances;
   }
 
+  int getTotalBonus() {
+    return getTotalValue() ~/ 10;
+  }
+
   @override
   Map<String, dynamic> toMap() {
     return {"ID": id, "NAME": name, "ROLLABLE": rollable, "IMPORTANCE": importance};

@@ -30,8 +30,9 @@ class Character {
   List<RangedWeapon> rangedWeapons = [];
   int? initiative;
   // List<Trait> traits;
-  // TODO: make this a variable dependent on some value from the database
+  // TODO: make this a variables dependent on some value from the database
   static const basicAttributesAmount = 10;
+  static const strengthId = 4;
 
   Character(
       {required this.name,
