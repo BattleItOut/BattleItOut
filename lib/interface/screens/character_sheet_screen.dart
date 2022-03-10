@@ -40,14 +40,14 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) attribute.name],
               [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) attribute.base.toString()],
               [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) attribute.advances.toString()],
-              [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) (attribute.base + attribute.advances).toString()]
+              [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) attribute.getTotalValue().toString()]
             ],
             context: context
           ),
           CharacteristicListItem(
             children: [
               for (var attribute in widget.character.attributes.values.skip(Character.basicAttributesAmount))
-              [attribute.name, (attribute.base + attribute.advances).toString()]
+              [attribute.name, attribute.getTotalValue().toString()]
             ],
             columnTypes: const [
               CharacteristicType.name,
@@ -61,9 +61,9 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               for (var skill in widget.character.skills.values) [
                 skill.name,
                 skill.attribute!.name,
-                (skill.attribute!.base + skill.attribute!.advances).toString(),
+                skill.attribute!.getTotalValue().toString(),
                 skill.advances.toString(),
-                (skill.attribute!.base + skill.attribute!.advances + skill.advances).toString()
+                (skill.attribute!.getTotalValue() + skill.advances).toString()
               ]
             ],
             columnTypes: const [
@@ -81,7 +81,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               for (var talent in widget.character.talents.values) [
                 talent.name,
                 talent.currentLvl.toString(),
-                talent.constLvl?.toString() ?? "?"
+                talent.getMaxLvl()?.toString() ?? "?"
               ]
             ],
             columnTypes: const [
