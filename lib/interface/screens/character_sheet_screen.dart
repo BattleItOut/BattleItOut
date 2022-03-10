@@ -36,7 +36,6 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           ),
           CharacteristicListItem(
             title: "Attributes",
-            isVertical: true,
             children: [
               [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) attribute.name],
               [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) attribute.base.toString()],

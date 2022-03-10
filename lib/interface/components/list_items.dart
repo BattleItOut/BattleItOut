@@ -57,8 +57,7 @@ class CharacteristicListItem extends TileListItem {
     String? title,
     required List<List<String>> children,
     List<CharacteristicType?>? columnTypes,
-    required BuildContext context,
-    bool isVertical = true // TODO: do something with isVertical
+    required BuildContext context
   }) : super(
     key: key,
     child: Container(
