@@ -34,21 +34,20 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             ],
             context: context
           ),
-          // TODO: get rid of magic numbers and don't convert iterable to list
           CharacteristicListItem(
             title: "Attributes",
             isVertical: true,
             children: [
-              [for (var attribute in widget.character.attributes.values.take(10)) attribute.name],
-              [for (var attribute in widget.character.attributes.values.take(10)) attribute.base.toString()],
-              [for (var attribute in widget.character.attributes.values.take(10)) attribute.advances.toString()],
-              [for (var attribute in widget.character.attributes.values.take(10)) (attribute.base + attribute.advances).toString()]
+              [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) attribute.name],
+              [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) attribute.base.toString()],
+              [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) attribute.advances.toString()],
+              [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) (attribute.base + attribute.advances).toString()]
             ],
             context: context
           ),
           CharacteristicListItem(
             children: [
-              for (var attribute in widget.character.attributes.values.toList().reversed.take(3))
+              for (var attribute in widget.character.attributes.values.skip(Character.basicAttributesAmount))
               [attribute.name, (attribute.base + attribute.advances).toString()]
             ],
             columnTypes: const [
