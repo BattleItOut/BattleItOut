@@ -81,7 +81,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               for (var talent in widget.character.talents.values) [
                 talent.name,
                 talent.currentLvl.toString(),
-                talent.getMaxLvl()?.toString() ?? "?"
+                talent.getMaxLvl()?.toString() ?? ""
               ]
             ],
             columnTypes: const [
@@ -118,8 +118,27 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           CharacteristicListItem(
             title: "Weapons",
             children: [
-              for (var weapon in widget.character.meleeWeapons) [weapon.name],
-              for (var weapon in widget.character.rangedWeapons) [weapon.name]
+              for (var weapon in widget.character.meleeWeapons) [
+                weapon.name,
+                weapon.length.toString(),
+                weapon.skill!.name,
+                weapon.damage.toString(),
+                weapon.qualities.map((quality) => quality.name).join(", ")
+              ],
+              for (var weapon in widget.character.rangedWeapons) [
+                weapon.name,
+                weapon.range.toString(),
+                weapon.skill!.name,
+                weapon.damage.toString(),
+                weapon.qualities.map((quality) => quality.name).join(", ")
+              ],
+            ],
+            columnTypes: const [
+              CharacteristicType.name,
+              CharacteristicType.value,
+              CharacteristicType.name,
+              CharacteristicType.value,
+              CharacteristicType.name
             ],
             context: context
           )
