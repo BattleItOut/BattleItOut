@@ -121,15 +121,15 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               for (var weapon in widget.character.meleeWeapons) [
                 weapon.name,
                 weapon.length.toString(),
-                weapon.skill!.name,
-                weapon.damage.toString(),
+                weapon.skill!.getSpecialityName()!,
+                (weapon.damage + (widget.character.attributes[Character.strengthId]?.getTotalBonus() ?? 0)).toString(),
                 weapon.qualities.map((quality) => quality.name).join(", ")
               ],
               for (var weapon in widget.character.rangedWeapons) [
                 weapon.name,
                 weapon.range.toString(),
-                weapon.skill!.name,
-                weapon.damage.toString(),
+                weapon.skill!.getSpecialityName()!,
+                (weapon.damage + (weapon.strengthBonus ? (widget.character.attributes[Character.strengthId]?.getTotalBonus() ?? 0) : 0)).toString(),
                 weapon.qualities.map((quality) => quality.name).join(", ")
               ],
             ],
