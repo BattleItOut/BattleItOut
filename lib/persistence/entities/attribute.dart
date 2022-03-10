@@ -1,4 +1,6 @@
-class Attribute {
+import 'package:battle_it_out/persistence/entities/dto.dart';
+
+class Attribute extends DTO {
   int id;
   String name;
   int rollable;
@@ -10,6 +12,11 @@ class Attribute {
 
   int getTotalValue() {
     return base + advances;
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {"ID": id, "NAME": name, "ROLLABLE": rollable, "IMPORTANCE": importance};
   }
 
   @override
