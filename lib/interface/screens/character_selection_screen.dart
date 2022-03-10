@@ -2,6 +2,7 @@ import 'package:battle_it_out/app_cache.dart';
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/persistence/npc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -62,6 +63,27 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
     ));
   }
 
+  void _newCharacter() {
+    // AppCache().characters.add(value)
+  }
+
+  void _newNPC() {
+    NPC npc = NPC("Hi, I'm Elfo");
+    AppCache().characters.add(npc);
+    setState(() {});
+  }
+
+  void _onNavigationTapped(int index) {
+    switch (index) {
+      case 0:
+        _newCharacter();
+        break;
+      case 1:
+        _newNPC();
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var characters = _generateCharacters();
@@ -85,7 +107,14 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
             );
           }
         )
-      )
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add a character"),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add a NPC")
+        ],
+        onTap: _onNavigationTapped,
+      ),
     );
   }
 }
