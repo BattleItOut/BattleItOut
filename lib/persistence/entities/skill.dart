@@ -23,6 +23,16 @@ class Skill extends DTO {
       required this.grouped,
       required this.category});
 
+  String? getSpecialityName() {
+    final firstIndex = name.indexOf("(");
+    final lastIndex = name.indexOf(")");
+    if (firstIndex != -1 && lastIndex != -1) {
+      return name.substring(firstIndex+1, lastIndex);
+    } else {
+      return null;
+    }
+  }
+
   @override
   String toString() {
     return "Skill (id=$id, name=$name, advances=$advances)";
