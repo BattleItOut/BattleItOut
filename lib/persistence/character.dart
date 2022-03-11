@@ -59,7 +59,7 @@ class Character {
 
     String name = json['name'];
     Race race = await _createRace(json["race"]);
-    Profession profession = await ProfessionDAO().get(json["profession_id"]);
+    Profession profession = await _createProfession(json["profession"]);
     Map<int, Attribute> attributes = await _createAttributes(json["attributes"], race, profession);
     Map<int, Skill> skills = await _createSkills(json['skills'], attributes);
     Map<int, Talent> talents = await _createTalents(json['talents'], attributes);
@@ -98,8 +98,21 @@ class Character {
   }
 
   static Future<Subrace> _createSubrace(json) async {
-    Subrace subrace = await SubraceDAO().get(json["subrace_id"], {"NAME": json["name"]});
-    return subrace;
+    if (json["subrace_id"] != null) {
+      return await SubraceDAO().get(json["subrace_id"], {"NAME": json["name"]});
+    } else {
+      return Subrace(name: json["name"]);
+    }
+  }
+
+  static Future<Profession> _createProfession(json) async {
+    Profession? profession;
+    if (json["profession_id"] != null) {
+      profession = await ProfessionDAO().get(json["profession_id"], {"NAME": json["name"]});
+    } else {
+      profession = Profession(name: json["name"]);
+    }
+    return profession;
   }
 
   static Future<Map<int, Attribute>> _createAttributes(json, Race race, Profession profession) async {

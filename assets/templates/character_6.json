@@ -2,9 +2,14 @@
   "name": "Złol Zły",
   "race": {
     "name": "Goblin",
-    "size": 2
+    "size": 2,
+    "subrace": {
+      "name": "Zielony Goblin"
+    }
   },
-  "profession_id": 229,
+  "profession": {
+    "name": "Gobliński Wojownik"
+  },
   "attributes": [
     {
       "id": 1,

@@ -3,7 +3,9 @@
   "race": {
     "race_id": 2
   },
-  "profession_id": 241,
+  "profession": {
+    "profession_id": 241
+  },
   "attributes": [
     {
       "id": 1,

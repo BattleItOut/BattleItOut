@@ -2,22 +2,22 @@ import 'package:battle_it_out/persistence/entities/dto.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 
 class Profession extends DTO {
-  int id;
+  int? id;
   String name;
   String nameEng;
   int level;
   String source;
-  ProfessionCareer career;
+  ProfessionCareer? career;
 
   Map<int, Skill>? professionSkills;
 
   Profession(
-      {required this.id,
+      {this.id,
       required this.name,
-      required this.nameEng,
-      required this.level,
-      required this.source,
-      required this.career});
+      this.nameEng = "",
+      this.level = 1,
+      this.source = "",
+      this.career});
 
   @override
   String toString() {
@@ -26,16 +26,16 @@ class Profession extends DTO {
 
   @override
   Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "NAME_ENG": nameEng, "LEVEL": level, "SRC": source, "CAREER_ID": career.id};
+    return {"ID": id, "NAME": name, "NAME_ENG": nameEng, "LEVEL": level, "SRC": source, "CAREER_ID": career?.id};
   }
 }
 
 class ProfessionCareer extends DTO {
-  int id;
+  int? id;
   String name;
   ProfessionClass professionClass;
 
-  ProfessionCareer({required this.id, required this.name, required this.professionClass});
+  ProfessionCareer({this.id, required this.name, required this.professionClass});
 
   @override
   String toString() {
