@@ -1,5 +1,6 @@
 import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
 import 'package:battle_it_out/persistence/dao/dao.dart';
+import 'package:battle_it_out/persistence/dao/size_dao.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/database_provider.dart';
@@ -9,12 +10,12 @@ class RaceDAO extends DAO<Race> {
   @override
   get tableName => 'races';
   @override
-  Race fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
+  Future<Race> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
     return Race(
         id: overrideMap["ID"] ?? map["ID"],
         name: overrideMap["NAME"] ?? map["NAME"],
         extraPoints: overrideMap["EXTRA_POINTS"] ?? map["EXTRA_POINTS"],
-        size: overrideMap["SIZE"] ?? map["SIZE"],
+        size: await SizeDao().get(overrideMap["SIZE"] ?? map["SIZE"]),
         source: overrideMap["SRC"] ?? map["SRC"]);
   }
 

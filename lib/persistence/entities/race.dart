@@ -2,10 +2,12 @@ import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/dto.dart';
 
+import 'size.dart';
+
 class Race extends DTO {
   int? id;
   String name;
-  int size;
+  Size size;
   int extraPoints;
   String source;
   Subrace? subrace;
@@ -15,7 +17,7 @@ class Race extends DTO {
   Race(
       {this.id,
       required this.name,
-      this.size = 3,
+      required this.size,
       this.extraPoints = 0,
       this.source = "Custom",
       this.subrace});
@@ -38,7 +40,7 @@ class Race extends DTO {
 
   @override
   Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "EXTRA_POINTS": extraPoints, "SIZE": size, "SRC": source};
+    return {"ID": id, "NAME": name, "EXTRA_POINTS": extraPoints, "SIZE": size.id, "SRC": source};
   }
 
   @override

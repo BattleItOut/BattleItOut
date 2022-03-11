@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 abstract class DAO<T extends DTO> {
   get tableName;
 
-  dynamic fromMap(Map<String, dynamic> map, [Map overrideMap]);
+  dynamic fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]);
 
   Future<T> get(int id, [Map overrideMap = const {}]) async {
     return getWhere(where: "ID = ?", whereArgs: [id], overrideMap: overrideMap);

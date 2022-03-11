@@ -6,6 +6,7 @@ import 'package:battle_it_out/persistence/dao/melee_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/dao/ranged_weapon_dao.dart';
+import 'package:battle_it_out/persistence/dao/size_dao.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/dao/talent_dao.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
@@ -86,7 +87,7 @@ class Character {
     if (json["race_id"] != null) {
       race = await RaceDAO().get(json["race_id"], {"NAME": json["name"]});
     } else {
-      race = Race(name: json["name"]);
+      race = Race(name: json["name"], size: await SizeDao().get(json["size"]));
     }
 
     if (json["subrace"] != null) {

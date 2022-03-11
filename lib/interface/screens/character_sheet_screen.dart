@@ -24,7 +24,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           CharacteristicListItem(
             children: [
               ["Race:", widget.character.race.getProperName()],
-              ["Size:", widget.character.race.size.toString()],
+              ["Size:", widget.character.race.size.name],
               ["Profession:", widget.character.profession.name]
             ],
             columnTypes: const [
