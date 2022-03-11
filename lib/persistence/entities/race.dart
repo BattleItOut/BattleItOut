@@ -28,6 +28,14 @@ class Race extends DTO {
     return {};
   }
 
+  String getProperName() {
+    if (subrace != null) {
+      return "$name (${subrace!.name})";
+    } else {
+      return name;
+    }
+  }
+
   @override
   Map<String, dynamic> toMap() {
     return {"ID": id, "NAME": name, "EXTRA_POINTS": extraPoints, "SIZE": size, "SRC": source};
