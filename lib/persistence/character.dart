@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:battle_it_out/persistence/dao/armour_dao.dart';
 import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
 import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
+import 'package:battle_it_out/persistence/dao/length_dao.dart';
 import 'package:battle_it_out/persistence/dao/melee_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
@@ -148,7 +149,7 @@ class Character {
     for (var map in json ?? []) {
       MeleeWeapon weapon = await MeleeWeaponDAO(attributes, skills).get(map["weapon_id"]);
       map["name"] != null ? weapon.name = map["name"] : null;
-      map["length"] != null ? weapon.length = map["length"] : null;
+      map["length"] != null ? weapon.length = await WeaponLengthDao().get(map["length"]) : null;
       for (var qualityMap in map["qualities"] ?? []) {
         weapon.addQuality(await ItemQualityDAO().get(qualityMap["quality_id"]));
       }

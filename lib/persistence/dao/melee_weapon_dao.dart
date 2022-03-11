@@ -1,4 +1,5 @@
 import 'package:battle_it_out/persistence/dao/item_dao.dart';
+import 'package:battle_it_out/persistence/dao/length_dao.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
@@ -20,7 +21,7 @@ class MeleeWeaponDAO extends ItemDAO<MeleeWeapon> {
     return MeleeWeapon(
         id: map["ID"],
         name: map["NAME"],
-        length: map["LENGTH"],
+        length: await WeaponLengthDao().get(map["LENGTH"]),
         damage: map["DAMAGE"],
         skill: skills[map['SKILL']] ?? await SkillDAO(attributes).get(map['SKILL']),
         qualities: await getQualities(map["ID"]));
