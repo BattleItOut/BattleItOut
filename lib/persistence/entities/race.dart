@@ -29,7 +29,7 @@ class Race extends DTO {
   }
 
   String getProperName() {
-    if (subrace != null) {
+    if (subrace != null && name != subrace!.name) {
       return "$name (${subrace!.name})";
     } else {
       return name;
@@ -48,18 +48,18 @@ class Race extends DTO {
 }
 
 class Subrace extends DTO {
-  int id;
+  int? id;
   String name;
   String source;
   int randomTalents;
   bool defaultSubrace;
 
   Subrace(
-      {required this.id,
+      {this.id,
       required this.name,
-      required this.source,
-      required this.randomTalents,
-      required this.defaultSubrace});
+      this.source = "",
+      this.randomTalents = 0,
+      this.defaultSubrace = true});
 
   @override
   Map<String, dynamic> toMap() {
