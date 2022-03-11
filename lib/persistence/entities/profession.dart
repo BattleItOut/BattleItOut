@@ -16,7 +16,7 @@ class Profession extends DTO {
       required this.name,
       this.nameEng = "",
       this.level = 1,
-      this.source = "",
+      this.source = "Custom",
       this.career});
 
   @override

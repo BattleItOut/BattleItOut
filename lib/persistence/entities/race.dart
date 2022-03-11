@@ -57,7 +57,7 @@ class Subrace extends DTO {
   Subrace(
       {this.id,
       required this.name,
-      this.source = "",
+      this.source = "Custom",
       this.randomTalents = 0,
       this.defaultSubrace = true});
 
