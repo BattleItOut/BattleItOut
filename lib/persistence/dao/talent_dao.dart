@@ -16,7 +16,7 @@ class TalentDAO extends DAO<Talent> {
         id: map['ID'],
         name: map['NAME'],
         nameEng: map['NAME_ENG'],
-        maxLvl: attributes[map["MAX_LVL"]],
+        attribute: attributes[map["MAX_LVL"]],
         constLvl: map['CONST_LVL'],
         description: map['DESCR'],
         grouped: map['GROUPED'] == 1);
