@@ -16,7 +16,7 @@ class SkillDAO extends DAO<Skill> {
   }
 
   @override
-  Skill fromMap(Map<String, dynamic> map) {
+  Skill fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
     return Skill(
         id: map["ID"],
         name: map["NAME"],
