@@ -36,15 +36,18 @@ class DatabaseProvider {
       sqfliteFfiInit();
       databaseFactory = databaseFactoryFfi;
     }
-    Database database = await databaseFactory.openDatabase(dbPath, options: OpenDatabaseOptions(version: 1, onCreate: (Database db, int version) async {
-      for (String command in await _splitCommands("assets/database/create_db.sql")) {
-        try {
-          await db.execute(command);
-        } on DatabaseException {
-          // No need for logging because SQFLITE does it automatically
-        }
-      }
-    }));
+    Database database = await databaseFactory.openDatabase(dbPath,
+        options: OpenDatabaseOptions(
+            version: 1,
+            onCreate: (Database db, int version) async {
+              for (String command in await _splitCommands("assets/database/create_db.sql")) {
+                try {
+                  await db.execute(command);
+                } on DatabaseException {
+                  // No need for logging because SQFLITE does it automatically
+                }
+              }
+            }));
 
     if (kDebugMode) {
       print("Database loaded");

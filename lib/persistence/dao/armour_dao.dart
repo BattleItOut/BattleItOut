@@ -20,5 +20,4 @@ class ArmourDAO extends ItemDAO<Armour> {
         rightLegAP: map["RIGHT_LEG_AP"],
         qualities: await getQualities(map["ID"]));
   }
-
 }
