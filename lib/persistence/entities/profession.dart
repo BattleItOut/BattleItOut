@@ -19,6 +19,14 @@ class Profession extends DTO {
       this.source = "Custom",
       this.career});
 
+  String getProperName() {
+    if (career != null) {
+      return "$name (${career!.name})";
+    } else {
+      return name;
+    }
+  }
+
   @override
   String toString() {
     return "Profession (id=$id, name=$name, lvl=$level)";
