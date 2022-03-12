@@ -4,7 +4,6 @@ import 'package:battle_it_out/persistence/entities/dto.dart';
 class Talent extends DTO {
   int id;
   String name;
-  String nameEng;
   Attribute? attribute;
   int? constLvl;
   String? description;
@@ -16,7 +15,6 @@ class Talent extends DTO {
   Talent(
       {required this.id,
       required this.name,
-      required this.nameEng,
       this.attribute,
       this.constLvl,
       this.description,
@@ -42,7 +40,6 @@ class Talent extends DTO {
     return {
       "ID": id,
       "NAME": name,
-      "NAME_ENG": nameEng,
       "MAX_LVL": attribute,
       "CONST_LVL": constLvl,
       "DESCR": description,

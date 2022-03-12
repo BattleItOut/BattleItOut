@@ -3,8 +3,16 @@ import 'dart:io';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-void main() async {
+import 'test_localisation.dart';
+
+main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
+  await referencesTest();
+  await localisationTest();
+}
+
+
+Future<void> referencesTest() async {
   File file = File('assets/test/character_test.json');
   Character character = await Character.create(jsonDecode(await file.readAsString()));
 

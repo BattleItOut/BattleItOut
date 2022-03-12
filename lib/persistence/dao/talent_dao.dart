@@ -3,9 +3,9 @@ import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
 
 class TalentDAO extends DAO<Talent> {
-  Map<int, Attribute> attributes;
+  Map<int, Attribute>? attributes;
 
-  TalentDAO(this.attributes);
+  TalentDAO([this.attributes]);
 
   @override
   get tableName => 'talents';
@@ -15,8 +15,7 @@ class TalentDAO extends DAO<Talent> {
     return Talent(
         id: map['ID'],
         name: map['NAME'],
-        nameEng: map['NAME_ENG'],
-        attribute: attributes[map["MAX_LVL"]],
+        attribute: attributes?[map["MAX_LVL"]],
         constLvl: map['CONST_LVL'],
         description: map['DESCR'],
         grouped: map['GROUPED'] == 1);
