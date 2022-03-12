@@ -23,10 +23,9 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
         children: [
           CharacteristicListItem(
             children: [
-              ["Race:", widget.character.race.name],
-              ["Subrace:", widget.character.subrace.name],
-              ["Size:", widget.character.race.size.toString()],
-              ["Profession:", widget.character.profession.name]
+              ["Race:", widget.character.race.getProperName()],
+              ["Size:", widget.character.race.size.name],
+              ["Profession:", widget.character.profession.getProperName()]
             ],
             columnTypes: const [
               CharacteristicType.name,
@@ -140,7 +139,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             children: [
               for (var weapon in widget.character.meleeWeapons) [
                 weapon.name,
-                weapon.length.toString(),
+                weapon.length.name,
                 weapon.skill!.getSpecialityName()!,
                 (weapon.damage + (widget.character.attributes[Character.strengthId]!.getTotalBonus())).toString(),
                 weapon.qualities.map((quality) => quality.name).join(", ")
@@ -155,7 +154,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             ],
             columnTypes: const [
               CharacteristicType.name,
-              CharacteristicType.value,
+              CharacteristicType.name,
               CharacteristicType.name,
               CharacteristicType.value,
               CharacteristicType.name
