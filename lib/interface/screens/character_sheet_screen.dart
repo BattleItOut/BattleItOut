@@ -154,7 +154,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             ],
             columnTypes: const [
               CharacteristicType.name,
-              CharacteristicType.value,
+              CharacteristicType.name,
               CharacteristicType.name,
               CharacteristicType.value,
               CharacteristicType.name
