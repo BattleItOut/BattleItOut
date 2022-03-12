@@ -33,6 +33,10 @@ class Skill extends DTO {
     }
   }
 
+  int getTotalValue() {
+    return attribute!.getTotalValue() + advances;
+  }
+
   @override
   String toString() {
     return "Skill (id=$id, name=$name, advances=$advances)";
