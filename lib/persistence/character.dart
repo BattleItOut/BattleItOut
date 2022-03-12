@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:battle_it_out/persistence/dao/armour_dao.dart';
 import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
 import 'package:battle_it_out/persistence/dao/melee_weapon_dao.dart';
@@ -15,7 +14,6 @@ import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
-import 'package:flutter/services.dart';
 
 class Character {
   String name;
@@ -59,9 +57,7 @@ class Character {
     return newInstance;
   }
 
-  static Future<Character> create(String jsonPath) async {
-    var json = await _loadJson(jsonPath);
-
+  static Future<Character> create(dynamic json) async {
     String name = json['name'];
     Race race = await RaceDAO().get(json["race_id"]);
     Subrace subrace = await SubraceDAO().get(json["subrace_id"]);
@@ -165,11 +161,6 @@ class Character {
       talentsMap[talent.id] = talent;
     }
     return talentsMap;
-  }
-
-  static _loadJson(String jsonPath) async {
-    String data = await rootBundle.loadString(jsonPath);
-    return jsonDecode(data);
   }
 
   // List getters
