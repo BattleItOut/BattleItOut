@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DatabaseProvider {
   Database? _database;
@@ -20,22 +24,30 @@ class DatabaseProvider {
       print("Database initiated");
     }
 
-    var dbDir = await getDatabasesPath();
-    var dbPath = join(dbDir, "database.sqlite");
-    List<String> commands = await _splitCommands("assets/database/create_db.sql");
+    var dbDir = await getApplicationDocumentsDirectory();
+    var dbPath = join(dbDir.path, "database.sqlite");
+    var dbFile = File(dbPath);
 
-    // Delete any existing database:
-    await deleteDatabase(dbPath);
+    if (await dbFile.exists()) {
+      await dbFile.delete();
+    }
 
-    Database database = await openDatabase(dbPath, version: 1, onCreate: (Database db, int version) async {
-      for (String command in commands) {
-        try {
-          await db.execute(command);
-        } on DatabaseException {
-          // No need for logging because SQFLITE does it automatically
-        }
-      }
-    });
+    if (Platform.isWindows || Platform.isLinux) {
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+    }
+    Database database = await databaseFactory.openDatabase(dbPath,
+        options: OpenDatabaseOptions(
+            version: 1,
+            onCreate: (Database db, int version) async {
+              for (String command in await _splitCommands("assets/database/create_db.sql")) {
+                try {
+                  await db.execute(command);
+                } on DatabaseException {
+                  // No need for logging because SQFLITE does it automatically
+                }
+              }
+            }));
 
     if (kDebugMode) {
       print("Database loaded");

@@ -27,10 +27,14 @@ class Skill extends DTO {
     final firstIndex = name.indexOf("(");
     final lastIndex = name.indexOf(")");
     if (firstIndex != -1 && lastIndex != -1) {
-      return name.substring(firstIndex+1, lastIndex);
+      return name.substring(firstIndex + 1, lastIndex);
     } else {
       return null;
     }
+  }
+
+  int getTotalValue() {
+    return attribute!.getTotalValue() + advances;
   }
 
   @override

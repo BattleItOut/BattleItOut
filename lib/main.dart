@@ -20,7 +20,8 @@ Future<List<Character>> loadTemplates() async {
 
   List<Character> templateCharacters = [];
   for (var template in templates) {
-    Character character = await Character.create(template);
+    var json = jsonDecode(await rootBundle.loadString(template));
+    Character character = await Character.create(json);
     templateCharacters.add(character);
   }
   return templateCharacters;
