@@ -11,12 +11,12 @@ class TalentDAO extends DAO<Talent> {
   get tableName => 'talents';
 
   @override
-  Talent fromMap(Map<String, dynamic> map) {
+  Talent fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
     return Talent(
         id: map['ID'],
         name: map['NAME'],
         nameEng: map['NAME_ENG'],
-        maxLvl: attributes[map["MAX_LVL"]],
+        attribute: attributes[map["MAX_LVL"]],
         constLvl: map['CONST_LVL'],
         description: map['DESCR'],
         grouped: map['GROUPED'] == 1);

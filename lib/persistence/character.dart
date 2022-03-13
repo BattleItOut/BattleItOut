@@ -1,10 +1,12 @@
-import 'dart:convert';
 import 'package:battle_it_out/persistence/dao/armour_dao.dart';
+import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
 import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
+import 'package:battle_it_out/persistence/dao/length_dao.dart';
 import 'package:battle_it_out/persistence/dao/melee_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/dao/ranged_weapon_dao.dart';
+import 'package:battle_it_out/persistence/dao/size_dao.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/dao/talent_dao.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
@@ -15,12 +17,10 @@ import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
-import 'package:flutter/services.dart';
 
 class Character {
   String name;
   Race race;
-  Subrace subrace;
   Profession profession;
   Map<int, Attribute> attributes;
   Map<int, Skill> skills;
@@ -30,11 +30,13 @@ class Character {
   List<RangedWeapon> rangedWeapons = [];
   int? initiative;
   // List<Trait> traits;
+  // TODO: make this a variables dependent on some value from the database
+  static const basicAttributesAmount = 10;
+  static const strengthId = 3;
 
   Character(
       {required this.name,
       required this.race,
-      required this.subrace,
       required this.profession,
       required this.attributes,
       this.skills = const {},
@@ -45,24 +47,17 @@ class Character {
 
   static Character from(Character character) {
     var newInstance = Character(
-        name: character.name,
-        race: character.race,
-        subrace: character.subrace,
-        profession: character.profession,
-        attributes: character.attributes);
+        name: character.name, race: character.race, profession: character.profession, attributes: character.attributes);
     newInstance.skills = character.skills;
     newInstance.talents = character.talents;
     newInstance.initiative = character.initiative;
     return newInstance;
   }
 
-  static Future<Character> create(String jsonPath) async {
-    var json = await _loadJson(jsonPath);
-
+  static Future<Character> create(dynamic json) async {
     String name = json['name'];
-    Race race = await RaceDAO().get(json["race_id"]);
-    Subrace subrace = await SubraceDAO().get(json["subrace_id"]);
-    Profession profession = await ProfessionDAO().get(json["profession_id"]);
+    Race race = await _createRace(json["race"]);
+    Profession profession = await _createProfession(json["profession"]);
     Map<int, Attribute> attributes = await _createAttributes(json["attributes"], race, profession);
     Map<int, Skill> skills = await _createSkills(json['skills'], attributes);
     Map<int, Talent> talents = await _createTalents(json['talents'], attributes);
@@ -73,7 +68,6 @@ class Character {
     Character character = Character(
         name: name,
         race: race,
-        subrace: subrace,
         profession: profession,
         attributes: attributes,
         skills: skills,
@@ -85,11 +79,48 @@ class Character {
     return character;
   }
 
+  static Future<Race> _createRace(json) async {
+    Race? race;
+    if (json["race_id"] != null) {
+      race = await RaceDAO().get(json["race_id"], {"NAME": json["name"]});
+    } else {
+      race = Race(name: json["name"], size: await SizeDao().get(json["size"]));
+    }
+
+    if (json["subrace"] != null) {
+      race.subrace = await _createSubrace(json["subrace"]);
+    } else {
+      race.subrace = await RaceDAO().getDefaultSubrace(race.id);
+    }
+    return race;
+  }
+
+  static Future<Subrace> _createSubrace(json) async {
+    if (json["subrace_id"] != null) {
+      return await SubraceDAO().get(json["subrace_id"], {"NAME": json["name"]});
+    } else {
+      return Subrace(name: json["name"]);
+    }
+  }
+
+  static Future<Profession> _createProfession(json) async {
+    Profession? profession;
+    if (json["profession_id"] != null) {
+      profession = await ProfessionDAO().get(json["profession_id"], {"NAME": json["name"]});
+    } else {
+      profession = Profession(name: json["name"]);
+    }
+    return profession;
+  }
+
   static Future<Map<int, Attribute>> _createAttributes(json, Race race, Profession profession) async {
     Map<int, Attribute> attributes = await race.getAttributes();
     for (var attributeMap in json) {
-      attributes[attributeMap["id"]]!.base = attributeMap["base"];
-      attributes[attributeMap["id"]]!.advances = attributeMap["advances"] ?? 0;
+      if (attributes[attributeMap["id"]] == null) {
+        attributes[attributeMap["id"]] = await AttributeDAO().get(attributeMap["id"]);
+      }
+      attributes[attributeMap["id"]]?.base = attributeMap["base"];
+      attributes[attributeMap["id"]]?.advances = attributeMap["advances"] ?? 0;
     }
     return attributes;
   }
@@ -114,7 +145,7 @@ class Character {
     for (var map in json ?? []) {
       MeleeWeapon weapon = await MeleeWeaponDAO(attributes, skills).get(map["weapon_id"]);
       map["name"] != null ? weapon.name = map["name"] : null;
-      map["length"] != null ? weapon.length = map["length"] : null;
+      map["length"] != null ? weapon.length = await WeaponLengthDao().get(map["length"]) : null;
       for (var qualityMap in map["qualities"] ?? []) {
         weapon.addQuality(await ItemQualityDAO().get(qualityMap["quality_id"]));
       }
@@ -147,6 +178,9 @@ class Character {
       map["earning"] != null ? skill.earning = map["earning"] : null;
       skillsMap[skill.id] = skill;
     }
+    for (Skill skill in await SkillDAO(attributes).getBasicSkills()) {
+      skillsMap.putIfAbsent(skill.id, () => skill);
+    }
     return skillsMap;
   }
 
@@ -161,11 +195,6 @@ class Character {
     return talentsMap;
   }
 
-  static _loadJson(String jsonPath) async {
-    String data = await rootBundle.loadString(jsonPath);
-    return jsonDecode(data);
-  }
-
   // List getters
 
   List<Attribute> getAttributes() {
@@ -173,7 +202,9 @@ class Character {
   }
 
   List<Skill> getSkills() {
-    return List.of(skills.values);
+    List<Skill> sortedSkills = List.of(skills.values);
+    sortedSkills.sort((a, b) => a.name.compareTo(b.name));
+    return sortedSkills;
   }
 
   List<Talent> getTalents() {

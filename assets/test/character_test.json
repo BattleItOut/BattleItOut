@@ -1,0 +1,38 @@
+{
+  "name": "Test",
+  "race": {
+    "race_id": 1
+  },
+  "profession": {
+    "profession_id": 1
+  },
+  "attributes": [
+    {
+      "id": 1,
+      "base": 34,
+      "advances": 5
+    }
+  ],
+  "skills": [
+    {
+      "skill_id": 38,
+      "advances": 5
+    }
+  ],
+  "talents": [
+    {
+      "talent_id": 26,
+      "lvl": 1
+    }
+  ],
+  "armour": [
+    {
+      "armour_id": 2
+    }
+  ],
+  "melee_weapons": [
+    {
+      "weapon_id": 1
+    }
+  ]
+}

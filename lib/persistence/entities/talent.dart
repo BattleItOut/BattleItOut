@@ -5,7 +5,7 @@ class Talent extends DTO {
   int id;
   String name;
   String nameEng;
-  Attribute? maxLvl;
+  Attribute? attribute;
   int? constLvl;
   String? description;
   bool grouped;
@@ -17,10 +17,20 @@ class Talent extends DTO {
       {required this.id,
       required this.name,
       required this.nameEng,
-      this.maxLvl,
+      this.attribute,
       this.constLvl,
       this.description,
       required this.grouped});
+
+  int? getMaxLvl() {
+    if (attribute != null) {
+      return attribute!.getTotalValue() ~/ 10;
+    }
+    if (constLvl != null) {
+      return constLvl;
+    }
+    return null;
+  }
 
   @override
   String toString() {
@@ -33,7 +43,7 @@ class Talent extends DTO {
       "ID": id,
       "NAME": name,
       "NAME_ENG": nameEng,
-      "MAX_LVL": maxLvl,
+      "MAX_LVL": attribute,
       "CONST_LVL": constLvl,
       "DESCR": description,
       "GROUPED": grouped ? 1 : 0

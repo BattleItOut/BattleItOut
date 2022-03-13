@@ -6,7 +6,7 @@ class ItemQualityDAO extends DAO<ItemQuality> {
   get tableName => 'item_qualities';
 
   @override
-  ItemQuality fromMap(Map<String, dynamic> map) {
+  ItemQuality fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
     return ItemQuality(
         id: map['ID'],
         name: map['NAME'],
