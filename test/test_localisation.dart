@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
+import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/dao/talent_dao.dart';
 import 'package:battle_it_out/persistence/entities/profession.dart';
+import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -45,6 +47,17 @@ Future<void> localisationTest() async {
       test('Check profession localisations', () async {
         for (Profession profession in await ProfessionDAO().getAll()) {
           expect(translationMap.containsKey(profession.name), true, reason: "String not localised: ${profession.name}");
+        }
+      });
+      test('Check race localisations', () async {
+        for (Race race in await RaceDAO().getAll()) {
+          expect(translationMap.containsKey(race.name), true, reason: "String not localised: ${race.name}");
+        }
+      });
+
+      test('Check subrace localisations', () async {
+        for (Subrace subrace in await SubraceDAO().getAll()) {
+          expect(translationMap.containsKey(subrace.name), true, reason: "String not localised: ${subrace.name}");
         }
       });
       checkDuplicateValues(translationMap);
