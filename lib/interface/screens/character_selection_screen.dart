@@ -7,7 +7,6 @@ import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/size.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../components/list_items.dart';
 
@@ -34,30 +33,15 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
 
   void _select(int index) {
     var character = Character.from(widget.characters[index]);
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Initiative:"),
-          content: TextField(
-            onChanged: (value) {
-              character.initiative = int.parse(value);
-            },
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            textAlign: TextAlign.center,
-          ),
-          actions: [
-            TextButton(
-              child: const Text("Proceed"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pop(context, character);
-              },
-            ),
-          ],
-        );
+    showAlert(
+      "Initiative:",
+      (value) { character.initiative = int.parse(value); },
+      int,
+      () {
+        Navigator.of(context).pop();
+        Navigator.pop(context, character);
       },
+      context
     );
   }
 
@@ -72,17 +56,23 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
     showAlert(
       "Name:",
       (value) => name = value,
-      (context) => CharacterSheetScreen(character:
-        Character(
-          name: name!,
-          race: Race(
-            name: "",
-            size: Size(name: "")
+      String,
+      () {
+        Navigator.of(context).pop();
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) => CharacterSheetScreen(character:
+            Character(
+              name: name!,
+              race: Race(
+                name: "",
+                size: Size(name: "")
+              ),
+              profession: Profession(name: ""),
+              attributes: {0: Attribute(id: 0, name: "WW", rollable: 1, importance: 1)}
+            )
           ),
-          profession: Profession(name: ""),
-          attributes: {0: Attribute(id: 0, name: "WW", rollable: 1, importance: 1)}
-        )
-      ),
+        ));
+      },
       context
     );
     // AppCache().characters.add(value)
