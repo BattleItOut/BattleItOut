@@ -10,9 +10,8 @@ class ProfessionDAO extends DAO<Profession> {
     return Profession(
         id: map["ID"],
         name: map["NAME"],
-        nameEng: map["NAME_ENG"],
         level: map["LEVEL"],
-        source: map["SRC"],
+        source: map["SOURCE"],
         career: await ProfessionCareerDAO().get(map["CAREER_ID"]));
   }
 }
@@ -24,7 +23,10 @@ class ProfessionCareerDAO extends DAO<ProfessionCareer> {
   @override
   fromMap(Map<String, dynamic> map) async {
     return ProfessionCareer(
-        id: map["ID"], name: map["NAME"], professionClass: await ProfessionClassDAO().get(map["CLASS_ID"]));
+        id: map["ID"],
+        name: map["NAME"],
+        source: map["SOURCE"],
+        professionClass: await ProfessionClassDAO().get(map["CLASS_ID"]));
   }
 }
 
@@ -34,6 +36,6 @@ class ProfessionClassDAO extends DAO<ProfessionClass> {
 
   @override
   fromMap(Map<String, dynamic> map) async {
-    return ProfessionClass(id: map["ID"], name: map["NAME"]);
+    return ProfessionClass(id: map["ID"], name: map["NAME"], source: map["SOURCE"]);
   }
 }

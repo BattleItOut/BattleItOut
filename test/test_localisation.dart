@@ -37,9 +37,14 @@ Future<void> localisationTest() async {
           expect(translationMap.containsKey(cls.name), true, reason: "String not localised: ${cls.name}");
         }
       });
-      test('Check profession localisations', () async {
+      test('Check profession career localisations', () async {
         for (ProfessionCareer career in await ProfessionCareerDAO().getAll()) {
           expect(translationMap.containsKey(career.name), true, reason: "String not localised: ${career.name}");
+        }
+      });
+      test('Check profession localisations', () async {
+        for (Profession profession in await ProfessionDAO().getAll()) {
+          expect(translationMap.containsKey(profession.name), true, reason: "String not localised: ${profession.name}");
         }
       });
       checkDuplicateValues(translationMap);

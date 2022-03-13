@@ -13,12 +13,7 @@ class Talent extends DTO {
   bool advancable = false;
 
   Talent(
-      {required this.id,
-      required this.name,
-      this.attribute,
-      this.constLvl,
-      this.description,
-      required this.grouped});
+      {required this.id, required this.name, this.attribute, this.constLvl, this.description, required this.grouped});
 
   int? getMaxLvl() {
     if (attribute != null) {
