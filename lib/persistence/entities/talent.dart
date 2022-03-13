@@ -12,8 +12,7 @@ class Talent extends DTO {
   int currentLvl = 0;
   bool advancable = false;
 
-  Talent(
-      {required this.id, required this.name, this.attribute, this.constLvl, this.baseTalent, required this.grouped});
+  Talent({required this.id, required this.name, this.attribute, this.constLvl, this.baseTalent, required this.grouped});
 
   int? getMaxLvl() {
     if (attribute != null) {
@@ -53,11 +52,6 @@ class BaseTalent extends DTO {
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      "ID": id,
-      "NAME": name,
-      "DESCRIPTION": description,
-      "SOURCE": source
-    };
+    return {"ID": id, "NAME": name, "DESCRIPTION": description, "SOURCE": source};
   }
 }

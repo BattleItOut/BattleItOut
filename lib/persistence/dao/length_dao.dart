@@ -7,10 +7,6 @@ class WeaponLengthDao extends DAO<WeaponLength> {
 
   @override
   fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
-    return WeaponLength(
-        id: map["ID"],
-        name: map["NAME"],
-        description: map["DESCRIPTION"],
-        source: map["SOURCE"]);
+    return WeaponLength(id: map["ID"], name: map["NAME"], description: map["DESCRIPTION"], source: map["SOURCE"]);
   }
 }

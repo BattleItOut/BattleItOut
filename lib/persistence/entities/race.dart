@@ -14,13 +14,7 @@ class Race extends DTO {
 
   Map<int, Attribute>? raceAttributes;
 
-  Race(
-      {this.id,
-      required this.name,
-      required this.size,
-      this.extraPoints = 0,
-      this.source = "Custom",
-      this.subrace});
+  Race({this.id, required this.name, required this.size, this.extraPoints = 0, this.source = "Custom", this.subrace});
 
   Future<Map<int, Attribute>> getAttributes() async {
     if (id != null) {
@@ -56,12 +50,7 @@ class Subrace extends DTO {
   int randomTalents;
   bool defaultSubrace;
 
-  Subrace(
-      {this.id,
-      required this.name,
-      this.source = "Custom",
-      this.randomTalents = 0,
-      this.defaultSubrace = true});
+  Subrace({this.id, required this.name, this.source = "Custom", this.randomTalents = 0, this.defaultSubrace = true});
 
   @override
   Map<String, dynamic> toMap() {

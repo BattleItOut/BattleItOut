@@ -3,7 +3,6 @@ import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/dao/size_dao.dart';
 import 'package:battle_it_out/persistence/dao/talent_dao.dart';
-import 'package:battle_it_out/persistence/entities/talent.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:yaml/yaml.dart';
@@ -22,33 +21,28 @@ Future<void> localisationTest() async {
     for (var entry in languages.entries) {
       String languageName = entry.key;
       var translationMap = entry.value;
-      group("Check language: $languageName", ()
-      {
-        test('Check base talent localisations', () async {
-          for (BaseTalent talent in await BaseTalentDAO().getAll()) {
-            expect(translationMap.containsKey(talent.name), true, reason: "String not localised: ${talent.name}");
-            expect(translationMap.containsKey(talent.description), true,
-                reason: "String not localised: ${talent.description}");
-          }
-        });
-        performLocalisationTest("Check talent localisations", translationMap, TalentDAO());
-        performLocalisationTest("Check profession class localisations", translationMap, ProfessionCareerDAO());
-        performLocalisationTest("Check profession career localisations", translationMap, ProfessionCareerDAO());
-        performLocalisationTest("Check profession localisations", translationMap, ProfessionDAO());
-        performLocalisationTest("Check race localisations", translationMap, RaceDAO());
-        performLocalisationTest("Check subrace localisations", translationMap, SubraceDAO());
-        performLocalisationTest("Check size localisations", translationMap, SizeDao());
+      group("Check language: $languageName", () {
+        void performLocalisationTest(name, var dao, var getter) {
+          test(name, () async {
+            for (var item in await dao.getAll()) {
+              for (var param in getter(item)) {
+                expect(translationMap.containsKey(param), true, reason: "String not localised: $param");
+              }
+            }
+          });
+        }
+
+        performLocalisationTest("Check base talent localisations", BaseTalentDAO(), (item) => [item.name, item.description]);
+        performLocalisationTest("Check talent localisations", TalentDAO(), (item) => [item.name]);
+        performLocalisationTest("Check profession class localisations", ProfessionCareerDAO(), (item) => [item.name]);
+        performLocalisationTest("Check profession career localisations", ProfessionCareerDAO(), (item) => [item.name]);
+        performLocalisationTest("Check profession localisations", ProfessionDAO(), (item) => [item.name]);
+        performLocalisationTest("Check race localisations", RaceDAO(), (item) => [item.name]);
+        performLocalisationTest("Check subrace localisations", SubraceDAO(), (item) => [item.name]);
+        performLocalisationTest("Check size localisations", SizeDao(), (item) => [item.name]);
 
         checkDuplicateValues(translationMap);
       });
-    }
-  });
-}
-
-void performLocalisationTest(name, translationMap, var dao) {
-  test(name, () async {
-    for (var item in await dao.getAll()) {
-      expect(translationMap.containsKey(item.name), true, reason: "String not localised: ${item.name}");
     }
   });
 }

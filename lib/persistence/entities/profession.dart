@@ -10,12 +10,7 @@ class Profession extends DTO {
 
   Map<int, Skill>? professionSkills;
 
-  Profession(
-      {this.id,
-      required this.name,
-      this.level = 1,
-      this.source = "Custom",
-      this.career});
+  Profession({this.id, required this.name, this.level = 1, this.source = "Custom", this.career});
 
   String getProperName() {
     if (career != null) {

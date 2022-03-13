@@ -29,11 +29,6 @@ class BaseTalentDAO extends DAO<BaseTalent> {
 
   @override
   BaseTalent fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
-    return BaseTalent(
-        id: map['ID'],
-        name: map['NAME'],
-        description: map['DESCRIPTION'],
-        source: map['SOURCE']);
+    return BaseTalent(id: map['ID'], name: map['NAME'], description: map['DESCRIPTION'], source: map['SOURCE']);
   }
 }
-

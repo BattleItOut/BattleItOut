@@ -11,13 +11,8 @@ main() async {
   await localisationTest();
 }
 
-
 Future<void> referencesTest() async {
-  File file = File('assets/test/character_test.json');
-  Character character = await Character.create(jsonDecode(await file.readAsString()));
-
-  group('Links between attributes, skills and weapons: ', ()
-  {
+  group('Links between attributes, skills and weapons: ', () {
     test('Start conditions', () async {
       Character character = await createTestCharacter();
 
@@ -57,7 +52,7 @@ Future<void> referencesTest() async {
     test('Increasing advance value', () async {
       Character character = await createTestCharacter();
 
-      character.attributes[1]!.advances+=11;
+      character.attributes[1]!.advances += 11;
       expect(character.attributes[1]!.getTotalValue(), 50);
       expect(character.attributes[1]!.getTotalBonus(), 5);
 
@@ -73,7 +68,7 @@ Future<void> referencesTest() async {
     test('Increasing skill advance value', () async {
       Character character = await createTestCharacter();
 
-      character.skills[38]!.advances+=21;
+      character.skills[38]!.advances += 21;
       expect(character.attributes[1]!.getTotalValue(), 39);
       expect(character.attributes[1]!.getTotalBonus(), 3);
 

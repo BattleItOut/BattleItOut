@@ -7,9 +7,6 @@ class SizeDao extends DAO<Size> {
 
   @override
   fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
-    return Size(
-        id: map["ID"],
-        name: map["NAME"],
-        source: map["SOURCE"]);
+    return Size(id: map["ID"], name: map["NAME"], source: map["SOURCE"]);
   }
 }
