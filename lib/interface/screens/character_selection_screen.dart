@@ -1,7 +1,10 @@
 import 'package:battle_it_out/app_cache.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
-import 'package:battle_it_out/persistence/npc.dart';
+import 'package:battle_it_out/persistence/entities/attribute.dart';
+import 'package:battle_it_out/persistence/entities/profession.dart';
+import 'package:battle_it_out/persistence/entities/race.dart';
+import 'package:battle_it_out/persistence/entities/size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -64,22 +67,48 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
   }
 
   void _newCharacter() {
+    String? name;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Name:"),
+          content: TextField(
+            onChanged: (value) {
+              name = value;
+            },
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            TextButton(
+              child: const Text("Proceed"),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => CharacterSheetScreen(character:
+                    Character(
+                      name: name!,
+                      race: Race(
+                        name: "",
+                        size: Size(name: "")
+                      ),
+                      profession: Profession(name: ""),
+                      attributes: {0: Attribute(id: 0, name: "WW", rollable: 1, importance: 1)}
+                    )
+                  ),
+                ));
+              },
+            ),
+          ],
+        );
+      },
+    );
     // AppCache().characters.add(value)
-  }
-
-  void _newNPC() {
-    NPC npc = NPC("Hi, I'm Elfo");
-    AppCache().characters.add(npc);
-    setState(() {});
   }
 
   void _onNavigationTapped(int index) {
     switch (index) {
       case 0:
         _newCharacter();
-        break;
-      case 1:
-        _newNPC();
         break;
     }
   }
@@ -111,7 +140,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add a character"),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add a NPC")
+          BottomNavigationBarItem(icon: Icon(Icons.block), label: "Do nothing"),
         ],
         onTap: _onNavigationTapped,
       ),
