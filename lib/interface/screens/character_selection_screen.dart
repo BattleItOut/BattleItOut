@@ -1,5 +1,6 @@
 import 'package:battle_it_out/app_cache.dart';
 import 'package:battle_it_out/entities_localisation.dart';
+import 'package:battle_it_out/interface/components/alert.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
@@ -14,6 +15,7 @@ import '../components/list_items.dart';
 class CharacterSelectionScreen extends StatefulWidget {
   CharacterSelectionScreen({Key? key}) : super(key: key);
 
+  final String title = "Select a character";
   final List<Character> characters = AppCache().characters;
 
   @override
@@ -68,39 +70,21 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
 
   void _newCharacter() {
     String? name;
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Name:"),
-          content: TextField(
-            onChanged: (value) {
-              name = value;
-            },
-            textAlign: TextAlign.center,
+    showAlert(
+      "Name:",
+      (value) => name = value,
+      (context) => CharacterSheetScreen(character:
+        Character(
+          name: name!,
+          race: Race(
+            name: "",
+            size: Size(name: "")
           ),
-          actions: [
-            TextButton(
-              child: const Text("Proceed"),
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => CharacterSheetScreen(character:
-                    Character(
-                      name: name!,
-                      race: Race(
-                        name: "",
-                        size: Size(name: "")
-                      ),
-                      profession: Profession(name: ""),
-                      attributes: {0: Attribute(id: 0, name: "WW", rollable: 1, importance: 1)}
-                    )
-                  ),
-                ));
-              },
-            ),
-          ],
-        );
-      },
+          profession: Profession(name: ""),
+          attributes: {0: Attribute(id: 0, name: "WW", rollable: 1, importance: 1)}
+        )
+      ),
+      context
     );
     // AppCache().characters.add(value)
   }
