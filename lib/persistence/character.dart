@@ -84,7 +84,7 @@ class Character {
     if (json["race_id"] != null) {
       race = await RaceDAO().get(json["race_id"], {"NAME": json["name"]});
     } else {
-      race = Race(name: json["name"], size: await SizeDao().get(json["size"]));
+      race = Race(name: json["name"], size: await SizeDAO().get(json["size"]));
     }
 
     if (json["subrace"] != null) {

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:battle_it_out/persistence/dao/armour_dao.dart';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/dao/size_dao.dart';
@@ -39,7 +40,8 @@ Future<void> localisationTest() async {
         performLocalisationTest("Check profession localisations", ProfessionDAO(), (item) => [item.name]);
         performLocalisationTest("Check race localisations", RaceDAO(), (item) => [item.name]);
         performLocalisationTest("Check subrace localisations", SubraceDAO(), (item) => [item.name]);
-        performLocalisationTest("Check size localisations", SizeDao(), (item) => [item.name]);
+        performLocalisationTest("Check size localisations", SizeDAO(), (item) => [item.name]);
+        performLocalisationTest("Check armour localisations", ArmourDAO(), (item) => [item.name]);
 
         checkDuplicateValues(translationMap);
       });
