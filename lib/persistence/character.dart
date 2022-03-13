@@ -31,7 +31,6 @@ class Character {
   int? initiative;
   // List<Trait> traits;
   // TODO: make this a variables dependent on some value from the database
-  static const basicAttributesAmount = 10;
   static const strengthId = 3;
 
   Character(

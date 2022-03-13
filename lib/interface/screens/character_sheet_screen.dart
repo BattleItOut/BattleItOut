@@ -36,16 +36,16 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           CharacteristicListItem(
             title: "Attributes",
             children: [
-              [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) attribute.name],
-              [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) attribute.base.toString()],
-              [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) attribute.advances.toString()],
-              [for (var attribute in widget.character.attributes.values.take(Character.basicAttributesAmount)) attribute.getTotalValue().toString()]
+              [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) attribute.shortName],
+              [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) attribute.base.toString()],
+              [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) attribute.advances.toString()],
+              [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) attribute.getTotalValue().toString()]
             ],
             context: context
           ),
           CharacteristicListItem(
             children: [
-              for (var attribute in widget.character.attributes.values.skip(Character.basicAttributesAmount))
+              for (var attribute in widget.character.attributes.values.where((attr) => attr.importance > 0))
               [attribute.name, attribute.getTotalValue().toString()]
             ],
             columnTypes: const [

@@ -7,6 +7,12 @@ class AttributeDAO extends DAO<Attribute> {
 
   @override
   Attribute fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
-    return Attribute(id: map['ID'], name: map['NAME'], rollable: map['ROLLABLE'], importance: map['IMPORTANCE']);
+    return Attribute(
+        id: map['ID'],
+        name: map['NAME'],
+        shortName: map["SHORT_NAME"],
+        description: map["DESCRIPTION"],
+        rollable: map['ROLLABLE'],
+        importance: map['IMPORTANCE']);
   }
 }
