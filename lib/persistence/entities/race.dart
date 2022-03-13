@@ -2,25 +2,45 @@ import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/dto.dart';
 
+import 'size.dart';
+
 class Race extends DTO {
-  int id;
+  int? id;
   String name;
-  int size;
+  Size size;
   int extraPoints;
   String source;
+  Subrace? subrace;
 
   Map<int, Attribute>? raceAttributes;
 
-  Race({required this.id, required this.name, required this.size, required this.extraPoints, required this.source});
+  Race(
+      {this.id,
+      required this.name,
+      required this.size,
+      this.extraPoints = 0,
+      this.source = "Custom",
+      this.subrace});
 
   Future<Map<int, Attribute>> getAttributes() async {
-    raceAttributes ??= await RaceDAO().getAttributes(id);
-    return raceAttributes!;
+    if (id != null) {
+      raceAttributes ??= await RaceDAO().getAttributes(id!);
+      return raceAttributes!;
+    }
+    return {};
+  }
+
+  String getProperName() {
+    if (subrace != null && name != subrace!.name) {
+      return "$name (${subrace!.name})";
+    } else {
+      return name;
+    }
   }
 
   @override
   Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "EXTRA_POINTS": extraPoints, "SIZE": size, "SRC": source};
+    return {"ID": id, "NAME": name, "EXTRA_POINTS": extraPoints, "SIZE": size.id, "SRC": source};
   }
 
   @override
@@ -30,18 +50,18 @@ class Race extends DTO {
 }
 
 class Subrace extends DTO {
-  int id;
+  int? id;
   String name;
   String source;
   int randomTalents;
   bool defaultSubrace;
 
   Subrace(
-      {required this.id,
+      {this.id,
       required this.name,
-      required this.source,
-      required this.randomTalents,
-      required this.defaultSubrace});
+      this.source = "Custom",
+      this.randomTalents = 0,
+      this.defaultSubrace = true});
 
   @override
   Map<String, dynamic> toMap() {

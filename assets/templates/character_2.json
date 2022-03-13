@@ -1,8 +1,11 @@
 {
   "name": "Matei Gwiazdowróż",
-  "race_id": 6,
-  "subrace_id": 6,
-  "profession_id": 5,
+  "race": {
+    "race_id": 6
+  },
+  "profession": {
+    "profession_id": 5
+  },
   "attributes": [
     {
       "id": 1,

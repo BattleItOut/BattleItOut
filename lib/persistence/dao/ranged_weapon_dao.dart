@@ -16,7 +16,7 @@ class RangedWeaponDTO extends ItemDAO<RangedWeapon> {
   get qualitiesTableName => 'weapons_melee_qualities';
 
   @override
-  Future<RangedWeapon> fromMap(Map<String, dynamic> map) async {
+  Future<RangedWeapon> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
     return RangedWeapon(
         id: map["ID"],
         name: map["NAME"],

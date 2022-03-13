@@ -1,8 +1,11 @@
 {
   "name": "Test",
-  "race_id": 1,
-  "subrace_id": 1,
-  "profession_id": 1,
+  "race": {
+    "race_id": 1
+  },
+  "profession": {
+    "profession_id": 1
+  },
   "attributes": [
     {
       "id": 1,

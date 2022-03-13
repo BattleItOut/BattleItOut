@@ -2,15 +2,29 @@ import 'package:battle_it_out/persistence/entities/dto.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 
 class Profession extends DTO {
-  int id;
+  int? id;
   String name;
   int level;
   String source;
-  ProfessionCareer career;
+  ProfessionCareer? career;
 
   Map<int, Skill>? professionSkills;
 
-  Profession({required this.id, required this.name, required this.level, required this.source, required this.career});
+  Profession(
+      {this.id,
+      required this.name,
+      this.nameEng = "",
+      this.level = 1,
+      this.source = "Custom",
+      this.career});
+
+  String getProperName() {
+    if (career != null) {
+      return "$name (${career!.name})";
+    } else {
+      return name;
+    }
+  }
 
   @override
   String toString() {
@@ -24,7 +38,7 @@ class Profession extends DTO {
 }
 
 class ProfessionCareer extends DTO {
-  int id;
+  int? id;
   String name;
   String source;
   ProfessionClass professionClass;

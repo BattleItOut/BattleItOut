@@ -6,7 +6,7 @@ class ProfessionDAO extends DAO<Profession> {
   get tableName => 'professions';
 
   @override
-  Future<Profession> fromMap(Map<String, dynamic> map) async {
+  Future<Profession> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
     return Profession(
         id: map["ID"],
         name: map["NAME"],
@@ -21,7 +21,7 @@ class ProfessionCareerDAO extends DAO<ProfessionCareer> {
   get tableName => 'profession_careers';
 
   @override
-  fromMap(Map<String, dynamic> map) async {
+  Future<ProfessionCareer> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
     return ProfessionCareer(
         id: map["ID"],
         name: map["NAME"],
@@ -35,7 +35,7 @@ class ProfessionClassDAO extends DAO<ProfessionClass> {
   get tableName => 'profession_classes';
 
   @override
-  fromMap(Map<String, dynamic> map) async {
-    return ProfessionClass(id: map["ID"], name: map["NAME"], source: map["SOURCE"]);
+  ProfessionClass fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
+    return ProfessionClass(id: map["ID"], name: map["NAME"]);
   }
 }
