@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AlertTextField {}
 
 void showAlert(
   String title,
   Function(String) onTextFieldChanged,
-  Widget Function(BuildContext) screen,
+  Type textFieldType,
+  void Function() onProceedPressed,
   BuildContext context
 ) {
   showDialog(
@@ -17,16 +19,20 @@ void showAlert(
           onChanged: (value) {
             onTextFieldChanged(value);
           },
+          keyboardType: textFieldType == int ? TextInputType.number : TextInputType.text,
+          inputFormatters: textFieldType == int ? [FilteringTextInputFormatter.digitsOnly] : [],
           textAlign: TextAlign.center,
         ),
         actions: [
           TextButton(
-            child: const Text("Proceed"),
+            child: const Text("Cancel"),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(
-                builder: screen
-              ));
+              Navigator.of(context).pop();
             },
+          ),
+          TextButton(
+            child: const Text("Proceed"),
+            onPressed: onProceedPressed
           ),
         ],
       );
