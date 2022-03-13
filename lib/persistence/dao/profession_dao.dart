@@ -36,6 +36,6 @@ class ProfessionClassDAO extends DAO<ProfessionClass> {
 
   @override
   ProfessionClass fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
-    return ProfessionClass(id: map["ID"], name: map["NAME"]);
+    return ProfessionClass(id: map["ID"], name: map["NAME"], source: map["SOURCE"]);
   }
 }

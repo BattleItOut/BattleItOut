@@ -13,7 +13,6 @@ class Profession extends DTO {
   Profession(
       {this.id,
       required this.name,
-      this.nameEng = "",
       this.level = 1,
       this.source = "Custom",
       this.career});
@@ -33,7 +32,7 @@ class Profession extends DTO {
 
   @override
   Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "LEVEL": level, "SOURCE": source, "CAREER_ID": career.id};
+    return {"ID": id, "NAME": name, "LEVEL": level, "SOURCE": source, "CAREER_ID": career?.id};
   }
 }
 
