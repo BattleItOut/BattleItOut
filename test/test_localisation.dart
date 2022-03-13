@@ -3,9 +3,6 @@ import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/dao/size_dao.dart';
 import 'package:battle_it_out/persistence/dao/talent_dao.dart';
-import 'package:battle_it_out/persistence/entities/profession.dart';
-import 'package:battle_it_out/persistence/entities/race.dart';
-import 'package:battle_it_out/persistence/entities/size.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,49 +24,43 @@ Future<void> localisationTest() async {
       var translationMap = entry.value;
       group("Check language: $languageName", ()
       {
-        test('Check talent localisations', () async {
-          for (Talent talent in await TalentDAO().getAll()) {
+        test('Check base talent localisations', () async {
+          for (BaseTalent talent in await BaseTalentDAO().getAll()) {
             expect(translationMap.containsKey(talent.name), true, reason: "String not localised: ${talent.name}");
-            if (talent.description != null) {
-              expect(translationMap.containsKey(talent.description), true,
-                  reason: "String not localised: ${talent.description}");
-            }
+            expect(translationMap.containsKey(talent.description), true,
+                reason: "String not localised: ${talent.description}");
           }
         });
-        test('Check profession class localisations', () async {
-          for (ProfessionClass cls in await ProfessionClassDAO().getAll()) {
-            expect(translationMap.containsKey(cls.name), true, reason: "String not localised: ${cls.name}");
-          }
-        });
-        test('Check profession career localisations', () async {
-          for (ProfessionCareer career in await ProfessionCareerDAO().getAll()) {
-            expect(translationMap.containsKey(career.name), true, reason: "String not localised: ${career.name}");
-          }
-        });
-        test('Check profession localisations', () async {
-          for (Profession profession in await ProfessionDAO().getAll()) {
-            expect(translationMap.containsKey(profession.name), true, reason: "String not localised: ${profession.name}");
-          }
-        });
-        test('Check race localisations', () async {
-          for (Race race in await RaceDAO().getAll()) {
-            expect(translationMap.containsKey(race.name), true, reason: "String not localised: ${race.name}");
-          }
-        });
-        test('Check subrace localisations', () async {
-          for (Subrace subrace in await SubraceDAO().getAll()) {
-            expect(translationMap.containsKey(subrace.name), true, reason: "String not localised: ${subrace.name}");
-          }
-        });
-        test('Check size localisations', () async {
-          for (Size size in await SizeDao().getAll()) {
-            expect(translationMap.containsKey(size.name), true, reason: "String not localised: ${size.name}");
-          }
-        });
+        performLocalisationTest("Check talent localisations", translationMap, TalentDAO());
+        performLocalisationTest("Check profession class localisations", translationMap, ProfessionCareerDAO());
+        performLocalisationTest("Check profession career localisations", translationMap, ProfessionCareerDAO());
+        performLocalisationTest("Check profession localisations", translationMap, ProfessionDAO());
+        performLocalisationTest("Check race localisations", translationMap, RaceDAO());
+        performLocalisationTest("Check subrace localisations", translationMap, SubraceDAO());
+        performLocalisationTest("Check size localisations", translationMap, SizeDao());
+
         checkDuplicateValues(translationMap);
       });
     }
   });
+}
+
+void performLocalisationTest(name, translationMap, var dao) {
+  test(name, () async {
+    for (var item in await dao.getAll()) {
+      expect(translationMap.containsKey(item.name), true, reason: "String not localised: ${item.name}");
+    }
+  });
+}
+
+void checkUnusedKeys(YamlMap translationMap, List<String> usedLocalisations) {
+  for (var entry in translationMap.entries) {
+    if (!usedLocalisations.contains(entry.key)) {
+      if (kDebugMode) {
+        print(warning("Warning, unused key: ${entry.key}, consider deleting"));
+      }
+    }
+  }
 }
 
 void checkDuplicateValues(YamlMap translationMap) {

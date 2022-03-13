@@ -6,14 +6,14 @@ class Talent extends DTO {
   String name;
   Attribute? attribute;
   int? constLvl;
-  String? description;
+  BaseTalent? baseTalent;
   bool grouped;
 
   int currentLvl = 0;
   bool advancable = false;
 
   Talent(
-      {required this.id, required this.name, this.attribute, this.constLvl, this.description, required this.grouped});
+      {required this.id, required this.name, this.attribute, this.constLvl, this.baseTalent, required this.grouped});
 
   int? getMaxLvl() {
     if (attribute != null) {
@@ -37,8 +37,27 @@ class Talent extends DTO {
       "NAME": name,
       "MAX_LVL": attribute,
       "CONST_LVL": constLvl,
-      "DESCR": description,
+      "BASE_TALENT": baseTalent?.id,
       "GROUPED": grouped ? 1 : 0
+    };
+  }
+}
+
+class BaseTalent extends DTO {
+  int id;
+  String name;
+  String description;
+  String source;
+
+  BaseTalent({required this.id, required this.name, required this.description, required this.source});
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      "ID": id,
+      "NAME": name,
+      "DESCRIPTION": description,
+      "SOURCE": source
     };
   }
 }
