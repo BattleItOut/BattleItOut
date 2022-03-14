@@ -18,11 +18,7 @@ class SkillDAO extends DAO<Skill> {
   @override
   Future<Skill> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
     BaseSkill? baseSkill = map["BASE_SKILL"] == null ? null : await BaseSkillDAO(attributes).get(map["BASE_SKILL"]);
-    return Skill(
-        id: map["ID"],
-        name: map["NAME"],
-        specialisation: map["SPECIALISATION"],
-        baseSkill: baseSkill);
+    return Skill(id: map["ID"], name: map["NAME"], specialisation: map["SPECIALISATION"], baseSkill: baseSkill);
   }
 }
 

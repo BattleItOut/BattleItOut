@@ -11,11 +11,7 @@ class Skill extends DTO {
   bool earning = false;
   bool advancable = false;
 
-  Skill(
-      {required this.id,
-      required this.name,
-      required this.specialisation,
-      required this.baseSkill});
+  Skill({required this.id, required this.name, required this.specialisation, required this.baseSkill});
 
   bool isGroup() {
     return baseSkill == null;
@@ -40,12 +36,7 @@ class Skill extends DTO {
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      "ID": id,
-      "NAME": name,
-      "SPECIALISATION": specialisation,
-      "BASE_SKILL": baseSkill?.id
-    };
+    return {"ID": id, "NAME": name, "SPECIALISATION": specialisation, "BASE_SKILL": baseSkill?.id};
   }
 }
 
@@ -56,7 +47,8 @@ class BaseSkill extends DTO {
   bool isAdvanced;
   Attribute? attribute;
 
-  BaseSkill({required this.id, required this.name, required this.description, required this.isAdvanced, this.attribute});
+  BaseSkill(
+      {required this.id, required this.name, required this.description, required this.isAdvanced, this.attribute});
 
   int getTotalValue() {
     return attribute!.getTotalValue();
