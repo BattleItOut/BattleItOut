@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:battle_it_out/app_cache.dart';
 import 'package:battle_it_out/interface/themes.dart';
 import 'package:battle_it_out/interface/screens/turn_order_screen.dart';
+import 'package:battle_it_out/localisation_manager.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/services.dart';
 void main() async {
   runApp(const MyApp());
 
+  LocalisationManager.instance.setLanguage("POLISH");
   List<Character> templateCharacters = await loadTemplates();
   AppCache.init(characters: templateCharacters);
 }
