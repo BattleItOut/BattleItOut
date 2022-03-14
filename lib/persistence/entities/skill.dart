@@ -4,11 +4,8 @@ import 'package:battle_it_out/persistence/entities/dto.dart';
 class Skill extends DTO {
   int id;
   String name;
-  Attribute? attribute;
-  String? description;
-  bool advanced;
-  bool grouped;
-  String? category;
+  bool isGroup;
+  BaseSkill baseSkill;
 
   int advances = 0;
   bool earning = false;
@@ -17,11 +14,8 @@ class Skill extends DTO {
   Skill(
       {required this.id,
       required this.name,
-      required this.attribute,
-      required this.description,
-      required this.advanced,
-      required this.grouped,
-      required this.category});
+      required this.isGroup,
+      required this.baseSkill});
 
   String? getSpecialityName() {
     final firstIndex = name.indexOf("(");
@@ -34,7 +28,7 @@ class Skill extends DTO {
   }
 
   int getTotalValue() {
-    return attribute!.getTotalValue() + advances;
+    return baseSkill.getTotalValue() + advances;
   }
 
   @override
@@ -47,11 +41,33 @@ class Skill extends DTO {
     return {
       "ID": id,
       "NAME": name,
-      "ATTR_ID": attribute?.id,
-      "DESCR": description,
-      "ADV": advanced ? 1 : 0,
-      "GROUPED": grouped ? 1 : 0,
-      "CATEGORY": category
+      "IS_GROUP": isGroup ? 1 : 0,
+      "BASE_SKILL": baseSkill.id
+    };
+  }
+}
+
+class BaseSkill extends DTO {
+  int id;
+  String name;
+  String description;
+  bool isAdvanced;
+  Attribute? attribute;
+
+  BaseSkill({required this.id, required this.name, required this.description, required this.isAdvanced, this.attribute});
+
+  int getTotalValue() {
+    return attribute!.getTotalValue();
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      "ID": id,
+      "NAME": name,
+      "DESCRIPTION": description,
+      "IS_ADVANCED": isAdvanced ? 1 : 0,
+      "ATTRIBUTE_ID": attribute?.id
     };
   }
 }

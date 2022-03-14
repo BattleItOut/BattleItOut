@@ -4,6 +4,7 @@ import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/dao/size_dao.dart';
+import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/dao/talent_dao.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -44,6 +45,7 @@ Future<void> localisationTest() async {
         performLocalisationTest("Check size localisations", SizeDAO(), (item) => [item.name]);
         performLocalisationTest("Check armour localisations", ArmourDAO(), (item) => [item.name]);
         performLocalisationTest("Check attribute localisations", AttributeDAO(), (item) => [item.name, item.shortName, item.description]);
+        performLocalisationTest("Check base skill localisations", BaseSkillDAO(), (item) => [item.name, item.description]);
 
         checkDuplicateValues(translationMap);
       });

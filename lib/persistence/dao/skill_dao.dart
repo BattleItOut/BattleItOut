@@ -11,19 +11,35 @@ class SkillDAO extends DAO<Skill> {
   get tableName => 'skills';
 
   getBasicSkills() async {
-    List<Skill> basicSkills = await getAll(where: "ADV == ? AND GROUPED == ?", whereArgs: [0, 0]);
-    return basicSkills.where((skill) => skill.getSpecialityName() == null);
+    List<Skill> basicSkills = await getAll(where: "IS_GROUP == ?", whereArgs: [0]);
+    return basicSkills.where((skill) => skill.baseSkill.isAdvanced && skill.getSpecialityName() == null);
   }
 
   @override
-  Skill fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
+  Future<Skill> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
     return Skill(
         id: map["ID"],
         name: map["NAME"],
-        attribute: attributes[map["ATTR_ID"]],
-        description: map["DESCR"],
-        advanced: map["ADV"] == 1,
-        grouped: map["GROUPED"] == 1,
-        category: map["CATEGORY"]);
+        isGroup: map["IS_GROUP"] == 1,
+        baseSkill: await BaseSkillDAO(attributes).get(map["BASE_SKILL"]));
+  }
+}
+
+class BaseSkillDAO extends DAO<BaseSkill> {
+  Map<int, Attribute>? attributes;
+
+  BaseSkillDAO([this.attributes]);
+
+  @override
+  get tableName => 'skills_base';
+
+  @override
+  BaseSkill fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
+    return BaseSkill(
+        id: map["ID"],
+        name: map["NAME"],
+        isAdvanced: map["IS_ADVANCED"] == 1,
+        description: map["DESCRIPTION"],
+        attribute: attributes?[map["ATTRIBUTE_ID"]]);
   }
 }
