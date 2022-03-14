@@ -4,8 +4,8 @@ import 'package:battle_it_out/persistence/entities/dto.dart';
 class Skill extends DTO {
   int id;
   String name;
-  bool isGroup;
-  BaseSkill baseSkill;
+  String? specialisation;
+  BaseSkill? baseSkill;
 
   int advances = 0;
   bool earning = false;
@@ -14,21 +14,23 @@ class Skill extends DTO {
   Skill(
       {required this.id,
       required this.name,
-      required this.isGroup,
+      required this.specialisation,
       required this.baseSkill});
 
-  String? getSpecialityName() {
-    final firstIndex = name.indexOf("(");
-    final lastIndex = name.indexOf(")");
-    if (firstIndex != -1 && lastIndex != -1) {
-      return name.substring(firstIndex + 1, lastIndex);
-    } else {
-      return null;
-    }
+  bool isGroup() {
+    return baseSkill == null;
+  }
+
+  bool isAdvanced() {
+    return baseSkill!.isAdvanced;
+  }
+
+  Attribute? getAttribute() {
+    return baseSkill!.getAttribute();
   }
 
   int getTotalValue() {
-    return baseSkill.getTotalValue() + advances;
+    return baseSkill!.getTotalValue() + advances;
   }
 
   @override
@@ -41,8 +43,8 @@ class Skill extends DTO {
     return {
       "ID": id,
       "NAME": name,
-      "IS_GROUP": isGroup ? 1 : 0,
-      "BASE_SKILL": baseSkill.id
+      "SPECIALISATION": specialisation,
+      "BASE_SKILL": baseSkill?.id
     };
   }
 }
@@ -58,6 +60,10 @@ class BaseSkill extends DTO {
 
   int getTotalValue() {
     return attribute!.getTotalValue();
+  }
+
+  Attribute? getAttribute() {
+    return attribute;
   }
 
   @override

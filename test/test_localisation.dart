@@ -11,12 +11,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:yaml/yaml.dart';
 
 Future<void> localisationTest() async {
-  Map<String, YamlMap> languages = {};
+  Map<String, Map<String, String>> languages = {};
   await for (var file in Directory("assets/database/localisation").list(followLinks: false)) {
     String filePath = file.path;
     if (filePath.endsWith(".yml")) {
       YamlMap ymlMap = loadYaml(await File(filePath).readAsString());
-      languages.putIfAbsent(ymlMap.keys.first, () => ymlMap[ymlMap.keys.first]);
+      String language = ymlMap.keys.first;
+      if (!languages.containsKey(language)) {
+        languages[language] = {};
+      }
+      for (var entry in ymlMap[language].entries) {
+        languages[language]![entry.key] = entry.value;
+      }
     }
   }
 
@@ -25,27 +31,30 @@ Future<void> localisationTest() async {
       String languageName = entry.key;
       var translationMap = entry.value;
       group("Check language: $languageName", () {
-        void performLocalisationTest(name, var dao, var getter) {
+        void performLocTest(name, var dao, var getter) {
           test(name, () async {
             for (var item in await dao.getAll()) {
               for (var param in getter(item)) {
-                expect(translationMap.containsKey(param), true, reason: "String not localised: $param");
+                if (param != null) {
+                  expect(translationMap.containsKey(param), true, reason: "String not localised: $param");
+                }
               }
             }
           });
         }
 
-        performLocalisationTest("Check base talent localisations", BaseTalentDAO(), (item) => [item.name, item.description]);
-        performLocalisationTest("Check talent localisations", TalentDAO(), (item) => [item.name]);
-        performLocalisationTest("Check profession class localisations", ProfessionCareerDAO(), (item) => [item.name]);
-        performLocalisationTest("Check profession career localisations", ProfessionCareerDAO(), (item) => [item.name]);
-        performLocalisationTest("Check profession localisations", ProfessionDAO(), (item) => [item.name]);
-        performLocalisationTest("Check race localisations", RaceDAO(), (item) => [item.name]);
-        performLocalisationTest("Check subrace localisations", SubraceDAO(), (item) => [item.name]);
-        performLocalisationTest("Check size localisations", SizeDAO(), (item) => [item.name]);
-        performLocalisationTest("Check armour localisations", ArmourDAO(), (item) => [item.name]);
-        performLocalisationTest("Check attribute localisations", AttributeDAO(), (item) => [item.name, item.shortName, item.description]);
-        performLocalisationTest("Check base skill localisations", BaseSkillDAO(), (item) => [item.name, item.description]);
+        performLocTest("Check base talent localisations", BaseTalentDAO(), (item) => [item.name, item.description]);
+        performLocTest("Check talent localisations", TalentDAO(), (item) => [item.name]);
+        performLocTest("Check profession class localisations", ProfessionCareerDAO(), (item) => [item.name]);
+        performLocTest("Check profession career localisations", ProfessionCareerDAO(), (item) => [item.name]);
+        performLocTest("Check profession localisations", ProfessionDAO(), (item) => [item.name]);
+        performLocTest("Check race localisations", RaceDAO(), (item) => [item.name]);
+        performLocTest("Check subrace localisations", SubraceDAO(), (item) => [item.name]);
+        performLocTest("Check size localisations", SizeDAO(), (item) => [item.name]);
+        performLocTest("Check armour localisations", ArmourDAO(), (item) => [item.name]);
+        performLocTest("Check attribute localisations", AttributeDAO(), (item) => [item.name, item.shortName, item.description]);
+        performLocTest("Check base skill localisations", BaseSkillDAO(), (item) => [item.name, item.description]);
+        performLocTest("Check skill localisations", SkillDAO(), (item) => [item.name, item.specialisation]);
 
         checkDuplicateValues(translationMap);
       });
@@ -63,7 +72,7 @@ void checkUnusedKeys(YamlMap translationMap, List<String> usedLocalisations) {
   }
 }
 
-void checkDuplicateValues(YamlMap translationMap) {
+void checkDuplicateValues(Map<String, String> translationMap) {
   var testMap = {};
   for (var entry in translationMap.entries) {
     if (testMap.containsKey(entry.value)) {

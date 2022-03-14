@@ -57,12 +57,12 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           CharacteristicListItem(
             title: "Basic skills",
             children: [
-              for (var skill in widget.character.skills.values.where((element) => !element.advanced)) [
+              for (var skill in widget.character.skills.values.where((element) => !element.isAdvanced())) [
                 skill.name,
-                skill.attribute!.name,
-                skill.attribute!.getTotalValue().toString(),
+                skill.getAttribute()!.name,
+                skill.getAttribute()!.getTotalValue().toString(),
                 skill.advances.toString(),
-                (skill.attribute!.getTotalValue() + skill.advances).toString()
+                skill.getTotalValue().toString()
               ]
             ],
             columnTypes: const [
@@ -77,12 +77,12 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           CharacteristicListItem(
               title: "Advanced skills",
               children: [
-                for (var skill in widget.character.skills.values.where((element) => element.advanced)) [
+                for (var skill in widget.character.skills.values.where((element) => element.isAdvanced())) [
                   skill.name,
-                  skill.attribute!.name,
-                  skill.attribute!.getTotalValue().toString(),
+                  skill.getAttribute()!.name,
+                  skill.getAttribute()!.getTotalValue().toString(),
                   skill.advances.toString(),
-                  (skill.attribute!.getTotalValue() + skill.advances).toString()
+                  skill.getTotalValue().toString()
                 ]
               ],
               columnTypes: const [
@@ -140,14 +140,14 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               for (var weapon in widget.character.meleeWeapons) [
                 weapon.name,
                 weapon.length.name,
-                weapon.skill!.getSpecialityName()!,
+                weapon.skill!.specialisation!,
                 (weapon.damage + (widget.character.attributes[Character.strengthId]!.getTotalBonus())).toString(),
                 weapon.qualities.map((quality) => quality.name).join(", ")
               ],
               for (var weapon in widget.character.rangedWeapons) [
                 weapon.name,
                 weapon.range.toString(),
-                weapon.skill!.getSpecialityName()!,
+                weapon.skill!.specialisation!,
                 (weapon.damage + (weapon.strengthBonus ? (widget.character.attributes[Character.strengthId]!.getTotalBonus()) : 0)).toString(),
                 weapon.qualities.map((quality) => quality.name).join(", ")
               ],
