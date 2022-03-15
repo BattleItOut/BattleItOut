@@ -8,14 +8,12 @@ import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/size.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../components/list_items.dart';
 
 class CharacterSelectionScreen extends StatefulWidget {
   CharacterSelectionScreen({Key? key}) : super(key: key);
 
-  final String title = "Select a character";
   final List<Character> characters = AppCache().characters;
 
   @override
@@ -56,7 +54,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
   void _newCharacter() {
     String? name;
     showAlert(
-      "Name:",
+      "NAME".localise(context),
       (value) => name = value,
       String,
       () {
@@ -70,7 +68,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
                 size: Size(name: "")
               ),
               profession: Profession(name: ""),
-              attributes: {0: Attribute(id: 0, name: "WW", rollable: 1, importance: 1)}
+              attributes: {0: Attribute(id: 0, name: "", shortName: "", description: "", rollable: 1, importance: 1)}
             )
           ),
         ));
@@ -113,9 +111,9 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
         )
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add a character"),
-          BottomNavigationBarItem(icon: Icon(Icons.block), label: "Do nothing"),
+        items: [
+          BottomNavigationBarItem(icon: const Icon(Icons.add), label: "ADD_CHARACTER".localise(context)),
+          BottomNavigationBarItem(icon: const Icon(Icons.block), label: "DO_NOTHING".localise(context)),
         ],
         onTap: _onNavigationTapped,
       ),

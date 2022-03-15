@@ -1,3 +1,4 @@
+import 'package:battle_it_out/entities_localisation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -25,13 +26,13 @@ void showAlert(
         ),
         actions: [
           TextButton(
-            child: const Text("Cancel"),
+            child: Text("CANCEL".localise(context)),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
           TextButton(
-            child: const Text("Proceed"),
+            child: Text("PROCEED".localise(context)),
             onPressed: onProceedPressed
           ),
         ],
