@@ -57,19 +57,19 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
       (value) => name = value,
       String,
       () {
+        var newCharacter = Character(
+          name: name!,
+          race: Race(
+            name: "",
+            size: Size(name: "")
+          ),
+          profession: Profession(name: ""),
+          attributes: {}
+        );
+        widget.characters.add(newCharacter);
         Navigator.of(context).pop();
         Navigator.push(context, MaterialPageRoute(
-          builder: (context) => CharacterSheetScreen(character:
-            Character(
-              name: name!,
-              race: Race(
-                name: "",
-                size: Size(name: "")
-              ),
-              profession: Profession(name: ""),
-              attributes: {}
-            )
-          ),
+          builder: (context) => CharacterSheetScreen(character: newCharacter),
         ));
       },
       context
