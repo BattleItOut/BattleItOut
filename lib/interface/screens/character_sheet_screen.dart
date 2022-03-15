@@ -1,5 +1,6 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
+import 'package:battle_it_out/localisation.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,7 @@ class CharacterSheetScreen extends StatefulWidget {
   State<CharacterSheetScreen> createState() => _CharacterSheetScreenState();
 }
 
+class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
   List<List<String>> createSkills(groupedSkills) {
     List<List<String>> list = [];
     for (var entry in groupedSkills.entries) {
@@ -164,18 +166,18 @@ class CharacterSheetScreen extends StatefulWidget {
             title: "WEAPONS".localise(context),
             children: [
               for (var weapon in widget.character.meleeWeapons) [
-                weapon.name.localise(context),
-                weapon.length.name.localise(context),
-                weapon.skill!.specialisation!.localise(context),
+                AppLocalizations.of(context).localise(weapon.name),
+                AppLocalizations.of(context).localise(weapon.length.name),
+                AppLocalizations.of(context).localise(weapon.skill!.specialisation!),
                 (weapon.damage + (widget.character.attributes[Character.strengthId]!.getTotalBonus())).toString(),
-                weapon.qualities.map((quality) => quality.name.localise(context)).join(", ")
+                weapon.qualities.map((quality) => AppLocalizations.of(context).localise(quality.name)).join(", ")
               ],
               for (var weapon in widget.character.rangedWeapons) [
-                weapon.name.localise(context),
+                AppLocalizations.of(context).localise(weapon.name),
                 weapon.range.toString(),
-                weapon.skill!.specialisation!.localise(context),
+                AppLocalizations.of(context).localise(weapon.skill!.specialisation!),
                 (weapon.damage + (weapon.strengthBonus ? (widget.character.attributes[Character.strengthId]!.getTotalBonus()) : 0)).toString(),
-                weapon.qualities.map((quality) => quality.name.localise(context)).join(", ")
+                weapon.qualities.map((quality) => AppLocalizations.of(context).localise(quality.name)).join(", ")
               ],
             ],
             columnTypes: const [
