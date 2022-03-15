@@ -1,4 +1,5 @@
 import 'package:battle_it_out/app_cache.dart';
+import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import '../components/list_items.dart';
 class CharacterSelectionScreen extends StatefulWidget {
   CharacterSelectionScreen({Key? key}) : super(key: key);
 
-  final String title = "Select a character";
   final List<Character> characters = AppCache().characters;
 
   @override
@@ -33,7 +33,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Initiative:"),
+          title: Text("INITIATIVE".localise(context)),
           content: TextField(
             onChanged: (value) {
               character.initiative = int.parse(value);
@@ -44,7 +44,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
           ),
           actions: [
             TextButton(
-              child: const Text("Proceed"),
+              child: Text("PROCEED".localise(context)),
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.pop(context, character);
@@ -67,7 +67,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
     var characters = _generateCharacters();
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text(widget.title)),
+        title: Center(child: Text("CHARACTER_SELECTION_SCREEN_TITLE".localise(context))),
       ),
       body: Center(
         child: ListView.builder(

@@ -1,3 +1,4 @@
+import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/screens/character_selection_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,6 @@ import 'character_sheet_screen.dart';
 
 class TurnOrderScreen extends StatefulWidget {
   const TurnOrderScreen({Key? key}) : super(key: key);
-
-  final String title = "Turn order";
 
   @override
   State<TurnOrderScreen> createState() => _TurnOrderScreenState();
@@ -99,17 +98,17 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Remove a character"),
-          content: const Text("Are you sure you want to remove this character from the fight?"),
+          title: Text("REMOVE_CHARACTER_PROMPT".localise(context)),
+          content: Text("REMOVE_CHARACTER_PROMPT_DESC".localise(context)),
           actions: [
             TextButton(
-              child: const Text("Cancel"),
+              child: Text("CANCEL".localise(context)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text("Proceed"),
+              child: Text("PROCEED".localise(context)),
               onPressed: () {
                 Navigator.of(context).pop();
                 setState(() {
@@ -128,19 +127,19 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
     List<ListItem> entries = <ListItem>[];
     for (int i = 0; i < characters.length; i++) {
       if (i == 0) {
-        entries.add(LabelListItem(name: 'Current (Round $currentRound)'));
+        entries.add(LabelListItem(name: '${"CURRENT".localise(context)} (${"ROUND".localise(context)} $currentRound)'));
       }
       else if (i != 0 && _isNextCharacterInNextRound(i - 1)) {
-        entries.add(LabelListItem(name: 'Round ${currentRound + 1}'));
+        entries.add(LabelListItem(name: '${"ROUND".localise(context)} ${currentRound + 1}'));
       }
       else if (i == 1) {
-        entries.add(LabelListItem(name: 'Next'));
+        entries.add(LabelListItem(name: "NEXT".localise(context)));
       }
       entries.add(CharacterListItem(character: characters[i], context: context));
     }
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text(widget.title)),
+        title: Center(child: Text("TURN_ORDER_SCREEN_TITLE".localise(context))),
       ),
       body: Center(
         child: ListView.builder(
@@ -164,10 +163,10 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
         )
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.navigate_before), label: "Previous"),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: "Add"),
-          BottomNavigationBarItem(icon: Icon(Icons.navigate_next), label: "Next")
+        items: [
+          BottomNavigationBarItem(icon: const Icon(Icons.navigate_before), label: "PREVIOUS".localise(context)),
+          BottomNavigationBarItem(icon: const Icon(Icons.add), label: "ADD".localise(context)),
+          BottomNavigationBarItem(icon: const Icon(Icons.navigate_next), label: "NEXT".localise(context))
         ],
         onTap: _onNavigationTapped,
       ),

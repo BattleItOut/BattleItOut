@@ -1,6 +1,5 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
-import 'package:battle_it_out/localisation.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
@@ -25,9 +24,9 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
         children: [
           CharacteristicListItem(
             children: [
-              ["Race:", widget.character.race.getLocalName(context)],
-              ["Size:", widget.character.race.size.name.localise(context)],
-              ["Profession:", widget.character.profession.getLocalName(context)]
+              ["RACE".localise(context), widget.character.race.getLocalName(context)],
+              ["SIZE".localise(context), widget.character.race.size.name.localise(context)],
+              ["PROFESSION".localise(context), widget.character.profession.getLocalName(context)]
             ],
             columnTypes: const [
               CharacteristicType.name,
@@ -36,7 +35,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             context: context
           ),
           CharacteristicListItem(
-            title: "Attributes",
+            title: "ATTRIBUTES".localise(context),
             children: [
               [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) attribute.shortName.localise(context)],
               [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) attribute.base.toString()],
@@ -57,7 +56,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             context: context
           ),
           CharacteristicListItem(
-            title: "Basic skills",
+            title: "BASIC_SKILLS".localise(context),
             children: [
               for (var skill in widget.character.skills.values.where((element) => !element.isAdvanced())) [
                 skill.name.localise(context),
@@ -77,7 +76,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             context: context
           ),
           CharacteristicListItem(
-              title: "Advanced skills",
+              title: "ADVANCED_SKILLS".localise(context),
               children: [
                 for (var skill in widget.character.skills.values.where((element) => element.isAdvanced())) [
                   skill.name.localise(context),
@@ -97,7 +96,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               context: context
           ),
           CharacteristicListItem(
-            title: "Talents",
+            title: "TALENTS".localise(context),
             children: [
               for (var talent in widget.character.talents.values) [
                 talent.name.localise(context),
@@ -113,7 +112,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             context: context
           ),
           CharacteristicListItem(
-            title: "Armour",
+            title: "ARMOUR".localise(context),
             children: [
               for (var armour in widget.character.armour) [
                 armour.name.localise(context),
@@ -137,7 +136,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             context: context
           ),
           CharacteristicListItem(
-            title: "Weapons",
+            title: "WEAPONS".localise(context),
             children: [
               for (var weapon in widget.character.meleeWeapons) [
                 weapon.name.localise(context),
