@@ -51,7 +51,11 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
           localizedValues[language] = {};
         }
         for (var entry in ymlMap[language].entries) {
-          localizedValues[language]![entry.key] = entry.value;
+          if (!localizedValues[language]!.containsKey(entry.key)) {
+            localizedValues[language]![entry.key] = entry.value;
+          } else {
+            throw Exception("Duplicated key [${entry.key}, ${localizedValues[language]![entry.key]}], [${entry.key}, ${entry.value}]");
+          }
         }
       }
     }

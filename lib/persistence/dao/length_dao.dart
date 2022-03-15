@@ -1,7 +1,7 @@
 import 'package:battle_it_out/persistence/dao/dao.dart';
 import 'package:battle_it_out/persistence/entities/weapon_length.dart';
 
-class WeaponLengthDao extends DAO<WeaponLength> {
+class WeaponLengthDAO extends DAO<WeaponLength> {
   @override
   get tableName => 'weapon_lengths';
 

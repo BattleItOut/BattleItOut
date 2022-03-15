@@ -1,6 +1,7 @@
 import 'package:battle_it_out/localisation.dart';
 import 'package:battle_it_out/persistence/dao/armour_dao.dart';
 import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
+import 'package:battle_it_out/persistence/dao/length_dao.dart';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/dao/size_dao.dart';
@@ -40,6 +41,7 @@ Future<void> localisationTest() async {
       performLocTest("Check attribute localisations", AttributeDAO(), (item) => [item.name, item.shortName, item.description]);
       performLocTest("Check base skill localisations", BaseSkillDAO(), (item) => [item.name, item.description]);
       performLocTest("Check skill localisations", SkillDAO(), (item) => [item.name, item.specialisation]);
+      performLocTest("Check weapon length localisations", WeaponLengthDAO(), (item) => [item.name, item.description]);
     });
 
     var testMap = {};

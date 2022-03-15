@@ -144,7 +144,7 @@ class Character {
     for (var map in json ?? []) {
       MeleeWeapon weapon = await MeleeWeaponDAO(attributes, skills).get(map["weapon_id"]);
       map["name"] != null ? weapon.name = map["name"] : null;
-      map["length"] != null ? weapon.length = await WeaponLengthDao().get(map["length"]) : null;
+      map["length"] != null ? weapon.length = await WeaponLengthDAO().get(map["length"]) : null;
       for (var qualityMap in map["qualities"] ?? []) {
         weapon.addQuality(await ItemQualityDAO().get(qualityMap["quality_id"]));
       }

@@ -21,7 +21,7 @@ class MeleeWeaponDAO extends ItemDAO<MeleeWeapon> {
     return MeleeWeapon(
         id: map["ID"],
         name: map["NAME"],
-        length: await WeaponLengthDao().get(map["LENGTH"]),
+        length: await WeaponLengthDAO().get(map["LENGTH"]),
         damage: map["DAMAGE"],
         skill: skills[map['SKILL']] ?? await SkillDAO(attributes).get(map['SKILL']),
         qualities: await getQualities(map["ID"]));
