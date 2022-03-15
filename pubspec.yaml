@@ -28,5 +28,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/database/
     - assets/templates/
+    - assets/database/
+    - assets/database/localisation/
