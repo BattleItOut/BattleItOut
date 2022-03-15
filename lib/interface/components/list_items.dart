@@ -1,3 +1,4 @@
+import 'package:battle_it_out/localisation.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +40,7 @@ class CharacterListItem extends TileListItem {
   CharacterListItem({Key? key, required Character character, required BuildContext context}) : super(
     key: key,
     child: ListTile(
-      subtitle: Text("${character.race.name}, ${character.profession.name}"),
+      subtitle: Text("${AppLocalizations.of(context).localise(character.race.name)}, ${AppLocalizations.of(context).localise(character.profession.name)}"),
       trailing: Text(character.initiative?.toString() ?? "", style: const TextStyle(fontSize: 24)),
       title: Text(character.name),
       dense: true,

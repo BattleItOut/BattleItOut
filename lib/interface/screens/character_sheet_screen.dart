@@ -1,5 +1,8 @@
 import 'package:battle_it_out/interface/components/list_items.dart';
+import 'package:battle_it_out/localisation.dart';
 import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/persistence/entities/profession.dart';
+import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:flutter/material.dart';
 
 class CharacterSheetScreen extends StatefulWidget {
@@ -12,6 +15,22 @@ class CharacterSheetScreen extends StatefulWidget {
 }
 
 class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
+  String getRaceNameLocalised(Race race) {
+    if (race.subrace != null && race.name != race.subrace!.name) {
+      return "${AppLocalizations.of(context).localise(race.name)} (${AppLocalizations.of(context).localise(race.subrace!.name)})";
+    } else {
+      return AppLocalizations.of(context).localise(race.name);
+    }
+  }
+
+  String getProfessionNameLocalised(Profession profession) {
+    if (profession.career != null) {
+      return "${AppLocalizations.of(context).localise(profession.name)} (${AppLocalizations.of(context).localise(profession.career!.name)})";
+    } else {
+      return AppLocalizations.of(context).localise(profession.name);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +42,9 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
         children: [
           CharacteristicListItem(
             children: [
-              ["Race:", widget.character.race.getProperName()],
-              ["Size:", widget.character.race.size.name],
-              ["Profession:", widget.character.profession.getProperName()]
+              ["Race:", getRaceNameLocalised(widget.character.race)],
+              ["Size:", AppLocalizations.of(context).localise(widget.character.race.size.name)],
+              ["Profession:", getProfessionNameLocalised(widget.character.profession)]
             ],
             columnTypes: const [
               CharacteristicType.name,
