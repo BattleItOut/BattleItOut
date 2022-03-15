@@ -139,7 +139,8 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("TURN_ORDER_SCREEN_TITLE".localise(context))),
+        centerTitle: true,
+        title: Text("TURN_ORDER_SCREEN_TITLE".localise(context)),
       ),
       body: Center(
         child: ListView.builder(
