@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:yaml/yaml.dart';
 
 class AppLocalizations {
@@ -42,10 +43,10 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   static Future<Map<String, Map<String, String>>> loadYML() async {
     Map<String, Map<String, String>> localizedValues = {};
-    await for (var file in Directory("assets/database/localisation").list(followLinks: false)) {
-      String filePath = file.path;
-      if (filePath.endsWith(".yml")) {
-        YamlMap ymlMap = loadYaml(await File(filePath).readAsString());
+    final manifestJson = await rootBundle.loadString('AssetManifest.json');
+    for (var filePath in json.decode(manifestJson).keys) {
+      if (filePath.startsWith('assets/database/localisation') && filePath.endsWith(".yml")) {
+        YamlMap ymlMap = loadYaml(await rootBundle.loadString(filePath));
         String language = ymlMap.keys.first;
         if (!localizedValues.containsKey(language)) {
           localizedValues[language] = {};
