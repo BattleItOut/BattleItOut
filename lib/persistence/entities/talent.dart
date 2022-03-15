@@ -4,23 +4,44 @@ import 'package:battle_it_out/persistence/entities/dto.dart';
 class Talent extends DTO {
   int id;
   String name;
-  String nameEng;
-  Attribute? attribute;
-  int? constLvl;
-  String? description;
-  bool grouped;
+  String? specialisation;
+  BaseTalent? baseTalent;
 
   int currentLvl = 0;
   bool advancable = false;
 
-  Talent(
+  Talent({required this.id, required this.name, this.specialisation, this.baseTalent});
+
+  int? getMaxLvl() {
+    return baseTalent!.getMaxLvl();
+  }
+
+  @override
+  String toString() {
+    return "Talent (id=$id, name=$name)";
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {"ID": id, "NAME": name, "SPECIALISATION": specialisation, "BASE_TALENT": baseTalent?.id};
+  }
+}
+
+class BaseTalent extends DTO {
+  int id;
+  String name;
+  String description;
+  String source;
+  Attribute? attribute;
+  int? constLvl;
+
+  BaseTalent(
       {required this.id,
       required this.name,
-      required this.nameEng,
+      required this.description,
+      required this.source,
       this.attribute,
-      this.constLvl,
-      this.description,
-      required this.grouped});
+      this.constLvl});
 
   int? getMaxLvl() {
     if (attribute != null) {
@@ -33,20 +54,14 @@ class Talent extends DTO {
   }
 
   @override
-  String toString() {
-    return "Talent (id=$id, name=$name)";
-  }
-
-  @override
   Map<String, dynamic> toMap() {
     return {
       "ID": id,
       "NAME": name,
-      "NAME_ENG": nameEng,
+      "DESCRIPTION": description,
+      "SOURCE": source,
       "MAX_LVL": attribute,
-      "CONST_LVL": constLvl,
-      "DESCR": description,
-      "GROUPED": grouped ? 1 : 0
+      "CONST_LVL": constLvl
     };
   }
 }

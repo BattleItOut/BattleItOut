@@ -10,10 +10,9 @@ class ItemQualityDAO extends DAO<ItemQuality> {
     return ItemQuality(
         id: map['ID'],
         name: map['NAME'],
-        nameEng: map['NAME_ENG'],
-        type: map['TYPE'],
+        positive: map['TYPE'] == 1,
         equipment: map['EQUIPMENT'],
-        description: map['DESCR'],
+        description: map['DESCRIPTION'],
         value: map["VALUE"]);
   }
 }

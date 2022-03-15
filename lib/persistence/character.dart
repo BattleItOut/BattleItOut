@@ -31,7 +31,6 @@ class Character {
   int? initiative;
   // List<Trait> traits;
   // TODO: make this a variables dependent on some value from the database
-  static const basicAttributesAmount = 10;
   static const strengthId = 3;
 
   Character(
@@ -84,7 +83,7 @@ class Character {
     if (json["race_id"] != null) {
       race = await RaceDAO().get(json["race_id"], {"NAME": json["name"]});
     } else {
-      race = Race(name: json["name"], size: await SizeDao().get(json["size"]));
+      race = Race(name: json["name"], size: await SizeDAO().get(json["size"]));
     }
 
     if (json["subrace"] != null) {
@@ -145,7 +144,7 @@ class Character {
     for (var map in json ?? []) {
       MeleeWeapon weapon = await MeleeWeaponDAO(attributes, skills).get(map["weapon_id"]);
       map["name"] != null ? weapon.name = map["name"] : null;
-      map["length"] != null ? weapon.length = await WeaponLengthDao().get(map["length"]) : null;
+      map["length"] != null ? weapon.length = await WeaponLengthDAO().get(map["length"]) : null;
       for (var qualityMap in map["qualities"] ?? []) {
         weapon.addQuality(await ItemQualityDAO().get(qualityMap["quality_id"]));
       }

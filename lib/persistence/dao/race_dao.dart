@@ -15,7 +15,7 @@ class RaceDAO extends DAO<Race> {
         id: overrideMap["ID"] ?? map["ID"],
         name: overrideMap["NAME"] ?? map["NAME"],
         extraPoints: overrideMap["EXTRA_POINTS"] ?? map["EXTRA_POINTS"],
-        size: await SizeDao().get(overrideMap["SIZE"] ?? map["SIZE"]),
+        size: await SizeDAO().get(overrideMap["SIZE"] ?? map["SIZE"]),
         source: overrideMap["SRC"] ?? map["SRC"]);
   }
 

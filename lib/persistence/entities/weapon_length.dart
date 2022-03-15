@@ -10,12 +10,7 @@ class WeaponLength extends DTO {
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      "ID": id,
-      "NAME": name,
-      "DESCRIPTION": description,
-      "SOURCE": source
-    };
+    return {"ID": id, "NAME": name, "DESCRIPTION": description, "SOURCE": source};
   }
 
   @override

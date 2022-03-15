@@ -4,37 +4,29 @@ import 'package:battle_it_out/persistence/entities/dto.dart';
 class Skill extends DTO {
   int id;
   String name;
-  Attribute? attribute;
-  String? description;
-  bool advanced;
-  bool grouped;
-  String? category;
+  String? specialisation;
+  BaseSkill? baseSkill;
 
   int advances = 0;
   bool earning = false;
   bool advancable = false;
 
-  Skill(
-      {required this.id,
-      required this.name,
-      required this.attribute,
-      required this.description,
-      required this.advanced,
-      required this.grouped,
-      required this.category});
+  Skill({required this.id, required this.name, required this.specialisation, required this.baseSkill});
 
-  String? getSpecialityName() {
-    final firstIndex = name.indexOf("(");
-    final lastIndex = name.indexOf(")");
-    if (firstIndex != -1 && lastIndex != -1) {
-      return name.substring(firstIndex + 1, lastIndex);
-    } else {
-      return null;
-    }
+  bool isGroup() {
+    return baseSkill == null;
+  }
+
+  bool isAdvanced() {
+    return baseSkill!.isAdvanced;
+  }
+
+  Attribute? getAttribute() {
+    return baseSkill!.getAttribute();
   }
 
   int getTotalValue() {
-    return attribute!.getTotalValue() + advances;
+    return baseSkill!.getTotalValue() + advances;
   }
 
   @override
@@ -44,14 +36,36 @@ class Skill extends DTO {
 
   @override
   Map<String, dynamic> toMap() {
+    return {"ID": id, "NAME": name, "SPECIALISATION": specialisation, "BASE_SKILL": baseSkill?.id};
+  }
+}
+
+class BaseSkill extends DTO {
+  int id;
+  String name;
+  String description;
+  bool isAdvanced;
+  Attribute? attribute;
+
+  BaseSkill(
+      {required this.id, required this.name, required this.description, required this.isAdvanced, this.attribute});
+
+  int getTotalValue() {
+    return attribute!.getTotalValue();
+  }
+
+  Attribute? getAttribute() {
+    return attribute;
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
     return {
       "ID": id,
       "NAME": name,
-      "ATTR_ID": attribute?.id,
-      "DESCR": description,
-      "ADV": advanced ? 1 : 0,
-      "GROUPED": grouped ? 1 : 0,
-      "CATEGORY": category
+      "DESCRIPTION": description,
+      "IS_ADVANCED": isAdvanced ? 1 : 0,
+      "ATTRIBUTE_ID": attribute?.id
     };
   }
 }

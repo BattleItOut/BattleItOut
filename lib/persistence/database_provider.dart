@@ -24,7 +24,7 @@ class DatabaseProvider {
       print("Database initiated");
     }
 
-    var dbDir = await getApplicationDocumentsDirectory();
+    var dbDir = await getTemporaryDirectory();
     var dbPath = join(dbDir.path, "database.sqlite");
     var dbFile = File(dbPath);
 

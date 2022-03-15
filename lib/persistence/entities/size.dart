@@ -9,11 +9,7 @@ class Size extends DTO {
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      "ID": id,
-      "NAME": name,
-      "SOURCE": source
-    };
+    return {"ID": id, "NAME": name, "SOURCE": source};
   }
 
   @override
