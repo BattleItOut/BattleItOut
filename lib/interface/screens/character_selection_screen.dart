@@ -67,7 +67,8 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
     var characters = _generateCharacters();
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("CHARACTER_SELECTION_SCREEN_TITLE".localise(context))),
+        centerTitle: true,
+        title: Text("CHARACTER_SELECTION_SCREEN_TITLE".localise(context)),
       ),
       body: Center(
         child: ListView.builder(

@@ -17,7 +17,8 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text(widget.character.name)),
+        centerTitle: true,
+        title: Text(widget.character.name),
       ),
       body: ListView(
         padding: const EdgeInsets.all(12),
