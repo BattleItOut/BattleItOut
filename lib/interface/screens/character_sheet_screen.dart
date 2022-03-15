@@ -55,7 +55,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           CharacteristicListItem(
             title: "Attributes",
             children: [
-              [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) attribute.shortName],
+              [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) AppLocalizations.of(context).localise(attribute.shortName)],
               [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) attribute.base.toString()],
               [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) attribute.advances.toString()],
               [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) attribute.getTotalValue().toString()]
@@ -65,7 +65,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           CharacteristicListItem(
             children: [
               for (var attribute in widget.character.attributes.values.where((attr) => attr.importance > 0))
-              [attribute.name, attribute.getTotalValue().toString()]
+              [AppLocalizations.of(context).localise(attribute.name), attribute.getTotalValue().toString()]
             ],
             columnTypes: const [
               CharacteristicType.name,
@@ -77,8 +77,8 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             title: "Basic skills",
             children: [
               for (var skill in widget.character.skills.values.where((element) => !element.isAdvanced())) [
-                skill.name,
-                skill.getAttribute()!.name,
+                AppLocalizations.of(context).localise(skill.name),
+                AppLocalizations.of(context).localise(skill.getAttribute()!.shortName),
                 skill.getAttribute()!.getTotalValue().toString(),
                 skill.advances.toString(),
                 skill.getTotalValue().toString()
@@ -97,8 +97,8 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               title: "Advanced skills",
               children: [
                 for (var skill in widget.character.skills.values.where((element) => element.isAdvanced())) [
-                  skill.name,
-                  skill.getAttribute()!.name,
+                  AppLocalizations.of(context).localise(skill.name),
+                  AppLocalizations.of(context).localise(skill.getAttribute()!.shortName),
                   skill.getAttribute()!.getTotalValue().toString(),
                   skill.advances.toString(),
                   skill.getTotalValue().toString()
@@ -117,7 +117,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             title: "Talents",
             children: [
               for (var talent in widget.character.talents.values) [
-                talent.name,
+                AppLocalizations.of(context).localise(talent.name),
                 talent.currentLvl.toString(),
                 talent.getMaxLvl()?.toString() ?? ""
               ]
@@ -133,7 +133,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             title: "Armour",
             children: [
               for (var armour in widget.character.armour) [
-                armour.name,
+                AppLocalizations.of(context).localise(armour.name),
                 armour.headAP.toString(),
                 armour.bodyAP.toString(),
                 armour.leftArmAP.toString(),
@@ -157,18 +157,18 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             title: "Weapons",
             children: [
               for (var weapon in widget.character.meleeWeapons) [
-                weapon.name,
-                weapon.length.name,
-                weapon.skill!.specialisation!,
+                AppLocalizations.of(context).localise(weapon.name),
+                AppLocalizations.of(context).localise(weapon.length.name),
+                AppLocalizations.of(context).localise(weapon.skill!.specialisation!),
                 (weapon.damage + (widget.character.attributes[Character.strengthId]!.getTotalBonus())).toString(),
-                weapon.qualities.map((quality) => quality.name).join(", ")
+                weapon.qualities.map((quality) => AppLocalizations.of(context).localise(quality.name)).join(", ")
               ],
               for (var weapon in widget.character.rangedWeapons) [
-                weapon.name,
+                AppLocalizations.of(context).localise(weapon.name),
                 weapon.range.toString(),
-                weapon.skill!.specialisation!,
+                AppLocalizations.of(context).localise(weapon.skill!.specialisation!),
                 (weapon.damage + (weapon.strengthBonus ? (widget.character.attributes[Character.strengthId]!.getTotalBonus()) : 0)).toString(),
-                weapon.qualities.map((quality) => quality.name).join(", ")
+                weapon.qualities.map((quality) => AppLocalizations.of(context).localise(quality.name)).join(", ")
               ],
             ],
             columnTypes: const [
