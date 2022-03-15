@@ -36,12 +36,12 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           ),
           CharacteristicListItem(
             title: "ATTRIBUTES".localise(context),
-            children: [
+            children: (widget.character.attributes.isNotEmpty) ? [
               [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) attribute.shortName.localise(context)],
               [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) attribute.base.toString()],
               [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) attribute.advances.toString()],
               [for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0)) attribute.getTotalValue().toString()]
-            ],
+            ] : [],
             context: context
           ),
           CharacteristicListItem(

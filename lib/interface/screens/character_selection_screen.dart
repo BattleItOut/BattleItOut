@@ -3,7 +3,6 @@ import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/alert.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
-import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/size.dart';
@@ -68,7 +67,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
                 size: Size(name: "")
               ),
               profession: Profession(name: ""),
-              attributes: {0: Attribute(id: 0, name: "", shortName: "", description: "", rollable: 1, importance: 1)}
+              attributes: {}
             )
           ),
         ));
