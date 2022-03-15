@@ -66,13 +66,14 @@ class LocalisationManager {
     return _languages[language ?? _currentLanguage]?[key] ?? key;
   }
 
-  void duplicateValuesTest() {
-    if (_currentLanguage == null) {
+  void duplicateValuesTest([String? language]) {
+    language = language ?? _currentLanguage;
+    if (language == null) {
       return;
     }
 
     var testMap = {};
-    for (var entry in _languages[_currentLanguage]!.entries) {
+    for (var entry in _languages[language]!.entries) {
       if (testMap.containsKey(entry.value)) {
         testMap[entry.value].add(entry.key);
       } else {

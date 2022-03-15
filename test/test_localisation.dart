@@ -34,9 +34,8 @@ Future<void> localisationTest() async {
             }
           });
         }
-
         performLocTest("Check base talent localisations", BaseTalentDAO(), (item) => [item.name, item.description]);
-        performLocTest("Check talent localisations", TalentDAO(), (item) => [item.name]);
+        performLocTest("Check talent localisations", TalentDAO(), (item) => [item.name, item.specialisation]);
         performLocTest("Check profession class localisations", ProfessionCareerDAO(), (item) => [item.name]);
         performLocTest("Check profession career localisations", ProfessionCareerDAO(), (item) => [item.name]);
         performLocTest("Check profession localisations", ProfessionDAO(), (item) => [item.name]);
@@ -47,9 +46,8 @@ Future<void> localisationTest() async {
         performLocTest("Check attribute localisations", AttributeDAO(), (item) => [item.name, item.shortName, item.description]);
         performLocTest("Check base skill localisations", BaseSkillDAO(), (item) => [item.name, item.description]);
         performLocTest("Check skill localisations", SkillDAO(), (item) => [item.name, item.specialisation]);
-
-        // checkDuplicateValues(translationMap);
       });
+      LocalisationManager.instance.duplicateValuesTest(languageName);
     }
   });
 }
