@@ -31,6 +31,46 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
     }
   }
 
+  List<List<String>> createSkills(groupedSkills) {
+    List<List<String>> list = [];
+    for (var entry in groupedSkills.entries) {
+      if (entry.value.length == 1) {
+        if (entry.value.first.advances > 0) {
+          list.add([
+            AppLocalizations.of(context).localise(entry.value.first.name),
+            "",
+            AppLocalizations.of(context).localise(entry.value.first.getAttribute()!.shortName),
+            entry.value.first.getAttribute()!.getTotalValue().toString(),
+            entry.value.first.advances.toString(),
+            entry.value.first.getTotalValue().toString()
+          ]);
+        }
+      } else {
+        list.add([
+          AppLocalizations.of(context).localise(entry.key),
+          "",
+          !entry.value.first.isAdvanced() ? AppLocalizations.of(context).localise(entry.value.first.getAttribute()!.shortName) : "",
+          !entry.value.first.isAdvanced() ? entry.value.first.getAttribute()!.getTotalValue().toString() : "",
+          "",
+          ""
+        ]);
+        for (var skill in entry.value) {
+          if (skill.advances > 0) {
+            list.add([
+              "",
+              AppLocalizations.of(context).localise(skill.specialisation!),
+              AppLocalizations.of(context).localise(skill.getAttribute()!.shortName),
+              skill.getAttribute()!.getTotalValue().toString(),
+              skill.advances.toString(),
+              skill.getTotalValue().toString()
+            ]);
+          }
+        }
+      }
+    }
+    return list;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,36 +115,22 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           ),
           CharacteristicListItem(
             title: "Basic skills",
-            children: [
-              for (var skill in widget.character.skills.values.where((element) => !element.isAdvanced())) [
-                AppLocalizations.of(context).localise(skill.name),
-                AppLocalizations.of(context).localise(skill.getAttribute()!.shortName),
-                skill.getAttribute()!.getTotalValue().toString(),
-                skill.advances.toString(),
-                skill.getTotalValue().toString()
-              ]
-            ],
-            columnTypes: const [
-              CharacteristicType.name,
-              CharacteristicType.shortcut,
-              CharacteristicType.value,
-              CharacteristicType.value,
-              CharacteristicType.value
-            ],
-            context: context
+              children: createSkills(widget.character.getBasicSkillsGrouped()),
+              columnTypes: const [
+                CharacteristicType.name,
+                CharacteristicType.name,
+                CharacteristicType.shortcut,
+                CharacteristicType.value,
+                CharacteristicType.value,
+                CharacteristicType.value
+              ],
+              context: context
           ),
           CharacteristicListItem(
               title: "Advanced skills",
-              children: [
-                for (var skill in widget.character.skills.values.where((element) => element.isAdvanced())) [
-                  AppLocalizations.of(context).localise(skill.name),
-                  AppLocalizations.of(context).localise(skill.getAttribute()!.shortName),
-                  skill.getAttribute()!.getTotalValue().toString(),
-                  skill.advances.toString(),
-                  skill.getTotalValue().toString()
-                ]
-              ],
+              children: createSkills(widget.character.getAdvancedSkillsGrouped()),
               columnTypes: const [
+                CharacteristicType.name,
                 CharacteristicType.name,
                 CharacteristicType.shortcut,
                 CharacteristicType.value,

@@ -200,11 +200,30 @@ class Character {
     return List.of(attributes.values);
   }
 
-  List<Skill> getSkills() {
-    List<Skill> sortedSkills = List.of(skills.values);
-    sortedSkills.sort((a, b) => a.name.compareTo(b.name));
-    return sortedSkills;
+  Map<String, List<Skill>> getBasicSkillsGrouped() {
+    Map<String, List<Skill>> output = {};
+    for (var skill in skills.values.where((skill) => !skill.isAdvanced())) {
+      var category = skill.baseSkill!.name;
+      if (output.containsKey(category)) {
+        output[category]!.add(skill);
+      } else {
+        output[category] = [skill];
+      }
+    }
+    return output;
   }
+  Map<String, List<Skill>> getAdvancedSkillsGrouped() {
+    Map<String, List<Skill>> output = {};
+    for (var skill in skills.values.where((skill) => skill.isAdvanced())) {
+      var category = skill.baseSkill!.name;
+      if (output.containsKey(category)) {
+        output[category]!.add(skill);
+      } else {
+        output[category] = [skill];
+    }
+  }
+  return output;
+}
 
   List<Talent> getTalents() {
     return List.of(talents.values);
