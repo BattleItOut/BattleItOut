@@ -1,8 +1,10 @@
 import 'package:battle_it_out/entities_localisation.dart';
+import 'package:battle_it_out/interface/components/settings.dart';
 import 'package:battle_it_out/interface/screens/character_selection_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
+import '../../state_container.dart';
 import '../components/list_items.dart';
 import 'character_sheet_screen.dart';
 
@@ -138,10 +140,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
       entries.add(CharacterListItem(character: characters[i], context: context));
     }
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("TURN_ORDER_SCREEN_TITLE".localise(context)),
-      ),
+      appBar: applicationBar("TURN_ORDER_SCREEN_TITLE".localise(context)),
       body: Center(
         child: ListView.builder(
           padding: const EdgeInsets.all(12),
@@ -163,6 +162,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
           }
         )
       ),
+      endDrawer: settingsDrawer(context),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(icon: const Icon(Icons.navigate_before), label: "PREVIOUS".localise(context)),

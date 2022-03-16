@@ -1,5 +1,6 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
+import 'package:battle_it_out/interface/components/settings.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
@@ -16,10 +17,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(widget.character.name),
-      ),
+      appBar: applicationBar(widget.character.name),
       body: ListView(
         padding: const EdgeInsets.all(12),
         children: [
@@ -164,7 +162,8 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             context: context
           )
         ]
-      )
+      ),
+      endDrawer: settingsDrawer(context)
     );
   }
 }

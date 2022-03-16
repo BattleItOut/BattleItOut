@@ -1,5 +1,6 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
+import 'package:battle_it_out/interface/components/settings.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/state_container.dart';
@@ -67,10 +68,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
     savedCharacters = StateContainer.of(context).savedCharacters;
     var characters = _generateCharacters();
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("CHARACTER_SELECTION_SCREEN_TITLE".localise(context)),
-      ),
+      appBar: applicationBar("CHARACTER_SELECTION_SCREEN_TITLE".localise(context)),
       body: Center(
         child: ListView.builder(
           padding: const EdgeInsets.all(12),
@@ -87,7 +85,8 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
             );
           }
         )
-      )
+      ),
+      endDrawer: settingsDrawer(context)
     );
   }
 }
