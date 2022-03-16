@@ -1,6 +1,9 @@
 import 'package:battle_it_out/entities_localisation.dart';
+import 'package:battle_it_out/interface/components/alert.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
+import 'package:battle_it_out/persistence/entities/weapon_length.dart';
 import 'package:flutter/material.dart';
 
 class CharacterSheetScreen extends StatefulWidget {
@@ -141,14 +144,14 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               for (var weapon in widget.character.meleeWeapons) [
                 weapon.name.localise(context),
                 weapon.length.name.localise(context),
-                weapon.skill!.specialisation!.localise(context),
+                weapon.skill?.specialisation?.localise(context) ?? "",
                 (weapon.damage + (widget.character.attributes[Character.strengthId]!.getTotalBonus())).toString(),
                 weapon.qualities.map((quality) => quality.name.localise(context)).join(", ")
               ],
               for (var weapon in widget.character.rangedWeapons) [
                 weapon.name.localise(context),
                 weapon.range.toString(),
-                weapon.skill!.specialisation!.localise(context),
+                weapon.skill?.specialisation?.localise(context) ?? "",
                 (weapon.damage + (weapon.strengthBonus ? (widget.character.attributes[Character.strengthId]!.getTotalBonus()) : 0)).toString(),
                 weapon.qualities.map((quality) => quality.name.localise(context)).join(", ")
               ],
@@ -160,6 +163,28 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               CharacteristicType.value,
               CharacteristicType.name
             ],
+            doOnLongPress: () {
+              String weaponName = "";
+              showAlert(
+                "ADD_WEAPON".localise(context),
+                (value) {
+                  weaponName = value;
+                },
+                String,
+                () {
+                  setState(() {
+                    widget.character.meleeWeapons.add(MeleeWeapon(
+                      id: 0,
+                      name: weaponName,
+                      length: WeaponLength(name: "LONG".localise(context)),
+                      damage: 30,
+                      skill: null)
+                    );
+                  });
+                },
+                context
+              );
+            },
             context: context
           )
         ]

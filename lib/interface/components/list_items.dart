@@ -58,18 +58,22 @@ class CharacteristicListItem extends TileListItem {
     String? title,
     required List<List<String>> children,
     List<CharacteristicType?>? columnTypes,
-    required BuildContext context
+    required BuildContext context,
+    Function()? doOnLongPress
   }) : super(
     key: key,
-    child: Container(
-      margin: const EdgeInsets.all(8.0),
-      child: title != null ? Column(
-        children: [
-          Text(title, style: const TextStyle(fontSize: 24.0)),
-          const Divider(),
-          CharacteristicListItem.createTable(children, columnTypes)
-        ],
-      ) : CharacteristicListItem.createTable(children, columnTypes)
+    child: InkWell(
+      child: Container(
+        margin: const EdgeInsets.all(8.0),
+        child: title != null ? Column(
+          children: [
+            Text(title, style: const TextStyle(fontSize: 24.0)),
+            const Divider(),
+            CharacteristicListItem.createTable(children, columnTypes)
+          ],
+        ) : CharacteristicListItem.createTable(children, columnTypes)
+      ),
+      onLongPress: doOnLongPress,
     ),
     context: context
   );

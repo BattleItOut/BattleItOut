@@ -1,4 +1,5 @@
 import 'package:battle_it_out/persistence/entities/item.dart';
+import 'package:battle_it_out/persistence/entities/item_quality.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 import 'package:battle_it_out/persistence/entities/weapon_length.dart';
 
@@ -13,7 +14,7 @@ class MeleeWeapon extends Item {
       required this.length,
       required this.damage,
       required this.skill,
-      qualities = const []})
+      qualities = const <ItemQuality>[]})
       : super(id: id, name: name, qualities: qualities);
 
   int getTotalSkillValue() {
