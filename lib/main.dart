@@ -1,19 +1,17 @@
 import 'dart:convert';
 
-import 'package:battle_it_out/app_cache.dart';
 import 'package:battle_it_out/interface/themes.dart';
 import 'package:battle_it_out/interface/screens/turn_order_screen.dart';
 import 'package:battle_it_out/localisation.dart';
 import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/state_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
-  runApp(const MyApp());
-
-  List<Character> templateCharacters = await loadTemplates();
-  AppCache.init(characters: templateCharacters);
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(StateContainer(child: const MyApp(), savedCharacters: await loadTemplates()));
 }
 
 Future<List<Character>> loadTemplates() async {
@@ -32,7 +30,7 @@ Future<List<Character>> loadTemplates() async {
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  static void setLocale(BuildContext context, Locale newLocale) async {
+  static void setLocale(BuildContext context, Locale newLocale) {
     MyAppState state = context.findAncestorStateOfType<MyAppState>()!;
     state.changeLanguage(newLocale);
   }
