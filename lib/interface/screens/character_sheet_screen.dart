@@ -143,14 +143,14 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                 weapon.name.localise(context),
                 weapon.length.name.localise(context),
                 weapon.skill!.specialisation!.localise(context),
-                (weapon.damage + (widget.character.attributes[Character.strengthId]!.getTotalBonus())).toString(),
+                weapon.getTotalDamage().toString(),
                 weapon.qualities.map((quality) => quality.name.localise(context)).join(", ")
               ],
               for (var weapon in widget.character.rangedWeapons) [
                 weapon.name.localise(context),
-                weapon.range.toString(),
+                weapon.getRange().toString(),
                 weapon.skill!.specialisation!.localise(context),
-                (weapon.damage + (weapon.strengthBonus ? (widget.character.attributes[Character.strengthId]!.getTotalBonus()) : 0)).toString(),
+                weapon.getTotalDamage().toString(),
                 weapon.qualities.map((quality) => quality.name.localise(context)).join(", ")
               ],
             ],
