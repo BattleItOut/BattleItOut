@@ -41,7 +41,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
   void _append() async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => CharacterSelectionScreen()),
+      MaterialPageRoute(builder: (context) => const CharacterSelectionScreen()),
     );
     if (result != null) {
       var index = 0;
