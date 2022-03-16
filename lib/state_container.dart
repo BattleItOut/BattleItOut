@@ -1,4 +1,5 @@
 import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/utils/utilities.dart';
 import 'package:flutter/widgets.dart';
 
 class _InheritedStateContainer extends InheritedWidget {
@@ -29,24 +30,29 @@ class StateContainer extends StatefulWidget {
 }
 
 class StateContainerState extends State<StateContainer> {
-  List<Character> getCharacters() {
-    return widget.savedCharacters;
+  final Wrapper<Locale> _localeWrapper = Wrapper();
+
+  get savedCharacters => widget.savedCharacters;
+  get locale => _localeWrapper.object;
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _localeWrapper.object = locale;
+    });
   }
+
   void addCharacter(Character character) {
     setState(() {
       widget.savedCharacters.add(character);
     });
   }
+
   void removeCharacterAt(int index) {
     setState(() {
       widget.savedCharacters.removeAt(index);
     });
   }
-  void removeCharacterLast() {
-    setState(() {
-      widget.savedCharacters.removeLast();
-    });
-  }
+
   @override
   Widget build(BuildContext context) {
     return _InheritedStateContainer(

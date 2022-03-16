@@ -64,7 +64,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    savedCharacters = StateContainer.of(context).getCharacters();
+    savedCharacters = StateContainer.of(context).savedCharacters;
     var characters = _generateCharacters();
     return Scaffold(
       appBar: AppBar(
