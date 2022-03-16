@@ -1,38 +1,40 @@
-import 'package:battle_it_out/app_cache.dart';
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/alert.dart';
+import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/size.dart';
+import 'package:battle_it_out/state_container.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
 import '../components/list_items.dart';
 
 class CharacterSelectionScreen extends StatefulWidget {
-  CharacterSelectionScreen({Key? key}) : super(key: key);
 
-  final List<Character> characters = AppCache().characters;
+  const CharacterSelectionScreen({Key? key}) : super(key: key);
 
   @override
   State<CharacterSelectionScreen> createState() => _CharacterSelectionScreenState();
 }
 
 class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
+  late List<Character> savedCharacters;
+
   List<CharacterListItem> _generateCharacters() {
     return List<CharacterListItem>.generate(
-      widget.characters.length,
+      savedCharacters.length,
       (index) => CharacterListItem(
-        character: widget.characters[index],
+        character: savedCharacters[index],
         context: context
       )
     );
   }
 
   void _select(int index) {
-    var character = Character.from(widget.characters[index]);
+    var character = Character.from(savedCharacters[index]);
     showAlert(
       "INITIATIVE".localise(context),
       [
@@ -48,7 +50,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
 
   void _info(int index) {
     Navigator.push(context, MaterialPageRoute(
-      builder: (context) => CharacterSheetScreen(character: widget.characters[index]),
+      builder: (context) => CharacterSheetScreen(character: savedCharacters[index]),
     ));
   }
 
@@ -69,7 +71,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
           profession: Profession(name: ""),
           attributes: {}
         );
-        widget.characters.add(newCharacter);
+        StateContainer.of(context).addCharacter(newCharacter);
         Navigator.of(context).pop();
         Navigator.push(context, MaterialPageRoute(
           builder: (context) => CharacterSheetScreen(character: newCharacter),
@@ -90,10 +92,12 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    savedCharacters = StateContainer.of(context).savedCharacters;
     var characters = _generateCharacters();
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("CHARACTER_SELECTION_SCREEN_TITLE".localise(context))),
+        centerTitle: true,
+        title: Text("CHARACTER_SELECTION_SCREEN_TITLE".localise(context)),
       ),
       body: Center(
         child: ListView.builder(
