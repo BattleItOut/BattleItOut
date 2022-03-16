@@ -1,5 +1,6 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
+import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/localisation.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
@@ -14,38 +15,35 @@ class CharacterSheetScreen extends StatefulWidget {
 }
 
 class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
-  List<List<String>> createSkills(groupedSkills) {
-    List<List<String>> list = [];
+  List<List<PaddedText>> createSkills(groupedSkills) {
+    List<List<PaddedText>> list = [];
     for (var entry in groupedSkills.entries) {
       if (entry.value.length == 1) {
         if (entry.value.first.advances > 0) {
           list.add([
-            AppLocalizations.of(context).localise(entry.value.first.name),
-            "",
-            AppLocalizations.of(context).localise(entry.value.first.getAttribute()!.shortName),
-            entry.value.first.getAttribute()!.getTotalValue().toString(),
-            entry.value.first.advances.toString(),
-            entry.value.first.getTotalValue().toString()
+            LocalisedText(entry.value.first.name, context),
+            LocalisedShortcut(entry.value.first.getAttribute()!.shortName, context),
+            IntegerText(entry.value.first.getAttribute()!.getTotalValue()),
+            IntegerText(entry.value.first.advances),
+            IntegerText(entry.value.first.getTotalValue())
           ]);
         }
       } else {
         list.add([
-          AppLocalizations.of(context).localise(entry.key),
-          "",
-          !entry.value.first.isAdvanced() ? AppLocalizations.of(context).localise(entry.value.first.getAttribute()!.shortName) : "",
-          !entry.value.first.isAdvanced() ? entry.value.first.getAttribute()!.getTotalValue().toString() : "",
-          "",
-          ""
+          LocalisedText(entry.key, context),
+          LocalisedShortcut(!entry.value.first.isAdvanced() ? AppLocalizations.of(context).localise(entry.value.first.getAttribute()!.shortName) : "", context, textAlign: TextAlign.center),
+          IntegerText(!entry.value.first.isAdvanced() ? entry.value.first.getAttribute()!.getTotalValue() : null),
+          IntegerText(null),
+          IntegerText(null),
         ]);
         for (var skill in entry.value) {
           if (skill.advances > 0) {
             list.add([
-              "",
-              AppLocalizations.of(context).localise(skill.specialisation!),
-              AppLocalizations.of(context).localise(skill.getAttribute()!.shortName),
-              skill.getAttribute()!.getTotalValue().toString(),
-              skill.advances.toString(),
-              skill.getTotalValue().toString()
+              LocalisedText(skill.specialisation!, context, style: const TextStyle(fontStyle: FontStyle.italic), padding: const EdgeInsets.only(left: 20)),
+              LocalisedShortcut(skill.getAttribute()!.shortName, context),
+              IntegerText(skill.getAttribute()!.getTotalValue()),
+              IntegerText(skill.advances),
+              IntegerText(skill.getTotalValue())
             ]);
           }
         }
@@ -97,30 +95,14 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             ],
             context: context
           ),
-          CharacteristicListItem(
-            title: "Basic skills",
+          MyCharacteristicListItem(
+            title: "Basic skills".localise(context),
               children: createSkills(widget.character.getBasicSkillsGrouped()),
-              columnTypes: const [
-                CharacteristicType.name,
-                CharacteristicType.name,
-                CharacteristicType.shortcut,
-                CharacteristicType.value,
-                CharacteristicType.value,
-                CharacteristicType.value
-              ],
               context: context
           ),
-          CharacteristicListItem(
-              title: "Advanced skills",
+          MyCharacteristicListItem(
+              title: "Advanced skills".localise(context),
               children: createSkills(widget.character.getAdvancedSkillsGrouped()),
-              columnTypes: const [
-                CharacteristicType.name,
-                CharacteristicType.name,
-                CharacteristicType.shortcut,
-                CharacteristicType.value,
-                CharacteristicType.value,
-                CharacteristicType.value
-              ],
               context: context
           ),
           CharacteristicListItem(
@@ -139,27 +121,18 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             ],
             context: context
           ),
-          CharacteristicListItem(
+          MyCharacteristicListItem(
             title: "ARMOUR".localise(context),
             children: [
               for (var armour in widget.character.armour) [
-                armour.name.localise(context),
-                armour.headAP.toString(),
-                armour.bodyAP.toString(),
-                armour.leftArmAP.toString(),
-                armour.rightArmAP.toString(),
-                armour.leftLegAP.toString(),
-                armour.rightLegAP.toString()
+                LocalisedText(armour.name, context),
+                IntegerText(armour.headAP),
+                IntegerText(armour.bodyAP),
+                IntegerText(armour.leftArmAP),
+                IntegerText(armour.rightArmAP),
+                IntegerText(armour.leftLegAP),
+                IntegerText(armour.rightLegAP)
               ]
-            ],
-            columnTypes: const [
-              CharacteristicType.name,
-              CharacteristicType.value,
-              CharacteristicType.value,
-              CharacteristicType.value,
-              CharacteristicType.value,
-              CharacteristicType.value,
-              CharacteristicType.value
             ],
             context: context
           ),

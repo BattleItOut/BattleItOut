@@ -1,11 +1,12 @@
 import 'package:battle_it_out/entities_localisation.dart';
+import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
 class ListItem extends Container {
   ListItem({
     Key? key,
-    required Widget child,
+    Widget? child,
     double? height,
     BoxDecoration? decoration
   }) : super(
@@ -26,7 +27,7 @@ class LabelListItem extends ListItem {
 }
 
 class TileListItem extends ListItem {
-  TileListItem({Key? key, required Widget child, required BuildContext context}) : super(
+  TileListItem({Key? key, Widget? child, required BuildContext context}) : super(
     key: key,
     child: child,
     decoration: BoxDecoration(
@@ -51,6 +52,39 @@ class CharacterListItem extends TileListItem {
 }
 
 enum CharacteristicType { name, shortcut, value }
+
+class MyCharacteristicListItem extends TileListItem {
+  MyCharacteristicListItem({
+    Key? key,
+    String? title,
+    required List<List<PaddedText>> children,
+    required BuildContext context
+  }) : super(
+      key: key,
+      child: children.isEmpty ? null : Container(
+          margin: const EdgeInsets.all(8.0),
+          child: title != null ? Column(
+            children: [
+              Text(title, style: const TextStyle(fontSize: 24.0)),
+              const Divider(),
+              MyCharacteristicListItem.createTable(children)
+            ],
+          ) : MyCharacteristicListItem.createTable(children)
+      ),
+      context: context
+  );
+
+  static Widget createTable(List<List<PaddedText>> children) {
+    return Table(
+      columnWidths: {for (var i = 0; i < children[0].length; i++) i: children[0][i].columnWidth},
+      children: [
+        for (var row in children) TableRow(
+            children: [for (var value in row) value.create()]
+        )
+      ],
+    );
+  }
+}
 
 class CharacteristicListItem extends TileListItem {
   CharacteristicListItem({
