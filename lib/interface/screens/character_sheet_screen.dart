@@ -5,6 +5,7 @@ import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
 import 'package:battle_it_out/persistence/entities/weapon_length.dart';
 import 'package:flutter/material.dart';
+import 'package:tuple/tuple.dart';
 
 class CharacterSheetScreen extends StatefulWidget {
   const CharacterSheetScreen({Key? key, required this.character}) : super(key: key);
@@ -165,19 +166,21 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             ],
             doOnLongPress: () {
               String weaponName = "";
+              int weaponDamage = 0;
               showAlert(
                 "ADD_WEAPON".localise(context),
-                (value) {
-                  weaponName = value;
-                },
-                String,
+                [
+                  Tuple2((value) { weaponName = value; }, String),
+                  Tuple2((value) { weaponDamage = int.parse(value); }, int)
+                ],
                 () {
+                  Navigator.of(context).pop();
                   setState(() {
                     widget.character.meleeWeapons.add(MeleeWeapon(
                       id: 0,
                       name: weaponName,
                       length: WeaponLength(name: "LONG".localise(context)),
-                      damage: 30,
+                      damage: weaponDamage,
                       skill: null)
                     );
                   });

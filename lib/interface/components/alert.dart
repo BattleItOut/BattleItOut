@@ -1,13 +1,13 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tuple/tuple.dart';
 
 class AlertTextField {}
 
 void showAlert(
   String title,
-  Function(String) onTextFieldChanged,
-  Type textFieldType,
+  List<Tuple2<Function(String), Type>> fields,
   void Function() onProceedPressed,
   BuildContext context
 ) {
@@ -16,14 +16,17 @@ void showAlert(
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(title),
-        content: TextField(
-          onChanged: (value) {
-            onTextFieldChanged(value);
-          },
-          keyboardType: textFieldType == int ? TextInputType.number : TextInputType.text,
-          inputFormatters: textFieldType == int ? [FilteringTextInputFormatter.digitsOnly] : [],
-          textAlign: TextAlign.center,
-        ),
+        content: Column(children:[
+          for (var field in fields)
+            TextField(
+              onChanged: (value) {
+                field.item1(value);
+              },
+              keyboardType: field.item2 == int ? TextInputType.number : TextInputType.text,
+              inputFormatters: field.item2 == int ? [FilteringTextInputFormatter.digitsOnly] : [],
+              textAlign: TextAlign.center,
+            )
+        ]),
         actions: [
           TextButton(
             child: Text("CANCEL".localise(context)),

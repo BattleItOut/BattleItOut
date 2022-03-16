@@ -7,6 +7,7 @@ import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/size.dart';
 import 'package:flutter/material.dart';
+import 'package:tuple/tuple.dart';
 
 import '../components/list_items.dart';
 
@@ -34,8 +35,9 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
     var character = Character.from(widget.characters[index]);
     showAlert(
       "INITIATIVE".localise(context),
-      (value) { character.initiative = int.parse(value); },
-      int,
+      [
+        Tuple2((value) { character.initiative = int.parse(value); }, int)
+      ],
       () {
         Navigator.of(context).pop();
         Navigator.pop(context, character);
@@ -54,8 +56,9 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
     String? name;
     showAlert(
       "NAME".localise(context),
-      (value) => name = value,
-      String,
+      [
+        Tuple2((value) => name = value, String)
+      ],
       () {
         var newCharacter = Character(
           name: name!,
