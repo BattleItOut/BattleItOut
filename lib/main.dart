@@ -1,19 +1,19 @@
 import 'dart:convert';
 
-import 'package:battle_it_out/app_cache.dart';
 import 'package:battle_it_out/interface/themes.dart';
 import 'package:battle_it_out/interface/screens/turn_order_screen.dart';
 import 'package:battle_it_out/localisation.dart';
 import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/state_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
-  runApp(const MyApp());
-
-  List<Character> templateCharacters = await loadTemplates();
-  AppCache.init(characters: templateCharacters);
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(StateContainer(
+      child: const MyApp(),
+      savedCharacters: await loadTemplates()));
 }
 
 Future<List<Character>> loadTemplates() async {
@@ -29,26 +29,8 @@ Future<List<Character>> loadTemplates() async {
   return templateCharacters;
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  static void setLocale(BuildContext context, Locale newLocale) async {
-    MyAppState state = context.findAncestorStateOfType<MyAppState>()!;
-    state.changeLanguage(newLocale);
-  }
-
-  @override
-  MyAppState createState() => MyAppState();
-}
-
-class MyAppState extends State<MyApp> {
-  Locale? _locale;
-
-  changeLanguage(Locale locale) {
-    setState(() {
-      _locale = locale;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +39,7 @@ class MyAppState extends State<MyApp> {
       themeMode: ThemeMode.system,
       theme: Themes.lightTheme,
       darkTheme: Themes.darkTheme,
-      locale: _locale,
+      locale: StateContainer.of(context).locale,
       localizationsDelegates: const [
         AppLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
