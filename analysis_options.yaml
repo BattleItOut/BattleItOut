@@ -2,7 +2,8 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   errors:
-    asset_does_not_exist: ignore
+    - asset_does_not_exist: ignore
+    - avoid_void_async
 
 linter:
   rules:

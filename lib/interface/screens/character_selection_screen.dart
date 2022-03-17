@@ -2,7 +2,7 @@ import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
-import 'package:battle_it_out/state_container.dart';
+import 'package:battle_it_out/interface/state_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -15,7 +15,7 @@ class CharacterSelectionScreen extends StatefulWidget {
 }
 
 class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
-  late List<Character> savedCharacters;
+  List<Character> savedCharacters = [];
 
   List<CharacterListItem> _generateCharacters() {
     return List<CharacterListItem>.generate(

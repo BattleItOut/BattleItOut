@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/utils/utilities.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 class _InheritedStateContainer extends InheritedWidget {
@@ -13,13 +16,8 @@ class _InheritedStateContainer extends InheritedWidget {
 
 class StateContainer extends StatefulWidget {
   final Widget child;
-  final List<Character> savedCharacters;
 
-  const StateContainer({
-    required this.child,
-    required this.savedCharacters,
-    Key? key
-  }) : super(key: key);
+  const StateContainer({required this.child, Key? key}) : super(key: key);
 
   static StateContainerState of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_InheritedStateContainer>()!.data;
@@ -31,9 +29,29 @@ class StateContainer extends StatefulWidget {
 
 class StateContainerState extends State<StateContainer> {
   final Wrapper<Locale> _localeWrapper = Wrapper();
+  final List<Character> _savedCharacters = [];
 
-  get savedCharacters => widget.savedCharacters;
+  get savedCharacters => _savedCharacters;
   get locale => _localeWrapper.object;
+
+  @override
+  initState() {
+    loadCharacters().then((value) => print("Characters loaded"));
+    super.initState();
+  }
+
+  Future<void> loadCharacters() async {
+    final manifestJson = await rootBundle.loadString('AssetManifest.json');
+    final templates = json.decode(manifestJson).keys.where((String key) => key.startsWith('assets/templates'));
+
+    for (var template in templates) {
+      var json = jsonDecode(await rootBundle.loadString(template));
+      Character character = await Character.create(json);
+      setState(() {
+        _savedCharacters.add(character);
+      });
+    }
+  }
 
   void setLocale(Locale locale) {
     setState(() {
@@ -43,13 +61,13 @@ class StateContainerState extends State<StateContainer> {
 
   void addCharacter(Character character) {
     setState(() {
-      widget.savedCharacters.add(character);
+      _savedCharacters.add(character);
     });
   }
 
   void removeCharacterAt(int index) {
     setState(() {
-      widget.savedCharacters.removeAt(index);
+      _savedCharacters.removeAt(index);
     });
   }
 
