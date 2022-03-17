@@ -1,4 +1,5 @@
 import 'package:battle_it_out/persistence/dao/dao.dart';
+import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
 
@@ -35,5 +36,23 @@ class BaseTalentDAO extends DAO<BaseTalent> {
         source: map['SOURCE'],
         attribute: attributes?[map["MAX_LVL"]],
         constLvl: map['CONST_LVL']);
+  }
+}
+
+class TalentTestDAO extends DAO<TalentTest> {
+  TalentTestDAO();
+
+  @override
+  get tableName => 'talent_tests';
+
+  @override
+  Future<TalentTest> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
+    return TalentTest(
+        talentId: map['TALENT_ID'],
+        testId: map['TEST_ID'],
+        description: map['DESCRIPTION'],
+        baseSkill: await BaseSkillDAO().get(map['BASE_SKILL_ID']),
+        skill: await SkillDAO().get(map['SKILL_ID']),
+        comment: map["COMMENT"]);
   }
 }

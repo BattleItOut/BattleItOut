@@ -1,5 +1,6 @@
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/dto.dart';
+import 'package:battle_it_out/persistence/entities/skill.dart';
 
 class Talent extends DTO {
   int id;
@@ -63,5 +64,28 @@ class BaseTalent extends DTO {
       "MAX_LVL": attribute,
       "CONST_LVL": constLvl
     };
+  }
+}
+
+class TalentTest extends DTO {
+  int talentId;
+  int testId;
+  String description;
+  BaseSkill? baseSkill;
+  Skill? skill;
+  String? comment;
+
+  TalentTest({
+    required this.talentId,
+    required this.testId,
+    required this.description,
+    this.baseSkill,
+    this.skill,
+    this.comment});
+
+  @override
+  Map<String, dynamic> toMap() {
+    // TODO: implement toMap
+    throw UnimplementedError();
   }
 }
