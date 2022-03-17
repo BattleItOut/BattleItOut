@@ -38,7 +38,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
     return actualIndex;
   }
 
-  void _append() async {
+  Future<void> _append() async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const CharacterSelectionScreen()),

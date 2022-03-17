@@ -5,7 +5,7 @@ import 'package:battle_it_out/interface/state_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() async => runApp(const StateContainer(child: MyApp()));
+void main() => runApp(const StateContainer(child: MyApp()));
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/utils/utilities.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
@@ -36,7 +37,9 @@ class StateContainerState extends State<StateContainer> {
 
   @override
   initState() {
-    loadCharacters().then((value) => print("Characters loaded"));
+    loadCharacters().then((value) => {
+          if (kDebugMode) {print("Characters loaded")}
+        });
     super.initState();
   }
 

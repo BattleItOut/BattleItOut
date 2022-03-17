@@ -26,7 +26,8 @@ class DatabaseProvider {
     Database database = await databaseFactory.openDatabase(inMemoryDatabasePath,
         options: OpenDatabaseOptions(
             version: 1,
-            onCreate: (Database db, int version) => BatchManager.execute("assets/database/create_db.sql", db)));
+            onCreate: (Database db, int version) async =>
+                await BatchManager.execute("assets/database/create_db.sql", db)));
     if (kDebugMode) {
       print("Database loaded");
     }
@@ -37,7 +38,7 @@ class DatabaseProvider {
 class BatchManager {
   BatchManager._();
 
-  static void execute(String script, Database database) async {
+  static Future<void> execute(String script, Database database) async {
     var component = BatchManager._();
     Batch batch = database.batch();
     await component._open(script, batch);
