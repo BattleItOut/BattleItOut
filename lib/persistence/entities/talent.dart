@@ -7,11 +7,12 @@ class Talent extends DTO {
   String name;
   String? specialisation;
   BaseTalent? baseTalent;
+  List<TalentTest> tests;
 
   int currentLvl = 0;
   bool advancable = false;
 
-  Talent({required this.id, required this.name, this.specialisation, this.baseTalent});
+  Talent({required this.id, required this.name, this.specialisation, this.baseTalent, this.tests = const []});
 
   int? getMaxLvl() {
     return baseTalent!.getMaxLvl();
@@ -68,24 +69,31 @@ class BaseTalent extends DTO {
 }
 
 class TalentTest extends DTO {
-  int talentId;
-  int testId;
-  String description;
-  BaseSkill? baseSkill;
-  Skill? skill;
+  int testID;
+  Talent? talent;
   String? comment;
 
+  BaseSkill? baseSkill;
+  Skill? skill;
+  Attribute? attribute;
+
   TalentTest({
-    required this.talentId,
-    required this.testId,
-    required this.description,
+    required this.testID,
+    required this.talent,
+    this.comment,
     this.baseSkill,
     this.skill,
-    this.comment});
+    this.attribute});
 
   @override
   Map<String, dynamic> toMap() {
-    // TODO: implement toMap
-    throw UnimplementedError();
+    return {
+      "TEST_ID": testID,
+      "TALENT_ID": talent!.id,
+      "COMMENT": comment,
+      "BASE_SKILL_ID": baseSkill?.id,
+      "SKILL_ID": skill!.id,
+      "ATTRIBUTE_ID": attribute!.id
+    };
   }
 }

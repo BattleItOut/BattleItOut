@@ -1,0 +1,220 @@
+{
+  "name": "Sir Ulfrik von Apfelbaum",
+  "race": {
+    "name": "Człowiek",
+    "size": 3,
+    "subrace": {
+      "name": ""
+    }
+  },
+  "profession": {
+    "name": "Middenlandczyk"
+  },
+  "attributes": [
+    {
+      "id": 1,
+      "base": 43
+    },
+    {
+      "id": 2,
+      "base": 26
+    },
+    {
+      "id": 3,
+      "base": 35,
+      "advances": 5
+    },
+    {
+      "id": 4,
+      "base": 31
+    },
+    {
+      "id": 5,
+      "base": 30
+    },
+    {
+      "id": 6,
+      "base": 30
+    },
+    {
+      "id": 7,
+      "base": 26
+    },
+    {
+      "id": 8,
+      "base": 31
+    },
+    {
+      "id": 9,
+      "base": 26
+    },
+    {
+      "id": 10,
+      "base": 30
+    },
+    {
+      "id": 11,
+      "base": 4
+    },
+    {
+      "id": 12,
+      "base": 5
+    },
+    {
+      "id": 13,
+      "base": 0
+    },
+    {
+      "id": 14,
+      "base": 6
+    },
+    {
+      "id": 15,
+      "base": 0
+    }
+  ],
+  "skills": [
+    {
+      "skill_id": 1,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 14,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 12,
+      "advances": 3
+    },
+    {
+      "skill_id": 163,
+      "advances": 0,
+      "advancable": true
+    },
+    {
+      "skill_id": 22,
+      "advances": 3
+    },
+    {
+      "skill_id": 29,
+      "advances": 5
+    },
+    {
+      "skill_id": 4,
+      "advances": 5
+    },
+    {
+      "skill_id": 38,
+      "advances": 5
+    },
+    {
+      "skill_id": 35,
+      "advances": 5
+    },
+    {
+      "skill_id": 21,
+      "advances": 3
+    },
+    {
+      "skill_id": 47,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 13,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 7,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 197,
+      "advances": 10
+    },
+    {
+      "skill_id": 122,
+      "advances": 5,
+      "advancable": true
+    },
+    {
+      "skill_id": 84,
+      "advances": 5,
+      "advancable": true
+    }
+  ],
+  "talents": [
+    {
+      "talent_id": 166,
+      "lvl": 1
+    },
+    {
+      "talent_id": 57,
+      "lvl": 1
+    },
+    {
+      "talent_id": 142,
+      "lvl": 1
+    },
+    {
+      "talent_id": 16,
+      "lvl": 1
+    },
+    {
+      "talent_id": 19,
+      "lvl": 1
+    },
+    {
+      "talent_id": 176,
+      "lvl": 1
+    },
+    {
+      "talent_id": 180,
+      "lvl": 0,
+      "advancable": true
+    },
+    {
+      "talent_id": 185,
+      "lvl": 1,
+      "advancable": true
+    },
+    {
+      "talent_id": 186,
+      "lvl": 1,
+      "advancable": true
+    },
+    {
+      "talent_id": 50,
+      "lvl": 0,
+      "advancable": true
+    }
+  ],
+  "armour": [
+    {
+      "armour_id": 1
+    },
+    {
+      "armour_id": 9
+    }
+  ],
+  "melee_weapons": [
+    {
+      "weapon_id": 1,
+      "qualities": [
+        {
+          "quality_id": 3
+        }
+      ]
+    },
+    {
+      "weapon_id": 6
+    },
+    {
+      "weapon_id": 8
+    }
+  ]
+}

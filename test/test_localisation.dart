@@ -34,6 +34,7 @@ Future<void> localisationTest() async {
       }
       performLocTest("Check base talent localisations", BaseTalentDAO(), (item) => [item.name, item.description]);
       performLocTest("Check talent localisations", TalentDAO(), (item) => [item.name, item.specialisation]);
+      performLocTest("Check talent test localisations", TalentTestDAO(), (item) => [item.comment]);
       performLocTest("Check profession class localisations", ProfessionCareerDAO(), (item) => [item.name]);
       performLocTest("Check profession career localisations", ProfessionCareerDAO(), (item) => [item.name]);
       performLocTest("Check profession localisations", ProfessionDAO(), (item) => [item.name]);
