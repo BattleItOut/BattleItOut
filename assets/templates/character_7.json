@@ -4,11 +4,11 @@
     "name": "Człowiek",
     "size": 3,
     "subrace": {
-      "name": ""
+      "subrace_id": 8
     }
   },
   "profession": {
-    "name": "Middenlandczyk"
+    "profession_id": 245
   },
   "attributes": [
     {
