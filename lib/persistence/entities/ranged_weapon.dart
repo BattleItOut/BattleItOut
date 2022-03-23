@@ -1,11 +1,9 @@
-import 'package:battle_it_out/persistence/entities/item.dart';
-import 'package:battle_it_out/persistence/entities/skill.dart';
+import 'package:battle_it_out/persistence/entities/attribute.dart';
+import 'package:battle_it_out/persistence/entities/weapon.dart';
 
-class RangedWeapon extends Item {
-  String range;
-  bool strengthBonus;
-  int damage;
-  Skill? skill;
+class RangedWeapon extends Weapon {
+  int range;
+  Attribute? rangeAttribute;
 
   int ammunition;
 
@@ -13,12 +11,17 @@ class RangedWeapon extends Item {
       {required id,
       required name,
       required this.range,
-      required this.strengthBonus,
-      required this.damage,
-      required this.skill,
-      qualities = const [],
+      this.rangeAttribute,
+      required damage,
+      required damageAttribute,
+      skill,
+      qualities,
       this.ammunition = 0})
-      : super(id: id, name: name, qualities: qualities);
+      : super(id: id, name: name, qualities: qualities, damage: damage, damageAttribute: damageAttribute, skill: skill);
+
+  int getRange() {
+    return rangeAttribute?.getTotalBonus() ?? 1 * range;
+  }
 
   @override
   Map<String, dynamic> toMap() {
@@ -26,8 +29,9 @@ class RangedWeapon extends Item {
       "ID": id,
       "NAME": name,
       "WEAPON_RANGE": range,
+      "RANGE_ATTRIBUTE": rangeAttribute?.id,
       "DAMAGE": damage,
-      "STRENGTH_BONUS": strengthBonus,
+      "DAMAGE_ATTRIBUTE": damageAttribute?.id,
       "SKILL": skill!.id
     };
   }

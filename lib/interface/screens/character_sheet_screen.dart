@@ -140,18 +140,18 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             title: "WEAPONS".localise(context),
             children: [
               for (var weapon in widget.character.meleeWeapons) [
-                AppLocalizations.of(context).localise(weapon.name),
-                AppLocalizations.of(context).localise(weapon.length.name),
-                AppLocalizations.of(context).localise(weapon.skill!.specialisation!),
-                (weapon.damage + (widget.character.attributes[Character.strengthId]!.getTotalBonus())).toString(),
-                weapon.qualities.map((quality) => AppLocalizations.of(context).localise(quality.name)).join(", ")
+                weapon.name.localise(context),
+                weapon.length.name.localise(context),
+                weapon.skill!.specialisation!.localise(context),
+                weapon.getTotalDamage().toString(),
+                weapon.qualities.map((quality) => quality.name.localise(context)).join(", ")
               ],
               for (var weapon in widget.character.rangedWeapons) [
-                AppLocalizations.of(context).localise(weapon.name),
-                weapon.range.toString(),
-                AppLocalizations.of(context).localise(weapon.skill!.specialisation!),
-                (weapon.damage + (weapon.strengthBonus ? (widget.character.attributes[Character.strengthId]!.getTotalBonus()) : 0)).toString(),
-                weapon.qualities.map((quality) => AppLocalizations.of(context).localise(quality.name)).join(", ")
+                weapon.name.localise(context),
+                weapon.getRange().toString(),
+                weapon.skill!.specialisation!.localise(context),
+                weapon.getTotalDamage().toString(),
+                weapon.qualities.map((quality) => quality.name.localise(context)).join(", ")
               ],
             ],
             columnTypes: const [
