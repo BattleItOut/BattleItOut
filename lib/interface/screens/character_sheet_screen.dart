@@ -2,7 +2,6 @@ import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
-import 'package:battle_it_out/localisation.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 import 'package:flutter/material.dart';
@@ -17,42 +16,30 @@ class CharacterSheetScreen extends StatefulWidget {
 }
 
 class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
-  List<TableLine> createSkills(groupedSkills) {
-    List<TableLine> list = [];
+  List<TableEntity> createSkills(groupedSkills) {
+    List<TableEntity> list = [];
     for (var entry in groupedSkills.entries) {
-      bool header = true;
-      for (Skill skill in entry.value) {
-        if (skill.advances > 0 || !skill.isAdvanced()) {
-          if (entry.value.length > 1 && header) {
-            BaseSkill baseSkill = entry.key;
-            header = false;
-            list.add(TableLine(children: [
-              LocalisedText(baseSkill.name, context),
-              LocalisedShortcut(
-                  !baseSkill.isAdvanced
-                      ? AppLocalizations.of(context).localise(baseSkill.getAttribute()!.shortName)
-                      : "",
-                  context),
-              IntegerText(!baseSkill.isAdvanced ? baseSkill.getAttribute()!.getTotalValue() : null),
-              IntegerText(null),
-              IntegerText(null),
-            ]));
-          }
-          FontWeight fontWeight = skill.advancable ? FontWeight.bold : FontWeight.normal;
-          if (skill.advances > 0 || !skill.isSpecialised()) {
-            list.add(TableLine(children: [
-              LocalisedText(skill.specialisation ?? skill.name, context,
-                  style: TextStyle(
-                      fontStyle: skill.isSpecialised() ? FontStyle.italic : FontStyle.normal, fontWeight: fontWeight),
-                  padding: skill.isSpecialised() ? const EdgeInsets.only(left: 20) : null),
-              LocalisedShortcut(skill.getAttribute()!.shortName, context, style: TextStyle(fontWeight: fontWeight)),
-              IntegerText(skill.getAttribute()!.getTotalValue(), style: TextStyle(fontWeight: fontWeight)),
-              IntegerText(skill.advances, style: TextStyle(fontWeight: fontWeight)),
-              IntegerText(skill.getTotalValue(), style: TextStyle(fontWeight: fontWeight))
-            ]));
-          }
-        }
-      }
+      BaseSkill baseSkill = entry.key;
+      list.add(TableEntity(
+        header: TableLine(children: [
+          LocalisedText(baseSkill.name, context),
+          LocalisedShortcut(baseSkill.getAttribute()!.shortName, context, hidden: baseSkill.advanced),
+          IntegerText(baseSkill.getAttribute()!.getTotalValue(), hidden: baseSkill.advanced),
+          IntegerText(null),
+          IntegerText(null),
+        ]),
+        headerHidden: !baseSkill.grouped,
+        children: [for (Skill skill in entry.value.where((Skill skill) => skill.advances > 0 || !skill.isSpecialised())) TableLine(children: [
+          LocalisedText(skill.specialisation ?? skill.name, context,
+              style: TextStyle(fontStyle: skill.isSpecialised() ? FontStyle.italic : FontStyle.normal, fontWeight: skill.advancable ? FontWeight.bold : FontWeight.normal),
+              padding: skill.isSpecialised() ? const EdgeInsets.only(left: 20) : null),
+          LocalisedShortcut(skill.getAttribute()!.shortName, context, style: TextStyle(fontWeight: skill.advancable ? FontWeight.bold : FontWeight.normal)),
+          IntegerText(skill.getAttribute()!.getTotalValue(), style: TextStyle(fontWeight: skill.advancable ? FontWeight.bold : FontWeight.normal)),
+          IntegerText(skill.advances, style: TextStyle(fontWeight: skill.advancable ? FontWeight.bold : FontWeight.normal)),
+          IntegerText(skill.getTotalValue(), style: TextStyle(fontWeight: skill.advancable ? FontWeight.bold : FontWeight.normal))
+        ]
+        )]
+      ));
     }
     return list;
   }
@@ -128,7 +115,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           ),
           MyCharacteristicListItem(
             title: "ARMOUR".localise(context),
-            children: [for (var armour in widget.character.armour) TableLine(children: [
+            children: [TableEntity(children: [for (var armour in widget.character.armour) TableLine(children: [
                 LocalisedText(armour.name, context),
                 IntegerText(armour.headAP),
                 IntegerText(armour.bodyAP),
@@ -136,7 +123,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                 IntegerText(armour.rightArmAP),
                 IntegerText(armour.leftLegAP),
                 IntegerText(armour.rightLegAP)
-              ])],
+              ])])],
             context: context
           ),
           CharacteristicListItem(

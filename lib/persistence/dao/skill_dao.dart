@@ -13,7 +13,7 @@ class SkillDAO extends DAO<Skill> {
   getSkills({bool? advanced}) async {
     List<Skill> skills = await getAll(where: "BASE_SKILL IS NOT NULL");
     if (advanced != null) {
-      skills = List.of(skills.where((skill) => skill.baseSkill!.isAdvanced == advanced));
+      skills = List.of(skills.where((skill) => skill.baseSkill!.advanced == advanced));
     }
     return skills;
   }
@@ -38,7 +38,8 @@ class BaseSkillDAO extends DAO<BaseSkill> {
     return BaseSkill(
         id: map["ID"],
         name: map["NAME"],
-        isAdvanced: map["IS_ADVANCED"] == 1,
+        advanced: map["ADVANCED"] == 1,
+        grouped: map["GROUPED"] == 1,
         description: map["DESCRIPTION"],
         attribute: attributes?[map["ATTRIBUTE_ID"]]);
   }

@@ -57,7 +57,7 @@ class MyCharacteristicListItem extends TileListItem {
   MyCharacteristicListItem({
     Key? key,
     String? title,
-    required List<TableLine> children,
+    required List<TableEntity> children,
     required BuildContext context
   }) : super(
       key: key,
@@ -74,10 +74,14 @@ class MyCharacteristicListItem extends TileListItem {
       context: context
   );
 
-  static Widget createTable(List<TableLine> children) {
+  static Widget createTable(List<TableEntity> children) {
+    List<TableRow> tableRows = [];
+    for (var row in children) {
+      tableRows.addAll(row.create());
+    }
     return Table(
-      columnWidths: {for (var i = 0; i < children[0].children.length; i++) i: children[0].children[i].columnWidth},
-      children: [for (var row in children) TableRow(children: row.create())],
+      columnWidths: {for (var i = 0; i < children[0].children[0].children.length; i++) i: children[0].children[0].children[i].columnWidth},
+      children: tableRows
     );
   }
 }

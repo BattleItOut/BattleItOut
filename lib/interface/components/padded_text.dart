@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 abstract class PaddedText extends Text {
   final EdgeInsets? padding;
 
-  const PaddedText(String data, {Key? key, TextAlign? textAlign, TextStyle? style, this.padding})
-      : super(data, key: key, textAlign: textAlign, style: style);
+  const PaddedText(String data, {Key? key, TextAlign? textAlign, TextStyle? style, bool hidden = false, this.padding})
+      : super(hidden ? "" : data, key: key, textAlign: textAlign, style: style);
 
   TableColumnWidth get columnWidth => const FlexColumnWidth();
 
-  create() {
+  Widget create() {
     if (padding != null) {
       return Padding(padding: padding!, child: this);
     } else {
@@ -21,9 +21,9 @@ abstract class PaddedText extends Text {
 
 class LocalisedText extends PaddedText {
   LocalisedText(String data, BuildContext context,
-      {Key? key, textAlign = TextAlign.left, TextStyle? style, EdgeInsets? padding})
+      {Key? key, textAlign = TextAlign.left, TextStyle? style, EdgeInsets? padding, bool hidden = false})
       : super(AppLocalizations.of(context).localise(data),
-            key: key, textAlign: textAlign, style: style, padding: padding);
+            key: key, textAlign: textAlign, style: style, padding: padding, hidden: hidden);
 }
 
 class LocalisedShortcut extends PaddedText {
@@ -32,14 +32,14 @@ class LocalisedShortcut extends PaddedText {
   @override
   TableColumnWidth get columnWidth => const FixedColumnWidth(48);
 
-  LocalisedShortcut(String data, BuildContext context, {Key? key, textAlign = TextAlign.center, TextStyle? style})
-      : super(AppLocalizations.of(context).localise(data), key: key, textAlign: textAlign, style: style);
+  LocalisedShortcut(String data, BuildContext context, {Key? key, textAlign = TextAlign.center, TextStyle? style, bool hidden = false})
+      : super(AppLocalizations.of(context).localise(data), key: key, textAlign: textAlign, style: style, hidden: hidden);
 }
 
 class IntegerText extends PaddedText {
   @override
   TableColumnWidth get columnWidth => const FixedColumnWidth(32);
 
-  IntegerText(int? data, {Key? key, textAlign = TextAlign.center, TextStyle? style})
-      : super(data != null ? data.toString() : "", key: key, textAlign: textAlign, style: style);
+  IntegerText(int? data, {Key? key, textAlign = TextAlign.center, TextStyle? style, bool hidden = false})
+      : super(data != null ? data.toString() : "", key: key, textAlign: textAlign, style: style, hidden: hidden);
 }

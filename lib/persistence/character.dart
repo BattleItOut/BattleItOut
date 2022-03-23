@@ -175,7 +175,7 @@ class Character {
       map["earning"] != null ? skill.earning = map["earning"] : null;
       skillsMap[skill.id] = skill;
     }
-    for (Skill skill in await SkillDAO(attributes).getSkills()) {
+    for (Skill skill in await SkillDAO(attributes).getSkills(advanced: false)) {
       skillsMap.putIfAbsent(skill.id, () => skill);
     }
     return skillsMap;
