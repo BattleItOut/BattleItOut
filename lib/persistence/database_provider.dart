@@ -2,71 +2,80 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DatabaseProvider {
-  Database? _database;
   static final DatabaseProvider _instance = DatabaseProvider._();
+  Database? _database;
+
   DatabaseProvider._();
 
   static DatabaseProvider get instance => _instance;
 
-  Future<Database?> getDatabase() async {
+  Future<Database> getDatabase() async {
     _database ??= await _connect();
     return _database!;
   }
 
   static Future<Database> _connect() async {
-    if (kDebugMode) {
-      print("Database initiated");
-    }
-
-    var dbDir = await getTemporaryDirectory();
-    var dbPath = join(dbDir.path, "database.sqlite");
-    var dbFile = File(dbPath);
-
-    if (await dbFile.exists()) {
-      await dbFile.delete();
-    }
-
     if (Platform.isWindows || Platform.isLinux) {
       sqfliteFfiInit();
       databaseFactory = databaseFactoryFfi;
     }
-    Database database = await databaseFactory.openDatabase(dbPath,
+    Database database = await databaseFactory.openDatabase(inMemoryDatabasePath,
         options: OpenDatabaseOptions(
             version: 1,
-            onCreate: (Database db, int version) async {
-              for (String command in await _splitCommands("assets/database/create_db.sql")) {
-                try {
-                  await db.execute(command);
-                } on DatabaseException {
-                  // No need for logging because SQFLITE does it automatically
-                }
-              }
-            }));
-
+            onCreate: (Database db, int version) async =>
+                await BatchManager.execute("assets/database/create_db.sql", db)));
     if (kDebugMode) {
       print("Database loaded");
     }
     return database;
   }
+}
 
-  static Future<List<String>> _splitCommands(String dbCreateFile) async {
+class BatchManager {
+  BatchManager._();
+
+  static Future<void> execute(String script, Database database) async {
+    var component = BatchManager._();
+    Batch batch = database.batch();
+    await component._open(script, batch);
+    batch.commit(continueOnError: true);
+  }
+
+  void _register(String line, Batch batch) {
+    RegExp insertRegex = RegExp(r'INSERT INTO ".*" VALUES(.*)');
+    RegExp valReg = RegExp(r'VALUES(.*)');
+    if (insertRegex.hasMatch(line)) {
+      var match = valReg.firstMatch(line);
+      List<dynamic> data = line.substring(match!.start + 7, match.end - 2).replaceAll("'", "").split(",");
+      var parsedData = [for (var object in data) _parseString(object)];
+      var parsedInsert = line.replaceAll(valReg, "VALUES(${[for (int i = 0; i < data.length; i++) "?"].join(", ")})");
+      batch.rawInsert(parsedInsert, parsedData);
+    } else {
+      batch.execute(line);
+    }
+  }
+
+  dynamic _parseString(String string) {
+    if (string == "NULL") {
+      return null;
+    }
+    return int.tryParse(string) ?? string;
+  }
+
+  Future<void> _open(String dbCreateFile, Batch batch) async {
     String dbCreateString = await rootBundle.loadString(dbCreateFile);
-    List<String> commands = [];
     String command = "";
     for (String line in dbCreateString.split("\n")) {
       line = line.trim();
       command = command + " " + line;
       if (line != "" && line[line.length - 1] == ";") {
-        commands.add(command.trim());
+        _register(command.trim(), batch);
         command = "";
       }
     }
-    return commands;
   }
 }
