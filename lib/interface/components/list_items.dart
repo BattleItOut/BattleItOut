@@ -1,5 +1,5 @@
 import 'package:battle_it_out/entities_localisation.dart';
-import 'package:battle_it_out/interface/components/padded_text.dart';
+import 'package:battle_it_out/interface/components/table_line.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
@@ -57,7 +57,7 @@ class MyCharacteristicListItem extends TileListItem {
   MyCharacteristicListItem({
     Key? key,
     String? title,
-    required List<List<PaddedText>> children,
+    required List<TableLine> children,
     required BuildContext context
   }) : super(
       key: key,
@@ -74,14 +74,10 @@ class MyCharacteristicListItem extends TileListItem {
       context: context
   );
 
-  static Widget createTable(List<List<PaddedText>> children) {
+  static Widget createTable(List<TableLine> children) {
     return Table(
-      columnWidths: {for (var i = 0; i < children[0].length; i++) i: children[0][i].columnWidth},
-      children: [
-        for (var row in children) TableRow(
-            children: [for (var value in row) value.create()]
-        )
-      ],
+      columnWidths: {for (var i = 0; i < children[0].children.length; i++) i: children[0].children[i].columnWidth},
+      children: [for (var row in children) TableRow(children: row.create())],
     );
   }
 }

@@ -175,7 +175,7 @@ class Character {
       map["earning"] != null ? skill.earning = map["earning"] : null;
       skillsMap[skill.id] = skill;
     }
-    for (Skill skill in await SkillDAO(attributes).getBasicSkills()) {
+    for (Skill skill in await SkillDAO(attributes).getSkills()) {
       skillsMap.putIfAbsent(skill.id, () => skill);
     }
     return skillsMap;
@@ -198,10 +198,10 @@ class Character {
     return List.of(attributes.values);
   }
 
-  Map<String, List<Skill>> getBasicSkillsGrouped() {
-    Map<String, List<Skill>> output = {};
+  Map<BaseSkill, List<Skill>> getBasicSkillsGrouped() {
+    Map<BaseSkill, List<Skill>> output = {};
     for (var skill in skills.values.where((skill) => !skill.isAdvanced())) {
-      var category = skill.baseSkill!.name;
+      var category = skill.baseSkill!;
       if (output.containsKey(category)) {
         output[category]!.add(skill);
       } else {
@@ -210,10 +210,10 @@ class Character {
     }
     return output;
   }
-  Map<String, List<Skill>> getAdvancedSkillsGrouped() {
-    Map<String, List<Skill>> output = {};
+  Map<BaseSkill, List<Skill>> getAdvancedSkillsGrouped() {
+    Map<BaseSkill, List<Skill>> output = {};
     for (var skill in skills.values.where((skill) => skill.isAdvanced())) {
-      var category = skill.baseSkill!.name;
+      var category = skill.baseSkill!;
       if (output.containsKey(category)) {
         output[category]!.add(skill);
       } else {

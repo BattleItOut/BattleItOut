@@ -10,9 +10,12 @@ class SkillDAO extends DAO<Skill> {
   @override
   get tableName => 'skills';
 
-  getBasicSkills() async {
-    List<Skill> basicSkills = await getAll(where: "BASE_SKILL IS NOT NULL");
-    return basicSkills.where((skill) => !skill.baseSkill!.isAdvanced);
+  getSkills({bool? advanced}) async {
+    List<Skill> skills = await getAll(where: "BASE_SKILL IS NOT NULL");
+    if (advanced != null) {
+      skills = List.of(skills.where((skill) => skill.baseSkill!.isAdvanced == advanced));
+    }
+    return skills;
   }
 
   @override
