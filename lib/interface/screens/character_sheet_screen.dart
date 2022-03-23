@@ -101,11 +101,13 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             children: [
               for (var talent in widget.character.talents.values) [
                 talent.name.localise(context),
+                talent.tests.map((quality) => quality.getLocalName(context)).join(",\n"),
                 talent.currentLvl.toString(),
                 talent.getMaxLvl()?.toString() ?? ""
               ]
             ],
             columnTypes: const [
+              CharacteristicType.name,
               CharacteristicType.name,
               CharacteristicType.value,
               CharacteristicType.value
