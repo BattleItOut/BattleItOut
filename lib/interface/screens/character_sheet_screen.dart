@@ -17,31 +17,34 @@ class CharacterSheetScreen extends StatefulWidget {
 
 class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
   List<TableEntity> createSkills(groupedSkills) {
-    List<TableEntity> list = [];
-    for (var entry in groupedSkills.entries) {
-      BaseSkill baseSkill = entry.key;
-      list.add(TableEntity(
-        header: TableLine(children: [
-          LocalisedText(baseSkill.name, context),
-          LocalisedShortcut(baseSkill.getAttribute()!.shortName, context, hidden: baseSkill.advanced),
-          IntegerText(baseSkill.getAttribute()!.getTotalValue(), hidden: baseSkill.advanced),
-          IntegerText(null),
-          IntegerText(null),
-        ]),
-        headerHidden: !baseSkill.grouped,
-        children: [for (Skill skill in entry.value.where((Skill skill) => skill.advances > 0 || !skill.isSpecialised())) TableLine(children: [
-          LocalisedText(skill.specialisation ?? skill.name, context,
-              style: TextStyle(fontStyle: skill.isSpecialised() ? FontStyle.italic : FontStyle.normal, fontWeight: skill.advancable ? FontWeight.bold : FontWeight.normal),
-              padding: skill.isSpecialised() ? const EdgeInsets.only(left: 20) : null),
-          LocalisedShortcut(skill.getAttribute()!.shortName, context, style: TextStyle(fontWeight: skill.advancable ? FontWeight.bold : FontWeight.normal)),
-          IntegerText(skill.getAttribute()!.getTotalValue(), style: TextStyle(fontWeight: skill.advancable ? FontWeight.bold : FontWeight.normal)),
-          IntegerText(skill.advances, style: TextStyle(fontWeight: skill.advancable ? FontWeight.bold : FontWeight.normal)),
-          IntegerText(skill.getTotalValue(), style: TextStyle(fontWeight: skill.advancable ? FontWeight.bold : FontWeight.normal))
-        ]
-        )]
-      ));
-    }
-    return list;
+    return [
+      for (MapEntry<BaseSkill, List<Skill>> entry in groupedSkills.entries)
+        TableEntity(
+            header: TableLine(children: [
+              LocalisedText(entry.key.name, context),
+              LocalisedShortcut(entry.key.getAttribute()!.shortName, context, hidden: entry.key.advanced),
+              IntegerText(entry.key.getAttribute()!.getTotalValue(), hidden: entry.key.advanced),
+              IntegerText(null),
+              IntegerText(null),
+            ]),
+            headerHidden: !entry.key.grouped,
+            children: [
+              for (Skill skill in entry.value.where((Skill skill) => skill.advances > 0 || !skill.isSpecialised()))
+                TableLine(
+                    defaultStyle: TextStyle(fontWeight: skill.advancable ? FontWeight.bold : FontWeight.normal),
+                    children: [
+                      LocalisedText(skill.specialisation ?? skill.name, context,
+                          style: TextStyle(
+                              fontStyle: skill.isSpecialised() ? FontStyle.italic : FontStyle.normal,
+                              fontWeight: skill.advancable ? FontWeight.bold : FontWeight.normal),
+                          padding: skill.isSpecialised() ? const EdgeInsets.only(left: 20) : null),
+                      LocalisedShortcut(skill.getAttribute()!.shortName, context),
+                      IntegerText(skill.getAttribute()!.getTotalValue()),
+                      IntegerText(skill.advances),
+                      IntegerText(skill.getTotalValue())
+                    ])
+            ])
+    ];
   }
 
   @override
@@ -87,12 +90,12 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             ],
             context: context
           ),
-          MyCharacteristicListItem(
+          SkillsList(
             title: "Basic skills".localise(context),
               children: createSkills(widget.character.getBasicSkillsGrouped()),
               context: context
           ),
-          MyCharacteristicListItem(
+          SkillsList(
               title: "Advanced skills".localise(context),
               children: createSkills(widget.character.getAdvancedSkillsGrouped()),
               context: context
@@ -113,7 +116,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             ],
             context: context
           ),
-          MyCharacteristicListItem(
+          SkillsList(
             title: "ARMOUR".localise(context),
             children: [TableEntity(children: [for (var armour in widget.character.armour) TableLine(children: [
                 LocalisedText(armour.name, context),

@@ -53,8 +53,8 @@ class CharacterListItem extends TileListItem {
 
 enum CharacteristicType { name, shortcut, value }
 
-class MyCharacteristicListItem extends TileListItem {
-  MyCharacteristicListItem({
+class SkillsList extends TileListItem {
+  SkillsList({
     Key? key,
     String? title,
     required List<TableEntity> children,
@@ -67,21 +67,18 @@ class MyCharacteristicListItem extends TileListItem {
             children: [
               Text(title, style: const TextStyle(fontSize: 24.0)),
               const Divider(),
-              MyCharacteristicListItem.createTable(children)
+              SkillsList.createTable(children)
             ],
-          ) : MyCharacteristicListItem.createTable(children)
+          ) : SkillsList.createTable(children)
       ),
       context: context
   );
 
   static Widget createTable(List<TableEntity> children) {
-    List<TableRow> tableRows = [];
-    for (var row in children) {
-      tableRows.addAll(row.create());
-    }
+    children.sort((a, b) => a.header!.children[0].text.compareTo(b.header!.children[0].text));
     return Table(
       columnWidths: {for (var i = 0; i < children[0].children[0].children.length; i++) i: children[0].children[0].children[i].columnWidth},
-      children: tableRows
+      children: [for (var row in children) row.create()].expand((x) => x).toList()
     );
   }
 }

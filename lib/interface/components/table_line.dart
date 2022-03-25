@@ -22,10 +22,12 @@ class TableEntity {
 
 class TableLine {
   List<PaddedText> children;
+  TextStyle? defaultStyle;
 
-  TableLine({required this.children, TextStyle? style});
+  TableLine({required this.children, TextStyle? style, this.defaultStyle});
 
   TableRow create() {
-    return TableRow(children: [for (var value in children) value.create()]);
+    List<PaddedText> updatedChildren = [for (var value in children) value.from(value, style: defaultStyle)];
+    return TableRow(children: [for (var value in updatedChildren) value.create()]);
   }
 }
