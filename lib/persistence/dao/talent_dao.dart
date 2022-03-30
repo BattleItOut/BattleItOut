@@ -34,6 +34,7 @@ class BaseTalentDAO extends DAO<BaseTalent> {
         description: map['DESCRIPTION'],
         source: map['SOURCE'],
         attribute: attributes?[map["MAX_LVL"]],
-        constLvl: map['CONST_LVL']);
+        constLvl: map['CONST_LVL'],
+        grouped: map["GROUPED"] == 1 ? true : false);
   }
 }

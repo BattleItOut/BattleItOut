@@ -1,12 +1,12 @@
 import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:flutter/cupertino.dart';
 
-class TableEntity {
+class TableSubsection {
   TableLine? header;
   List<TableLine> children;
   bool headerHidden;
 
-  TableEntity({this.header, this.headerHidden = false, required this.children});
+  TableSubsection({this.header, this.headerHidden = false, required this.children});
 
   List<TableRow> create() {
     List<TableRow> result = [];

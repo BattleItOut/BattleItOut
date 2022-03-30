@@ -218,10 +218,46 @@ class Character {
         output[category]!.add(skill);
       } else {
         output[category] = [skill];
+      }
     }
+    return output;
   }
-  return output;
-}
+  Map<BaseTalent, List<Talent>> getTalentsGrouped() {
+    Map<BaseTalent, List<Talent>> output = {};
+    for (var talent in talents.values) {
+      var category = talent.baseTalent!;
+      if (output.containsKey(category)) {
+        output[category]!.add(talent);
+      } else {
+        output[category] = [talent];
+      }
+    }
+    return output;
+  }
+  Map<Skill, List<MeleeWeapon>> getMeleeWeaponsGrouped() {
+    Map<Skill, List<MeleeWeapon>> output = {};
+    for (MeleeWeapon meleeWeapon in meleeWeapons) {
+      var category = meleeWeapon.skill!;
+      if (output.containsKey(category)) {
+        output[category]!.add(meleeWeapon);
+      } else {
+        output[category] = [meleeWeapon];
+      }
+    }
+    return output;
+  }
+  Map<Skill, List<RangedWeapon>> getRangedWeaponsGrouped() {
+    Map<Skill, List<RangedWeapon>> output = {};
+    for (RangedWeapon weapon in rangedWeapons) {
+      var category = weapon.skill!;
+      if (output.containsKey(category)) {
+        output[category]!.add(weapon);
+      } else {
+        output[category] = [weapon];
+      }
+    }
+    return output;
+  }
 
   List<Talent> getTalents() {
     return List.of(talents.values);
