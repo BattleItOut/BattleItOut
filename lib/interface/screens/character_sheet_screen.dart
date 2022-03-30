@@ -110,6 +110,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                         LocalisedText(entry.key.name, context),
                         IntegerText(null),
                         IntegerText(null),
+                        IntegerText(null)
                       ]),
                       headerHidden: !entry.key.grouped,
                       children: [
@@ -120,6 +121,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                               children: [
                                 LocalisedText(talent.specialisation ?? talent.name, context,
                                     padding: talent.isSpecialised() ? const EdgeInsets.only(left: 20) : null),
+                                PaddedText(talent.tests.map((quality) => quality.getLocalName(context)).join(",\n")),
                                 IntegerText(talent.currentLvl),
                                 IntegerText(talent.getMaxLvl())
                               ])
