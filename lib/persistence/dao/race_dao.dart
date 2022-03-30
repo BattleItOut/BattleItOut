@@ -22,7 +22,7 @@ class RaceDAO extends DAO<Race> {
   Future<Map<int, Attribute>> getAttributes(int raceID) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
     final List<Map<String, dynamic>> attributes =
-        await database!.query("race_attributes", where: "RACE_ID = ?", whereArgs: [raceID]);
+        await database.query("race_attributes", where: "RACE_ID = ?", whereArgs: [raceID]);
 
     Map<int, Attribute> attributesMap = {};
     for (var attributeMap in attributes) {

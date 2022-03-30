@@ -1,21 +1,11 @@
-import 'package:battle_it_out/persistence/entities/item.dart';
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
-import 'package:battle_it_out/persistence/entities/skill.dart';
+import 'package:battle_it_out/persistence/entities/weapon.dart';
 import 'package:battle_it_out/persistence/entities/weapon_length.dart';
 
-class MeleeWeapon extends Item {
+class MeleeWeapon extends Weapon {
   WeaponLength length;
-  int damage;
-  Skill? skill;
 
-  MeleeWeapon(
-      {required id,
-      required name,
-      required this.length,
-      required this.damage,
-      required this.skill,
-      qualities = const <ItemQuality>[]})
-      : super(id: id, name: name, qualities: qualities);
+  MeleeWeapon({required id, required name, required this.length, required damage, damageAttribute, skill, qualities})
+      : super(id: id, name: name, qualities: qualities, damage: damage, damageAttribute: damageAttribute, skill: skill);
 
   int getTotalSkillValue() {
     return skill!.getTotalValue();
@@ -23,6 +13,13 @@ class MeleeWeapon extends Item {
 
   @override
   Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "LENGTH": length.id, "DAMAGE": damage, "SKILL": skill?.id};
+    return {
+      "ID": id,
+      "NAME": name,
+      "LENGTH": length.id,
+      "DAMAGE": damage,
+      "SKILL": skill?.id,
+      "DAMAGE_ATTRIBUTE": damageAttribute?.id
+    };
   }
 }

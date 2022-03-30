@@ -3,14 +3,14 @@ import 'package:battle_it_out/interface/components/alert.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/interface/state_container.dart';
 import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/size.dart';
-import 'package:battle_it_out/state_container.dart';
+import 'package:battle_it_out/interface/state_container.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
-
-import '../components/list_items.dart';
+import 'package:battle_it_out/interface/components/list_items.dart';
 
 class CharacterSelectionScreen extends StatefulWidget {
 
@@ -21,7 +21,7 @@ class CharacterSelectionScreen extends StatefulWidget {
 }
 
 class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
-  late List<Character> savedCharacters;
+  List<Character> savedCharacters = [];
 
   List<CharacterListItem> _generateCharacters() {
     return List<CharacterListItem>.generate(
