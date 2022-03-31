@@ -18,7 +18,11 @@ class Skill extends DTO {
   }
 
   bool isAdvanced() {
-    return baseSkill!.isAdvanced;
+    return baseSkill!.advanced;
+  }
+
+  bool isSpecialised() {
+    return specialisation != null;
   }
 
   Attribute? getAttribute() {
@@ -44,11 +48,12 @@ class BaseSkill extends DTO {
   int id;
   String name;
   String description;
-  bool isAdvanced;
+  bool advanced;
+  bool grouped;
   Attribute? attribute;
 
   BaseSkill(
-      {required this.id, required this.name, required this.description, required this.isAdvanced, this.attribute});
+      {required this.id, required this.name, required this.description, required this.advanced, required this.grouped, this.attribute});
 
   int getTotalValue() {
     return attribute!.getTotalValue();
@@ -59,13 +64,33 @@ class BaseSkill extends DTO {
   }
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BaseSkill &&
+          id == other.id &&
+          name == other.name &&
+          description == other.description &&
+          advanced == other.advanced &&
+          grouped == other.grouped &&
+          attribute == other.attribute;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode ^ description.hashCode ^ advanced.hashCode ^ grouped.hashCode ^ attribute.hashCode;
+
+  @override
   Map<String, dynamic> toMap() {
     return {
       "ID": id,
       "NAME": name,
       "DESCRIPTION": description,
-      "IS_ADVANCED": isAdvanced ? 1 : 0,
+      "ADVANCED": advanced ? 1 : 0,
+      "GROUPED": grouped ? 1 : 0,
       "ATTRIBUTE_ID": attribute?.id
     };
+  }
+
+  @override
+  String toString() {
+    return "BaseSkill (id=$id, name=$name, advanced=$advanced, grouped=$grouped)";
   }
 }

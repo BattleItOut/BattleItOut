@@ -10,14 +10,12 @@ class SkillDAO extends DAO<Skill> {
   @override
   get tableName => 'skills';
 
-  getAllSkills() async {
+  getSkills({bool? advanced}) async {
     List<Skill> skills = await getAll(where: "BASE_SKILL IS NOT NULL");
+    if (advanced != null) {
+      skills = List.of(skills.where((skill) => skill.baseSkill!.advanced == advanced));
+    }
     return skills;
-  }
-
-  getBasicSkills() async {
-    List<Skill> basicSkills = await getAll(where: "BASE_SKILL IS NOT NULL");
-    return basicSkills.where((skill) => skill.baseSkill!.isAdvanced && skill.specialisation == null);
   }
 
   @override
@@ -40,7 +38,8 @@ class BaseSkillDAO extends DAO<BaseSkill> {
     return BaseSkill(
         id: map["ID"],
         name: map["NAME"],
-        isAdvanced: map["IS_ADVANCED"] == 1,
+        advanced: map["ADVANCED"] == 1,
+        grouped: map["GROUPED"] == 1,
         description: map["DESCRIPTION"],
         attribute: attributes?[map["ATTRIBUTE_ID"]]);
   }
