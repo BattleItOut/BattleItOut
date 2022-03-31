@@ -29,9 +29,9 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
         children: [
           CharacteristicListItem(
             children: [
-              ["RACE".localise(context), widget.character.race.getLocalName(context)],
-              ["SIZE".localise(context), widget.character.race.size.name.localise(context)],
-              ["PROFESSION".localise(context), widget.character.profession.getLocalName(context)]
+              ["RACE".localise(context), widget.character.race?.getLocalName(context) ?? ""],
+              ["SIZE".localise(context), widget.character.race?.size.name.localise(context) ?? ""],
+              ["PROFESSION".localise(context), widget.character.profession?.getLocalName(context) ?? ""]
             ],
             columnTypes: const [
               CharacteristicType.name,

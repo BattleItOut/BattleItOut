@@ -40,7 +40,7 @@ class CharacterListItem extends TileListItem {
   CharacterListItem({Key? key, required Character character, required BuildContext context}) : super(
     key: key,
     child: ListTile(
-      subtitle: Text("${character.race.name.localise(context)}, ${character.profession.name.localise(context)}"),
+      subtitle: Text(character.race == null && character.profession == null ? "" : "${character.race?.name.localise(context) ?? ""}, ${character.profession?.name.localise(context) ?? ""}"),
       trailing: Text(character.initiative?.toString() ?? "", style: const TextStyle(fontSize: 24)),
       title: Text(character.name),
       dense: true,
