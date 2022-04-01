@@ -58,26 +58,58 @@ class CharacterListItem extends TileListItem {
 }
 
 class GroupedEntitiesTable extends TileListItem {
-  GroupedEntitiesTable({Function()? doOnLongPress, Key? key, PaddedText? title, required List<TableSubsection> children, required BuildContext context}) : super(
-    key: key,
-    child: InkWell(child: children.isEmpty ? const SizedBox.shrink() : ContainerWithTitle.create(
-      title: title,
-      child: createTable(children)),
-    onLongPress: doOnLongPress),
-    context: context
-  );
+  GroupedEntitiesTable(
+      {Key? key,
+      PaddedText? title,
+      required List<TableSubsection> children,
+      required BuildContext context,
+      Function()? onLongPress
+      }) : super(
+            key: key,
+            child: InkWell(
+                child: children.isEmpty
+                    ? const SizedBox.shrink()
+                    : ContainerWithTitle.create(title: title, child: createTable(children)),
+                onLongPress: onLongPress),
+            context: context);
 
   static Widget createTable(List<TableSubsection> children) {
     children.sort((a, b) => a.header!.children[0].text.compareTo(b.header!.children[0].text));
     return Table(
-      columnWidths: {for (var i = 0; i < children[0].children[0].children.length; i++) i: children[0].children[0].children[i].columnWidth},
-      children: [for (var row in children) row.create()].expand((x) => x).toList());
+        columnWidths: {for (var i = 0; i < children[0].children[0].children.length; i++) i: children[0].children[0].children[i].columnWidth },
+        children: [for (var row in children) row.create()].expand((x) => x).toList());
   }
 }
 
 class SingleEntitiesTable extends GroupedEntitiesTable {
-  SingleEntitiesTable({Key? key, PaddedText? title, required List<TableLine> children, required BuildContext context}) :
-        super(title: title, key: key, children: children.isEmpty ? [] : [TableSubsection(children: children)], context: context);
+  SingleEntitiesTable(
+      {Key? key,
+      PaddedText? title,
+      required List<TableLine> children,
+      required BuildContext context,
+      Function()? onLongPress
+      }) : super(
+            title: title,
+            key: key,
+            children: children.isEmptyRecursive() ? [] : [TableSubsection(children: children)],
+            onLongPress: onLongPress,
+            context: context);
+}
+
+extension CheckEmpty on List<TableLine> {
+  bool isEmptyRecursive() {
+    if (isEmpty) {
+      return true;
+    }
+
+    bool output = true;
+    for (TableLine line in this) {
+      if (line.children.isNotEmpty) {
+        output = false;
+      }
+    }
+    return output;
+  }
 }
 
 extension ItemList on List<dynamic> {

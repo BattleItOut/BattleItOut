@@ -51,23 +51,16 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
 
   void _newCharacter() {
     String? name;
-    showAlert(
-      "NAME".localise(context),
-      [
-        Tuple2((value) => name = value, String)
-      ],
-      () {
-        var newCharacter = Character(
-          name: name!
-        );
-        StateContainer.of(context).addCharacter(newCharacter);
-        Navigator.of(context).pop();
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) => CharacterSheetScreen(character: newCharacter),
-        ));
-      },
-      context
-    );
+    showAlert("NAME".localise(context), [Tuple2((value) => name = value, String)], () {
+      var newCharacter = Character(name: name!);
+      StateContainer.of(context).addCharacter(newCharacter);
+      Navigator.of(context, rootNavigator: true).pop();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CharacterSheetScreen(character: newCharacter),
+          ));
+    }, context);
     // AppCache().characters.add(value)
   }
 

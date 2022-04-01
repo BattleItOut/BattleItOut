@@ -27,7 +27,7 @@ class TableLine {
   TableLine({required this.children, TextStyle? style, this.defaultStyle});
 
   TableRow create() {
-    List<PaddedText> updatedChildren = [for (var value in children) value.from(value, style: defaultStyle)];
-    return TableRow(children: [for (var value in updatedChildren) value.create()]);
+    List<PaddedText> updatedChildren = [for (var value in children) PaddedText.from(value, style: defaultStyle)];
+    return TableRow(children: [for (var value in updatedChildren) value]);
   }
 }
