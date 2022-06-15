@@ -4,6 +4,7 @@ import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/interface/state_container.dart';
+import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
@@ -58,7 +59,8 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
       ],
       () {
         var newCharacter = Character(
-          name: name!
+          name: name!,
+          attributes: { 0: Attribute(id: 0, name: "WW", shortName: "WW", description: "WW", rollable: 1, importance: 1) }
         );
         StateContainer.of(context).addCharacter(newCharacter);
         Navigator.of(context).pop();
