@@ -197,16 +197,7 @@
       "weapon_id": 11
     },
     {
-      "weapon_id": 1,
-      "name": "Pałka",
-      "qualities": [
-        {
-          "quality_id": 15
-        },
-        {
-          "quality_id": 34
-        }
-      ]
+      "weapon_id": 29
     },
     {
       "weapon_id": 23
