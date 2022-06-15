@@ -1,11 +1,11 @@
+import 'package:battle_it_out/persistence/entities/ammunition.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/weapon.dart';
 
 class RangedWeapon extends Weapon {
   int range;
   Attribute? rangeAttribute;
-
-  int ammunition;
+  Map<Ammunition, int> ammunition = {};
 
   RangedWeapon(
       {required id,
@@ -16,11 +16,17 @@ class RangedWeapon extends Weapon {
       required damageAttribute,
       skill,
       qualities,
-      this.ammunition = 0})
-      : super(id: id, name: name, qualities: qualities, damage: damage, damageAttribute: damageAttribute, skill: skill);
+      Map<Ammunition, int> ammunition = const {}})
+      : super(id: id, name: name, qualities: qualities, damage: damage, damageAttribute: damageAttribute, skill: skill) {
+    this.ammunition.addAll(ammunition);
+  }
 
   int getRange() {
     return rangeAttribute?.getTotalBonus() ?? 1 * range;
+  }
+
+  void addAmmunition(Ammunition _ammunition, int quantity) {
+    ammunition.update(_ammunition, (value) => value + quantity, ifAbsent: () => quantity);
   }
 
   @override
