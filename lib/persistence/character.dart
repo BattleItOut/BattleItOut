@@ -175,7 +175,7 @@ class Character {
       map["earning"] != null ? skill.earning = map["earning"] : null;
       skillsMap[skill.id] = skill;
     }
-    for (Skill skill in await SkillDAO(attributes).getBasicSkills()) {
+    for (Skill skill in await SkillDAO(attributes).getSkills(advanced: false)) {
       skillsMap.putIfAbsent(skill.id, () => skill);
     }
     return skillsMap;
@@ -198,10 +198,65 @@ class Character {
     return List.of(attributes.values);
   }
 
-  List<Skill> getSkills() {
-    List<Skill> sortedSkills = List.of(skills.values);
-    sortedSkills.sort((a, b) => a.name.compareTo(b.name));
-    return sortedSkills;
+  Map<BaseSkill, List<Skill>> getBasicSkillsGrouped() {
+    Map<BaseSkill, List<Skill>> output = {};
+    for (var skill in skills.values.where((skill) => !skill.isAdvanced())) {
+      var category = skill.baseSkill!;
+      if (output.containsKey(category)) {
+        output[category]!.add(skill);
+      } else {
+        output[category] = [skill];
+      }
+    }
+    return output;
+  }
+  Map<BaseSkill, List<Skill>> getAdvancedSkillsGrouped() {
+    Map<BaseSkill, List<Skill>> output = {};
+    for (var skill in skills.values.where((skill) => skill.isAdvanced())) {
+      var category = skill.baseSkill!;
+      if (output.containsKey(category)) {
+        output[category]!.add(skill);
+      } else {
+        output[category] = [skill];
+      }
+    }
+    return output;
+  }
+  Map<BaseTalent, List<Talent>> getTalentsGrouped() {
+    Map<BaseTalent, List<Talent>> output = {};
+    for (var talent in talents.values) {
+      var category = talent.baseTalent!;
+      if (output.containsKey(category)) {
+        output[category]!.add(talent);
+      } else {
+        output[category] = [talent];
+      }
+    }
+    return output;
+  }
+  Map<Skill, List<MeleeWeapon>> getMeleeWeaponsGrouped() {
+    Map<Skill, List<MeleeWeapon>> output = {};
+    for (MeleeWeapon meleeWeapon in meleeWeapons) {
+      var category = meleeWeapon.skill!;
+      if (output.containsKey(category)) {
+        output[category]!.add(meleeWeapon);
+      } else {
+        output[category] = [meleeWeapon];
+      }
+    }
+    return output;
+  }
+  Map<Skill, List<RangedWeapon>> getRangedWeaponsGrouped() {
+    Map<Skill, List<RangedWeapon>> output = {};
+    for (RangedWeapon weapon in rangedWeapons) {
+      var category = weapon.skill!;
+      if (output.containsKey(category)) {
+        output[category]!.add(weapon);
+      } else {
+        output[category] = [weapon];
+      }
+    }
+    return output;
   }
 
   List<Talent> getTalents() {
