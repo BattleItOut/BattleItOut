@@ -60,7 +60,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
       () {
         var newCharacter = Character(
           name: name!,
-          attributes: { 0: Attribute(id: 0, name: "WW", shortName: "WW", description: "WW", rollable: 1, importance: 1) }
+          attributes: { 0: Attribute(id: 0, name: "WW", shortName: "WW", description: "WW", rollable: 1, importance: 0) }
         );
         StateContainer.of(context).addCharacter(newCharacter);
         Navigator.of(context).pop();
