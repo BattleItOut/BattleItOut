@@ -14,6 +14,10 @@ class Talent extends DTO {
 
   Talent({required this.id, required this.name, this.specialisation, this.baseTalent, this.tests = const []});
 
+  bool isSpecialised() {
+    return specialisation != null;
+  }
+
   int? getMaxLvl() {
     return baseTalent!.getMaxLvl();
   }
@@ -36,6 +40,7 @@ class BaseTalent extends DTO {
   String source;
   Attribute? attribute;
   int? constLvl;
+  bool grouped;
 
   BaseTalent(
       {required this.id,
@@ -43,7 +48,8 @@ class BaseTalent extends DTO {
       required this.description,
       required this.source,
       this.attribute,
-      this.constLvl});
+      this.constLvl,
+      required this.grouped});
 
   int? getMaxLvl() {
     if (attribute != null) {
@@ -56,6 +62,21 @@ class BaseTalent extends DTO {
   }
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is BaseTalent &&
+              id == other.id &&
+              name == other.name &&
+              description == other.description &&
+              source == other.source &&
+              grouped == other.grouped &&
+              attribute == other.attribute &&
+              constLvl == other.constLvl;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode ^ description.hashCode ^ constLvl.hashCode ^ source.hashCode ^ grouped.hashCode ^ attribute.hashCode;
+
+  @override
   Map<String, dynamic> toMap() {
     return {
       "ID": id,
@@ -63,7 +84,8 @@ class BaseTalent extends DTO {
       "DESCRIPTION": description,
       "SOURCE": source,
       "MAX_LVL": attribute,
-      "CONST_LVL": constLvl
+      "CONST_LVL": constLvl,
+      "GROUPED": grouped ? 1 : 0
     };
   }
 }
