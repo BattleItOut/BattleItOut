@@ -5,15 +5,17 @@ import 'package:battle_it_out/persistence/entities/weapon.dart';
 class RangedWeapon extends Weapon {
   int range;
   Attribute? rangeAttribute;
+  bool useAmmo;
   Map<Ammunition, int> ammunition = {};
 
   RangedWeapon(
       {required id,
       required name,
       required this.range,
-      this.rangeAttribute,
+      required this.useAmmo,
       required damage,
       required damageAttribute,
+      this.rangeAttribute,
       skill,
       qualities,
       Map<Ammunition, int> ammunition = const {}})
@@ -38,7 +40,8 @@ class RangedWeapon extends Weapon {
       "RANGE_ATTRIBUTE": rangeAttribute?.id,
       "DAMAGE": damage,
       "DAMAGE_ATTRIBUTE": damageAttribute?.id,
-      "SKILL": skill!.id
+      "SKILL": skill!.id,
+      "USE_AMMO": useAmmo ? 1 : 0
     };
   }
 }

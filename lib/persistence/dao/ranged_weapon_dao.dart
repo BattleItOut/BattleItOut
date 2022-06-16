@@ -21,6 +21,7 @@ class RangedWeaponDAO extends ItemDAO<RangedWeapon> {
         id: map["ID"],
         name: map["NAME"],
         range: map["WEAPON_RANGE"],
+        useAmmo: map["USE_AMMO"] == 1,
         rangeAttribute: attributes?[map["RANGE_ATTRIBUTE"]],
         damage: map["DAMAGE"],
         damageAttribute: attributes?[map["DAMAGE_ATTRIBUTE"]],
