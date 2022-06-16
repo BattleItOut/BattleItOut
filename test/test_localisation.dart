@@ -1,4 +1,5 @@
 import 'package:battle_it_out/localisation.dart';
+import 'package:battle_it_out/persistence/dao/ammunition_dao.dart';
 import 'package:battle_it_out/persistence/dao/armour_dao.dart';
 import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
 import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
@@ -47,7 +48,8 @@ Future<void> localisationTest() async {
       performLocTest("Check skill localisations", SkillDAO(), (item) => [item.name, item.specialisation]);
       performLocTest("Check weapon length localisations", WeaponLengthDAO(), (item) => [item.name, item.description]);
       performLocTest("Check melee weapon localisations", MeleeWeaponDAO(), (item) => [item.name]);
-      performLocTest("Check ranged weapon localisations", RangedWeaponDTO(), (item) => [item.name]);
+      performLocTest("Check ranged weapon localisations", RangedWeaponDAO(), (item) => [item.name]);
+      performLocTest("Check ranged weapon ammo localisations", AmmunitionDAO(), (item) => [item.name]);
       performLocTest("Check item quality localisations", ItemQualityDAO(), (item) => [item.name, item.description]);
     });
 

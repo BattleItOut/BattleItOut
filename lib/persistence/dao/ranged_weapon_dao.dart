@@ -4,11 +4,11 @@ import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 
-class RangedWeaponDTO extends ItemDAO<RangedWeapon> {
+class RangedWeaponDAO extends ItemDAO<RangedWeapon> {
   Map<int, Skill>? skills;
   Map<int, Attribute>? attributes;
 
-  RangedWeaponDTO([this.attributes, this.skills]);
+  RangedWeaponDAO([this.attributes, this.skills]);
 
   @override
   get tableName => 'weapons_ranged';

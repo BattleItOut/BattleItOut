@@ -127,7 +127,7 @@ class Character {
       json, Map<int, Attribute> attributes, Map<int, Skill> skills) async {
     List<RangedWeapon> weaponList = [];
     for (var map in json ?? []) {
-      RangedWeapon weapon = await RangedWeaponDTO(attributes, skills).get(map["weapon_id"]);
+      RangedWeapon weapon = await RangedWeaponDAO(attributes, skills).get(map["weapon_id"]);
       for (var ammunitionMap in map["ammunition"] ?? []) {
         weapon.addAmmunition(await AmmunitionDAO().get(ammunitionMap["ammunition_id"]), ammunitionMap["quantity"]);
       }
