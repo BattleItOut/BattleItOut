@@ -17,6 +17,7 @@ dependencies:
   path_provider:
   yaml: ^3.1.0
   cupertino_icons: ^1.0.2
+  tuple: ^2.0.0
 
 dev_dependencies:
   sqflite_common_ffi:

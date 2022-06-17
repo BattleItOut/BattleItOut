@@ -44,7 +44,8 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                       IntegerText(skill.advances),
                       IntegerText(skill.getTotalValue())
                     ])
-            ])
+            ]
+        )
     ];
   }
 
@@ -59,18 +60,18 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           SingleEntitiesTable(children: [
             TableLine(children: [
               LocalisedText("RACE", context),
-              LocalisedText(widget.character.race.getLocalName(context), context)
+              LocalisedText(widget.character.race?.getLocalName(context) ?? "", context)
             ]),
             TableLine(
-                children: [LocalisedText("SIZE", context), LocalisedText(widget.character.race.size.name, context)]),
+                children: [LocalisedText("SIZE", context), LocalisedText(widget.character.race?.size.name ?? "", context)]),
             TableLine(children: [
               LocalisedText("PROFESSION", context),
-              LocalisedText(widget.character.profession.getLocalName(context), context)
+              LocalisedText(widget.character.profession?.getLocalName(context) ?? "", context)
             ]),
           ], context: context),
           SingleEntitiesTable(
               title: LocalisedText("ATTRIBUTES", context, style: const TextStyle(fontSize: 24.0)),
-              children: [
+              children: widget.character.attributes.isEmpty ? [] : [
                 TableLine(children: [
                   for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0))
                     LocalisedText(attribute.shortName, context, textAlign: TextAlign.center)
