@@ -5,6 +5,7 @@ import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
@@ -79,9 +80,13 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               onLongPress: () {
                 debugPrint("Changing edit mode");
                 setState(() {
-                  print(editMode);
+                  if (kDebugMode) {
+                    print(editMode);
+                  }
                   editMode = !editMode;
-                  print(editMode);
+                  if (kDebugMode) {
+                    print(editMode);
+                  }
                 });
               },
               context: context),
