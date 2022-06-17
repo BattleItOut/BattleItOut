@@ -1,10 +1,11 @@
 import 'package:battle_it_out/entities_localisation.dart';
+import 'package:battle_it_out/interface/components/alert.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/interface/state_container.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:tuple/tuple.dart';
 
 class CharacterSelectionScreen extends StatefulWidget {
 
@@ -29,30 +30,16 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
 
   void _select(int index) {
     var character = Character.from(savedCharacters[index]);
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("INITIATIVE".localise(context)),
-          content: TextField(
-            onChanged: (value) {
-              character.initiative = int.parse(value);
-            },
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            textAlign: TextAlign.center,
-          ),
-          actions: [
-            TextButton(
-              child: Text("PROCEED".localise(context)),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pop(context, character);
-              },
-            ),
-          ],
-        );
+    showAlert(
+      "INITIATIVE".localise(context),
+      [
+        Tuple2((value) { character.initiative = int.parse(value); }, int)
+      ],
+      () {
+        Navigator.of(context).pop();
+        Navigator.pop(context, character);
       },
+      context
     );
   }
 
@@ -60,6 +47,29 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
     Navigator.push(context, MaterialPageRoute(
       builder: (context) => CharacterSheetScreen(character: savedCharacters[index]),
     ));
+  }
+
+  void _newCharacter() {
+    String? name;
+    showAlert("NAME".localise(context), [Tuple2((value) => name = value, String)], () {
+      var newCharacter = Character(name: name!);
+      StateContainer.of(context).addCharacter(newCharacter);
+      Navigator.of(context, rootNavigator: true).pop();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CharacterSheetScreen(character: newCharacter),
+          ));
+    }, context);
+    // AppCache().characters.add(value)
+  }
+
+  void _onNavigationTapped(int index) {
+    switch (index) {
+      case 0:
+        _newCharacter();
+        break;
+    }
   }
 
   @override
@@ -87,7 +97,14 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
             );
           }
         )
-      )
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(icon: const Icon(Icons.add), label: "ADD_CHARACTER".localise(context)),
+          BottomNavigationBarItem(icon: const Icon(Icons.block), label: "DO_NOTHING".localise(context)),
+        ],
+        onTap: _onNavigationTapped,
+      ),
     );
   }
 }
