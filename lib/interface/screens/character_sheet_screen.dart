@@ -44,7 +44,8 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                       IntegerText(skill.advances),
                       IntegerText(skill.getTotalValue())
                     ])
-            ])
+            ]
+        )
     ];
   }
 
@@ -70,7 +71,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           ], context: context),
           SingleEntitiesTable(
               title: LocalisedText("ATTRIBUTES", context, style: const TextStyle(fontSize: 24.0)),
-              children: [
+              children: widget.character.attributes.isEmpty ? [] : [
                 TableLine(children: [
                   for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0))
                     LocalisedText(attribute.shortName, context, textAlign: TextAlign.center)
