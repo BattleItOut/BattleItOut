@@ -35,7 +35,7 @@ class Armour extends Item {
       "LEFT_ARM_AP": leftArmAP,
       "RIGHT_ARM_AP": rightArmAP,
       "LEFT_LEG_AP": leftLegAP,
-      "RIGHT_LEG_AP": rightArmAP
+      "RIGHT_LEG_AP": rightLegAP
     };
   }
 }
