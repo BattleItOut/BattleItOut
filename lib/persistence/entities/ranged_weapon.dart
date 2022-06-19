@@ -24,8 +24,21 @@ class RangedWeapon extends Weapon {
     this.ammunition.addAll(ammunition);
   }
 
-  int getRange() {
-    return rangeAttribute?.getTotalBonus() ?? 1 * range;
+  int getRange([Ammunition? ammo]) {
+    int value = rangeAttribute?.getTotalBonus() ?? 1 * range;
+    if (ammo != null) {
+      value = (value * ammo.rangeModifier).toInt() + ammo.rangeBonus;
+    }
+    return value;
+  }
+
+  @override
+  int getTotalDamage([Ammunition? ammo]) {
+    int value = super.getTotalDamage();
+    if (ammo != null) {
+      value + ammo.damageBonus;
+    }
+    return value;
   }
 
   void addAmmunition(Ammunition _ammunition, int quantity) {
