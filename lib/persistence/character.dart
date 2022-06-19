@@ -1,3 +1,4 @@
+import 'package:battle_it_out/persistence/dao/ammunition_dao.dart';
 import 'package:battle_it_out/persistence/dao/armour_dao.dart';
 import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
 import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
@@ -126,8 +127,10 @@ class Character {
       json, Map<int, Attribute> attributes, Map<int, Skill> skills) async {
     List<RangedWeapon> weaponList = [];
     for (var map in json ?? []) {
-      RangedWeapon weapon = await RangedWeaponDTO(attributes, skills).get(map["weapon_id"]);
-      weapon.ammunition = map["ammunition"] ?? 0;
+      RangedWeapon weapon = await RangedWeaponDAO(attributes, skills).get(map["weapon_id"]);
+      for (var ammunitionMap in map["ammunition"] ?? []) {
+        weapon.addAmmunition(await AmmunitionDAO().get(ammunitionMap["ammunition_id"]), ammunitionMap["quantity"]);
+      }
       for (var qualityMap in map["qualities"] ?? []) {
         weapon.addQuality(await ItemQualityDAO().get(qualityMap["quality_id"]));
       }

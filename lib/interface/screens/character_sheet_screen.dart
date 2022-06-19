@@ -3,6 +3,7 @@ import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
 import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/persistence/entities/ammunition.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
 import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
@@ -46,6 +47,31 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                     ])
             ])
     ];
+  }
+  List<TableLine> createRangedWeapons(List<RangedWeapon> weapons, BuildContext context) {
+    List<TableLine> outputList = [];
+    for (RangedWeapon weapon in weapons) {
+      outputList.add(TableLine(children: [
+        LocalisedText(weapon.name, context, padding: const EdgeInsets.only(left: 20)),
+        IntegerText(null),
+        IntegerText(null),
+        const PaddedText(""),
+        PaddedText(weapon.qualities.map((quality) => quality.name.localise(context)).join(", "))
+      ]));
+      for (MapEntry<Ammunition, int> entry in weapon.ammunition.entries) {
+        Ammunition ammo = entry.key;
+        int quantity = entry.value;
+
+        outputList.add(TableLine(children: [
+          LocalisedText(ammo.name, context, padding: const EdgeInsets.only(left: 40)),
+          IntegerText(quantity),
+          IntegerText(weapon.getRange(ammo)),
+          PaddedText("${weapon.getTotalDamage(ammo)} + SL", textAlign: TextAlign.center),
+          PaddedText(ammo.qualities.map((quality) => quality.name.localise(context)).join(", "))
+        ]));
+      }
+    }
+    return outputList;
   }
 
   @override
@@ -174,17 +200,11 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                         LocalisedText(entry.key.specialisation!, context),
                         IntegerText(null),
                         IntegerText(null),
-                        IntegerText(null),
+                        const PaddedText(""),
+                        const PaddedText(""),
                       ]),
-                      children: [
-                        for (var weapon in entry.value)
-                          TableLine(children: [
-                            LocalisedText(weapon.name, context, padding: const EdgeInsets.only(left: 20)),
-                            IntegerText(weapon.range),
-                            PaddedText("${weapon.getTotalDamage()} + SL", textAlign: TextAlign.center),
-                            PaddedText(weapon.qualities.map((quality) => quality.name.localise(context)).join(", "))
-                          ])
-                      ])
+                      children: createRangedWeapons(entry.value, context)
+                  )
               ],
               context: context)
         ]));

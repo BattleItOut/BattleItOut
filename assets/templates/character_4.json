@@ -212,7 +212,12 @@
   "ranged_weapons": [
     {
       "weapon_id": 19,
-      "ammunition": 15,
+      "ammunition": [
+        {
+          "ammunition_id": 8,
+          "quantity": 15
+        }
+      ],
       "qualities": [
         {
           "quality_id": 3
