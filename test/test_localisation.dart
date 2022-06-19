@@ -4,7 +4,7 @@ import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
 import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
 import 'package:battle_it_out/persistence/dao/length_dao.dart';
 import 'package:battle_it_out/persistence/dao/melee_weapon_dao.dart';
-import 'package:battle_it_out/persistence/dao/npc_trait_dao.dart';
+import 'package:battle_it_out/persistence/dao/trait_dao.dart';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/dao/ranged_weapon_dao.dart';
@@ -33,7 +33,7 @@ Future<void> localisationTest() async {
           }
         });
       }
-      performLocTest("Check npc traits localisations", NPCTraitDAO(), (item) => [item.name, item.description]);
+      performLocTest("Check npc traits localisations", TraitDAO(), (item) => [item.name, item.description]);
       performLocTest("Check base talent localisations", BaseTalentDAO(), (item) => [item.name, item.description]);
       performLocTest("Check talent localisations", TalentDAO(), (item) => [item.name, item.specialisation]);
       performLocTest("Check talent test localisations", TalentTestDAO(), (item) => [item.comment]);

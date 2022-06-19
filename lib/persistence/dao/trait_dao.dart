@@ -1,7 +1,7 @@
 import 'package:battle_it_out/persistence/dao/dao.dart';
-import 'package:battle_it_out/persistence/entities/npc_trait.dart';
+import 'package:battle_it_out/persistence/entities/trait.dart';
 
-class NPCTraitDAO extends DAO<Trait> {
+class TraitDAO extends DAO<Trait> {
   @override
   get tableName => 'npc_traits';
 
