@@ -8,8 +8,16 @@ abstract class Weapon extends Item {
   Skill? skill;
   bool twoHanded;
 
-  Weapon({required id, required name, required this.damage, required this.twoHanded, this.damageAttribute, this.skill, qualities})
-      : super(id: id, name: name, qualities: qualities);
+  Weapon({
+    required id,
+    required name,
+    required this.damage,
+    required this.twoHanded,
+    this.damageAttribute,
+    this.skill,
+    itemCategory,
+    qualities,
+  }) : super(id: id, name: name, category: itemCategory, encumbrance: 0, qualities: qualities);
 
   int getTotalDamage() {
     return damageAttribute?.getTotalBonus() ?? 0 + damage;

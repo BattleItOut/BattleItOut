@@ -1,6 +1,7 @@
 import 'package:battle_it_out/persistence/dao/ammunition_dao.dart';
 import 'package:battle_it_out/persistence/dao/armour_dao.dart';
 import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
+import 'package:battle_it_out/persistence/dao/item_dao.dart';
 import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
 import 'package:battle_it_out/persistence/dao/length_dao.dart';
 import 'package:battle_it_out/persistence/dao/melee_weapon_dao.dart';
@@ -67,16 +68,20 @@ class Character {
     List<MeleeWeapon> meleeWeapons = await _createMeleeWeapons(json["melee_weapons"], attributes, skills);
     List<RangedWeapon> rangedWeapons = await _createRangedWeapons(json["ranged_weapons"], attributes, skills);
     List<Armour> armour = await _createArmour(json["armour"]);
+    List<Item> items = await _createItems(json["items"]);
 
-    Map<Item, int> items = {};
+    Map<Item, int> itemsMap = {};
     for (var element in meleeWeapons) {
-        items.update(element, (value) => value + 1, ifAbsent: () => 1);
+        itemsMap.update(element, (value) => value + 1, ifAbsent: () => 1);
     }
     for (var element in rangedWeapons) {
-      items.update(element, (value) => value + 1, ifAbsent: () => 1);
+      itemsMap.update(element, (value) => value + 1, ifAbsent: () => 1);
     }
     for (var element in armour) {
-      items.update(element, (value) => value + 1, ifAbsent: () => 1);
+      itemsMap.update(element, (value) => value + 1, ifAbsent: () => 1);
+    }
+    for (var element in items) {
+      itemsMap.update(element, (value) => value + 1, ifAbsent: () => 1);
     }
 
     Character character = Character(
@@ -86,7 +91,7 @@ class Character {
         attributes: attributes,
         skills: skills,
         talents: talents,
-        items: items,
+        items: itemsMap,
         meleeWeapons: meleeWeapons,
         rangedWeapons: rangedWeapons,
         armour: armour);
@@ -174,13 +179,7 @@ class Character {
   static Future<List<Armour>> _createArmour(json) async {
     List<Armour> armourList = [];
     for (var map in json ?? []) {
-      Armour armour = await ArmourDAO().get(map["armour_id"]);
-      map["head_AP"] != null ? armour.headAP = map["head_AP"] : null;
-      map["body_AP"] != null ? armour.bodyAP = map["body_AP"] : null;
-      map["left_arm_AP"] != null ? armour.leftArmAP = map["left_arm_AP"] : null;
-      map["right_arm_AP"] != null ? armour.rightArmAP = map["right_arm_AP"] : null;
-      map["left_leg_AP"] != null ? armour.leftLegAP = map["left_leg_AP"] : null;
-      map["right_leg_AP"] != null ? armour.rightLegAP = map["right_leg_AP"] : null;
+      Armour armour = await ArmourDAO().get(map["armour_id"], map);
       armourList.add(armour);
     }
     return armourList;
@@ -210,6 +209,18 @@ class Character {
       talentsMap[talent.id] = talent;
     }
     return talentsMap;
+  }
+
+  static Future<List<Item>> _createItems(json) async {
+    List<Item> itemsList = [];
+    for (var map in json ?? []) {
+      Item item = await ItemDAO().get(map["item_id"]);
+      for (var qualityMap in map["qualities"] ?? []) {
+        item.addQuality(await ItemQualityDAO().get(qualityMap["quality_id"]));
+      }
+      itemsList.add(item);
+    }
+    return itemsList;
   }
 
   // List getters
@@ -278,6 +289,18 @@ class Character {
     }
     return output;
   }
+  Map<String, Map<Item, int>> getItemsGrouped() {
+    Map<String, Map<Item, int>> output = {};
+    for (MapEntry<Item, int> item in items.entries) {
+      String category = item.key.category ?? "NONE";
+      if (output.containsKey(category)) {
+        output[category]![item.key] = item.value;
+      } else {
+        output[category] = {item.key: item.value};
+      }
+    }
+    return output;
+  }
 
   List<Talent> getTalents() {
     return List.of(talents.values);
@@ -287,4 +310,5 @@ class Character {
   String toString() {
     return "Character (name=$name, race=$race), profession=$profession";
   }
+
 }

@@ -17,8 +17,9 @@ class Armour extends Item {
       required this.rightArmAP,
       required this.leftLegAP,
       required this.rightLegAP,
-      qualities = const []})
-      : super(id: id, name: name, qualities: qualities);
+      itemCategory,
+      qualities = const [], })
+      : super(id: id, name: name, category: itemCategory, encumbrance: 0, qualities: qualities);
 
   @override
   String toString() {
@@ -35,7 +36,8 @@ class Armour extends Item {
       "LEFT_ARM_AP": leftArmAP,
       "RIGHT_ARM_AP": rightArmAP,
       "LEFT_LEG_AP": leftLegAP,
-      "RIGHT_LEG_AP": rightArmAP
+      "RIGHT_LEG_AP": rightArmAP,
+      "ITEM_CATEGORY": category
     };
   }
 }

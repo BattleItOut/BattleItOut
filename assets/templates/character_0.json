@@ -196,5 +196,24 @@
     {
       "weapon_id": 11
     }
+  ],
+  "items": [
+    {
+      "item_id": 75
+    },
+    {
+      "item_id": 16
+    },
+    {
+      "item_id": 17
+    },
+    {
+      "item_id": 4,
+      "qualities": [
+        {
+          "quality_id": 3
+        }
+      ]
+    }
   ]
 }

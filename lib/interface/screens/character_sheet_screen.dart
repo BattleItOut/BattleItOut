@@ -139,6 +139,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                         IntegerText(null),
                         IntegerText(null)
                       ]),
+                      headerHidden: !entry.key.grouped,
                       children: [
                         for (Talent talent in entry.value)
                           TableLine(
@@ -207,17 +208,30 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                   )
               ],
               context: context),
-          SingleEntitiesTable(
+          GroupedEntitiesTable(
               title: LocalisedText("ITEMS", context, style: const TextStyle(fontSize: 24.0)),
               children: [
-                for (MapEntry<Item, int> entry in widget.character.items.entries)
-                  TableLine(children: [
-                    IntegerText(entry.value),
-                    LocalisedText(entry.key.name, context),
-                    PaddedText(entry.key.qualities.map((quality) => quality.name.localise(context)).join(", "))
-                  ])
+                for (MapEntry<String, Map<Item, int>> entry in widget.character.getItemsGrouped().entries)
+                  TableSubsection(
+                      header: TableLine(children: [
+                        IntegerText(null),
+                        LocalisedText(entry.key, context, style: const TextStyle(fontWeight: FontWeight.bold)),
+                        IntegerText(null),
+                        const PaddedText(""),
+                      ]),
+                      headerHidden: entry.key=="NONE",
+                    children: [
+                      for (MapEntry<Item, int> secondaryEntry in entry.value.entries)
+                        TableLine(children: [
+                          IntegerText(secondaryEntry.value),
+                          LocalisedText(secondaryEntry.key.name, context),
+                          IntegerText(secondaryEntry.key.encumbrance),
+                          PaddedText(secondaryEntry.key.qualities.map((quality) => quality.name.localise(context)).join(", "))
+                        ])
+                    ],
+                  )
               ],
-              context: context),
+              context: context)
         ]));
   }
 }

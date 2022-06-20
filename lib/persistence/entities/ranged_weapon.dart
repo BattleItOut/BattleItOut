@@ -17,10 +17,19 @@ class RangedWeapon extends Weapon {
       required damageAttribute,
       this.rangeAttribute,
       twoHanded,
+      itemCategory,
       skill,
       qualities,
       Map<Ammunition, int> ammunition = const {}})
-      : super(id: id, name: name, qualities: qualities, damage: damage, twoHanded: twoHanded, damageAttribute: damageAttribute, skill: skill) {
+      : super(
+            id: id,
+            name: name,
+            qualities: qualities,
+            damage: damage,
+            twoHanded: twoHanded,
+            damageAttribute: damageAttribute,
+            itemCategory: itemCategory,
+            skill: skill) {
     this.ammunition.addAll(ammunition);
   }
 

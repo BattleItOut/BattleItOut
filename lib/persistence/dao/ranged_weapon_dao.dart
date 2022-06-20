@@ -27,6 +27,7 @@ class RangedWeaponDAO extends ItemDAO<RangedWeapon> {
         damage: map["DAMAGE"],
         damageAttribute: attributes?[map["DAMAGE_ATTRIBUTE"]],
         skill: skills?[map['SKILL']] ?? await SkillDAO(attributes).get(map['SKILL']),
+        itemCategory: map["ITEM_CATEGORY"],
         qualities: await getQualities(map["ID"]));
   }
 }
