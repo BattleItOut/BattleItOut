@@ -1,9 +1,10 @@
-import 'package:battle_it_out/persistence/entities/dto.dart';
 import 'package:battle_it_out/persistence/entities/item_quality.dart';
+import 'package:flutter/foundation.dart';
 
-class Item extends DTO {
-  int id;
+class Item {
+  int? id;
   String name;
+  int count;
 
   int? cost;
   int encumbrance;
@@ -13,12 +14,13 @@ class Item extends DTO {
   List<ItemQuality> qualities = [];
 
   Item(
-      {required this.id,
+      {this.id,
       required this.name,
       required this.encumbrance,
       this.cost,
       this.availability,
       this.category,
+      this.count = 1,
       List<ItemQuality> qualities = const []}) {
     this.qualities.addAll(qualities);
   }
@@ -28,7 +30,14 @@ class Item extends DTO {
   }
 
   @override
-  Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "CATEGORY": category};
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Item &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          listEquals(qualities, other.qualities);
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode ^ qualities.hashCode;
 }

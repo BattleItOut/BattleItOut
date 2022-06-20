@@ -1,200 +1,195 @@
 {
-  "name": "Dietmar Drauwulf",
-  "race": {
-    "race_id": 1
+  "NAME": "Dietmar Drauwulf",
+  "RACE": {
+    "ID": 1
   },
-  "profession": {
-    "profession_id": 229
+  "PROFESSION": {
+    "ID": 229
   },
-  "attributes": [
+  "ATTRIBUTES": [
     {
-      "id": 1,
-      "base": 34,
-      "advances": 5
+      "ID": 1,
+      "BASE": 34,
+      "ADVANCES": 5,
+      "ADVANCABLE": true
     },
     {
-      "id": 2,
-      "base": 30,
-      "advances": 0
+      "ID": 2,
+      "BASE": 30
     },
     {
-      "id": 3,
-      "base": 31,
-      "advances": 0
+      "ID": 3,
+      "BASE": 31
     },
     {
-      "id": 4,
-      "base": 30,
-      "advances": 5
+      "ID": 4,
+      "BASE": 30,
+      "ADVANCES": 5,
+      "ADVANCABLE": true
     },
     {
-      "id": 5,
-      "base": 32,
-      "advances": 0
+      "ID": 5,
+      "BASE": 32
     },
     {
-      "id": 6,
-      "base": 33,
-      "advances": 0
+      "ID": 6,
+      "BASE": 33
     },
     {
-      "id": 7,
-      "base": 35,
-      "advances": 0
+      "ID": 7,
+      "BASE": 35
     },
     {
-      "id": 8,
-      "base": 36,
-      "advances": 0
+      "ID": 8,
+      "BASE": 36
     },
     {
-      "id": 9,
-      "base": 30,
-      "advances": 5
+      "ID": 9,
+      "BASE": 30,
+      "ADVANCES": 5,
+      "ADVANCABLE": true
     },
     {
-      "id": 10,
-      "base": 43,
-      "advances": 0
+      "ID": 10,
+      "BASE": 43
     },
     {
-      "id": 11,
-      "base": 4,
-      "advances": 0
+      "ID": 11,
+      "BASE": 4
     },
     {
-      "id": 12,
-      "base": 3
+      "ID": 12,
+      "BASE": 3
     },
     {
-      "id": 13,
-      "base": 3
+      "ID": 13,
+      "BASE": 3
     }
   ],
-  "skills": [
+  "SKILLS": [
     {
-      "skill_id": 3,
-      "advances": 5
+      "ID": 3,
+      "ADVANCES": 5
     },
     {
-      "skill_id": 12,
-      "advances": 5,
-      "advancable": true
+      "ID": 12,
+      "ADVANCES": 5,
+      "ADVANCABLE": true
     },
     {
-      "skill_id": 24,
-      "advances": 5,
-      "advancable": true
+      "ID": 24,
+      "ADVANCES": 5,
+      "ADVANCABLE": true
     },
     {
-      "skill_id": 11,
-      "advances": 5,
-      "advancable": true
+      "ID": 11,
+      "ADVANCES": 5,
+      "ADVANCABLE": true
     },
     {
-      "skill_id": 17,
-      "advances": 3
+      "ID": 17,
+      "ADVANCES": 3
     },
     {
-      "skill_id": 4,
-      "advances": 5,
-      "advancable": true,
-      "earning": true
+      "ID": 4,
+      "ADVANCES": 5,
+      "ADVANCABLE": true,
+      "EARNING": true
     },
     {
-      "skill_id": 38,
-      "advances": 3
+      "ID": 38,
+      "ADVANCES": 3
     },
     {
-      "skill_id": 34,
-      "advances": 12,
-      "advancable": true
+      "ID": 34,
+      "ADVANCES": 12,
+      "ADVANCABLE": true
     },
     {
-      "skill_id": 13,
-      "advances": 3
+      "ID": 13,
+      "ADVANCES": 3
     },
     {
-      "skill_id": 7,
-      "advances": 8,
-      "advancable": true
+      "ID": 7,
+      "ADVANCES": 8,
+      "ADVANCABLE": true
     },
     {
-      "skill_id": 197,
-      "advances": 10
+      "ID": 197,
+      "ADVANCES": 10
     },
     {
-      "skill_id": 124,
-      "advances": 5
+      "ID": 124,
+      "ADVANCES": 5
     },
     {
-      "skill_id": 146,
-      "advances": 5,
-      "advancable": true
+      "ID": 146,
+      "ADVANCES": 5,
+      "ADVANCABLE": true
     },
     {
-      "skill_id": 9,
-      "advances": 12,
-      "advancable": true
+      "ID": 9,
+      "ADVANCES": 12,
+      "ADVANCABLE": true
     },
     {
-      "skill_id": 46,
-      "advances": 5
+      "ID": 46,
+      "ADVANCES": 5
     }
   ],
-  "talents": [
+  "TALENTS": [
     {
-      "talent_id": 21,
-      "lvl": 1
+      "ID": 21,
+      "LVL": 1
     },
     {
-      "talent_id": 195,
-      "lvl": 1
+      "ID": 195,
+      "LVL": 1
     },
     {
-      "talent_id": 199,
-      "lvl": 1
+      "ID": 199,
+      "LVL": 1
     },
     {
-      "talent_id": 123,
-      "lvl": 1
+      "ID": 123,
+      "LVL": 1
     },
     {
-      "talent_id": 233,
-      "lvl": 1
+      "ID": 233,
+      "LVL": 1
     },
     {
-      "talent_id": 14,
-      "lvl": 1,
-      "advancable": true
+      "ID": 14,
+      "LVL": 1,
+      "ADVANCABLE": true
     },
     {
-      "talent_id": 31,
-      "lvl": 1,
-      "advancable": true
+      "ID": 31,
+      "LVL": 1,
+      "ADVANCABLE": true
     },
     {
-      "talent_id": 124,
-      "lvl": 1,
-      "advancable": true
+      "ID": 124,
+      "LVL": 1,
+      "ADVANCABLE": true
     },
     {
-      "talent_id": 48,
-      "lvl": 1,
-      "advancable": true
+      "ID": 48,
+      "LVL": 1,
+      "ADVANCABLE": true
     }
   ],
-  "armour": [
+  "ARMOUR": [
     {
-      "armour_id": 2
+      "ID": 2
     }
   ],
-  "melee_weapons": [
+  "MELEE_WEAPONS": [
     {
-      "weapon_id": 25
+      "ID": 25
     },
     {
-      "weapon_id": 11
+      "ID": 11
     }
   ],
   "items": [

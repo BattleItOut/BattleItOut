@@ -9,7 +9,7 @@ abstract class Weapon extends Item {
   bool twoHanded;
 
   Weapon({
-    required id,
+    id,
     required name,
     required this.damage,
     required this.twoHanded,
@@ -22,4 +22,17 @@ abstract class Weapon extends Item {
   int getTotalDamage() {
     return damageAttribute?.getTotalBonus() ?? 0 + damage;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      super == other &&
+          other is Weapon &&
+          runtimeType == other.runtimeType &&
+          damage == other.damage &&
+          damageAttribute == other.damageAttribute &&
+          skill == other.skill;
+
+  @override
+  int get hashCode => super.hashCode ^ damage.hashCode ^ damageAttribute.hashCode ^ skill.hashCode;
 }
