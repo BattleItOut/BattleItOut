@@ -19,6 +19,8 @@ import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
 
+import 'entities/item.dart';
+
 class Character {
   String name;
   Race race;
@@ -26,6 +28,8 @@ class Character {
   Map<int, Attribute> attributes;
   Map<int, Skill> skills;
   Map<int, Talent> talents = {};
+
+  Map<Item, int> items;
   List<Armour> armour = [];
   List<MeleeWeapon> meleeWeapons = [];
   List<RangedWeapon> rangedWeapons = [];
@@ -39,6 +43,7 @@ class Character {
       required this.attributes,
       this.skills = const {},
       this.talents = const {},
+      this.items = const {},
       this.meleeWeapons = const [],
       this.rangedWeapons = const [],
       this.armour = const []});
@@ -63,6 +68,17 @@ class Character {
     List<RangedWeapon> rangedWeapons = await _createRangedWeapons(json["ranged_weapons"], attributes, skills);
     List<Armour> armour = await _createArmour(json["armour"]);
 
+    Map<Item, int> items = {};
+    for (var element in meleeWeapons) {
+        items.update(element, (value) => value + 1, ifAbsent: () => 1);
+    }
+    for (var element in rangedWeapons) {
+      items.update(element, (value) => value + 1, ifAbsent: () => 1);
+    }
+    for (var element in armour) {
+      items.update(element, (value) => value + 1, ifAbsent: () => 1);
+    }
+
     Character character = Character(
         name: name,
         race: race,
@@ -70,6 +86,7 @@ class Character {
         attributes: attributes,
         skills: skills,
         talents: talents,
+        items: items,
         meleeWeapons: meleeWeapons,
         rangedWeapons: rangedWeapons,
         armour: armour);
