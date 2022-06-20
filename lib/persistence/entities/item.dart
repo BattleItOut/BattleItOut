@@ -4,9 +4,14 @@ import 'package:flutter/foundation.dart';
 abstract class Item {
   int? id;
   String name;
+  int count;
   List<ItemQuality> qualities = [];
 
-  Item({required this.id, required this.name, List<ItemQuality> qualities = const []}) {
+  Item(
+      {required this.id,
+      required this.name,
+      this.count = 1,
+      List<ItemQuality> qualities = const []}) {
     this.qualities.addAll(qualities);
   }
 
