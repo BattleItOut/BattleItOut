@@ -16,6 +16,7 @@ class AmmunitionDAO extends ItemDAO<Ammunition> {
         rangeModifier: map["RANGE_MOD"],
         rangeBonus: map["RANGE_BONUS"],
         damageBonus: map["DAMAGE_BONUS"],
+        itemCategory: map["ITEM_CATEGORY"],
         qualities: await getQualities(map["ID"]));
   }
 }

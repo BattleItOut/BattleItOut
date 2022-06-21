@@ -8,11 +8,12 @@ class Ammunition extends Item {
   Ammunition(
       {required int id,
       required String name,
-      qualities,
       this.rangeModifier = 1,
       this.rangeBonus = 0,
-      this.damageBonus = 0})
-      : super(id: id, name: name, encumbrance: 0, category: "AMMUNITION", qualities: qualities);
+      this.damageBonus = 0,
+      itemCategory,
+      qualities})
+      : super(id: id, name: name, encumbrance: 0, category: itemCategory, qualities: qualities);
 
   @override
   Map<String, dynamic> toMap() {
