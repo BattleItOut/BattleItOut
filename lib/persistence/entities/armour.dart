@@ -24,18 +24,4 @@ class Armour extends Item {
   String toString() {
     return "Armour ($id, $name, $headAP/$bodyAP/$leftArmAP/$rightArmAP/$leftLegAP/$rightLegAP))";
   }
-
-  @override
-  Map<String, dynamic> toMap() {
-    return {
-      "ID": id,
-      "NAME": name,
-      "HEAD_AP": headAP,
-      "BODY_AP": bodyAP,
-      "LEFT_ARM_AP": leftArmAP,
-      "RIGHT_ARM_AP": rightArmAP,
-      "LEFT_LEG_AP": leftLegAP,
-      "RIGHT_LEG_AP": rightArmAP
-    };
-  }
 }

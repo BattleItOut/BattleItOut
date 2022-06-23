@@ -23,7 +23,6 @@ class RangedWeapon extends Weapon {
     return rangeAttribute?.getTotalBonus() ?? 1 * range;
   }
 
-  @override
   Map<String, dynamic> toMap() {
     return {
       "ID": id,

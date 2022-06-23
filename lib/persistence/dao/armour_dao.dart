@@ -1,7 +1,7 @@
 import 'package:battle_it_out/persistence/dao/item_dao.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
 
-class ArmourDAO extends ItemDAO<Armour> {
+class ArmourFactory extends ItemFactory<Armour> {
   @override
   get tableName => 'armour';
   @override
@@ -19,5 +19,11 @@ class ArmourDAO extends ItemDAO<Armour> {
         leftLegAP: map["LEFT_LEG_AP"],
         rightLegAP: map["RIGHT_LEG_AP"],
         qualities: await getQualities(map["ID"]));
+  }
+
+  @override
+  Map<String, dynamic> toMap(Armour object) {
+    // TODO: implement toMap
+    throw UnimplementedError();
   }
 }

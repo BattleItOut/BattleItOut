@@ -11,7 +11,6 @@ class MeleeWeapon extends Weapon {
     return skill!.getTotalValue();
   }
 
-  @override
   Map<String, dynamic> toMap() {
     return {
       "ID": id,

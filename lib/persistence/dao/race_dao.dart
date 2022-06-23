@@ -1,57 +1,66 @@
-import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
-import 'package:battle_it_out/persistence/dao/dao.dart';
+import 'package:battle_it_out/persistence/dao/serializer.dart';
 import 'package:battle_it_out/persistence/dao/size_dao.dart';
-import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
-import 'package:battle_it_out/persistence/database_provider.dart';
-import 'package:sqflite/sqflite.dart';
 
-class RaceDAO extends DAO<Race> {
+class RaceFactory extends Factory<Race> {
   @override
   get tableName => 'races';
+
   @override
-  Future<Race> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
-    return Race(
-        id: overrideMap["ID"] ?? map["ID"],
-        name: overrideMap["NAME"] ?? map["NAME"],
-        extraPoints: overrideMap["EXTRA_POINTS"] ?? map["EXTRA_POINTS"],
-        size: await SizeDAO().get(overrideMap["SIZE"] ?? map["SIZE"]),
-        source: overrideMap["SRC"] ?? map["SRC"]);
+  Future<Race> fromMap(Map<String, dynamic> map) async {
+    Race race = Race(
+        id: map["ID"],
+        name: map["NAME"],
+        extraPoints: map["EXTRA_POINTS"] ?? 0,
+        source: map["SRC"] ?? 'Custom',
+        size: await SizeFactory().get(map["SIZE"]));
+    if (map["SUBRACE"] != null) {
+      race.subrace = await SubraceFactory().create(map["SUBRACE"]);
+    } else if (map["ID"] != null) {
+      race.subrace = await SubraceFactory().getWhere(where: "RACE_ID = ? AND DEF = ?", whereArgs: [map["ID"], 1]);
+    }
+    return race;
   }
 
-  Future<Map<int, Attribute>> getAttributes(int raceID) async {
-    Database? database = await DatabaseProvider.instance.getDatabase();
-    final List<Map<String, dynamic>> attributes =
-        await database.query("race_attributes", where: "RACE_ID = ?", whereArgs: [raceID]);
-
-    Map<int, Attribute> attributesMap = {};
-    for (var attributeMap in attributes) {
-      Attribute attribute = await AttributeDAO().get(attributeMap['ATTR_ID']);
-      attribute.base = attributeMap["VALUE"];
-      attributesMap[attribute.id] = attribute;
+  @override
+  Map<String, dynamic> toMap(Race object) {
+    Map<String, dynamic> map = {
+      "ID": object.id,
+      "NAME": object.name,
+      "EXTRA_POINTS": object.extraPoints,
+      "SIZE": object.size.id,
+      "SRC": object.source
+    };
+    if (object.subrace != null) {
+      map["SUBRACE"] = SubraceFactory().toMap(object.subrace!);
     }
-    return attributesMap;
-  }
-
-  Future<Subrace>? getDefaultSubrace(int? raceID) {
-    if (raceID != null) {
-      return SubraceDAO().getWhere(where: "RACE_ID = ? AND DEF = ?", whereArgs: [raceID, 1]);
-    }
-    return null;
+    return map;
   }
 }
 
-class SubraceDAO extends DAO<Subrace> {
+class SubraceFactory extends Factory<Subrace> {
   @override
   get tableName => 'subraces';
 
   @override
-  Subrace fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
+  Subrace fromMap(Map<String, dynamic> map) {
     return Subrace(
-        id: overrideMap["ID"] ?? map["ID"],
-        name: overrideMap["NAME"] ?? map["NAME"],
-        randomTalents: overrideMap["RANDOM_TALENTS"] ?? map["RANDOM_TALENTS"],
-        source: overrideMap["SRC"] ?? map["SRC"],
-        defaultSubrace: overrideMap["DEF"] ?? map["DEF"] == 1);
+        id: map["ID"],
+        name: map["NAME"],
+        randomTalents: map["RANDOM_TALENTS"] ?? 0,
+        source: map["SRC"] ?? 'Custom',
+        defaultSubrace: map["DEF"] == 1
+    );
+  }
+
+  @override
+  Map<String, dynamic> toMap(Subrace object) {
+    return {
+        "ID": object.id,
+        "NAME": object.name,
+        "RANDOM_TALENTS": object.randomTalents,
+        "SRC": object.source,
+        "DEF": object.defaultSubrace ? 1 : 0
+    };
   }
 }

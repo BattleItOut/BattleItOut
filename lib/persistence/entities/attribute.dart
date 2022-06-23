@@ -1,6 +1,4 @@
-import 'package:battle_it_out/persistence/entities/dto.dart';
-
-class Attribute extends DTO {
+class Attribute {
   int id;
   String name;
   String shortName;
@@ -8,7 +6,7 @@ class Attribute extends DTO {
   int rollable;
   int importance;
   int base;
-  int advances = 0;
+  int advances;
 
   Attribute(
       {required this.id,
@@ -17,7 +15,8 @@ class Attribute extends DTO {
       required this.description,
       required this.rollable,
       required this.importance,
-      this.base = 0});
+      this.base = 0,
+      this.advances = 0});
 
   int getTotalValue() {
     return base + advances;
@@ -28,16 +27,29 @@ class Attribute extends DTO {
   }
 
   @override
-  Map<String, dynamic> toMap() {
-    return {
-      "ID": id,
-      "NAME": name,
-      "SHORT_NAME": shortName,
-      "DESCRIPTION": description,
-      "ROLLABLE": rollable,
-      "IMPORTANCE": importance
-    };
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Attribute &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          shortName == other.shortName &&
+          description == other.description &&
+          rollable == other.rollable &&
+          importance == other.importance &&
+          base == other.base &&
+          advances == other.advances;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      shortName.hashCode ^
+      description.hashCode ^
+      rollable.hashCode ^
+      importance.hashCode ^
+      base.hashCode ^
+      advances.hashCode;
 
   @override
   String toString() {

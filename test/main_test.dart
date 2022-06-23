@@ -2,13 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'test_localisation.dart';
+import 'test_serialization.dart';
 
 main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
   await referencesTest();
   await localisationTest();
+  await serializationTest();
 }
 
 Future<void> referencesTest() async {

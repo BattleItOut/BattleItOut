@@ -1,41 +1,91 @@
-import 'package:battle_it_out/persistence/dao/dao.dart';
+import 'package:battle_it_out/persistence/dao/serializer.dart';
 import 'package:battle_it_out/persistence/entities/profession.dart';
 
-class ProfessionDAO extends DAO<Profession> {
+class ProfessionFactory extends Factory<Profession> {
   @override
   get tableName => 'professions';
 
   @override
-  Future<Profession> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
-    return Profession(
+  Future<Profession> fromMap(Map<String, dynamic> map) async {
+    Profession profession = Profession(
         id: map["ID"],
         name: map["NAME"],
         level: map["LEVEL"],
-        source: map["SOURCE"],
-        career: await ProfessionCareerDAO().get(map["CAREER_ID"]));
+        source: map["SOURCE"] ?? 'Custom');
+    if (map["CAREER_ID"] != null) {
+      profession.career = await ProfessionCareerFactory().get(map["CAREER_ID"]);
+    } else if (map["CAREER"] != null) {
+      profession.career = await ProfessionCareerFactory().create(map["CAREER"]);
+    }
+    return profession;
+  }
+
+  @override
+  Map<String, dynamic> toMap(Profession object) {
+    Map<String, dynamic> map = {
+      "ID": object.id,
+      "NAME": object.name,
+      "LEVEL": object.level,
+      "SOURCE": object.source
+    };
+    if (object.career != null) {
+      map["CAREER"] = ProfessionCareerFactory().toMap(object.career!);
+    }
+    return map;
   }
 }
 
-class ProfessionCareerDAO extends DAO<ProfessionCareer> {
+class ProfessionCareerFactory extends Factory<ProfessionCareer> {
   @override
   get tableName => 'profession_careers';
 
   @override
   Future<ProfessionCareer> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
-    return ProfessionCareer(
+    ProfessionCareer professionCareer = ProfessionCareer(
         id: map["ID"],
         name: map["NAME"],
-        source: map["SOURCE"],
-        professionClass: await ProfessionClassDAO().get(map["CLASS_ID"]));
+        source: map["SOURCE"] ?? 'Custom');
+    if (map["CLASS_ID"] != null) {
+      professionCareer.professionClass = await ProfessionClassFactory().get(map["CLASS_ID"]);
+    } else if (map["CLASS"] != null) {
+      professionCareer.professionClass = await ProfessionClassFactory().create(map["CLASS"]);
+    }
+    return professionCareer;
+  }
+
+  @override
+  Map<String, dynamic> toMap(ProfessionCareer object) {
+    Map<String, dynamic> map = {
+      "ID": object.id,
+      "NAME": object.name,
+      "SOURCE": object.source
+    };
+    if (object.professionClass != null) {
+      map["CLASS"] = ProfessionClassFactory().toMap(object.professionClass!);
+    }
+    return map;
   }
 }
 
-class ProfessionClassDAO extends DAO<ProfessionClass> {
+class ProfessionClassFactory extends Factory<ProfessionClass> {
   @override
   get tableName => 'profession_classes';
 
   @override
   ProfessionClass fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
-    return ProfessionClass(id: map["ID"], name: map["NAME"], source: map["SOURCE"]);
+    return ProfessionClass(
+        id: map["ID"],
+        name: map["NAME"],
+        source: map["SOURCE"] ?? 'Custom');
+  }
+
+  @override
+  Map<String, dynamic> toMap(ProfessionClass object) {
+    Map<String, dynamic> map = {
+      "ID": object.id,
+      "NAME": object.name,
+      "SOURCE": object.source
+    };
+    return map;
   }
 }

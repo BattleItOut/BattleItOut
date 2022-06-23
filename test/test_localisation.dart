@@ -32,23 +32,23 @@ Future<void> localisationTest() async {
           }
         });
       }
-      performLocTest("Check base talent localisations", BaseTalentDAO(), (item) => [item.name, item.description]);
-      performLocTest("Check talent localisations", TalentDAO(), (item) => [item.name, item.specialisation]);
-      performLocTest("Check talent test localisations", TalentTestDAO(), (item) => [item.comment]);
-      performLocTest("Check profession class localisations", ProfessionCareerDAO(), (item) => [item.name]);
-      performLocTest("Check profession career localisations", ProfessionCareerDAO(), (item) => [item.name]);
-      performLocTest("Check profession localisations", ProfessionDAO(), (item) => [item.name]);
-      performLocTest("Check race localisations", RaceDAO(), (item) => [item.name]);
-      performLocTest("Check subrace localisations", SubraceDAO(), (item) => [item.name]);
-      performLocTest("Check size localisations", SizeDAO(), (item) => [item.name]);
-      performLocTest("Check armour localisations", ArmourDAO(), (item) => [item.name]);
-      performLocTest("Check attribute localisations", AttributeDAO(), (item) => [item.name, item.shortName, item.description]);
-      performLocTest("Check base skill localisations", BaseSkillDAO(), (item) => [item.name, item.description]);
-      performLocTest("Check skill localisations", SkillDAO(), (item) => [item.name, item.specialisation]);
-      performLocTest("Check weapon length localisations", WeaponLengthDAO(), (item) => [item.name, item.description]);
-      performLocTest("Check melee weapon localisations", MeleeWeaponDAO(), (item) => [item.name]);
-      performLocTest("Check ranged weapon localisations", RangedWeaponDTO(), (item) => [item.name]);
-      performLocTest("Check item quality localisations", ItemQualityDAO(), (item) => [item.name, item.description]);
+      performLocTest("Check base talent localisations", BaseTalentFactory(), (item) => [item.name, item.description]);
+      performLocTest("Check talent localisations", TalentFactory(), (item) => [item.name, item.specialisation]);
+      performLocTest("Check talent test localisations", TalentTestFactory(), (item) => [item.comment]);
+      performLocTest("Check profession class localisations", ProfessionCareerFactory(), (item) => [item.name]);
+      performLocTest("Check profession career localisations", ProfessionCareerFactory(), (item) => [item.name]);
+      performLocTest("Check profession localisations", ProfessionFactory(), (item) => [item.name]);
+      performLocTest("Check race localisations", RaceFactory(), (item) => [item.name]);
+      performLocTest("Check subrace localisations", SubraceFactory(), (item) => [item.name]);
+      performLocTest("Check size localisations", SizeFactory(), (item) => [item.name]);
+      performLocTest("Check armour localisations", ArmourFactory(), (item) => [item.name]);
+      performLocTest("Check attribute localisations", AttributeFactory(), (item) => [item.name, item.shortName, item.description]);
+      performLocTest("Check base skill localisations", BaseSkillFactory(), (item) => [item.name, item.description]);
+      performLocTest("Check skill localisations", SkillFactory(), (item) => [item.name, item.specialisation]);
+      performLocTest("Check weapon length localisations", WeaponLengthFactory(), (item) => [item.name, item.description]);
+      performLocTest("Check melee weapon localisations", MeleeWeaponFactory(), (item) => [item.name]);
+      performLocTest("Check ranged weapon localisations", RangedWeaponFactory(), (item) => [item.name]);
+      performLocTest("Check item quality localisations", ItemQualityFactory(), (item) => [item.name, item.description]);
     });
 
     var testMap = {};

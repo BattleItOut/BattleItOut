@@ -4,11 +4,11 @@ import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 
-class RangedWeaponDTO extends ItemDAO<RangedWeapon> {
-  Map<int, Skill>? skills;
-  Map<int, Attribute>? attributes;
+class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
+  Map<int, Skill> skills;
+  Map<int, Attribute> attributes;
 
-  RangedWeaponDTO([this.attributes, this.skills]);
+  RangedWeaponFactory([this.attributes = const {}, this.skills = const {}]);
 
   @override
   get tableName => 'weapons_ranged';
@@ -21,10 +21,16 @@ class RangedWeaponDTO extends ItemDAO<RangedWeapon> {
         id: map["ID"],
         name: map["NAME"],
         range: map["WEAPON_RANGE"],
-        rangeAttribute: attributes?[map["RANGE_ATTRIBUTE"]],
+        rangeAttribute: attributes[map["RANGE_ATTRIBUTE"]],
         damage: map["DAMAGE"],
-        damageAttribute: attributes?[map["DAMAGE_ATTRIBUTE"]],
-        skill: skills?[map['SKILL']] ?? await SkillDAO(attributes).get(map['SKILL']),
+        damageAttribute: attributes[map["DAMAGE_ATTRIBUTE"]],
+        skill: skills[map['SKILL']] ?? await SkillFactory(attributes).get(map['SKILL']),
         qualities: await getQualities(map["ID"]));
+  }
+
+  @override
+  Map<String, dynamic> toMap(RangedWeapon object) {
+    // TODO: implement toMap
+    throw UnimplementedError();
   }
 }

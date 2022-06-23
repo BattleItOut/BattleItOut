@@ -1,6 +1,4 @@
-import 'dto.dart';
-
-class WeaponLength extends DTO {
+class WeaponLength {
   int? id;
   String name;
   String description;
@@ -8,7 +6,6 @@ class WeaponLength extends DTO {
 
   WeaponLength({this.id, required this.name, this.description = "", this.source = "Custom"});
 
-  @override
   Map<String, dynamic> toMap() {
     return {"ID": id, "NAME": name, "DESCRIPTION": description, "SOURCE": source};
   }
