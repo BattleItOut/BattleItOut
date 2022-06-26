@@ -1,7 +1,9 @@
 import 'package:battle_it_out/persistence/dao/item_dao.dart';
+import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
 import 'package:battle_it_out/persistence/dao/length_dao.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
+import 'package:battle_it_out/persistence/entities/item_quality.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 
@@ -17,20 +19,33 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
   get qualitiesTableName => 'weapons_melee_qualities';
 
   @override
-  Future<MeleeWeapon> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
-    return MeleeWeapon(
+  Future<MeleeWeapon> fromMap(Map<String, dynamic> map) async {
+    MeleeWeapon meleeWeapon = MeleeWeapon(
         id: map["ID"],
         name: map["NAME"],
         length: await WeaponLengthFactory().get(map["LENGTH"]),
         damage: map["DAMAGE"],
-        damageAttribute: attributes?[map["DAMAGE_ATTRIBUTE"]],
-        skill: skills?[map['SKILL']] ?? await SkillFactory(attributes).get(map['SKILL']),
-        qualities: await getQualities(map["ID"]));
+        damageAttribute: attributes?[map["DAMAGE_ATTRIBUTE"]]);
+    if (map["SKILL"] != null) {
+      meleeWeapon.skill = skills?[map['SKILL']] ?? await SkillFactory(attributes).get(map['SKILL']);
+    } if (meleeWeapon.id != null) {
+      meleeWeapon.qualities = await getQualities(map["ID"]);
+    } if (map["QUALITIES"] != null) {
+      meleeWeapon.qualities.addAll([for (map in map["QUALITIES"]) await ItemQualityFactory().create(map)]);
+    }
+    return meleeWeapon;
   }
 
   @override
   Map<String, dynamic> toMap(MeleeWeapon object) {
-    // TODO: implement toMap
-    throw UnimplementedError();
+      return {
+        "ID": object.id,
+        "NAME": object.name,
+        "LENGTH": object.length.id,
+        "DAMAGE": object.damage,
+        "SKILL": object.skill?.id,
+        "DAMAGE_ATTRIBUTE": object.damageAttribute?.id,
+        "QUALITIES": [for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded)) ItemQualityFactory().toMap(quality)]
+      };
   }
 }

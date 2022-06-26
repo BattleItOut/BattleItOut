@@ -6,9 +6,18 @@ class WeaponLength {
 
   WeaponLength({this.id, required this.name, this.description = "", this.source = "Custom"});
 
-  Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "DESCRIPTION": description, "SOURCE": source};
-  }
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WeaponLength &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          description == other.description &&
+          source == other.source;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode ^ description.hashCode ^ source.hashCode;
 
   @override
   String toString() {

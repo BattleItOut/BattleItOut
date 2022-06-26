@@ -30,7 +30,7 @@
       "ID": 2
     }
   ],
-  "melee_weapons": [
+  "MELEE_WEAPONS": [
     {
       "ID": 1
     }

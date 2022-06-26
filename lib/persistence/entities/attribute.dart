@@ -5,8 +5,10 @@ class Attribute {
   String description;
   int rollable;
   int importance;
+
   int base;
   int advances;
+  bool advancable;
 
   Attribute(
       {required this.id,
@@ -16,7 +18,8 @@ class Attribute {
       required this.rollable,
       required this.importance,
       this.base = 0,
-      this.advances = 0});
+      this.advances = 0,
+      this.advancable = false});
 
   int getTotalValue() {
     return base + advances;

@@ -205,7 +205,7 @@
       "ID": 11
     }
   ],
-  "ranged_weapons": [
+  "RANGED_WEAPONS": [
     {
       "ID": 19,
       "AMMUNITION": 15,

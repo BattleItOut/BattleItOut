@@ -6,12 +6,21 @@ class Talent {
   String name;
   String? specialisation;
   BaseTalent? baseTalent;
-  List<TalentTest> tests;
+  List<TalentTest> tests = [];
 
   int currentLvl = 0;
   bool advancable = false;
 
-  Talent({required this.id, required this.name, this.specialisation, this.baseTalent, this.tests = const [], this.currentLvl = 0, this.advancable = false});
+  Talent(
+      {required this.id,
+      required this.name,
+      this.specialisation,
+      this.baseTalent,
+      List<TalentTest> tests = const [],
+      this.currentLvl = 0,
+      this.advancable = false}) {
+    this.tests.addAll(tests);
+  }
 
   bool isSpecialised() {
     return specialisation != null;
@@ -20,7 +29,6 @@ class Talent {
   int? getMaxLvl() {
     return baseTalent!.getMaxLvl();
   }
-
 
   @override
   bool operator ==(Object other) =>
@@ -80,29 +88,24 @@ class BaseTalent {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is BaseTalent &&
-              id == other.id &&
-              name == other.name &&
-              description == other.description &&
-              source == other.source &&
-              grouped == other.grouped &&
-              attribute == other.attribute &&
-              constLvl == other.constLvl;
+      other is BaseTalent &&
+          id == other.id &&
+          name == other.name &&
+          description == other.description &&
+          source == other.source &&
+          grouped == other.grouped &&
+          attribute == other.attribute &&
+          constLvl == other.constLvl;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ description.hashCode ^ constLvl.hashCode ^ source.hashCode ^ grouped.hashCode ^ attribute.hashCode;
-
-  Map<String, dynamic> toMap() {
-    return {
-      "ID": id,
-      "NAME": name,
-      "DESCRIPTION": description,
-      "SOURCE": source,
-      "MAX_LVL": attribute,
-      "CONST_LVL": constLvl,
-      "GROUPED": grouped ? 1 : 0
-    };
-  }
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      description.hashCode ^
+      constLvl.hashCode ^
+      source.hashCode ^
+      grouped.hashCode ^
+      attribute.hashCode;
 }
 
 class TalentTest {
@@ -114,22 +117,10 @@ class TalentTest {
   Skill? skill;
   Attribute? attribute;
 
-  TalentTest({
-    required this.id,
-    required this.talent,
-    this.comment,
-    this.baseSkill,
-    this.skill,
-    this.attribute});
+  TalentTest({required this.id, required this.talent, this.comment, this.baseSkill, this.skill, this.attribute});
 
-  Map<String, dynamic> toMap() {
-    return {
-      "TEST_ID": id,
-      "TALENT_ID": talent!.id,
-      "COMMENT": comment,
-      "BASE_SKILL_ID": baseSkill?.id,
-      "SKILL_ID": skill!.id,
-      "ATTRIBUTE_ID": attribute!.id
-    };
+  @override
+  String toString() {
+    return "Test (id=$id, name=$comment, attribute=$attribute, baseSkill=$baseSkill, skill=$skill)";
   }
 }

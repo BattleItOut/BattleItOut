@@ -14,7 +14,8 @@ import 'package:battle_it_out/utils/utilities.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-Future<void> localisationTest() async {
+Future<void> main() async {
+  TestWidgetsFlutterBinding.ensureInitialized();
   var _languages = await AppLocalizationsDelegate.loadYML();
   for (var entry in _languages.entries) {
     String languageName = entry.key;

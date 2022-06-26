@@ -15,7 +15,8 @@ class AttributeFactory extends Factory<Attribute> {
         rollable: map['ROLLABLE'],
         importance: map['IMPORTANCE'],
         base: map["BASE"] ?? 0,
-        advances: map["ADVANCES"] ?? 0);
+        advances: map["ADVANCES"] ?? 0,
+        advancable: map["ADVANCABLE"] ?? false);
   }
 
   @override
@@ -26,7 +27,10 @@ class AttributeFactory extends Factory<Attribute> {
       "SHORT_NAME": object.shortName,
       "DESCRIPTION": object.description,
       "ROLLABLE": object.rollable,
-      "IMPORTANCE": object.importance
+      "IMPORTANCE": object.importance,
+      "BASE": object.base,
+      "ADVANCES": object.advances,
+      "ADVANCABLE": object.advancable
     };
   }
 }

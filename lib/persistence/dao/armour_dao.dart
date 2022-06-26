@@ -1,5 +1,7 @@
 import 'package:battle_it_out/persistence/dao/item_dao.dart';
+import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
+import 'package:battle_it_out/persistence/entities/item_quality.dart';
 
 class ArmourFactory extends ItemFactory<Armour> {
   @override
@@ -9,21 +11,35 @@ class ArmourFactory extends ItemFactory<Armour> {
 
   @override
   Future<Armour> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
-    return Armour(
+    Armour armour = Armour(
         id: map["ID"],
         name: map["NAME"],
-        headAP: map["HEAD_AP"],
-        bodyAP: map["BODY_AP"],
-        leftArmAP: map["LEFT_ARM_AP"],
-        rightArmAP: map["RIGHT_ARM_AP"],
-        leftLegAP: map["LEFT_LEG_AP"],
-        rightLegAP: map["RIGHT_LEG_AP"],
-        qualities: await getQualities(map["ID"]));
+        headAP: map["HEAD_AP"] ?? 0,
+        bodyAP: map["BODY_AP"] ?? 0,
+        leftArmAP: map["LEFT_ARM_AP"] ?? 0,
+        rightArmAP: map["RIGHT_ARM_AP"] ?? 0,
+        leftLegAP: map["LEFT_LEG_AP"] ?? 0,
+        rightLegAP: map["RIGHT_LEG_AP"] ?? 0);
+    if (armour.id != null) {
+      armour.qualities = await getQualities(map["ID"]);
+    } if (map["QUALITIES"] != null) {
+      armour.qualities.addAll([for (map in map["QUALITIES"]) await ItemQualityFactory().create(map)]);
+    }
+    return armour;
   }
 
   @override
   Map<String, dynamic> toMap(Armour object) {
-    // TODO: implement toMap
-    throw UnimplementedError();
+    return {
+      "ID": object.id,
+      "NAME": object.name,
+      "HEAD_AP": object.headAP,
+      "BODY_AP": object.bodyAP,
+      "LEFT_ARM_AP": object.leftArmAP,
+      "RIGHT_ARM_AP": object.rightArmAP,
+      "LEFT_LEG_AP": object.leftLegAP,
+      "RIGHT_LEG_AP": object.rightLegAP,
+      "QUALITIES": [for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded)) ItemQualityFactory().toMap(quality)]
+    };
   }
 }

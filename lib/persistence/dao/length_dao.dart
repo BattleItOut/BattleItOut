@@ -12,7 +12,6 @@ class WeaponLengthFactory extends Factory<WeaponLength> {
 
   @override
   Map<String, dynamic> toMap(WeaponLength object) {
-    // TODO: implement toMap
-    throw UnimplementedError();
+      return {"ID": object.id, "NAME": object.name, "DESCRIPTION": object.description, "SOURCE": object.source};
   }
 }

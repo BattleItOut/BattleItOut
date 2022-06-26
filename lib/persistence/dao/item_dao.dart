@@ -13,6 +13,12 @@ abstract class ItemFactory<T extends Item> extends Factory<T> {
 
     final List<Map<String, dynamic>> map =
         await database.query(qualitiesTableName, where: "ITEM_ID = ?", whereArgs: [id]);
-    return [for (var entry in map) await ItemQualityFactory().get(entry["QUALITY_ID"])];
+    List<ItemQuality> qualities = [];
+    for (var entry in map) {
+      ItemQuality itemQuality = await ItemQualityFactory().get(entry["QUALITY_ID"]);
+      itemQuality.mapNeeded = false;
+      qualities.add(itemQuality);
+    }
+    return qualities;
   }
 }

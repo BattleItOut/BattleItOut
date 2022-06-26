@@ -20,18 +20,22 @@ class TalentFactory extends Factory<Talent> {
   }
 
   @override
-  Future<Talent> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
+  Future<Talent> fromMap(Map<String, dynamic> map) async {
     Talent talent = Talent(
         id: map['ID'],
         name: map['NAME'],
         specialisation: map["SPECIALISATION"],
         currentLvl: map["LVL"] ?? 0,
         advancable: map["ADVANCABLE"] ?? false);
+
+    // Base talent
     if (map["BASE_TALENT_ID"] != null) {
       talent.baseTalent = await BaseTalentFactory(attributes).get(map["BASE_TALENT_ID"]);
     } if (map["BASE_TALENT"] != null) {
       talent.baseTalent = await BaseTalentFactory(attributes).create(map["BASE_TALENT"]);
     }
+
+    // Tests
     talent.tests = await TalentTestFactory(talent).getAllByTalent(map["ID"]);
     if (map["TESTS"] != null) {
       talent.tests.addAll([for (map in map["TESTS"]) await TalentTestFactory(talent).create(map)]);
@@ -114,7 +118,13 @@ class TalentTestFactory extends Factory<TalentTest> {
 
   @override
   Map<String, dynamic> toMap(TalentTest object) {
-    // TODO: implement toMap
-    throw UnimplementedError();
+    return {
+      "ID": object.id,
+      "TALENT_ID": object.talent!.id,
+      "COMMENT": object.comment,
+      "BASE_SKILL_ID": object.baseSkill?.id,
+      "SKILL_ID": object.skill!.id,
+      "ATTRIBUTE_ID": object.attribute!.id
+    };
   }
 }

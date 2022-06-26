@@ -1,196 +1,195 @@
 {
-  "NAME": "Logazgrum Odanirson",
+  "NAME": "Test2",
   "RACE": {
-    "ID": 2
+    "ID": 1
   },
   "PROFESSION": {
-    "ID": 241
+    "ID": 229
   },
   "ATTRIBUTES": [
     {
       "ID": 1,
-      "BASE": 47,
+      "BASE": 34,
       "ADVANCES": 5,
       "ADVANCABLE": true
     },
     {
       "ID": 2,
-      "BASE": 27
+      "BASE": 30
     },
     {
       "ID": 3,
-      "BASE": 35
+      "BASE": 31
     },
     {
       "ID": 4,
-      "BASE": 36,
+      "BASE": 30,
       "ADVANCES": 5,
       "ADVANCABLE": true
     },
     {
       "ID": 5,
-      "BASE": 25
+      "BASE": 32
     },
     {
       "ID": 6,
-      "BASE": 26,
+      "BASE": 33
+    },
+    {
+      "ID": 7,
+      "BASE": 35
+    },
+    {
+      "ID": 8,
+      "BASE": 36
+    },
+    {
+      "ID": 9,
+      "BASE": 30,
       "ADVANCES": 5,
       "ADVANCABLE": true
     },
     {
-      "ID": 7,
-      "BASE": 40
-    },
-    {
-      "ID": 8,
-      "BASE": 40
-    },
-    {
-      "ID": 9,
-      "BASE": 50
-    },
-    {
       "ID": 10,
-      "BASE": 28
+      "BASE": 43
+    },
+    {
+      "ID": 11,
+      "BASE": 4
+    },
+    {
+      "ID": 12,
+      "BASE": 3
+    },
+    {
+      "ID": 13,
+      "BASE": 3
     }
   ],
   "SKILLS": [
     {
-      "ID": 1,
+      "ID": 3,
+      "ADVANCES": 5
+    },
+    {
+      "ID": 12,
       "ADVANCES": 5,
       "ADVANCABLE": true
     },
     {
       "ID": 24,
-      "ADVANCES": 7,
+      "ADVANCES": 5,
       "ADVANCABLE": true
     },
     {
       "ID": 11,
-      "ADVANCES": 10,
-      "ADVANCABLE": true
-    },
-    {
-      "ID": 159,
       "ADVANCES": 5,
       "ADVANCABLE": true
     },
     {
       "ID": 17,
-      "ADVANCES": 7,
-      "ADVANCABLE": true
+      "ADVANCES": 3
     },
     {
-      "ID": 22,
+      "ID": 4,
       "ADVANCES": 5,
-      "ADVANCABLE": true
-    },
-    {
-      "ID": 29,
-      "ADVANCES": 5,
-      "ADVANCABLE": true
+      "ADVANCABLE": true,
+      "earning": true
     },
     {
       "ID": 38,
       "ADVANCES": 3
     },
     {
-      "ID": 32,
-      "ADVANCES": 10,
+      "ID": 34,
+      "ADVANCES": 12,
       "ADVANCABLE": true
     },
     {
-      "ID": 16,
-      "ADVANCES": 1
-    },
-    {
-      "ID": 38,
+      "ID": 13,
       "ADVANCES": 3
     },
     {
-      "ID": 27,
-      "ADVANCES": 5
-    },
-    {
-      "ID": 56,
-      "ADVANCES": 10
+      "ID": 7,
+      "ADVANCES": 8,
+      "ADVANCABLE": true
     },
     {
       "ID": 197,
-      "ADVANCES": 3
+      "ADVANCES": 10
     },
     {
-      "ID": 130,
+      "ID": 124,
       "ADVANCES": 5
     },
     {
-      "ID": 199,
+      "ID": 146,
+      "ADVANCES": 5,
+      "ADVANCABLE": true
+    },
+    {
+      "ID": 9,
+      "ADVANCES": 12,
+      "ADVANCABLE": true
+    },
+    {
+      "ID": 46,
       "ADVANCES": 5
     }
   ],
   "TALENTS": [
     {
-      "ID": 190,
+      "ID": 21,
       "LVL": 1
     },
     {
-      "ID": 180,
+      "ID": 195,
       "LVL": 1
     },
     {
-      "ID": 126,
+      "ID": 199,
       "LVL": 1
+    },
+    {
+      "ID": 123,
+      "LVL": 1
+    },
+    {
+      "ID": 233,
+      "LVL": 1
+    },
+    {
+      "ID": 14,
+      "LVL": 1,
+      "ADVANCABLE": true
     },
     {
       "ID": 31,
-      "LVL": 1
+      "LVL": 1,
+      "ADVANCABLE": true
     },
     {
       "ID": 124,
-      "LVL": 1
-    },
-    {
-      "ID": 26,
       "LVL": 1,
       "ADVANCABLE": true
     },
     {
-      "ID": 57,
-      "LVL": 0,
-      "ADVANCABLE": true
-    },
-    {
-      "ID": 157,
+      "ID": 48,
       "LVL": 1,
       "ADVANCABLE": true
-    },
-    {
-      "ID": 185,
-      "LVL": 1,
-      "ADVANCABLE": true
-    }
-  ],
-  "MELEE_WEAPONS": [
-    {
-      "ID": 2
-    },
-    {
-      "ID": 11
-    },
-    {
-      "ID": 12
-    },
-    {
-      "ID": 1
     }
   ],
   "ARMOUR": [
     {
-      "ID": 1,
-      "RIGHT_ARM_AP": 0
+      "ID": 2
+    }
+  ],
+  "MELEE_WEAPONS": [
+    {
+      "ID": 25
     },
     {
-      "ID": 7
+      "ID": 11
     }
   ]
 }

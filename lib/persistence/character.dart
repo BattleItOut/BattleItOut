@@ -1,7 +1,5 @@
 import 'package:battle_it_out/persistence/dao/armour_dao.dart';
 import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
-import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
-import 'package:battle_it_out/persistence/dao/length_dao.dart';
 import 'package:battle_it_out/persistence/dao/melee_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
@@ -16,6 +14,7 @@ import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
+import 'package:flutter/foundation.dart';
 
 class Character {
   String name;
@@ -23,10 +22,10 @@ class Character {
   Profession profession;
   Map<int, Attribute> attributes;
   Map<int, Skill> skills;
-  Map<int, Talent> talents = {};
-  List<Armour> armour = [];
-  List<MeleeWeapon> meleeWeapons = [];
-  List<RangedWeapon> rangedWeapons = [];
+  Map<int, Talent> talents;
+  List<Armour> armour;
+  List<MeleeWeapon> meleeWeapons;
+  List<RangedWeapon> rangedWeapons;
   int? initiative;
   // List<Trait> traits;
 
@@ -55,11 +54,11 @@ class Character {
     Race race = await RaceFactory().create(json["RACE"]);
     Profession profession = await ProfessionFactory().create(json["PROFESSION"]);
     Map<int, Attribute> attributes = await _createAttributes(json["ATTRIBUTES"]);
-    Map<int, Skill> skills = await _createSkills(json['SKILLS'], attributes);
-    Map<int, Talent> talents = await _createTalents(json['TALENTS'], attributes);
-    List<MeleeWeapon> meleeWeapons = await _createMeleeWeapons(json["melee_weapons"], attributes, skills);
-    List<RangedWeapon> rangedWeapons = await _createRangedWeapons(json["ranged_weapons"], attributes, skills);
-    List<Armour> armour = await _createArmour(json["armour"]);
+    Map<int, Skill> skills = await _createSkills(json['SKILLS'] ?? [], attributes);
+    Map<int, Talent> talents = await _createTalents(json['TALENTS'] ?? [], attributes);
+    List<MeleeWeapon> meleeWeapons = [for (var map in json["MELEE_WEAPONS"] ?? []) await MeleeWeaponFactory(attributes, skills).create(map)];
+    List<RangedWeapon> rangedWeapons = [for (var map in json["RANGED_WEAPONS"] ?? []) await RangedWeaponFactory(attributes, skills).create(map)];
+    List<Armour> armour = [for (var map in json["ARMOUR"] ?? []) await ArmourFactory().create(map)];
 
     Character character = Character(
         name: name,
@@ -85,49 +84,6 @@ class Character {
       attributes[attribute.id] = attribute;
     }
     return attributes;
-  }
-
-  static Future<List<RangedWeapon>> _createRangedWeapons(
-      json, Map<int, Attribute> attributes, Map<int, Skill> skills) async {
-    List<RangedWeapon> weaponList = [];
-    for (var map in json ?? []) {
-      RangedWeapon weapon = await RangedWeaponFactory(attributes, skills).create(map);
-      for (var qualityMap in map["qualities"] ?? []) {
-        weapon.addQuality(await ItemQualityFactory().get(qualityMap["quality_id"]));
-      }
-      weaponList.add(weapon);
-    }
-    return weaponList;
-  }
-
-  static Future<List<MeleeWeapon>> _createMeleeWeapons(
-      json, Map<int, Attribute> attributes, Map<int, Skill> skills) async {
-    List<MeleeWeapon> weaponList = [];
-    for (var map in json ?? []) {
-      MeleeWeapon weapon = await MeleeWeaponFactory(attributes, skills).get(map["ID"]);
-      map["NAME"] != null ? weapon.name = map["NAME"] : null;
-      map["LENGTH"] != null ? weapon.length = await WeaponLengthFactory().get(map["LENGTH"]) : null;
-      for (var qualityMap in map["qualities"] ?? []) {
-        weapon.addQuality(await ItemQualityFactory().get(qualityMap["QUALITY"]));
-      }
-      weaponList.add(weapon);
-    }
-    return weaponList;
-  }
-
-  static Future<List<Armour>> _createArmour(json) async {
-    List<Armour> armourList = [];
-    for (var map in json ?? []) {
-      Armour armour = await ArmourFactory().get(map["ID"]);
-      map["HEAD_AP"] != null ? armour.headAP = map["HEAD_AP"] : null;
-      map["body_AP"] != null ? armour.bodyAP = map["body_AP"] : null;
-      map["left_arm_AP"] != null ? armour.leftArmAP = map["left_arm_AP"] : null;
-      map["right_arm_AP"] != null ? armour.rightArmAP = map["right_arm_AP"] : null;
-      map["left_leg_AP"] != null ? armour.leftLegAP = map["left_leg_AP"] : null;
-      map["right_leg_AP"] != null ? armour.rightLegAP = map["right_leg_AP"] : null;
-      armourList.add(armour);
-    }
-    return armourList;
   }
 
   static Future<Map<int, Skill>> _createSkills(json, Map<int, Attribute> attributes) async {
@@ -217,12 +173,51 @@ class Character {
     return output;
   }
 
-  List<Talent> getTalents() {
-    return List.of(talents.values);
+  Map<String, dynamic> toMap() {
+    return {
+      "NAME": name,
+      "RACE": RaceFactory().toMap(race),
+      "PROFESSION": ProfessionFactory().toMap(profession),
+      "ATTRIBUTES": [for (Attribute attribute in attributes.values) AttributeFactory().toMap(attribute)],
+      "SKILLS": [for (Skill skill in skills.values) SkillFactory().toMap(skill)],
+      "TALENTS": [for (Talent talent in talents.values) TalentFactory().toMap(talent)],
+      "MELEE_WEAPONS": [for (MeleeWeapon weapon in meleeWeapons) MeleeWeaponFactory().toMap(weapon)],
+      "RANGED_WEAPONS": [for (RangedWeapon weapon in rangedWeapons) RangedWeaponFactory().toMap(weapon)],
+      "ARMOUR": [for (Armour armour in this.armour) ArmourFactory().toMap(armour)],
+    };
   }
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Character &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          race == other.race &&
+          profession == other.profession &&
+          mapEquals(attributes, other.attributes) &&
+          mapEquals(skills, other.skills) &&
+          mapEquals(talents, other.talents) &&
+          listEquals(armour, other.armour) &&
+          listEquals(meleeWeapons, other.meleeWeapons) &&
+          listEquals(rangedWeapons, other.rangedWeapons) &&
+          initiative == other.initiative;
+
+  @override
+  int get hashCode =>
+      name.hashCode ^
+      race.hashCode ^
+      profession.hashCode ^
+      attributes.hashCode ^
+      skills.hashCode ^
+      talents.hashCode ^
+      armour.hashCode ^
+      meleeWeapons.hashCode ^
+      rangedWeapons.hashCode ^
+      initiative.hashCode;
+
+  @override
   String toString() {
-    return "Character (name=$name, race=$race), profession=$profession";
+    return "Character (name=$name, race=$race, profession=$profession)";
   }
 }
