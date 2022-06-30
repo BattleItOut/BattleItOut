@@ -15,7 +15,7 @@ class SizeFactory extends Factory<Size> {
   }
 
   @override
-  Map<String, dynamic> toMap(Size object) {
+  Map<String, dynamic> toMap(Size object, [optimised = true]) {
     return {"ID": object.id, "NAME": object.name, "SOURCE": object.source};
   }
 }

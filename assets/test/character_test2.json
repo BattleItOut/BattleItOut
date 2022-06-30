@@ -72,17 +72,18 @@
       "ADVANCES": 5
     },
     {
-      "ID": 12,
+      "ID": 4,
       "ADVANCES": 5,
-      "ADVANCABLE": true
-    },
-    {
-      "ID": 24,
-      "ADVANCES": 5,
-      "ADVANCABLE": true
+      "ADVANCABLE": true,
+      "EARNING": true
     },
     {
       "ID": 11,
+      "ADVANCES": 5,
+      "ADVANCABLE": true
+    },
+    {
+      "ID": 12,
       "ADVANCES": 5,
       "ADVANCABLE": true
     },
@@ -91,19 +92,18 @@
       "ADVANCES": 3
     },
     {
-      "ID": 4,
+      "ID": 24,
       "ADVANCES": 5,
-      "ADVANCABLE": true,
-      "earning": true
-    },
-    {
-      "ID": 38,
-      "ADVANCES": 3
+      "ADVANCABLE": true
     },
     {
       "ID": 34,
       "ADVANCES": 12,
       "ADVANCABLE": true
+    },
+    {
+      "ID": 38,
+      "ADVANCES": 3
     },
     {
       "ID": 13,

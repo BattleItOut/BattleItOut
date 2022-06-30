@@ -4,6 +4,7 @@ class Skill {
   int id;
   String name;
   String? specialisation;
+  int? baseSkillID;
   BaseSkill? baseSkill;
 
   int advances;
@@ -47,7 +48,7 @@ class Skill {
           id == other.id &&
           name == other.name &&
           specialisation == other.specialisation &&
-          baseSkill == other.baseSkill &&
+          baseSkillID == other.baseSkillID &&
           advances == other.advances &&
           earning == other.earning &&
           advancable == other.advancable;
@@ -57,7 +58,7 @@ class Skill {
       id.hashCode ^
       name.hashCode ^
       specialisation.hashCode ^
-      baseSkill.hashCode ^
+      baseSkillID.hashCode ^
       advances.hashCode ^
       earning.hashCode ^
       advancable.hashCode;
@@ -74,6 +75,7 @@ class BaseSkill {
   String description;
   bool advanced;
   bool grouped;
+  int? attributeID;
   Attribute? attribute;
 
   BaseSkill(
@@ -101,11 +103,11 @@ class BaseSkill {
           description == other.description &&
           advanced == other.advanced &&
           grouped == other.grouped &&
-          attribute == other.attribute;
+          attributeID == other.attributeID;
 
   @override
   int get hashCode =>
-      id.hashCode ^ name.hashCode ^ description.hashCode ^ advanced.hashCode ^ grouped.hashCode ^ attribute.hashCode;
+      id.hashCode ^ name.hashCode ^ description.hashCode ^ advanced.hashCode ^ grouped.hashCode ^ attributeID.hashCode;
 
   @override
   String toString() {

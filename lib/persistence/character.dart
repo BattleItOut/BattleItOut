@@ -173,18 +173,20 @@ class Character {
     return output;
   }
 
-  Map<String, dynamic> toMap() {
-    return {
+  Future<Map<String, dynamic>> toMap() async {
+    Map<String, dynamic> map = {
       "NAME": name,
-      "RACE": RaceFactory().toMap(race),
-      "PROFESSION": ProfessionFactory().toMap(profession),
-      "ATTRIBUTES": [for (Attribute attribute in attributes.values) AttributeFactory().toMap(attribute)],
-      "SKILLS": [for (Skill skill in skills.values) SkillFactory().toMap(skill)],
-      "TALENTS": [for (Talent talent in talents.values) TalentFactory().toMap(talent)],
-      "MELEE_WEAPONS": [for (MeleeWeapon weapon in meleeWeapons) MeleeWeaponFactory().toMap(weapon)],
-      "RANGED_WEAPONS": [for (RangedWeapon weapon in rangedWeapons) RangedWeaponFactory().toMap(weapon)],
-      "ARMOUR": [for (Armour armour in this.armour) ArmourFactory().toMap(armour)],
+      "RACE": await RaceFactory().toMap(race),
+      "PROFESSION": await ProfessionFactory().toMap(profession),
+      "ATTRIBUTES": [for (Attribute attribute in attributes.values.where((element) => element.base != 0)) await AttributeFactory().toMap(attribute)],
+      "SKILLS": [for (Skill skill in skills.values.where((element) => element.advances != 0 || element.advancable || element.earning)) await SkillFactory().toMap(skill)],
+      "TALENTS": [for (Talent talent in talents.values) await TalentFactory().toMap(talent)],
+      "MELEE_WEAPONS": [for (MeleeWeapon weapon in meleeWeapons) await MeleeWeaponFactory().toMap(weapon)],
+      "RANGED_WEAPONS": [for (RangedWeapon weapon in rangedWeapons) await RangedWeaponFactory().toMap(weapon)],
+      "ARMOUR": [for (Armour armour in this.armour) await ArmourFactory().toMap(armour)],
     };
+    map.removeWhere((key, value) => value is List && value.isEmpty);
+    return map;
   }
 
   @override

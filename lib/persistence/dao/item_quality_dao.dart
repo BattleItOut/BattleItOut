@@ -6,7 +6,7 @@ class ItemQualityFactory extends Factory<ItemQuality> {
   get tableName => 'item_qualities';
 
   @override
-  ItemQuality fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
+  ItemQuality fromMap(Map<String, dynamic> map) {
     return ItemQuality(
         id: map['ID'],
         name: map['NAME'],
@@ -17,8 +17,8 @@ class ItemQualityFactory extends Factory<ItemQuality> {
   }
 
   @override
-  Map<String, dynamic> toMap(ItemQuality object) {
-    return {
+  Future<Map<String, dynamic>> toMap(ItemQuality object, [optimised = true]) async {
+    Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,
       "POSITIVE": object.positive ? 1 : 0,
@@ -26,5 +26,9 @@ class ItemQualityFactory extends Factory<ItemQuality> {
       "DESCRIPTION": object.description,
       "VALUE": object.value
     };
+    if (optimised) {
+      map = await optimise(map);
+    }
+    return map;
   }
 }

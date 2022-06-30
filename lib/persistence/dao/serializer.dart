@@ -1,11 +1,17 @@
 import 'package:battle_it_out/persistence/dao/dao.dart';
+import 'package:flutter/foundation.dart';
 
 abstract class Serializer<T> {
+  get defaultValues;
+
   dynamic fromMap(Map<String, dynamic> _map);
-  Map<String, dynamic> toMap(T object);
+  dynamic toMap(T object, [optimised=true]);
 }
 
 abstract class Factory<T> extends DAO<T> implements Serializer<T> {
+  @override
+  get defaultValues => {};
+
   Future<T> create(Map<String, dynamic> map) async {
     Map<String, dynamic> newMap = {};
     if (map["ID"] != null) {
@@ -17,12 +23,23 @@ abstract class Factory<T> extends DAO<T> implements Serializer<T> {
     return await fromMap(newMap);
   }
   dynamic get(int id) async {
-    return fromMap(await getMap(id));
+    Map<String, dynamic> newMap = {};
+    newMap.addAll(await getMap(id));
+    return fromMap(newMap);
   }
   dynamic getWhere({where, List<Object>? whereArgs}) async {
     return fromMap(await getMapWhere(where: where, whereArgs: whereArgs));
   }
   Future<List<T>> getAll({String? where, List<Object>? whereArgs}) async {
     return [for (var entry in await getMapAll(where: where, whereArgs: whereArgs)) await fromMap(entry)];
+  }
+
+  Future<Map<String, dynamic>> optimise(Map<String, dynamic> map) async {
+    map.removeWhere((key, value) => value == null || defaultValues[key] == value);
+    if (map["ID"] != null) {
+      Map<String, dynamic> defaultMap = await toMap(await get(map["ID"]), false);
+      map.removeWhere((key, value) => key != "ID" && (value is List && listEquals(value, defaultMap[key]) || value is! List && value == defaultMap[key]));
+    }
+    return map;
   }
 }

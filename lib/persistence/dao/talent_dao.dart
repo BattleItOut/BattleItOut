@@ -45,7 +45,7 @@ class TalentFactory extends Factory<Talent> {
   }
 
   @override
-  Map<String, dynamic> toMap(Talent object) {
+  Future<Map<String, dynamic>> toMap(Talent object, [optimised = true]) async {
     Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,
@@ -53,7 +53,10 @@ class TalentFactory extends Factory<Talent> {
       "LVL": object.currentLvl,
       "ADVANCABLE": object.advancable
     };
-    if (object.baseTalent != null) {
+    if (optimised) {
+      map = await optimise(map);
+    }
+    if (object.baseTalent != null && object.baseTalent != await BaseTalentFactory().get(object.baseTalent!.id)) {
       map["BASE_TALENT"] = BaseTalentFactory().toMap(object.baseTalent!);
     }
     return map;
@@ -69,7 +72,7 @@ class BaseTalentFactory extends Factory<BaseTalent> {
   get tableName => 'talents_base';
 
   @override
-  BaseTalent fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
+  BaseTalent fromMap(Map<String, dynamic> map) {
     return BaseTalent(
         id: map['ID'],
         name: map['NAME'],
@@ -81,7 +84,7 @@ class BaseTalentFactory extends Factory<BaseTalent> {
   }
 
   @override
-  Map<String, dynamic> toMap(BaseTalent object) {
+  Map<String, dynamic> toMap(BaseTalent object, [optimised = true]) {
     return {
       "ID": object.id,
       "NAME": object.name,
@@ -117,7 +120,7 @@ class TalentTestFactory extends Factory<TalentTest> {
   }
 
   @override
-  Map<String, dynamic> toMap(TalentTest object) {
+  Map<String, dynamic> toMap(TalentTest object, [optimised = true]) {
     return {
       "ID": object.id,
       "TALENT_ID": object.talent!.id,

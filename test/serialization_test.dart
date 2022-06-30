@@ -21,35 +21,39 @@ import 'package:battle_it_out/persistence/entities/talent.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<void> main() async {
-  TestWidgetsFlutterBinding.ensureInitialized();
-  await raceSerializationTest();
-  await professionSerializationTest();
-  await attributeSerializationTest();
-  await skillSerializationTest();
-  await talentSerializationTest();
-  await armourSerializationTest();
-  await meleeWeaponSerializationTest();
-  await rangedWeaponSerializationTest();
-  await characterSerializationTest();
+  group("Serialization", () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    raceSerializationTest();
+    professionSerializationTest();
+    attributeSerializationTest();
+    skillSerializationTest();
+    talentSerializationTest();
+    armourSerializationTest();
+    meleeWeaponSerializationTest();
+    rangedWeaponSerializationTest();
+    characterSerializationTest();
+  });
 }
 
 void doubleSerializationTest(factory, list) {
   test("Serialize and deserialize", () async {
-    for (var object1 in list) {
-      Map<String, dynamic> map = factory.toMap(object1);
-      var object2 = await factory.fromMap(map);
-      expect(object1, object2);
+    for (var map in list) {
+      var object = await factory.create(map);
+      Map<String, dynamic> serializedMap = await factory.toMap(object);
+      expect(serializedMap, map);
+      var serializedObject = await factory.create(serializedMap);
+      expect(serializedObject, object);
     }
   });
 }
 
-Future<void> raceSerializationTest() async {
-  Race basicRace = await RaceFactory().create({"ID": 1});
-  Race minCustomRace = await RaceFactory().create({
+void raceSerializationTest() {
+  Map<String, dynamic> basicRaceMap = {"ID": 1};
+  Map<String, dynamic> minCustomRaceMap = {
     "NAME": "Test",
     "SIZE": 4
-  });
-  Race maxCustomRace = await RaceFactory().create({
+  };
+  Map<String, dynamic> maxCustomRaceMap = {
     "NAME": "Test",
     "SIZE": 4,
     "EXTRA_POINTS": 4,
@@ -57,10 +61,11 @@ Future<void> raceSerializationTest() async {
       "NAME": "Test2",
       "RANDOM_TALENTS": 3
     }
-  });
+  };
 
   group("Race serialization", () {
-    test("Basic from database", () {
+    test("Basic from database", () async {
+      Race basicRace = await RaceFactory().create(basicRaceMap);
       expect(basicRace.id, 1);
       expect(basicRace.name, "HUMAN");
       expect(basicRace.size.id, 4);
@@ -69,7 +74,8 @@ Future<void> raceSerializationTest() async {
       expect(basicRace.subrace!.id, 1);
       expect(basicRace.subrace!.name, "REIKLANDER");
     });
-    test("Minimal custom", () {
+    test("Minimal custom", () async {
+      Race minCustomRace = await RaceFactory().create(minCustomRaceMap);
       expect(minCustomRace.id, null);
       expect(minCustomRace.name, "Test");
       expect(minCustomRace.size.id, 4);
@@ -77,7 +83,8 @@ Future<void> raceSerializationTest() async {
       expect(minCustomRace.source, "Custom");
       expect(minCustomRace.subrace, null);
     });
-    test("Maximal custom", () {
+    test("Maximal custom", () async {
+      Race maxCustomRace = await RaceFactory().create(maxCustomRaceMap);
       expect(maxCustomRace.id, null);
       expect(maxCustomRace.name, "Test");
       expect(maxCustomRace.size.id, 4);
@@ -86,15 +93,13 @@ Future<void> raceSerializationTest() async {
       expect(maxCustomRace.subrace!.name, "Test2");
       expect(maxCustomRace.subrace!.randomTalents, 3);
     });
-    doubleSerializationTest(RaceFactory(), [basicRace, minCustomRace, maxCustomRace]);
+    doubleSerializationTest(RaceFactory(), [basicRaceMap, minCustomRaceMap, maxCustomRaceMap]);
   });
 }
-Future<void> professionSerializationTest() async {
-  Profession basicProfession = await ProfessionFactory().create({"ID": 1});
-  Profession minCustomProfession = await ProfessionFactory().create({
-    "NAME": "Test"
-  });
-  Profession maxCustomProfession = await ProfessionFactory().create({
+void professionSerializationTest() {
+  Map<String, dynamic> basicProfessionMap = {"ID": 1};
+  Map<String, dynamic> minCustomProfessionMap = {"NAME": "Test"};
+  Map<String, dynamic> maxCustomProfessionMap = {
     "NAME": "Test",
     "LEVEL": 1,
     "CAREER": {
@@ -103,10 +108,11 @@ Future<void> professionSerializationTest() async {
         "NAME": "Test3"
       }
     }
-  });
+  };
 
   group("Profession serialization", () {
-    test("Basic from database", () {
+    test("Basic from database", () async {
+      Profession basicProfession = await ProfessionFactory().create(basicProfessionMap);
       expect(basicProfession.id, 1);
       expect(basicProfession.name, "APOTHECARY_1");
       expect(basicProfession.source, "Main Rulebook");
@@ -118,13 +124,15 @@ Future<void> professionSerializationTest() async {
       expect(basicProfession.career!.professionClass!.name, "ACADEMIC");
       expect(basicProfession.career!.professionClass!.source, "Main Rulebook");
     });
-    test("Minimal custom", () {
+    test("Minimal custom", () async {
+      Profession minCustomProfession = await ProfessionFactory().create(minCustomProfessionMap);
       expect(minCustomProfession.id, null);
       expect(minCustomProfession.name, "Test");
       expect(minCustomProfession.source, "Custom");
       expect(minCustomProfession.career, null);
     });
-    test("Maximal custom", () {
+    test("Maximal custom", () async {
+      Profession maxCustomProfession = await ProfessionFactory().create(maxCustomProfessionMap);
       expect(maxCustomProfession.id, null);
       expect(maxCustomProfession.name, "Test");
       expect(maxCustomProfession.source, "Custom");
@@ -133,20 +141,21 @@ Future<void> professionSerializationTest() async {
       expect(maxCustomProfession.career!.professionClass!.name, "Test3");
       expect(maxCustomProfession.career!.professionClass!.source, "Custom");
     });
-    doubleSerializationTest(ProfessionFactory(), [basicProfession, minCustomProfession, maxCustomProfession]);
+    doubleSerializationTest(ProfessionFactory(), [basicProfessionMap, minCustomProfessionMap, maxCustomProfessionMap]);
   });
 }
-Future<void> attributeSerializationTest() async {
-  Attribute basicAttribute = await AttributeFactory().create({"ID": 1});
-  Attribute maxEditedAttribute = await AttributeFactory().create({
+void attributeSerializationTest() {
+  Map<String, dynamic> basicAttributeMap = {"ID": 1};
+  Map<String, dynamic> maxEditedAttributeMap = {
     "ID": 1,
     "BASE": 38,
     "ADVANCES": 5,
     "ADVANCABLE": true
-  });
+  };
 
   group("Attribute serialization", () {
-    test("Basic from database", () {
+    test("Basic from database", () async {
+      Attribute basicAttribute = await AttributeFactory().create(basicAttributeMap);
       expect(basicAttribute.id, 1);
       expect(basicAttribute.name, "WEAPON_SKILL");
       expect(basicAttribute.shortName, "WEAPON_SKILL_SHORT");
@@ -157,7 +166,8 @@ Future<void> attributeSerializationTest() async {
       expect(basicAttribute.advances, 0);
       expect(basicAttribute.advancable, false);
     });
-    test("Edited", () {
+    test("Edited", () async {
+      Attribute maxEditedAttribute = await AttributeFactory().create(maxEditedAttributeMap);
       expect(maxEditedAttribute.id, 1);
       expect(maxEditedAttribute.name, "WEAPON_SKILL");
       expect(maxEditedAttribute.shortName, "WEAPON_SKILL_SHORT");
@@ -168,19 +178,21 @@ Future<void> attributeSerializationTest() async {
       expect(maxEditedAttribute.advances, 5);
       expect(maxEditedAttribute.advancable, true);
     });
-    doubleSerializationTest(AttributeFactory(), [basicAttribute, maxEditedAttribute]);
+    doubleSerializationTest(AttributeFactory(), [basicAttributeMap, maxEditedAttributeMap]);
   });
 }
-Future<void> skillSerializationTest() async {
-  Skill basicSkill = await SkillFactory().create({"ID": 1});
-  Skill maxEditedSkill = await SkillFactory().create({
+void skillSerializationTest() {
+  Map<String, dynamic> basicSkillMap = {"ID": 1};
+  Map<String, dynamic> maxEditedSkillMap = {
     "ID": 1,
     "ADVANCES": 2,
-    "ADVANCABLE": true
-  });
+    "ADVANCABLE": true,
+    "EARNING": true
+  };
 
   group("Skill serialization", () {
-    test("Basic from database", () {
+    test("Basic from database", () async {
+      Skill basicSkill = await SkillFactory().create(basicSkillMap);
       expect(basicSkill.id, 1);
       expect(basicSkill.name, "ATHLETICS");
       expect(basicSkill.specialisation, null);
@@ -192,31 +204,34 @@ Future<void> skillSerializationTest() async {
       expect(basicSkill.baseSkill!.advanced, false);
       expect(basicSkill.baseSkill!.grouped, false);
     });
-    test("Edited", () {
+    test("Edited", () async {
+      Skill maxEditedSkill = await SkillFactory().create(maxEditedSkillMap);
       expect(maxEditedSkill.id, 1);
       expect(maxEditedSkill.name, "ATHLETICS");
       expect(maxEditedSkill.specialisation, null);
       expect(maxEditedSkill.advances, 2);
       expect(maxEditedSkill.advancable, true);
+      expect(maxEditedSkill.earning, true);
       expect(maxEditedSkill.baseSkill!.id, 1);
       expect(maxEditedSkill.baseSkill!.name, "ATHLETICS");
       expect(maxEditedSkill.baseSkill!.description, "ATHLETICS_DESC");
       expect(maxEditedSkill.baseSkill!.advanced, false);
       expect(maxEditedSkill.baseSkill!.grouped, false);
     });
-    doubleSerializationTest(SkillFactory(), [basicSkill, maxEditedSkill]);
+    doubleSerializationTest(SkillFactory(), [basicSkillMap, maxEditedSkillMap]);
   });
 }
-Future<void> talentSerializationTest() async {
-  Talent basicTalent = await TalentFactory().create({"ID": 1});
-  Talent maxEditedTalent = await TalentFactory().create({
+void talentSerializationTest() {
+  Map<String, dynamic> basicTalentMap = {"ID": 1};
+  Map<String, dynamic> maxEditedTalentMap = {
     "ID": 1,
     "LVL": 1,
     "ADVANCABLE": true
-  });
+  };
 
   group("Talent serialization", () {
-    test("Basic from database", () {
+    test("Basic from database", () async {
+      Talent basicTalent = await TalentFactory().create(basicTalentMap);
       expect(basicTalent.id, 1);
       expect(basicTalent.name, "PHARMACIST");
       expect(basicTalent.specialisation, null);
@@ -231,7 +246,8 @@ Future<void> talentSerializationTest() async {
       expect(basicTalent.tests[0].id, 1);
       expect(basicTalent.tests[0].comment, null);
     });
-    test("Edited", () {
+    test("Edited", () async {
+      Talent maxEditedTalent = await TalentFactory().create(maxEditedTalentMap);
       expect(maxEditedTalent.id, 1);
       expect(maxEditedTalent.name, "PHARMACIST");
       expect(maxEditedTalent.specialisation, null);
@@ -246,16 +262,16 @@ Future<void> talentSerializationTest() async {
       expect(maxEditedTalent.tests[0].id, 1);
       expect(maxEditedTalent.tests[0].comment, null);
     });
-    doubleSerializationTest(TalentFactory(), [basicTalent, maxEditedTalent]);
+    doubleSerializationTest(TalentFactory(), [basicTalentMap, maxEditedTalentMap]);
   });
 }
-Future<void> armourSerializationTest() async {
-  Armour basicArmour = await ArmourFactory().create({"ID": 1});
-  Armour minCustomArmour = await ArmourFactory().create({
+void armourSerializationTest() {
+  Map<String, dynamic> basicArmourMap = {"ID": 1};
+  Map<String, dynamic> minCustomArmourMap = {
     "NAME": "Test",
     "HEAD_AP": 1
-  });
-  Armour maxCustomArmour = await ArmourFactory().create({
+  };
+  Map<String, dynamic> maxCustomArmourMap = {
     "NAME": "Test2",
     "HEAD_AP": 1,
     "BODY_AP": 1,
@@ -271,10 +287,11 @@ Future<void> armourSerializationTest() async {
         "ID": 2
       }
     ]
-  });
+  };
 
   group("Armour serialization", () {
-    test("Basic from database", () {
+    test("Basic from database", () async {
+      Armour basicArmour = await ArmourFactory().create(basicArmourMap);
       expect(basicArmour.id, 1);
       expect(basicArmour.name, "LEATHER_JACK");
       expect(basicArmour.headAP, 0);
@@ -284,7 +301,8 @@ Future<void> armourSerializationTest() async {
       expect(basicArmour.leftLegAP, 0);
       expect(basicArmour.rightLegAP, 0);
     });
-    test("Minimal custom", () {
+    test("Minimal custom", () async {
+      Armour minCustomArmour = await ArmourFactory().create(minCustomArmourMap);
       expect(minCustomArmour.id, null);
       expect(minCustomArmour.name, "Test");
       expect(minCustomArmour.headAP, 1);
@@ -294,7 +312,8 @@ Future<void> armourSerializationTest() async {
       expect(minCustomArmour.leftLegAP, 0);
       expect(minCustomArmour.rightLegAP, 0);
     });
-    test("Maximal custom", () {
+    test("Maximal custom", () async {
+      Armour maxCustomArmour = await ArmourFactory().create(maxCustomArmourMap);
       expect(maxCustomArmour.id, null);
       expect(maxCustomArmour.name, "Test2");
       expect(maxCustomArmour.headAP, 1);
@@ -308,17 +327,17 @@ Future<void> armourSerializationTest() async {
       expect(maxCustomArmour.qualities[1].id, 2);
       expect(maxCustomArmour.qualities[1].name, "PRACTICAL");
     });
-    doubleSerializationTest(ArmourFactory(), [basicArmour, minCustomArmour, maxCustomArmour]);
+    doubleSerializationTest(ArmourFactory(), [basicArmourMap, minCustomArmourMap, maxCustomArmourMap]);
   });
 }
-Future<void> meleeWeaponSerializationTest() async {
-  MeleeWeapon basicMeleeWeapon = await MeleeWeaponFactory().create({"ID": 1});
-  MeleeWeapon minCustomWeapon = await MeleeWeaponFactory().create({
+void meleeWeaponSerializationTest() {
+  Map<String, dynamic> basicMeleeWeaponMap = {"ID": 1};
+  Map<String, dynamic> minCustomWeaponMap = {
     "NAME": "Test",
     "LENGTH": 1,
     "DAMAGE": 2
-  });
-  MeleeWeapon maxCustomWeapon = await MeleeWeaponFactory().create({
+  };
+  Map<String, dynamic> maxCustomWeaponMap = {
     "NAME": "Test2",
     "LENGTH": 1,
     "DAMAGE": 2,
@@ -330,24 +349,27 @@ Future<void> meleeWeaponSerializationTest() async {
       "ID": 2
       }
     ]
-  });
+  };
 
   group("Melee weapon serialization", () {
-    test("Basic from database", () {
+    test("Basic from database", () async {
+      MeleeWeapon basicMeleeWeapon = await MeleeWeaponFactory().create(basicMeleeWeaponMap);
       expect(basicMeleeWeapon.id, 1);
       expect(basicMeleeWeapon.name, "HAND_WEAPON");
       expect(basicMeleeWeapon.length.id, 4);
       expect(basicMeleeWeapon.damage, 4);
       expect(basicMeleeWeapon.qualities.length, 0);
     });
-    test("Minimal custom", () {
+    test("Minimal custom", () async {
+      MeleeWeapon minCustomWeapon = await MeleeWeaponFactory().create(minCustomWeaponMap);
       expect(minCustomWeapon.id, null);
       expect(minCustomWeapon.name, "Test");
       expect(minCustomWeapon.length.id, 1);
       expect(minCustomWeapon.damage, 2);
       expect(minCustomWeapon.qualities.length, 0);
     });
-    test("Maximal custom", () {
+    test("Maximal custom", () async {
+      MeleeWeapon maxCustomWeapon = await MeleeWeaponFactory().create(maxCustomWeaponMap);
       expect(maxCustomWeapon.id, null);
       expect(maxCustomWeapon.name, "Test2");
       expect(maxCustomWeapon.length.id, 1);
@@ -358,17 +380,17 @@ Future<void> meleeWeaponSerializationTest() async {
       expect(maxCustomWeapon.qualities[1].id, 2);
       expect(maxCustomWeapon.qualities[1].name, "PRACTICAL");
     });
-    doubleSerializationTest(MeleeWeaponFactory(), [basicMeleeWeapon, minCustomWeapon, maxCustomWeapon]);
+    doubleSerializationTest(MeleeWeaponFactory(), [basicMeleeWeaponMap, minCustomWeaponMap, maxCustomWeaponMap]);
   });
 }
-Future<void> rangedWeaponSerializationTest() async {
-  RangedWeapon basicRangedWeapon = await RangedWeaponFactory().create({"ID": 1});
-  RangedWeapon minCustomWeapon = await RangedWeaponFactory().create({
+void rangedWeaponSerializationTest() {
+  Map<String, dynamic> basicRangedWeaponMap = {"ID": 1};
+  Map<String, dynamic> minCustomWeaponMap = {
     "NAME": "Test",
     "WEAPON_RANGE": 100,
     "DAMAGE": 2
-  });
-  RangedWeapon maxCustomWeapon = await RangedWeaponFactory().create({
+  };
+  Map<String, dynamic> maxCustomWeaponMap = {
     "NAME": "Test2",
     "WEAPON_RANGE": 100,
     "DAMAGE": 2,
@@ -381,24 +403,27 @@ Future<void> rangedWeaponSerializationTest() async {
       "ID": 2
       }
     ]
-  });
+  };
 
   group("Ranged weapon serialization", () {
-    test("Basic from database", () {
+    test("Basic from database", () async {
+      RangedWeapon basicRangedWeapon = await RangedWeaponFactory().create(basicRangedWeaponMap);
       expect(basicRangedWeapon.id, 1);
       expect(basicRangedWeapon.name, "BLUNDERBUSS");
       expect(basicRangedWeapon.range, 20);
       expect(basicRangedWeapon.damage, 8);
       expect(basicRangedWeapon.qualities.length, 0);
     });
-    test("Minimal custom", () {
+    test("Minimal custom", () async {
+      RangedWeapon minCustomWeapon = await RangedWeaponFactory().create(minCustomWeaponMap);
       expect(minCustomWeapon.id, null);
       expect(minCustomWeapon.name, "Test");
       expect(minCustomWeapon.range, 100);
       expect(minCustomWeapon.damage, 2);
       expect(minCustomWeapon.qualities.length, 0);
     });
-    test("Maximal custom", () {
+    test("Maximal custom", () async {
+      RangedWeapon maxCustomWeapon = await RangedWeaponFactory().create(maxCustomWeaponMap);
       expect(maxCustomWeapon.id, null);
       expect(maxCustomWeapon.name, "Test2");
       expect(maxCustomWeapon.range, 100);
@@ -409,18 +434,19 @@ Future<void> rangedWeaponSerializationTest() async {
       expect(maxCustomWeapon.qualities[1].id, 2);
       expect(maxCustomWeapon.qualities[1].name, "PRACTICAL");
     });
-    doubleSerializationTest(RangedWeaponFactory(), [basicRangedWeapon, minCustomWeapon, maxCustomWeapon]);
+    doubleSerializationTest(RangedWeaponFactory(), [basicRangedWeaponMap, minCustomWeaponMap, maxCustomWeaponMap]);
   });
 }
-Future<void> characterSerializationTest() async {
+void characterSerializationTest() {
   group("Character serialization", () {
     test("Serialize and deserialize", () async {
       File file = File('assets/test/character_test2.json');
-      Character character = await Character.create(jsonDecode(await file.readAsString()));
-
-      Map<String, dynamic> map = character.toMap();
+      Map<String, dynamic> serialisedCharacter = jsonDecode(await file.readAsString());
+      Character character = await Character.create(serialisedCharacter);
+      Map<String, dynamic> map = await character.toMap();
+      expect(serialisedCharacter, map);
       var character2 = await Character.create(map);
-      expect(character, character2);
+      expect(character2, character);
     });
   });
 }

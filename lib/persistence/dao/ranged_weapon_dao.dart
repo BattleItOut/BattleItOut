@@ -17,9 +17,14 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
   get tableName => 'weapons_ranged';
   @override
   get qualitiesTableName => 'weapons_melee_qualities';
+  @override
+  Map<String, dynamic> get defaultValues => {
+    "AMMUNITION": 0
+  };
 
   @override
-  Future<RangedWeapon> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
+  Future<RangedWeapon> fromMap(Map<String, dynamic> map) async {
+    defaultValues.forEach((key, value) {map.putIfAbsent(key, () => value);});
     RangedWeapon rangedWeapon = RangedWeapon(
         id: map["ID"],
         name: map["NAME"],
@@ -27,7 +32,7 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
         rangeAttribute: attributes[map["RANGE_ATTRIBUTE"]],
         damage: map["DAMAGE"],
         damageAttribute: attributes[map["DAMAGE_ATTRIBUTE"]],
-        ammunition: map["AMMUNITION"] ?? 0);
+        ammunition: map["AMMUNITION"]);
     if (map["SKILL"] != null) {
       rangedWeapon.skill = skills[map['SKILL']] ?? await SkillFactory(attributes).get(map['SKILL']);
     } if (rangedWeapon.id != null) {
@@ -39,8 +44,8 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
   }
 
   @override
-  Map<String, dynamic> toMap(RangedWeapon object) {
-    return {
+  Future<Map<String, dynamic>> toMap(RangedWeapon object, [optimised = true]) async {
+    Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,
       "WEAPON_RANGE": object.range,
@@ -49,7 +54,14 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
       "DAMAGE_ATTRIBUTE": object.damageAttribute?.id,
       "SKILL": object.skill?.id,
       "AMMUNITION": object.ammunition,
-      "QUALITIES": [for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded)) ItemQualityFactory().toMap(quality)]
+      "QUALITIES": [for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded)) await ItemQualityFactory().toMap(quality)]
     };
+    if (optimised) {
+      map = await optimise(map);
+      if (object.qualities.isEmpty) {
+        map.remove("QUALITIES");
+      }
+    }
+    return map;
   }
 }

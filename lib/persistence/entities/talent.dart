@@ -6,6 +6,7 @@ class Talent {
   String name;
   String? specialisation;
   BaseTalent? baseTalent;
+  int? baseTalentID;
   List<TalentTest> tests = [];
 
   int currentLvl = 0;
@@ -38,7 +39,7 @@ class Talent {
           id == other.id &&
           name == other.name &&
           specialisation == other.specialisation &&
-          baseTalent == other.baseTalent &&
+          baseTalentID == other.baseTalentID &&
           currentLvl == other.currentLvl &&
           advancable == other.advancable;
 
@@ -47,7 +48,7 @@ class Talent {
       id.hashCode ^
       name.hashCode ^
       specialisation.hashCode ^
-      baseTalent.hashCode ^
+      baseTalentID.hashCode ^
       currentLvl.hashCode ^
       advancable.hashCode;
 
@@ -63,6 +64,7 @@ class BaseTalent {
   String description;
   String source;
   Attribute? attribute;
+  int? attributeID;
   int? constLvl;
   bool grouped;
 
@@ -94,7 +96,7 @@ class BaseTalent {
           description == other.description &&
           source == other.source &&
           grouped == other.grouped &&
-          attribute == other.attribute &&
+          attributeID == other.attributeID &&
           constLvl == other.constLvl;
 
   @override
@@ -105,7 +107,7 @@ class BaseTalent {
       constLvl.hashCode ^
       source.hashCode ^
       grouped.hashCode ^
-      attribute.hashCode;
+      attributeID.hashCode;
 }
 
 class TalentTest {

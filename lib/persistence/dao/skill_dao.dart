@@ -19,7 +19,7 @@ class SkillFactory extends Factory<Skill> {
   }
 
   @override
-  Future<Skill> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
+  Future<Skill> fromMap(Map<String, dynamic> map) async {
     Skill skill = Skill(
         id: map["ID"],
         name: map["NAME"],
@@ -28,15 +28,17 @@ class SkillFactory extends Factory<Skill> {
         earning: map["EARNING"] ?? false,
         advancable: map["ADVANCABLE"] ?? false);
     if (map["BASE_SKILL_ID"] != null) {
+      skill.baseSkillID = map["BASE_SKILL_ID"];
       skill.baseSkill = await BaseSkillFactory(attributes).get(map["BASE_SKILL_ID"]);
     } if (map["BASE_SKILL"] != null) {
+      skill.baseSkillID = map["BASE_SKILL"]["ID"];
       skill.baseSkill = await BaseSkillFactory(attributes).create(map["BASE_SKILL"]);
     }
     return skill;
   }
 
   @override
-  Map<String, dynamic> toMap(Skill object) {
+  Future<Map<String, dynamic>> toMap(Skill object, [optimised = true]) async {
     Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,
@@ -45,7 +47,10 @@ class SkillFactory extends Factory<Skill> {
       "EARNING": object.earning,
       "ADVANCABLE": object.advancable
     };
-    if (object.baseSkill != null) {
+    if (optimised) {
+      map = await optimise(map);
+    }
+    if (object.baseSkill != null && (object.baseSkill!.id == null || object.baseSkill != await BaseSkillFactory().get(object.baseSkill!.id!))) {
       map["BASE_SKILL"] = BaseSkillFactory().toMap(object.baseSkill!);
     }
     return map;
@@ -61,7 +66,7 @@ class BaseSkillFactory extends Factory<BaseSkill> {
   get tableName => 'skills_base';
 
   @override
-  BaseSkill fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
+  BaseSkill fromMap(Map<String, dynamic> map) {
     return BaseSkill(
         id: map["ID"],
         name: map["NAME"],
@@ -72,7 +77,7 @@ class BaseSkillFactory extends Factory<BaseSkill> {
   }
 
   @override
-  Map<String, dynamic> toMap(BaseSkill object) {
+  Map<String, dynamic> toMap(BaseSkill object, [optimised = true]) {
     return {
       "ID": object.id,
       "NAME": object.name,
