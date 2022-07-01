@@ -23,15 +23,16 @@ abstract class Factory<T> extends DAO<T> implements Serializer<T> {
     return await fromMap(newMap);
   }
   dynamic get(int id) async {
-    Map<String, dynamic> newMap = {};
-    newMap.addAll(await getMap(id));
-    return fromMap(newMap);
+    return fromMap({for (var entry in (await getMap(id)).entries) entry.key: entry.value});
   }
   dynamic getWhere({where, List<Object>? whereArgs}) async {
     return fromMap(await getMapWhere(where: where, whereArgs: whereArgs));
   }
   Future<List<T>> getAll({String? where, List<Object>? whereArgs}) async {
-    return [for (var entry in await getMapAll(where: where, whereArgs: whereArgs)) await fromMap(entry)];
+    return [
+    for (var map in await getMapAll(where: where, whereArgs: whereArgs))
+      await fromMap({for (var entry in map.entries) entry.key: entry.value})
+    ];
   }
 
   Future<Map<String, dynamic>> optimise(Map<String, dynamic> map) async {
