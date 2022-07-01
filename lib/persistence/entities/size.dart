@@ -1,6 +1,4 @@
-import 'dto.dart';
-
-class Size extends DTO {
+class Size {
   int? id;
   String name;
   String source;
@@ -8,9 +6,16 @@ class Size extends DTO {
   Size({this.id, required this.name, this.source = "Custom"});
 
   @override
-  Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "SOURCE": source};
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Size &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          source == other.source;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode ^ source.hashCode;
 
   @override
   String toString() {

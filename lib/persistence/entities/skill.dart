@@ -1,17 +1,24 @@
 import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/dto.dart';
 
-class Skill extends DTO {
+class Skill {
   int id;
   String name;
   String? specialisation;
+  int? baseSkillID;
   BaseSkill? baseSkill;
 
-  int advances = 0;
-  bool earning = false;
-  bool advancable = false;
+  int advances;
+  bool earning;
+  bool advancable;
 
-  Skill({required this.id, required this.name, required this.specialisation, required this.baseSkill});
+  Skill(
+      {required this.id,
+      required this.name,
+      required this.specialisation,
+      this.advances = 0,
+      this.earning = false,
+      this.advancable = false,
+      this.baseSkill});
 
   bool isGroup() {
     return baseSkill == null;
@@ -34,26 +41,50 @@ class Skill extends DTO {
   }
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Skill &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          specialisation == other.specialisation &&
+          baseSkillID == other.baseSkillID &&
+          advances == other.advances &&
+          earning == other.earning &&
+          advancable == other.advancable;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      specialisation.hashCode ^
+      baseSkillID.hashCode ^
+      advances.hashCode ^
+      earning.hashCode ^
+      advancable.hashCode;
+
+  @override
   String toString() {
     return "Skill (id=$id, name=$name, advances=$advances)";
   }
-
-  @override
-  Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "SPECIALISATION": specialisation, "BASE_SKILL": baseSkill?.id};
-  }
 }
 
-class BaseSkill extends DTO {
-  int id;
+class BaseSkill {
+  int? id;
   String name;
   String description;
   bool advanced;
   bool grouped;
+  int? attributeID;
   Attribute? attribute;
 
   BaseSkill(
-      {required this.id, required this.name, required this.description, required this.advanced, required this.grouped, this.attribute});
+      {required this.id,
+      required this.name,
+      required this.description,
+      required this.advanced,
+      required this.grouped,
+      this.attribute});
 
   int getTotalValue() {
     return attribute!.getTotalValue();
@@ -72,22 +103,11 @@ class BaseSkill extends DTO {
           description == other.description &&
           advanced == other.advanced &&
           grouped == other.grouped &&
-          attribute == other.attribute;
+          attributeID == other.attributeID;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ description.hashCode ^ advanced.hashCode ^ grouped.hashCode ^ attribute.hashCode;
-
-  @override
-  Map<String, dynamic> toMap() {
-    return {
-      "ID": id,
-      "NAME": name,
-      "DESCRIPTION": description,
-      "ADVANCED": advanced ? 1 : 0,
-      "GROUPED": grouped ? 1 : 0,
-      "ATTRIBUTE_ID": attribute?.id
-    };
-  }
+  int get hashCode =>
+      id.hashCode ^ name.hashCode ^ description.hashCode ^ advanced.hashCode ^ grouped.hashCode ^ attributeID.hashCode;
 
   @override
   String toString() {

@@ -1,10 +1,6 @@
-import 'package:battle_it_out/persistence/dao/race_dao.dart';
-import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/dto.dart';
+import 'package:battle_it_out/persistence/entities/size.dart';
 
-import 'size.dart';
-
-class Race extends DTO {
+class Race {
   int? id;
   String name;
   Size size;
@@ -12,30 +8,34 @@ class Race extends DTO {
   String source;
   Subrace? subrace;
 
-  Map<int, Attribute>? raceAttributes;
-
-  Race({this.id, required this.name, required this.size, this.extraPoints = 0, this.source = "Custom", this.subrace});
-
-  Future<Map<int, Attribute>> getAttributes() async {
-    if (id != null) {
-      raceAttributes ??= await RaceDAO().getAttributes(id!);
-      return raceAttributes!;
-    }
-    return {};
-  }
+  Race({this.id, required this.name, required this.size, required this.extraPoints, required this.source, this.subrace});
 
   @override
-  Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "EXTRA_POINTS": extraPoints, "SIZE": size.id, "SRC": source};
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Race &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          size == other.size &&
+          extraPoints == other.extraPoints &&
+          source == other.source &&
+          subrace == other.subrace;
 
   @override
-  String toString() {
-    return "Race ($id, $name)";
-  }
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      size.hashCode ^
+      extraPoints.hashCode ^
+      source.hashCode ^
+      subrace.hashCode;
+
+  @override
+  String toString() => "Race ($id, $name)";
 }
 
-class Subrace extends DTO {
+class Subrace {
   int? id;
   String name;
   String source;
@@ -45,9 +45,18 @@ class Subrace extends DTO {
   Subrace({this.id, required this.name, this.source = "Custom", this.randomTalents = 0, this.defaultSubrace = true});
 
   @override
-  Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "RANDOM_TALENTS": randomTalents, "DEF": defaultSubrace ? 1 : 0, "SRC": source};
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Subrace &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          source == other.source &&
+          randomTalents == other.randomTalents &&
+          defaultSubrace == other.defaultSubrace;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode ^ source.hashCode ^ randomTalents.hashCode ^ defaultSubrace.hashCode;
 
   @override
   String toString() => 'Subrace ($id, $name)';

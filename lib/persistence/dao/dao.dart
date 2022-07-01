@@ -1,40 +1,35 @@
-import 'package:battle_it_out/persistence/entities/dto.dart';
 import 'package:battle_it_out/persistence/database_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-abstract class DAO<T extends DTO> {
+abstract class DAO<T> {
   get tableName;
 
-  dynamic fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]);
-
-  Future<T> get(int id, [Map overrideMap = const {}]) async {
-    return getWhere(where: "ID = ?", whereArgs: [id], overrideMap: overrideMap);
+  Future<Map<String, dynamic>> getMap(int id) async {
+    return getMapWhere(where: "ID = ?", whereArgs: [id]);
   }
 
-  Future<T> getWhere({where, List<Object>? whereArgs, Map overrideMap = const {}}) async {
+  Future<Map<String, dynamic>> getMapWhere({where, List<Object>? whereArgs}) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
-    final List<Map<String, dynamic>> map = await database.query(tableName, where: where, whereArgs: whereArgs);
-    return await fromMap(map[0], overrideMap);
+    return (await database.query(tableName, where: where, whereArgs: whereArgs))[0];
   }
 
-  Future<List<T>> getAll({String? where, List<Object>? whereArgs}) async {
+  Future<List<Map<String, Object?>>> getMapAll({String? where, List<Object>? whereArgs}) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
-    final List<Map<String, dynamic>> map = await database.query(tableName, where: where, whereArgs: whereArgs);
-    return [for (var entry in map) await fromMap(entry)];
+    return await database.query(tableName, where: where, whereArgs: whereArgs);
   }
 
-  Future<int> put(T t) async {
+  Future<int> put(map) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
-    return await database.insert(tableName, t.toMap());
+    return await database.insert(tableName, map);
   }
 
-  Future<int> set(int id, T t) async {
+  Future<int> set(int id, map) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
-    return await database.update(tableName, t.toMap(), where: "ID = ?", whereArgs: [id]);
+    return await database.update(tableName, map, where: "ID = ?", whereArgs: [id]);
   }
 
   Future<int> delete(int id) async {
@@ -42,4 +37,5 @@ abstract class DAO<T extends DTO> {
 
     return await database.delete(tableName, where: "ID = ?", whereArgs: [id]);
   }
+
 }

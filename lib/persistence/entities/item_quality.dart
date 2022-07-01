@@ -1,12 +1,12 @@
-import 'package:battle_it_out/persistence/entities/dto.dart';
-
-class ItemQuality extends DTO {
+class ItemQuality {
   int id;
   String name;
   bool positive;
   String equipment;
   String description;
   int? value;
+
+  bool mapNeeded = true;
 
   ItemQuality(
       {required this.id,
@@ -17,23 +17,28 @@ class ItemQuality extends DTO {
       this.value});
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ItemQuality &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          positive == other.positive &&
+          equipment == other.equipment &&
+          description == other.description &&
+          value == other.value &&
+          mapNeeded == other.mapNeeded;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^ name.hashCode ^ positive.hashCode ^ equipment.hashCode ^ description.hashCode ^ value.hashCode ^ mapNeeded.hashCode;
+
+  @override
   String toString() {
     if (value == null) {
       return "Quality (id=$id, name=$name)";
     } else {
       return "Quality (id=$id, name=$name $value)";
     }
-  }
-
-  @override
-  Map<String, dynamic> toMap() {
-    return {
-      "ID": id,
-      "NAME": name,
-      "POSITIVE": positive ? 1 : 0,
-      "EQUIPMENT": equipment,
-      "DESCRIPTION": description,
-      "VALUE": value
-    };
   }
 }
