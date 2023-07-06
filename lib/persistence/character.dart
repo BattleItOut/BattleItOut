@@ -18,8 +18,8 @@ import 'package:flutter/foundation.dart';
 
 class Character {
   String name;
-  Race race;
-  Profession profession;
+  Race? race;
+  Profession? profession;
   Map<int, Attribute> attributes;
   Map<int, Skill> skills;
   Map<int, Talent> talents;
@@ -31,9 +31,9 @@ class Character {
 
   Character(
       {required this.name,
-      required this.race,
-      required this.profession,
-      required this.attributes,
+      this.race,
+      this.profession,
+      this.attributes = const {},
       this.skills = const {},
       this.talents = const {},
       this.meleeWeapons = const [],
