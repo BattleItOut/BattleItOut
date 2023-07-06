@@ -1,18 +1,27 @@
 import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/dto.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 
-class Talent extends DTO {
+class Talent {
   int id;
   String name;
   String? specialisation;
   BaseTalent? baseTalent;
-  List<TalentTest> tests;
+  int? baseTalentID;
+  List<TalentTest> tests = [];
 
   int currentLvl = 0;
   bool advancable = false;
 
-  Talent({required this.id, required this.name, this.specialisation, this.baseTalent, this.tests = const []});
+  Talent(
+      {required this.id,
+      required this.name,
+      this.specialisation,
+      this.baseTalent,
+      List<TalentTest> tests = const [],
+      this.currentLvl = 0,
+      this.advancable = false}) {
+    this.tests.addAll(tests);
+  }
 
   bool isSpecialised() {
     return specialisation != null;
@@ -23,22 +32,39 @@ class Talent extends DTO {
   }
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Talent &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          specialisation == other.specialisation &&
+          baseTalentID == other.baseTalentID &&
+          currentLvl == other.currentLvl &&
+          advancable == other.advancable;
+
+  @override
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      specialisation.hashCode ^
+      baseTalentID.hashCode ^
+      currentLvl.hashCode ^
+      advancable.hashCode;
+
+  @override
   String toString() {
     return "Talent (id=$id, name=$name)";
   }
-
-  @override
-  Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "SPECIALISATION": specialisation, "BASE_TALENT": baseTalent?.id};
-  }
 }
 
-class BaseTalent extends DTO {
+class BaseTalent {
   int id;
   String name;
   String description;
   String source;
   Attribute? attribute;
+  int? attributeID;
   int? constLvl;
   bool grouped;
 
@@ -64,34 +90,28 @@ class BaseTalent extends DTO {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is BaseTalent &&
-              id == other.id &&
-              name == other.name &&
-              description == other.description &&
-              source == other.source &&
-              grouped == other.grouped &&
-              attribute == other.attribute &&
-              constLvl == other.constLvl;
+      other is BaseTalent &&
+          id == other.id &&
+          name == other.name &&
+          description == other.description &&
+          source == other.source &&
+          grouped == other.grouped &&
+          attributeID == other.attributeID &&
+          constLvl == other.constLvl;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ description.hashCode ^ constLvl.hashCode ^ source.hashCode ^ grouped.hashCode ^ attribute.hashCode;
-
-  @override
-  Map<String, dynamic> toMap() {
-    return {
-      "ID": id,
-      "NAME": name,
-      "DESCRIPTION": description,
-      "SOURCE": source,
-      "MAX_LVL": attribute,
-      "CONST_LVL": constLvl,
-      "GROUPED": grouped ? 1 : 0
-    };
-  }
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      description.hashCode ^
+      constLvl.hashCode ^
+      source.hashCode ^
+      grouped.hashCode ^
+      attributeID.hashCode;
 }
 
-class TalentTest extends DTO {
-  int testID;
+class TalentTest {
+  int? id;
   Talent? talent;
   String? comment;
 
@@ -99,23 +119,10 @@ class TalentTest extends DTO {
   Skill? skill;
   Attribute? attribute;
 
-  TalentTest({
-    required this.testID,
-    required this.talent,
-    this.comment,
-    this.baseSkill,
-    this.skill,
-    this.attribute});
+  TalentTest({required this.id, required this.talent, this.comment, this.baseSkill, this.skill, this.attribute});
 
   @override
-  Map<String, dynamic> toMap() {
-    return {
-      "TEST_ID": testID,
-      "TALENT_ID": talent!.id,
-      "COMMENT": comment,
-      "BASE_SKILL_ID": baseSkill?.id,
-      "SKILL_ID": skill!.id,
-      "ATTRIBUTE_ID": attribute!.id
-    };
+  String toString() {
+    return "Test (id=$id, name=$comment, attribute=$attribute, baseSkill=$baseSkill, skill=$skill)";
   }
 }

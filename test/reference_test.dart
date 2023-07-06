@@ -3,15 +3,8 @@ import 'dart:io';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'test_localisation.dart';
-
-main() async {
+Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
-  await referencesTest();
-  await localisationTest();
-}
-
-Future<void> referencesTest() async {
   group('Links between attributes, skills and weapons: ', () {
     test('Start conditions', () async {
       Character character = await createTestCharacter();
