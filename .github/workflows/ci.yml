@@ -13,9 +13,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          token: '${{ secrets.PAT_TOKEN }}'
-          submodules: recursive
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
