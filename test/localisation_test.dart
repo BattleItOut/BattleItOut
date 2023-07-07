@@ -4,6 +4,7 @@ import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
 import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
 import 'package:battle_it_out/persistence/dao/length_dao.dart';
 import 'package:battle_it_out/persistence/dao/melee_weapon_dao.dart';
+import 'package:battle_it_out/persistence/dao/trait_dao.dart';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/dao/ranged_weapon_dao.dart';
@@ -14,8 +15,7 @@ import 'package:battle_it_out/utils/utilities.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-Future<void> main() async {
-  TestWidgetsFlutterBinding.ensureInitialized();
+Future<void> localisationTest() async {
   var _languages = await AppLocalizationsDelegate.loadYML();
   for (var entry in _languages.entries) {
     String languageName = entry.key;
@@ -33,6 +33,7 @@ Future<void> main() async {
           }
         });
       }
+      performLocTest("Check npc traits localisations", TraitDAO(), (item) => [item.name, item.description]);
       performLocTest("Check base talent localisations", BaseTalentFactory(), (item) => [item.name, item.description]);
       performLocTest("Check talent localisations", TalentFactory(), (item) => [item.name, item.specialisation]);
       performLocTest("Check talent test localisations", TalentTestFactory(), (item) => [item.comment]);
