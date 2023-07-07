@@ -1,6 +1,5 @@
-import 'dto.dart';
 
-class Trait extends DTO {
+class Trait {
   int id;
   String name;
   String description;
