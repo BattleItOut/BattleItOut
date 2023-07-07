@@ -1,12 +1,13 @@
 import 'package:battle_it_out/persistence/entities/ammunition.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
+import 'package:battle_it_out/persistence/entities/item_quality.dart';
 import 'package:battle_it_out/persistence/entities/weapon.dart';
 
 class RangedWeapon extends Weapon {
   int range;
   Attribute? rangeAttribute;
   bool useAmmo;
-  Map<Ammunition, int> ammunition = {};
+  List<Ammunition> ammunition = [];
 
   RangedWeapon(
       {required id,
@@ -18,8 +19,8 @@ class RangedWeapon extends Weapon {
       this.rangeAttribute,
       twoHanded,
       skill,
-      qualities,
-      Map<Ammunition, int> ammunition = const {}})
+      List<ItemQuality> qualities = const [],
+      List<Ammunition> ammunition = const []})
       : super(id: id, name: name, qualities: qualities, damage: damage, twoHanded: twoHanded, damageAttribute: damageAttribute, skill: skill) {
     this.ammunition.addAll(ammunition);
   }
@@ -41,22 +42,20 @@ class RangedWeapon extends Weapon {
     return value;
   }
 
-  void addAmmunition(Ammunition _ammunition, int quantity) {
-    ammunition.update(_ammunition, (value) => value + quantity, ifAbsent: () => quantity);
-  }
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      super == other &&
+          other is RangedWeapon &&
+          runtimeType == other.runtimeType &&
+          range == other.range &&
+          rangeAttribute == other.rangeAttribute;
 
   @override
-  Map<String, dynamic> toMap() {
-    return {
-      "ID": id,
-      "NAME": name,
-      "WEAPON_RANGE": range,
-      "RANGE_ATTRIBUTE": rangeAttribute?.id,
-      "DAMAGE": damage,
-      "DAMAGE_ATTRIBUTE": damageAttribute?.id,
-      "SKILL": skill!.id,
-      "USE_AMMO": useAmmo ? 1 : 0,
-      "TWO-HANDED": twoHanded ? 1 : 0
-    };
+  int get hashCode => super.hashCode ^ range.hashCode ^ rangeAttribute.hashCode;
+
+  @override
+  String toString() {
+    return 'RangedWeapon{range: $range, rangeAttribute: $rangeAttribute, useAmmo: $useAmmo}';
   }
 }

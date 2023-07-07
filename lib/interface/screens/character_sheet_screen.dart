@@ -58,13 +58,10 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
         const PaddedText(""),
         PaddedText(weapon.qualities.map((quality) => quality.name.localise(context)).join(", "))
       ]));
-      for (MapEntry<Ammunition, int> entry in weapon.ammunition.entries) {
-        Ammunition ammo = entry.key;
-        int quantity = entry.value;
-
+      for (Ammunition ammo in weapon.ammunition) {
         outputList.add(TableLine(children: [
           LocalisedText(ammo.name, context, padding: const EdgeInsets.only(left: 40)),
-          IntegerText(quantity),
+          IntegerText(ammo.count),
           IntegerText(weapon.getRange(ammo)),
           PaddedText("${weapon.getTotalDamage(ammo)} + SL", textAlign: TextAlign.center),
           PaddedText(ammo.qualities.map((quality) => quality.name.localise(context)).join(", "))

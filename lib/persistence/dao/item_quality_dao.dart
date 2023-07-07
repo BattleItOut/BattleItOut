@@ -1,12 +1,12 @@
-import 'package:battle_it_out/persistence/dao/dao.dart';
+import 'package:battle_it_out/persistence/dao/serializer.dart';
 import 'package:battle_it_out/persistence/entities/item_quality.dart';
 
-class ItemQualityDAO extends DAO<ItemQuality> {
+class ItemQualityFactory extends Factory<ItemQuality> {
   @override
   get tableName => 'item_qualities';
 
   @override
-  ItemQuality fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
+  ItemQuality fromMap(Map<String, dynamic> map) {
     return ItemQuality(
         id: map['ID'],
         name: map['NAME'],
@@ -14,5 +14,21 @@ class ItemQualityDAO extends DAO<ItemQuality> {
         equipment: map['EQUIPMENT'],
         description: map['DESCRIPTION'],
         value: map["VALUE"]);
+  }
+
+  @override
+  Future<Map<String, dynamic>> toMap(ItemQuality object, [optimised = true]) async {
+    Map<String, dynamic> map = {
+      "ID": object.id,
+      "NAME": object.name,
+      "POSITIVE": object.positive ? 1 : 0,
+      "EQUIPMENT": object.equipment,
+      "DESCRIPTION": object.description,
+      "VALUE": object.value
+    };
+    if (optimised) {
+      map = await optimise(map);
+    }
+    return map;
   }
 }
