@@ -40,7 +40,7 @@ class Skill extends DTO {
 
   @override
   Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "SPECIALISATION": specialisation, "BASE_SKILL": baseSkill?.id};
+    return {"ID": id, "NAME": name, "SPECIALISATION": specialisation, "BASE_SKILL_ID": baseSkill?.id};
   }
 }
 

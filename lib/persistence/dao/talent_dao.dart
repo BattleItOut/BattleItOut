@@ -15,7 +15,7 @@ class TalentDAO extends DAO<Talent> {
   get tableName => 'talents';
 
   getAllTalents() async {
-    List<Talent> talents = await getAll(where: "BASE_TALENT IS NOT NULL");
+    List<Talent> talents = await getAll(where: "BASE_TALENT_ID IS NOT NULL");
     return talents;
   }
 
@@ -25,7 +25,7 @@ class TalentDAO extends DAO<Talent> {
         id: map['ID'],
         name: map['NAME'],
         specialisation: map["SPECIALISATION"],
-        baseTalent: map["BASE_TALENT"] == null ? null : await BaseTalentDAO(attributes).get(map["BASE_TALENT"]));
+        baseTalent: map["BASE_TALENT_ID"] == null ? null : await BaseTalentDAO(attributes).get(map["BASE_TALENT_ID"]));
     talent.tests = await TalentTestDAO(talent).getAllByTalent(map["ID"]);
     return talent;
   }
@@ -61,13 +61,13 @@ class TalentTestDAO extends DAO<TalentTest> {
   get tableName => 'talent_tests';
 
   Future<List<TalentTest>> getAllByTalent(int talentId) {
-    return getAll(where: "TALENT_ID == ?", whereArgs: [talentId]);
+    return getAll(where: "TALENT_ID = ?", whereArgs: [talentId]);
   }
 
   @override
   Future<TalentTest> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
     return TalentTest(
-        testID: map['TEST_ID'],
+        testID: map['ID'],
         talent: talent,
         comment: map["COMMENT"],
         baseSkill: map["BASE_SKILL_ID"] == null ? null : await BaseSkillDAO().get(map["BASE_SKILL_ID"]),

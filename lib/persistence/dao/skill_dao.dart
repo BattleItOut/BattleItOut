@@ -11,7 +11,7 @@ class SkillDAO extends DAO<Skill> {
   get tableName => 'skills';
 
   getSkills({bool? advanced}) async {
-    List<Skill> skills = await getAll(where: "BASE_SKILL IS NOT NULL");
+    List<Skill> skills = await getAll(where: "BASE_SKILL_ID IS NOT NULL");
     if (advanced != null) {
       skills = List.of(skills.where((skill) => skill.baseSkill!.advanced == advanced));
     }
@@ -20,7 +20,7 @@ class SkillDAO extends DAO<Skill> {
 
   @override
   Future<Skill> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
-    BaseSkill? baseSkill = map["BASE_SKILL"] == null ? null : await BaseSkillDAO(attributes).get(map["BASE_SKILL"]);
+    BaseSkill? baseSkill = map["BASE_SKILL_ID"] == null ? null : await BaseSkillDAO(attributes).get(map["BASE_SKILL_ID"]);
     return Skill(id: map["ID"], name: map["NAME"], specialisation: map["SPECIALISATION"], baseSkill: baseSkill);
   }
 }
