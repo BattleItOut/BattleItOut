@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter_test/flutter_test.dart';
 

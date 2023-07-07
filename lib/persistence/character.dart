@@ -6,14 +6,14 @@ import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/dao/ranged_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/dao/talent_dao.dart';
+import 'package:battle_it_out/persistence/entities/armour.dart';
+import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
+import 'package:battle_it_out/persistence/entities/profession.dart';
+import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
-import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/profession.dart';
-import 'package:battle_it_out/persistence/entities/race.dart';
-import 'package:battle_it_out/persistence/entities/armour.dart';
 import 'package:flutter/foundation.dart';
 
 class Character {
@@ -22,10 +22,10 @@ class Character {
   Profession profession;
   Map<int, Attribute> attributes;
   Map<int, Skill> skills;
-  Map<int, Talent> talents;
-  List<Armour> armour;
-  List<MeleeWeapon> meleeWeapons;
-  List<RangedWeapon> rangedWeapons;
+  Map<int, Talent> talents = {};
+  List<Armour> armour = [];
+  List<MeleeWeapon> meleeWeapons = [];
+  List<RangedWeapon> rangedWeapons = [];
   int? initiative;
   // List<Trait> traits;
 

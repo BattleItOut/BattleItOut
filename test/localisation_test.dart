@@ -1,4 +1,5 @@
 import 'package:battle_it_out/localisation.dart';
+import 'package:battle_it_out/persistence/dao/ammunition_dao.dart';
 import 'package:battle_it_out/persistence/dao/armour_dao.dart';
 import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
 import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
@@ -51,6 +52,7 @@ Future<void> main() async {
       performLocTest("Check weapon length localisations", WeaponLengthFactory(), (item) => [item.name, item.description]);
       performLocTest("Check melee weapon localisations", MeleeWeaponFactory(), (item) => [item.name]);
       performLocTest("Check ranged weapon localisations", RangedWeaponFactory(), (item) => [item.name]);
+      performLocTest("Check ranged weapon ammo localisations", AmmunitionFactory(), (item) => [item.name]);
       performLocTest("Check item quality localisations", ItemQualityFactory(), (item) => [item.name, item.description]);
     });
 

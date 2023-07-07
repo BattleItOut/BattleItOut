@@ -11,8 +11,7 @@ class Skill {
   bool earning;
   bool advancable;
 
-  Skill(
-      {required this.id,
+  Skill({required this.id,
       required this.name,
       required this.specialisation,
       this.advances = 0,

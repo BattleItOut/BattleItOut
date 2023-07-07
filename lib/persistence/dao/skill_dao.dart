@@ -30,9 +30,6 @@ class SkillFactory extends Factory<Skill> {
     if (map["BASE_SKILL_ID"] != null) {
       skill.baseSkillID = map["BASE_SKILL_ID"];
       skill.baseSkill = await BaseSkillFactory(attributes).get(map["BASE_SKILL_ID"]);
-    } if (map["BASE_SKILL"] != null) {
-      skill.baseSkillID = map["BASE_SKILL"]["ID"];
-      skill.baseSkill = await BaseSkillFactory(attributes).create(map["BASE_SKILL"]);
     }
     return skill;
   }

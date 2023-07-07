@@ -30,6 +30,7 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
         name: map["NAME"],
         length: await WeaponLengthFactory().get(map["LENGTH"]),
         damage: map["DAMAGE"],
+        twoHanded: map["TWO_HANDED"] == 1,
         damageAttribute: attributes?[map["DAMAGE_ATTRIBUTE"]]);
     if (map["SKILL"] != null) {
       meleeWeapon.skill = skills?[map['SKILL']] ?? await SkillFactory(attributes).get(map['SKILL']);
