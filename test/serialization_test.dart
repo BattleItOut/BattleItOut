@@ -355,7 +355,7 @@ void meleeWeaponSerializationTest() {
     test("Basic from database", () async {
       MeleeWeapon basicMeleeWeapon = await MeleeWeaponFactory().create(basicMeleeWeaponMap);
       expect(basicMeleeWeapon.id, 1);
-      expect(basicMeleeWeapon.name, "HAND_WEAPON");
+      expect(basicMeleeWeapon.name, "SWORD");
       expect(basicMeleeWeapon.length.id, 4);
       expect(basicMeleeWeapon.damage, 4);
       expect(basicMeleeWeapon.qualities.length, 0);
