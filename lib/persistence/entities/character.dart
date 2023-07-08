@@ -1,11 +1,3 @@
-import 'package:battle_it_out/persistence/dao/armour_dao.dart';
-import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
-import 'package:battle_it_out/persistence/dao/melee_weapon_dao.dart';
-import 'package:battle_it_out/persistence/dao/profession_dao.dart';
-import 'package:battle_it_out/persistence/dao/race_dao.dart';
-import 'package:battle_it_out/persistence/dao/ranged_weapon_dao.dart';
-import 'package:battle_it_out/persistence/dao/skill_dao.dart';
-import 'package:battle_it_out/persistence/dao/talent_dao.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/item.dart';
@@ -50,80 +42,6 @@ class Character {
     newInstance.talents = character.talents;
     newInstance.initiative = character.initiative;
     return newInstance;
-  }
-
-  static Future<Character> create(dynamic json) async {
-    String name = json['NAME'];
-    Race race = await RaceFactory().create(json["RACE"]);
-    Profession profession =
-        await ProfessionFactory().create(json["PROFESSION"]);
-    Map<int, Attribute> attributes =
-        await _createAttributes(json["ATTRIBUTES"]);
-    Map<int, Skill> skills =
-        await _createSkills(json['SKILLS'] ?? [], attributes);
-    Map<int, Talent> talents =
-        await _createTalents(json['TALENTS'] ?? [], attributes);
-
-    List<Item> items = [];
-    for (Map<String, dynamic> map in json["MELEE_WEAPONS"] ?? []) {
-      items.add(await MeleeWeaponFactory(attributes, skills).create(map));
-    }
-    for (Map<String, dynamic> map in json["RANGED_WEAPONS"] ?? []) {
-      items.add(await RangedWeaponFactory(attributes, skills).create(map));
-    }
-    for (Map<String, dynamic> map in json["ARMOUR"] ?? []) {
-      items.add(await ArmourFactory().create(map));
-    }
-    // for (var map in json["ITEMS"] ?? []) {
-    //   items.add(await ItemFactory().create(map));
-    // }
-
-    Character character = Character(
-        name: name,
-        race: race,
-        profession: profession,
-        attributes: attributes,
-        skills: skills,
-        talents: talents,
-        items: items);
-
-    return character;
-  }
-
-  static Future<Map<int, Attribute>> _createAttributes(json) async {
-    Map<int, Attribute> attributes = {
-      for (Attribute attribute in await AttributeFactory().getAll())
-        attribute.id: attribute
-    };
-    for (var map in json ?? []) {
-      Attribute attribute = await AttributeFactory().create(map);
-      attributes[attribute.id] = attribute;
-    }
-    return attributes;
-  }
-
-  static Future<Map<int, Skill>> _createSkills(
-      json, Map<int, Attribute> attributes) async {
-    Map<int, Skill> skills = {
-      for (Skill skill
-          in await SkillFactory(attributes).getSkills(advanced: false))
-        skill.id: skill
-    };
-    for (var map in json ?? []) {
-      Skill skill = await SkillFactory(attributes).create(map);
-      skills[skill.id] = skill;
-    }
-    return skills;
-  }
-
-  static Future<Map<int, Talent>> _createTalents(
-      json, Map<int, Attribute> attributes) async {
-    Map<int, Talent> talents = {};
-    for (var map in json ?? []) {
-      Talent talent = await TalentFactory(attributes).create(map);
-      talents[talent.id] = talent;
-    }
-    return talents;
   }
 
   void addItem(Item item) {
@@ -247,42 +165,6 @@ class Character {
       }
     }
     return output;
-  }
-
-  Future<Map<String, dynamic>> toMap() async {
-    List meleeWeapons = [];
-    for (MeleeWeapon weapon in getMeleeWeapons()) {
-      meleeWeapons.add(await MeleeWeaponFactory().toMap(weapon));
-    }
-
-    List rangedWeapons = [];
-    for (RangedWeapon weapon in getRangedWeapons()) {
-      rangedWeapons.add(await RangedWeaponFactory().toMap(weapon));
-    }
-
-    List armourList = [];
-    for (Armour armour in getArmour()) {
-      armourList.add(await ArmourFactory().toMap(armour));
-    }
-
-    Map<String, dynamic> map = {
-      "NAME": name,
-      "ATTRIBUTES": [for (Attribute attribute in attributes.values.where((element) => element.base != 0)) await AttributeFactory().toMap(attribute)],
-      "SKILLS": [for (Skill skill in skills.values.where((element) => element.advances != 0 || element.advancable || element.earning)) await SkillFactory().toMap(skill)],
-      "TALENTS": [for (Talent talent in talents.values) await TalentFactory().toMap(talent)],
-      "MELEE_WEAPONS": meleeWeapons,
-      "RANGED_WEAPONS": rangedWeapons,
-      "ARMOUR": armourList,
-    };
-    if (race != null) {
-      map["RACE"] = await RaceFactory().toMap(race!);
-    }
-    if (profession != null) {
-      map["PROFESSION"] = await ProfessionFactory().toMap(profession!);
-    }
-
-    map.removeWhere((key, value) => value is List && value.isEmpty);
-    return map;
   }
 
   @override

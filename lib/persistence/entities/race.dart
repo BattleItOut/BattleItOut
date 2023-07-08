@@ -1,7 +1,9 @@
 import 'package:battle_it_out/persistence/entities/size.dart';
+import 'package:uuid/uuid.dart';
 
 class Race {
-  int? id;
+  late String id;
+  int? databaseId;
   String name;
   Size size;
   int extraPoints;
@@ -9,19 +11,22 @@ class Race {
   Subrace? subrace;
 
   Race(
-      {this.id,
+      {String? id,
+      this.databaseId,
       required this.name,
       required this.size,
       required this.extraPoints,
-      required this.source,
-      this.subrace});
+      this.source = "Custom",
+      this.subrace}) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Race &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
+          databaseId == other.databaseId &&
           name == other.name &&
           size == other.size &&
           extraPoints == other.extraPoints &&

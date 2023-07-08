@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/persistence/dao/character_dao.dart';
+import 'package:battle_it_out/persistence/entities/character.dart';
 import 'package:battle_it_out/utils/utilities.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -46,7 +47,7 @@ class StateContainerState extends State<StateContainer> {
 
     for (var template in templates) {
       var json = jsonDecode(await rootBundle.loadString(template));
-      Character character = await Character.create(json);
+      Character character = await CharacterFactory().fromMap(json);
       setState(() {
         _savedCharacters.add(character);
       });

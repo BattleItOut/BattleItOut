@@ -21,7 +21,7 @@ class RaceFactory extends Factory<Race> {
       map.putIfAbsent(key, () => value);
     });
     Race race = Race(
-        id: map["ID"],
+        databaseId: map["ID"],
         name: map["NAME"],
         extraPoints: map["EXTRA_POINTS"],
         source: map["SRC"],
@@ -37,7 +37,7 @@ class RaceFactory extends Factory<Race> {
   @override
   Future<Map<String, dynamic>> toMap(Race object, [optimised = true]) async {
     Map<String, dynamic> map = {
-      "ID": object.id,
+      "ID": object.databaseId,
       "NAME": object.name,
       "EXTRA_POINTS": object.extraPoints,
       "SIZE": object.size.id,
@@ -48,7 +48,7 @@ class RaceFactory extends Factory<Race> {
     }
 
     if (object.subrace != null &&
-        (object.id == null ||
+        (object.databaseId == null ||
             object.subrace != await getDefaultSubrace(map["ID"]))) {
       map["SUBRACE"] = await SubraceFactory().toMap(object.subrace!);
     } else {

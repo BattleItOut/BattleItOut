@@ -2,8 +2,8 @@ import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
-import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/entities/ammunition.dart';
+import 'package:battle_it_out/persistence/entities/character.dart';
 import 'package:battle_it_out/persistence/entities/item.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
 import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
@@ -36,7 +36,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             children: [
               for (Skill skill in entry.value.where((Skill skill) => skill.advances > 0 || !skill.isSpecialised()))
                 TableLine(
-                    defaultStyle: TextStyle(fontWeight: skill.advancable ? FontWeight.bold : FontWeight.normal),
+                    defaultStyle: TextStyle(fontWeight: skill.canAdvance ? FontWeight.bold : FontWeight.normal),
                     children: [
                       LocalisedText(skill.specialisation ?? skill.name, context,
                           style: TextStyle(fontStyle: skill.earning ? FontStyle.italic : FontStyle.normal),
@@ -142,7 +142,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                         for (Talent talent in entry.value)
                           TableLine(
                               defaultStyle:
-                                  TextStyle(fontWeight: talent.advancable ? FontWeight.bold : FontWeight.normal),
+                                  TextStyle(fontWeight: talent.canAdvance ? FontWeight.bold : FontWeight.normal),
                               children: [
                                 LocalisedText(talent.specialisation ?? talent.name, context,
                                     padding: talent.isSpecialised() ? const EdgeInsets.only(left: 20) : null),

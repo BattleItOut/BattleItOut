@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/persistence/dao/character_dao.dart';
+import 'package:battle_it_out/persistence/entities/character.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<void> main() async {
@@ -80,5 +81,5 @@ Future<void> main() async {
 
 Future<Character> createTestCharacter() async {
   File file = File('assets/test/character_test.json');
-  return await Character.create(jsonDecode(await file.readAsString()));
+  return await CharacterFactory().fromMap(jsonDecode(await file.readAsString()));
 }
