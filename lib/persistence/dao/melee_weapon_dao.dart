@@ -17,21 +17,17 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
   get tableName => 'weapons_melee';
   @override
   get qualitiesTableName => 'weapons_melee_qualities';
-  @override
-  Map<String, dynamic> get defaultValues => {
-    "DAMAGE_ATTRIBUTE": 3
-  };
 
   @override
-  Future<MeleeWeapon> fromMap(Map<String, dynamic> map) async {
-    defaultValues.forEach((key, value) {map.putIfAbsent(key, () => value);});
+  Future<MeleeWeapon> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
     MeleeWeapon meleeWeapon = MeleeWeapon(
         id: map["ID"],
         name: map["NAME"],
         length: await WeaponLengthFactory().get(map["LENGTH"]),
         damage: map["DAMAGE"],
         twoHanded: map["TWO_HANDED"] == 1,
-        damageAttribute: attributes?[map["DAMAGE_ATTRIBUTE"]]);
+        itemCategory: map["ITEM_CATEGORY"],
+        damageAttribute: attributes?[map["ITEM_CATEGORY"] ?? 3]);
     if (map["SKILL"] != null) {
       meleeWeapon.skill = skills?[map['SKILL']] ?? await SkillFactory(attributes).get(map['SKILL']);
     } if (meleeWeapon.id != null) {
@@ -51,6 +47,7 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
         "DAMAGE": object.damage,
         "SKILL": object.skill?.id,
         "DAMAGE_ATTRIBUTE": object.damageAttribute?.id,
+        "ITEM_CATEGORY": object.category,
         "QUALITIES": [for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded)) await ItemQualityFactory().toMap(quality)]
       };
       if (optimised) {

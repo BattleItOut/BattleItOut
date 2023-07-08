@@ -204,17 +204,30 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                   )
               ],
               context: context),
-          SingleEntitiesTable(
+          GroupedEntitiesTable(
               title: LocalisedText("ITEMS", context, style: const TextStyle(fontSize: 24.0)),
               children: [
-                for (Item item in widget.character.items)
-                  TableLine(children: [
-                    IntegerText(item.count),
-                    LocalisedText(item.name, context),
-                    PaddedText(item.qualities.map((quality) => quality.name.localise(context)).join(", "))
-                  ])
+                for (MapEntry<String, Map<Item, int>> entry in widget.character.getItemsGrouped().entries)
+                  TableSubsection(
+                      header: TableLine(children: [
+                        IntegerText(null),
+                        LocalisedText(entry.key, context, style: const TextStyle(fontWeight: FontWeight.bold)),
+                        IntegerText(null),
+                        const PaddedText(""),
+                      ]),
+                      headerHidden: entry.key=="NONE",
+                    children: [
+                      for (MapEntry<Item, int> secondaryEntry in entry.value.entries)
+                        TableLine(children: [
+                          IntegerText(secondaryEntry.value),
+                          LocalisedText(secondaryEntry.key.name, context),
+                          IntegerText(secondaryEntry.key.encumbrance),
+                          PaddedText(secondaryEntry.key.qualities.map((quality) => quality.name.localise(context)).join(", "))
+                        ])
+                    ],
+                  )
               ],
-              context: context),
+              context: context)
         ]));
   }
 }

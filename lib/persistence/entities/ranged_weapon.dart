@@ -18,6 +18,7 @@ class RangedWeapon extends Weapon {
       required damageAttribute,
       this.rangeAttribute,
       twoHanded,
+      itemCategory,
       skill,
       List<ItemQuality> qualities = const [],
       List<Ammunition> ammunition = const []})

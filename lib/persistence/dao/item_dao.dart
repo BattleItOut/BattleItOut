@@ -5,7 +5,7 @@ import 'package:battle_it_out/persistence/entities/item.dart';
 import 'package:battle_it_out/persistence/entities/item_quality.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-abstract class ItemFactory<T extends Item> extends Factory<T> {
+abstract class ItemFactory<T> extends Factory<T> {
   get qualitiesTableName;
 
   Future<List<ItemQuality>> getQualities(int id) async {
@@ -20,5 +20,17 @@ abstract class ItemFactory<T extends Item> extends Factory<T> {
       qualities.add(itemQuality);
     }
     return qualities;
+  }
+
+  @override
+  fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
+    return Item(
+        id: map["ID"],
+        name: map["NAME"],
+        cost: map["COST"],
+        encumbrance: map["ENCUMBRANCE"],
+        availability: map["AVAILABILITY"],
+        category: map["CATEGORY"]
+    );
   }
 }

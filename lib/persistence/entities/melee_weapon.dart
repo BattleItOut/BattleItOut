@@ -5,8 +5,8 @@ import 'package:battle_it_out/persistence/entities/weapon_length.dart';
 class MeleeWeapon extends Weapon {
   WeaponLength length;
 
-  MeleeWeapon({required id, required name, required this.length, required damage, required twoHanded, damageAttribute, skill, List<ItemQuality> qualities = const []})
-      : super(id: id, name: name, qualities: qualities, damage: damage, twoHanded: twoHanded, damageAttribute: damageAttribute, skill: skill);
+  MeleeWeapon({id, required name, required this.length, required damage, required twoHanded, damageAttribute, skill, itemCategory, List<ItemQuality> qualities = const []})
+      : super(id: id, name: name, qualities: qualities, damage: damage, twoHanded: twoHanded, damageAttribute: damageAttribute, itemCategory: itemCategory, skill: skill);
 
   int getTotalSkillValue() {
     return skill!.getTotalValue();

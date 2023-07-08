@@ -1,7 +1,8 @@
 import 'package:battle_it_out/persistence/dao/item_dao.dart';
-import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
 import 'package:battle_it_out/persistence/entities/item_quality.dart';
+
+import 'item_quality_dao.dart';
 
 class ArmourFactory extends ItemFactory<Armour> {
   @override
@@ -19,7 +20,7 @@ class ArmourFactory extends ItemFactory<Armour> {
   };
 
   @override
-  Future<Armour> fromMap(Map<String, dynamic> map) async {
+  Future<Armour> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
     defaultValues.forEach((key, value) {map.putIfAbsent(key, () => value);});
     Armour armour = Armour(
         id: map["ID"],
@@ -48,7 +49,8 @@ class ArmourFactory extends ItemFactory<Armour> {
       "LEFT_ARM_AP": object.leftArmAP,
       "RIGHT_ARM_AP": object.rightArmAP,
       "LEFT_LEG_AP": object.leftLegAP,
-      "RIGHT_LEG_AP": object.rightLegAP,
+      "RIGHT_LEG_AP": object.rightArmAP,
+      "ITEM_CATEGORY": object.category,
       "QUALITIES": [for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded)) await ItemQualityFactory().toMap(quality)]
     };
     if (optimised) {

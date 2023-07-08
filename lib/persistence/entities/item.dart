@@ -1,15 +1,25 @@
 import 'package:battle_it_out/persistence/entities/item_quality.dart';
 import 'package:flutter/foundation.dart';
 
-abstract class Item {
+class Item {
   int? id;
   String name;
   int count;
+
+  int? cost;
+  int encumbrance;
+  String? availability;
+  String? category;
+
   List<ItemQuality> qualities = [];
 
   Item(
-      {required this.id,
+      {this.id,
       required this.name,
+      required this.encumbrance,
+      this.cost,
+      this.availability,
+      this.category,
       this.count = 1,
       List<ItemQuality> qualities = const []}) {
     this.qualities.addAll(qualities);

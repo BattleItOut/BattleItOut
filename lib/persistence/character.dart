@@ -17,6 +17,7 @@ import 'package:battle_it_out/persistence/entities/skill.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
 import 'package:flutter/foundation.dart';
 
+
 class Character {
   String name;
   Race race;
@@ -222,6 +223,18 @@ class Character {
     }
     return output;
   }
+  Map<String, Map<Item, int>> getItemsGrouped() {
+    Map<String, Map<Item, int>> output = {};
+    for (Item item in items) {
+      String category = item.category ?? "NONE";
+      if (output.containsKey(category)) {
+        output[category]![item] = item.count;
+      } else {
+        output[category] = {item: item.count};
+      }
+    }
+    return output;
+  }
 
   Future<Map<String, dynamic>> toMap() async {
     Map<String, dynamic> map = {
@@ -291,4 +304,5 @@ class Character {
   String toString() {
     return "Character (name=$name, race=$race, profession=$profession)";
   }
+
 }

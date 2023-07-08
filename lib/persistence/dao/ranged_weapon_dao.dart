@@ -20,8 +20,7 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
   get qualitiesTableName => 'weapons_melee_qualities';
 
   @override
-  Future<RangedWeapon> fromMap(Map<String, dynamic> map) async {
-    defaultValues.forEach((key, value) {map.putIfAbsent(key, () => value);});
+  fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
     RangedWeapon rangedWeapon = RangedWeapon(
         id: map["ID"],
         name: map["NAME"],
@@ -30,6 +29,7 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
         useAmmo: map["USE_AMMO"] == 1,
         rangeAttribute: attributes[map["RANGE_ATTRIBUTE"]],
         damage: map["DAMAGE"],
+        itemCategory: map["ITEM_CATEGORY"],
         damageAttribute: attributes[map["DAMAGE_ATTRIBUTE"]],
     );
     if (map["SKILL"] != null) {

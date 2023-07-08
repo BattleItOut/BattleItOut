@@ -1,14 +1,14 @@
 import 'package:battle_it_out/persistence/entities/item.dart';
+import 'package:battle_it_out/persistence/entities/item_quality.dart';
 
 class Ammunition extends Item {
   double rangeModifier;
   int rangeBonus;
   int damageBonus;
-  int count;
 
-  Ammunition({required int id, required String name, qualities, this.count = 1,
-    this.rangeModifier = 1, this.rangeBonus = 0, this.damageBonus = 0})
-      : super(id: id, name: name, qualities: qualities);
+  Ammunition({required int id, required String name, itemCategory, count = 1,
+    this.rangeModifier = 1, this.rangeBonus = 0, this.damageBonus = 0, encumbrance = 0, List<ItemQuality> qualities = const []})
+      : super(id: id, name: name, count: count, encumbrance: encumbrance, category: itemCategory, qualities: qualities);
 
   @override
   bool operator ==(Object other) =>
@@ -18,16 +18,14 @@ class Ammunition extends Item {
           runtimeType == other.runtimeType &&
           rangeModifier == other.rangeModifier &&
           rangeBonus == other.rangeBonus &&
-          damageBonus == other.damageBonus &&
-          count == other.count;
+          damageBonus == other.damageBonus;
 
   @override
   int get hashCode =>
       super.hashCode ^
       rangeModifier.hashCode ^
       rangeBonus.hashCode ^
-      damageBonus.hashCode ^
-      count.hashCode;
+      damageBonus.hashCode;
 
   @override
   String toString() {

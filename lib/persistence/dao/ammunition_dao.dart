@@ -19,6 +19,7 @@ class AmmunitionFactory extends ItemFactory<Ammunition> {
         rangeBonus: map["RANGE_BONUS"],
         damageBonus: map["DAMAGE_BONUS"],
         count: map["COUNT"] ?? 0,
+        itemCategory: map["ITEM_CATEGORY"],
         qualities: await getQualities(map["ID"]));
   }
 
