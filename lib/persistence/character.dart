@@ -19,8 +19,8 @@ import 'package:flutter/foundation.dart';
 
 class Character {
   String name;
-  Race race;
-  Profession profession;
+  Race? race;
+  Profession? profession;
   Map<int, Attribute> attributes;
   Map<int, Skill> skills;
   Map<int, Talent> talents = {};
@@ -31,9 +31,9 @@ class Character {
 
   Character(
       {required this.name,
-      required this.race,
-      required this.profession,
-      required this.attributes,
+      this.race,
+      this.profession,
+      this.attributes = const {},
       this.skills = const {},
       this.talents = const {},
       List<Item> items = const []}) {
@@ -267,8 +267,12 @@ class Character {
 
     Map<String, dynamic> map = {
       "NAME": name,
-      "RACE": await RaceFactory().toMap(race),
-      "PROFESSION": await ProfessionFactory().toMap(profession),
+      "ATTRIBUTES": [for (Attribute attribute in attributes.values.where((element) => element.base != 0)) await AttributeFactory().toMap(attribute)],
+      "SKILLS": [for (Skill skill in skills.values.where((element) => element.advances != 0 || element.advancable || element.earning)) await SkillFactory().toMap(skill)],
+      "TALENTS": [for (Talent talent in talents.values) await TalentFactory().toMap(talent)],
+      "MELEE_WEAPONS": [for (MeleeWeapon weapon in meleeWeapons) await MeleeWeaponFactory().toMap(weapon)],
+      "RANGED_WEAPONS": [for (RangedWeapon weapon in rangedWeapons) await RangedWeaponFactory().toMap(weapon)],
+      "ARMOUR": [for (Armour armour in this.armour) await ArmourFactory().toMap(armour)],
       "ATTRIBUTES": [
         for (Attribute attribute
             in attributes.values.where((element) => element.base != 0))
@@ -287,6 +291,13 @@ class Character {
       "RANGED_WEAPONS": rangedWeapons,
       "ARMOUR": armourList,
     };
+    if (race != null) {
+      map["RACE"] = await RaceFactory().toMap(race!);
+    }
+    if (profession != null) {
+      map["PROFESSION"] = await ProfessionFactory().toMap(profession!);
+    }
+
     map.removeWhere((key, value) => value is List && value.isEmpty);
     return map;
   }
