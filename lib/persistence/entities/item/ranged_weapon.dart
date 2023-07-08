@@ -1,7 +1,7 @@
-import 'package:battle_it_out/persistence/entities/ammunition.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
-import 'package:battle_it_out/persistence/entities/weapon.dart';
+import 'package:battle_it_out/persistence/entities/item/ammunition.dart';
+import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
+import 'package:battle_it_out/persistence/entities/item/weapon.dart';
 
 class RangedWeapon extends Weapon {
   int range;

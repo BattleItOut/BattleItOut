@@ -1,6 +1,6 @@
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
-import 'package:battle_it_out/persistence/entities/weapon.dart';
-import 'package:battle_it_out/persistence/entities/weapon_length.dart';
+import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
+import 'package:battle_it_out/persistence/entities/item/weapon.dart';
+import 'package:battle_it_out/persistence/entities/item/weapon_length.dart';
 
 class MeleeWeapon extends Weapon {
   WeaponLength length;
@@ -32,10 +32,7 @@ class MeleeWeapon extends Weapon {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      super == other &&
-          other is MeleeWeapon &&
-          runtimeType == other.runtimeType &&
-          length == other.length;
+      super == other && other is MeleeWeapon && runtimeType == other.runtimeType && length == other.length;
 
   @override
   int get hashCode => super.hashCode ^ length.hashCode;

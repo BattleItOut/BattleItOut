@@ -1,7 +1,7 @@
-import 'package:battle_it_out/persistence/dao/item_dao.dart';
-import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
-import 'package:battle_it_out/persistence/entities/armour.dart';
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
+import 'package:battle_it_out/persistence/dao/item/item_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/item_quality_dao.dart';
+import 'package:battle_it_out/persistence/entities/item/armour.dart';
+import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
 
 class ArmourFactory extends ItemFactory<Armour> {
   @override

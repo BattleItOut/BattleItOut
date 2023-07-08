@@ -119,13 +119,7 @@ class TalentTest {
   Skill? skill;
   Attribute? attribute;
 
-  TalentTest(
-      {required this.id,
-      required this.talent,
-      this.comment,
-      this.baseSkill,
-      this.skill,
-      this.attribute});
+  TalentTest({required this.id, required this.talent, this.comment, this.baseSkill, this.skill, this.attribute});
 
   @override
   String toString() {

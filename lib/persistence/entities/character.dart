@@ -1,10 +1,10 @@
-import 'package:battle_it_out/persistence/entities/armour.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/item.dart';
-import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
+import 'package:battle_it_out/persistence/entities/item/armour.dart';
+import 'package:battle_it_out/persistence/entities/item/item.dart';
+import 'package:battle_it_out/persistence/entities/item/melee_weapon.dart';
+import 'package:battle_it_out/persistence/entities/item/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
-import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
 import 'package:flutter/foundation.dart';
@@ -37,10 +37,7 @@ class Character {
 
   static Character from(Character character) {
     var newInstance = Character(
-        name: character.name,
-        race: character.race,
-        profession: character.profession,
-        attributes: character.attributes);
+        name: character.name, race: character.race, profession: character.profession, attributes: character.attributes);
     newInstance.skills = character.skills;
     newInstance.talents = character.talents;
     newInstance.initiative = character.initiative;
@@ -104,10 +101,7 @@ class Character {
 
   // Melee weapons
   List<MeleeWeapon> getMeleeWeapons() {
-    return items
-        .where((i) => i.category != null && i.category == "MELEE_WEAPONS")
-        .cast<MeleeWeapon>()
-        .toList();
+    return items.where((i) => i.category != null && i.category == "MELEE_WEAPONS").cast<MeleeWeapon>().toList();
   }
 
   Map<Skill, List<MeleeWeapon>> getMeleeWeaponsGrouped() {
@@ -125,10 +119,7 @@ class Character {
 
   // Ranged weapons
   List<RangedWeapon> getRangedWeapons() {
-    return items
-        .where((i) => i.category != null && i.category == "RANGED_WEAPONS")
-        .cast<RangedWeapon>()
-        .toList();
+    return items.where((i) => i.category != null && i.category == "RANGED_WEAPONS").cast<RangedWeapon>().toList();
   }
 
   Map<Skill, List<RangedWeapon>> getRangedWeaponsGrouped() {
@@ -146,10 +137,7 @@ class Character {
 
   // Armour
   List<Armour> getArmour() {
-    return items
-        .where((i) => i.category != null && i.category == "ARMOUR")
-        .cast<Armour>()
-        .toList();
+    return items.where((i) => i.category != null && i.category == "ARMOUR").cast<Armour>().toList();
   }
 
   // Items

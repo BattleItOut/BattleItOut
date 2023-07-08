@@ -1,10 +1,10 @@
-import 'package:battle_it_out/persistence/dao/item_dao.dart';
-import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
-import 'package:battle_it_out/persistence/dao/length_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/item_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/item_quality_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/length_dao.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
-import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
+import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
+import 'package:battle_it_out/persistence/entities/item/melee_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 
 class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {

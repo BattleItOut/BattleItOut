@@ -1,5 +1,5 @@
-import 'package:battle_it_out/persistence/entities/item.dart';
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
+import 'package:battle_it_out/persistence/entities/item/item.dart';
+import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
 
 class Ammunition extends Item {
   double rangeModifier;
@@ -16,13 +16,7 @@ class Ammunition extends Item {
       count = 1,
       encumbrance = 0,
       List<ItemQuality> qualities = const []})
-      : super(
-            id: id,
-            name: name,
-            count: count,
-            encumbrance: encumbrance,
-            category: itemCategory,
-            qualities: qualities);
+      : super(id: id, name: name, count: count, encumbrance: encumbrance, category: itemCategory, qualities: qualities);
 
   @override
   bool operator ==(Object other) =>
@@ -35,11 +29,7 @@ class Ammunition extends Item {
           damageBonus == other.damageBonus;
 
   @override
-  int get hashCode =>
-      super.hashCode ^
-      rangeModifier.hashCode ^
-      rangeBonus.hashCode ^
-      damageBonus.hashCode;
+  int get hashCode => super.hashCode ^ rangeModifier.hashCode ^ rangeBonus.hashCode ^ damageBonus.hashCode;
 
   @override
   String toString() {

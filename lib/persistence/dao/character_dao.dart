@@ -1,20 +1,20 @@
-import 'package:battle_it_out/persistence/dao/armour_dao.dart';
 import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
-import 'package:battle_it_out/persistence/dao/melee_weapon_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/armour_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/melee_weapon_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/ranged_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
-import 'package:battle_it_out/persistence/dao/ranged_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/serializer.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/dao/talent_dao.dart';
-import 'package:battle_it_out/persistence/entities/armour.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/character.dart';
-import 'package:battle_it_out/persistence/entities/item.dart';
-import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
+import 'package:battle_it_out/persistence/entities/item/armour.dart';
+import 'package:battle_it_out/persistence/entities/item/item.dart';
+import 'package:battle_it_out/persistence/entities/item/melee_weapon.dart';
+import 'package:battle_it_out/persistence/entities/item/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
-import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
 
@@ -81,7 +81,8 @@ class CharacterFactory extends Factory<Character> {
           await AttributeFactory().toMap(attribute)
       ],
       "SKILLS": [
-        for (Skill skill in object.skills.where((element) => element.advances != 0 || element.canAdvance || element.earning))
+        for (Skill skill
+            in object.skills.where((element) => element.advances != 0 || element.canAdvance || element.earning))
           await SkillFactory().toMap(skill)
       ],
       "TALENTS": [for (Talent talent in object.talents) await TalentFactory().toMap(talent)],
@@ -100,7 +101,7 @@ class CharacterFactory extends Factory<Character> {
     return map;
   }
 
-  static Future<List<Attribute>> _createAttributes(json) async {
+  Future<List<Attribute>> _createAttributes(json) async {
     List<Attribute> attributes = await AttributeFactory().getAll();
     for (var map in json ?? []) {
       Attribute attribute = await AttributeFactory().create(map);
@@ -114,7 +115,7 @@ class CharacterFactory extends Factory<Character> {
     return attributes;
   }
 
-  static Future<List<Skill>> _createSkills(json, List<Attribute> attributes) async {
+  Future<List<Skill>> _createSkills(json, List<Attribute> attributes) async {
     List<Skill> skills = await SkillFactory(attributes).getSkills(advanced: false);
     for (var map in json ?? []) {
       Skill skill = await SkillFactory(attributes).create(map);

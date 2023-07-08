@@ -43,12 +43,7 @@ class Attribute {
 
   @override
   int get hashCode =>
-      id.hashCode ^
-      name.hashCode ^
-      shortName.hashCode ^
-      description.hashCode ^
-      rollable.hashCode ^
-      importance.hashCode;
+      id.hashCode ^ name.hashCode ^ shortName.hashCode ^ description.hashCode ^ rollable.hashCode ^ importance.hashCode;
 
   @override
   String toString() {

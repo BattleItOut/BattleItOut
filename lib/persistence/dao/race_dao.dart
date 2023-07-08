@@ -7,12 +7,10 @@ class RaceFactory extends Factory<Race> {
   get tableName => 'races';
 
   @override
-  Map<String, dynamic> get defaultValues =>
-      {"EXTRA_POINTS": 0, "SRC": "Custom"};
+  Map<String, dynamic> get defaultValues => {"EXTRA_POINTS": 0, "SRC": "Custom"};
 
   getDefaultSubrace(int raceID) async {
-    return SubraceFactory()
-        .getWhere(where: "RACE_ID = ? AND DEF = ?", whereArgs: [raceID, 1]);
+    return SubraceFactory().getWhere(where: "RACE_ID = ? AND DEF = ?", whereArgs: [raceID, 1]);
   }
 
   @override
@@ -47,9 +45,7 @@ class RaceFactory extends Factory<Race> {
       map = await optimise(map);
     }
 
-    if (object.subrace != null &&
-        (object.databaseId == null ||
-            object.subrace != await getDefaultSubrace(map["ID"]))) {
+    if (object.subrace != null && (object.databaseId == null || object.subrace != await getDefaultSubrace(map["ID"]))) {
       map["SUBRACE"] = await SubraceFactory().toMap(object.subrace!);
     } else {
       map.remove("SUBRACE");
@@ -63,8 +59,7 @@ class SubraceFactory extends Factory<Subrace> {
   get tableName => 'subraces';
 
   @override
-  Map<String, dynamic> get defaultValues =>
-      {"RANDOM_TALENTS": 0, "SRC": "Custom", "DEF": 1};
+  Map<String, dynamic> get defaultValues => {"RANDOM_TALENTS": 0, "SRC": "Custom", "DEF": 1};
 
   @override
   Subrace fromMap(Map<String, dynamic> map) {

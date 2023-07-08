@@ -51,11 +51,7 @@ class Skill {
           baseSkillID == other.baseSkillID;
 
   @override
-  int get hashCode =>
-      id.hashCode ^
-      name.hashCode ^
-      specialisation.hashCode ^
-      baseSkillID.hashCode;
+  int get hashCode => id.hashCode ^ name.hashCode ^ specialisation.hashCode ^ baseSkillID.hashCode;
 
   @override
   String toString() {
@@ -101,12 +97,7 @@ class BaseSkill {
 
   @override
   int get hashCode =>
-      id.hashCode ^
-      name.hashCode ^
-      description.hashCode ^
-      advanced.hashCode ^
-      grouped.hashCode ^
-      attributeID.hashCode;
+      id.hashCode ^ name.hashCode ^ description.hashCode ^ advanced.hashCode ^ grouped.hashCode ^ attributeID.hashCode;
 
   @override
   String toString() {

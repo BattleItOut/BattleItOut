@@ -1,5 +1,5 @@
 import 'package:battle_it_out/persistence/dao/serializer.dart';
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
+import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
 
 class ItemQualityFactory extends Factory<ItemQuality> {
   @override
@@ -17,8 +17,7 @@ class ItemQualityFactory extends Factory<ItemQuality> {
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(ItemQuality object,
-      [optimised = true]) async {
+  Future<Map<String, dynamic>> toMap(ItemQuality object, [optimised = true]) async {
     Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,

@@ -53,7 +53,8 @@ class TalentFactory extends Factory<Talent> {
     if (optimised) {
       map = await optimise(map);
     }
-    if (object.baseTalent != null && object.baseTalent != await BaseTalentFactory(attributes).get(object.baseTalent!.id)) {
+    if (object.baseTalent != null &&
+        object.baseTalent != await BaseTalentFactory(attributes).get(object.baseTalent!.id)) {
       map["BASE_TALENT"] = BaseTalentFactory().toMap(object.baseTalent!);
     }
     return map;

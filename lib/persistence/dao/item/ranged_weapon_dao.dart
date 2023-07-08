@@ -1,11 +1,11 @@
-import 'package:battle_it_out/persistence/dao/ammunition_dao.dart';
-import 'package:battle_it_out/persistence/dao/item_dao.dart';
-import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/ammunition_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/item_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/item_quality_dao.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
-import 'package:battle_it_out/persistence/entities/ammunition.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
-import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
+import 'package:battle_it_out/persistence/entities/item/ammunition.dart';
+import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
+import 'package:battle_it_out/persistence/entities/item/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 
 class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
@@ -56,7 +56,8 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
       rangedWeapon.qualities.addAll([for (var tempMap in map["QUALITIES"]) await ItemQualityFactory().create(tempMap)]);
     }
     if (map["AMMUNITION"] != null) {
-      rangedWeapon.ammunition.addAll([for (var tempMap in map["AMMUNITION"]) await AmmunitionFactory().create(tempMap)]);
+      rangedWeapon.ammunition
+          .addAll([for (var tempMap in map["AMMUNITION"]) await AmmunitionFactory().create(tempMap)]);
     }
     return rangedWeapon;
   }

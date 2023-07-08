@@ -1,7 +1,7 @@
-import 'package:battle_it_out/persistence/dao/item_dao.dart';
-import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
-import 'package:battle_it_out/persistence/entities/ammunition.dart';
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
+import 'package:battle_it_out/persistence/dao/item/item_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/item_quality_dao.dart';
+import 'package:battle_it_out/persistence/entities/item/ammunition.dart';
+import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
 
 class AmmunitionFactory extends ItemFactory<Ammunition> {
   @override
@@ -11,8 +11,7 @@ class AmmunitionFactory extends ItemFactory<Ammunition> {
   get qualitiesTableName => 'weapons_ranged_ammunition_qualities';
 
   @override
-  Future<Ammunition> fromMap(Map<String, dynamic> map,
-      [Map overrideMap = const {}]) async {
+  Future<Ammunition> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
     return Ammunition(
         id: map["ID"],
         name: map["NAME"],
