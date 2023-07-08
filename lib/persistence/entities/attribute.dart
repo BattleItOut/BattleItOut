@@ -39,9 +39,7 @@ class Attribute {
           shortName == other.shortName &&
           description == other.description &&
           rollable == other.rollable &&
-          importance == other.importance &&
-          base == other.base &&
-          advances == other.advances;
+          importance == other.importance;
 
   @override
   int get hashCode =>
@@ -50,9 +48,7 @@ class Attribute {
       shortName.hashCode ^
       description.hashCode ^
       rollable.hashCode ^
-      importance.hashCode ^
-      base.hashCode ^
-      advances.hashCode;
+      importance.hashCode;
 
   @override
   String toString() {

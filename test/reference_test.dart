@@ -2,7 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:battle_it_out/persistence/dao/character_dao.dart';
+import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/character.dart';
+import 'package:battle_it_out/persistence/entities/skill.dart';
+import 'package:battle_it_out/persistence/entities/talent.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<void> main() async {
@@ -12,18 +15,21 @@ Future<void> main() async {
       Character character = await createTestCharacter();
 
       // Attribute
-      expect(character.attributes[1]!.base, 34);
-      expect(character.attributes[1]!.advances, 5);
-      expect(character.attributes[1]!.getTotalValue(), 39);
-      expect(character.attributes[1]!.getTotalBonus(), 3);
+      Attribute attribute = character.attributes.firstWhere((attribute) => attribute.id == 1);
+      expect(attribute.base, 34);
+      expect(attribute.advances, 5);
+      expect(attribute.getTotalValue(), 39);
+      expect(attribute.getTotalBonus(), 3);
 
       // Skill
-      expect(character.skills[38]!.advances, 5);
-      expect(character.skills[38]!.getTotalValue(), 44);
+      Skill skill = character.skills.firstWhere((skill) => skill.id == 38);
+      expect(skill.advances, 5);
+      expect(skill.getTotalValue(), 44);
 
       // Talent
-      expect(character.talents[26]!.currentLvl, 1);
-      expect(character.talents[26]!.getMaxLvl(), 3);
+      Talent talent = character.talents.firstWhere((talent) => talent.id == 26);
+      expect(talent.currentLvl, 1);
+      expect(talent.getMaxLvl(), 3);
 
       // Weapon
       expect(character.getMeleeWeapons()[0].getTotalSkillValue(), 44);
@@ -31,15 +37,19 @@ Future<void> main() async {
     test('Increasing base value', () async {
       Character character = await createTestCharacter();
 
-      character.attributes[1]!.base++;
-      expect(character.attributes[1]!.getTotalValue(), 40);
-      expect(character.attributes[1]!.getTotalBonus(), 4);
+      // Attribute
+      Attribute attribute = character.attributes.firstWhere((attribute) => attribute.id == 1);
+      attribute.base++;
+      expect(attribute.getTotalValue(), 40);
+      expect(attribute.getTotalBonus(), 4);
 
       // Skill
-      expect(character.skills[38]!.getTotalValue(), 45);
+      Skill skill = character.skills.firstWhere((skill) => skill.id == 38);
+      expect(skill.getTotalValue(), 45);
 
       // Talent
-      expect(character.talents[26]!.getMaxLvl(), 4);
+      Talent talent = character.talents.firstWhere((talent) => talent.id == 26);
+      expect(talent.getMaxLvl(), 4);
 
       // Weapon
       expect(character.getMeleeWeapons()[0].getTotalSkillValue(), 45);
@@ -47,31 +57,40 @@ Future<void> main() async {
     test('Increasing advance value', () async {
       Character character = await createTestCharacter();
 
-      character.attributes[1]!.advances += 11;
-      expect(character.attributes[1]!.getTotalValue(), 50);
-      expect(character.attributes[1]!.getTotalBonus(), 5);
+      // Attribute
+      Attribute attribute = character.attributes.firstWhere((attribute) => attribute.id == 1);
+      attribute.advances += 11;
+      expect(attribute.getTotalValue(), 50);
+      expect(attribute.getTotalBonus(), 5);
 
       // Skill
-      expect(character.skills[38]!.getTotalValue(), 55);
+      Skill skill = character.skills.firstWhere((skill) => skill.id == 38);
+      expect(skill.getTotalValue(), 55);
 
       // Talent
-      expect(character.talents[26]!.getMaxLvl(), 5);
+      Talent talent = character.talents.firstWhere((talent) => talent.id == 26);
+      expect(talent.getMaxLvl(), 5);
 
       // Weapon
       expect(character.getMeleeWeapons()[0].getTotalSkillValue(), 55);
     });
     test('Increasing skill advance value', () async {
       Character character = await createTestCharacter();
+      Skill skill = character.skills.firstWhere((skill) => skill.id == 38);
 
-      character.skills[38]!.advances += 21;
-      expect(character.attributes[1]!.getTotalValue(), 39);
-      expect(character.attributes[1]!.getTotalBonus(), 3);
+      skill.advances += 21;
+
+      Attribute attribute = character.attributes.firstWhere((attribute) => attribute.id == 1);
+      expect(attribute.getTotalValue(), 39);
+      expect(attribute.getTotalBonus(), 3);
 
       // Skill
-      expect(character.skills[38]!.getTotalValue(), 65);
+      skill = character.skills.firstWhere((skill) => skill.id == 38);
+      expect(skill.getTotalValue(), 65);
 
       // Talent
-      expect(character.talents[26]!.getMaxLvl(), 3);
+      Talent talent = character.talents.firstWhere((talent) => talent.id == 26);
+      expect(talent.getMaxLvl(), 3);
 
       // Weapon
       expect(character.getMeleeWeapons()[0].getTotalSkillValue(), 65);

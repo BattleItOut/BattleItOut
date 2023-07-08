@@ -13,9 +13,9 @@ class Character {
   String name;
   Race? race;
   Profession? profession;
-  Map<int, Attribute> attributes;
-  Map<int, Skill> skills;
-  Map<int, Talent> talents = {};
+  List<Attribute> attributes = [];
+  List<Skill> skills = [];
+  List<Talent> talents = [];
 
   List<Item> items = [];
   int? initiative;
@@ -25,11 +25,14 @@ class Character {
       {required this.name,
       this.race,
       this.profession,
-      this.attributes = const {},
-      this.skills = const {},
-      this.talents = const {},
+      List<Attribute> attributes = const [],
+      List<Skill> skills = const [],
+      List<Talent> talents = const [],
       List<Item> items = const []}) {
     this.items.addAll(items);
+    this.attributes.addAll(attributes);
+    this.skills.addAll(skills);
+    this.talents.addAll(talents);
   }
 
   static Character from(Character character) {
@@ -60,13 +63,9 @@ class Character {
   }
 
   // List getters
-  List<Attribute> getAttributes() {
-    return List.of(attributes.values);
-  }
-
   Map<BaseSkill, List<Skill>> getBasicSkillsGrouped() {
     Map<BaseSkill, List<Skill>> output = {};
-    for (var skill in skills.values.where((skill) => !skill.isAdvanced())) {
+    for (var skill in skills.where((skill) => !skill.isAdvanced())) {
       var category = skill.baseSkill!;
       if (output.containsKey(category)) {
         output[category]!.add(skill);
@@ -79,7 +78,7 @@ class Character {
 
   Map<BaseSkill, List<Skill>> getAdvancedSkillsGrouped() {
     Map<BaseSkill, List<Skill>> output = {};
-    for (var skill in skills.values.where((skill) => skill.isAdvanced())) {
+    for (var skill in skills.where((skill) => skill.isAdvanced())) {
       var category = skill.baseSkill!;
       if (output.containsKey(category)) {
         output[category]!.add(skill);
@@ -92,7 +91,7 @@ class Character {
 
   Map<BaseTalent, List<Talent>> getTalentsGrouped() {
     Map<BaseTalent, List<Talent>> output = {};
-    for (var talent in talents.values) {
+    for (var talent in talents) {
       var category = talent.baseTalent!;
       if (output.containsKey(category)) {
         output[category]!.add(talent);
@@ -175,9 +174,9 @@ class Character {
           name == other.name &&
           race == other.race &&
           profession == other.profession &&
-          mapEquals(attributes, other.attributes) &&
-          mapEquals(skills, other.skills) &&
-          mapEquals(talents, other.talents) &&
+          listEquals(attributes, other.attributes) &&
+          listEquals(skills, other.skills) &&
+          listEquals(talents, other.talents) &&
           listEquals(items, other.items) &&
           initiative == other.initiative;
 

@@ -97,25 +97,25 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               title: LocalisedText("ATTRIBUTES", context, style: const TextStyle(fontSize: 24.0)),
               children: widget.character.attributes.isEmpty ? [] : [
                 TableLine(children: [
-                  for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0))
+                  for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
                     LocalisedText(attribute.shortName, context, textAlign: TextAlign.center)
                 ]),
                 TableLine(children: [
-                  for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0))
+                  for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
                     IntegerText(attribute.base)
                 ]),
                 TableLine(children: [
-                  for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0))
+                  for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
                     IntegerText(attribute.advances)
                 ]),
                 TableLine(children: [
-                  for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0))
+                  for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
                     IntegerText(attribute.getTotalValue())
                 ])
               ],
               context: context),
           SingleEntitiesTable(children: [
-            for (var attribute in widget.character.attributes.values.where((attr) => attr.importance > 0))
+            for (var attribute in widget.character.attributes.where((attr) => attr.importance > 0))
               TableLine(children: [LocalisedText(attribute.name, context), IntegerText(attribute.getTotalValue())])
           ], context: context),
           GroupedEntitiesTable(

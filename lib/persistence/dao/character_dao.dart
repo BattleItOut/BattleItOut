@@ -27,9 +27,9 @@ class CharacterFactory extends Factory<Character> {
     String name = json['NAME'];
     Race race = await RaceFactory().create(json["RACE"]);
     Profession profession = await ProfessionFactory().create(json["PROFESSION"]);
-    Map<int, Attribute> attributes = await _createAttributes(json["ATTRIBUTES"]);
-    Map<int, Skill> skills = await _createSkills(json['SKILLS'] ?? [], attributes);
-    Map<int, Talent> talents = await _createTalents(json['TALENTS'] ?? [], attributes);
+    List<Attribute> attributes = await _createAttributes(json["ATTRIBUTES"]);
+    List<Skill> skills = await _createSkills(json['SKILLS'] ?? [], attributes);
+    List<Talent> talents = [for (var map in json['TALENTS'] ?? []) await TalentFactory(attributes, skills).create(map)];
 
     List<Item> items = [];
     for (Map<String, dynamic> map in json["MELEE_WEAPONS"] ?? []) {
@@ -77,14 +77,14 @@ class CharacterFactory extends Factory<Character> {
     Map<String, dynamic> map = {
       "NAME": object.name,
       "ATTRIBUTES": [
-        for (Attribute attribute in object.attributes.values.where((element) => element.base != 0))
+        for (Attribute attribute in object.attributes.where((element) => element.base != 0))
           await AttributeFactory().toMap(attribute)
       ],
       "SKILLS": [
-        for (Skill skill in object.skills.values.where((element) => element.advances != 0 || element.canAdvance || element.earning))
+        for (Skill skill in object.skills.where((element) => element.advances != 0 || element.canAdvance || element.earning))
           await SkillFactory().toMap(skill)
       ],
-      "TALENTS": [for (Talent talent in object.talents.values) await TalentFactory().toMap(talent)],
+      "TALENTS": [for (Talent talent in object.talents) await TalentFactory().toMap(talent)],
       "MELEE_WEAPONS": meleeWeapons,
       "RANGED_WEAPONS": rangedWeapons,
       "ARMOUR": armourList,
@@ -100,34 +100,31 @@ class CharacterFactory extends Factory<Character> {
     return map;
   }
 
-  static Future<Map<int, Attribute>> _createAttributes(json) async {
-    Map<int, Attribute> attributes = {
-      for (Attribute attribute in await AttributeFactory().getAll()) attribute.id: attribute
-    };
+  static Future<List<Attribute>> _createAttributes(json) async {
+    List<Attribute> attributes = await AttributeFactory().getAll();
     for (var map in json ?? []) {
       Attribute attribute = await AttributeFactory().create(map);
-      attributes[attribute.id] = attribute;
+      int index = attributes.indexOf(attribute);
+      if (index != -1) {
+        attributes[index] = attribute;
+      } else {
+        attributes.add(attribute);
+      }
     }
     return attributes;
   }
 
-  static Future<Map<int, Skill>> _createSkills(json, Map<int, Attribute> attributes) async {
-    Map<int, Skill> skills = {
-      for (Skill skill in await SkillFactory(attributes).getSkills(advanced: false)) skill.id: skill
-    };
+  static Future<List<Skill>> _createSkills(json, List<Attribute> attributes) async {
+    List<Skill> skills = await SkillFactory(attributes).getSkills(advanced: false);
     for (var map in json ?? []) {
       Skill skill = await SkillFactory(attributes).create(map);
-      skills[skill.id] = skill;
+      int index = skills.indexOf(skill);
+      if (index != -1) {
+        skills[index] = skill;
+      } else {
+        skills.add(skill);
+      }
     }
     return skills;
-  }
-
-  static Future<Map<int, Talent>> _createTalents(json, Map<int, Attribute> attributes) async {
-    Map<int, Talent> talents = {};
-    for (var map in json ?? []) {
-      Talent talent = await TalentFactory(attributes).create(map);
-      talents[talent.id] = talent;
-    }
-    return talents;
   }
 }

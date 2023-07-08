@@ -6,8 +6,8 @@ import 'package:battle_it_out/persistence/entities/skill.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
 
 class TalentFactory extends Factory<Talent> {
-  Map<int, Attribute>? attributes;
-  Map<int, Skill>? skills;
+  List<Attribute>? attributes;
+  List<Skill>? skills;
 
   TalentFactory([this.attributes, this.skills]);
 
@@ -30,16 +30,13 @@ class TalentFactory extends Factory<Talent> {
 
     // Base talent
     if (map["BASE_TALENT_ID"] != null) {
-      talent.baseTalent =
-          await BaseTalentFactory(attributes).get(map["BASE_TALENT_ID"]);
+      talent.baseTalent = await BaseTalentFactory(attributes).get(map["BASE_TALENT_ID"]);
     }
 
     // Tests
     talent.tests = await TalentTestFactory(talent).getAllByTalent(map["ID"]);
     if (map["TESTS"] != null) {
-      talent.tests.addAll([
-        for (map in map["TESTS"]) await TalentTestFactory(talent).create(map)
-      ]);
+      talent.tests.addAll([for (map in map["TESTS"]) await TalentTestFactory(talent).create(map)]);
     }
     return talent;
   }
@@ -56,9 +53,7 @@ class TalentFactory extends Factory<Talent> {
     if (optimised) {
       map = await optimise(map);
     }
-    if (object.baseTalent != null &&
-        object.baseTalent !=
-            await BaseTalentFactory().get(object.baseTalent!.id)) {
+    if (object.baseTalent != null && object.baseTalent != await BaseTalentFactory(attributes).get(object.baseTalent!.id)) {
       map["BASE_TALENT"] = BaseTalentFactory().toMap(object.baseTalent!);
     }
     return map;
@@ -66,7 +61,7 @@ class TalentFactory extends Factory<Talent> {
 }
 
 class BaseTalentFactory extends Factory<BaseTalent> {
-  Map<int, Attribute>? attributes;
+  List<Attribute>? attributes;
 
   BaseTalentFactory([this.attributes]);
 
@@ -75,12 +70,16 @@ class BaseTalentFactory extends Factory<BaseTalent> {
 
   @override
   BaseTalent fromMap(Map<String, dynamic> map) {
+    Attribute? attribute;
+    if (map["MAX_LVL"] != null) {
+      attribute = attributes?.firstWhere((attribute) => attribute.id == map["MAX_LVL"]);
+    }
     return BaseTalent(
         id: map['ID'],
         name: map['NAME'],
         description: map['DESCRIPTION'],
         source: map['SOURCE'],
-        attribute: attributes?[map["MAX_LVL"]],
+        attribute: attribute,
         constLvl: map['CONST_LVL'],
         grouped: map["GROUPED"] == 1 ? true : false);
   }
@@ -116,15 +115,9 @@ class TalentTestFactory extends Factory<TalentTest> {
         id: map['ID'],
         talent: talent,
         comment: map["COMMENT"],
-        baseSkill: map["BASE_SKILL_ID"] == null
-            ? null
-            : await BaseSkillFactory().get(map["BASE_SKILL_ID"]),
-        skill: map["SKILL_ID"] == null
-            ? null
-            : await SkillFactory().get(map["SKILL_ID"]),
-        attribute: map["ATTRIBUTE_ID"] == null
-            ? null
-            : await AttributeFactory().get(map["ATTRIBUTE_ID"]));
+        baseSkill: map["BASE_SKILL_ID"] == null ? null : await BaseSkillFactory().get(map["BASE_SKILL_ID"]),
+        skill: map["SKILL_ID"] == null ? null : await SkillFactory().get(map["SKILL_ID"]),
+        attribute: map["ATTRIBUTE_ID"] == null ? null : await AttributeFactory().get(map["ATTRIBUTE_ID"]));
   }
 
   @override

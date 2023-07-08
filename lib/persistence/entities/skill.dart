@@ -48,20 +48,14 @@ class Skill {
           id == other.id &&
           name == other.name &&
           specialisation == other.specialisation &&
-          baseSkillID == other.baseSkillID &&
-          advances == other.advances &&
-          earning == other.earning &&
-          canAdvance == other.canAdvance;
+          baseSkillID == other.baseSkillID;
 
   @override
   int get hashCode =>
       id.hashCode ^
       name.hashCode ^
       specialisation.hashCode ^
-      baseSkillID.hashCode ^
-      advances.hashCode ^
-      earning.hashCode ^
-      canAdvance.hashCode;
+      baseSkillID.hashCode;
 
   @override
   String toString() {
