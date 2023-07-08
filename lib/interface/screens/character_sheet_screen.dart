@@ -4,6 +4,7 @@ import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/entities/ammunition.dart';
+import 'package:battle_it_out/persistence/entities/item.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
 import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
@@ -135,7 +136,6 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                         IntegerText(null),
                         IntegerText(null)
                       ]),
-                      headerHidden: !entry.key.grouped,
                       children: [
                         for (Talent talent in entry.value)
                           TableLine(
@@ -203,7 +203,18 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                       children: createRangedWeapons(entry.value, context)
                   )
               ],
-              context: context)
+              context: context),
+          SingleEntitiesTable(
+              title: LocalisedText("ITEMS", context, style: const TextStyle(fontSize: 24.0)),
+              children: [
+                for (Item item in widget.character.items)
+                  TableLine(children: [
+                    IntegerText(item.count),
+                    LocalisedText(item.name, context),
+                    PaddedText(item.qualities.map((quality) => quality.name.localise(context)).join(", "))
+                  ])
+              ],
+              context: context),
         ]));
   }
 }
