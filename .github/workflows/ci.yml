@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  verify:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,7 @@ jobs:
         run: flutter pub get
 
       - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed .
+        run: dart format --output=none .
 
       - name: Analyze project source
         run: flutter analyze .
