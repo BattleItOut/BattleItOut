@@ -18,46 +18,58 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
   @override
   get qualitiesTableName => 'weapons_melee_qualities';
   @override
-  Map<String, dynamic> get defaultValues => {
-    "DAMAGE_ATTRIBUTE": 3
-  };
+  Map<String, dynamic> get defaultValues =>
+      {"DAMAGE_ATTRIBUTE": 3, "ITEM_CATEGORY": "MELEE_WEAPONS"};
 
   @override
   Future<MeleeWeapon> fromMap(Map<String, dynamic> map) async {
-    defaultValues.forEach((key, value) {map.putIfAbsent(key, () => value);});
+    defaultValues.forEach((key, value) {
+      map.putIfAbsent(key, () => value);
+    });
     MeleeWeapon meleeWeapon = MeleeWeapon(
         id: map["ID"],
         name: map["NAME"],
         length: await WeaponLengthFactory().get(map["LENGTH"]),
         damage: map["DAMAGE"],
+        twoHanded: map["TWO_HANDED"] == 1,
         damageAttribute: attributes?[map["DAMAGE_ATTRIBUTE"]]);
     if (map["SKILL"] != null) {
-      meleeWeapon.skill = skills?[map['SKILL']] ?? await SkillFactory(attributes).get(map['SKILL']);
-    } if (meleeWeapon.id != null) {
+      meleeWeapon.skill = skills?[map['SKILL']] ??
+          await SkillFactory(attributes).get(map['SKILL']);
+    }
+    if (meleeWeapon.id != null) {
       meleeWeapon.qualities = await getQualities(map["ID"]);
-    } if (map["QUALITIES"] != null) {
-      meleeWeapon.qualities.addAll([for (map in map["QUALITIES"]) await ItemQualityFactory().create(map)]);
+    }
+    if (map["QUALITIES"] != null) {
+      meleeWeapon.qualities.addAll([
+        for (map in map["QUALITIES"]) await ItemQualityFactory().create(map)
+      ]);
     }
     return meleeWeapon;
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(MeleeWeapon object, [optimised = true]) async {
-      Map<String, dynamic> map = {
-        "ID": object.id,
-        "NAME": object.name,
-        "LENGTH": object.length.id,
-        "DAMAGE": object.damage,
-        "SKILL": object.skill?.id,
-        "DAMAGE_ATTRIBUTE": object.damageAttribute?.id,
-        "QUALITIES": [for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded)) await ItemQualityFactory().toMap(quality)]
-      };
-      if (optimised) {
-        map = await optimise(map);
-        if (object.qualities.isEmpty) {
-          map.remove("QUALITIES");
-        }
+  Future<Map<String, dynamic>> toMap(MeleeWeapon object,
+      [optimised = true]) async {
+    Map<String, dynamic> map = {
+      "ID": object.id,
+      "NAME": object.name,
+      "LENGTH": object.length.id,
+      "DAMAGE": object.damage,
+      "SKILL": object.skill?.id,
+      "DAMAGE_ATTRIBUTE": object.damageAttribute?.id,
+      "ITEM_CATEGORY": object.category,
+      "QUALITIES": [
+        for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded))
+          await ItemQualityFactory().toMap(quality)
+      ]
+    };
+    if (optimised) {
+      map = await optimise(map);
+      if (object.qualities.isEmpty) {
+        map.remove("QUALITIES");
       }
-      return map;
+    }
+    return map;
   }
 }

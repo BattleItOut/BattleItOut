@@ -13,7 +13,8 @@ class SkillFactory extends Factory<Skill> {
   getSkills({bool? advanced}) async {
     List<Skill> skills = await getAll(where: "BASE_SKILL_ID IS NOT NULL");
     if (advanced != null) {
-      skills = List.of(skills.where((skill) => skill.baseSkill!.advanced == advanced));
+      skills = List.of(
+          skills.where((skill) => skill.baseSkill!.advanced == advanced));
     }
     return skills;
   }
@@ -29,10 +30,8 @@ class SkillFactory extends Factory<Skill> {
         advancable: map["ADVANCABLE"] ?? false);
     if (map["BASE_SKILL_ID"] != null) {
       skill.baseSkillID = map["BASE_SKILL_ID"];
-      skill.baseSkill = await BaseSkillFactory(attributes).get(map["BASE_SKILL_ID"]);
-    } if (map["BASE_SKILL"] != null) {
-      skill.baseSkillID = map["BASE_SKILL"]["ID"];
-      skill.baseSkill = await BaseSkillFactory(attributes).create(map["BASE_SKILL"]);
+      skill.baseSkill =
+          await BaseSkillFactory(attributes).get(map["BASE_SKILL_ID"]);
     }
     return skill;
   }
@@ -50,7 +49,10 @@ class SkillFactory extends Factory<Skill> {
     if (optimised) {
       map = await optimise(map);
     }
-    if (object.baseSkill != null && (object.baseSkill!.id == null || object.baseSkill != await BaseSkillFactory().get(object.baseSkill!.id!))) {
+    if (object.baseSkill != null &&
+        (object.baseSkill!.id == null ||
+            object.baseSkill !=
+                await BaseSkillFactory().get(object.baseSkill!.id!))) {
       map["BASE_SKILL"] = BaseSkillFactory().toMap(object.baseSkill!);
     }
     return map;

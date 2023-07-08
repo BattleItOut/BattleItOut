@@ -1,7 +1,8 @@
 import 'package:battle_it_out/persistence/entities/item.dart';
 import 'package:battle_it_out/persistence/entities/item_quality.dart';
+import 'package:flutter/foundation.dart';
 
-class Armour extends Item {
+class Armour extends Item with SpecialItem {
   int headAP;
   int bodyAP;
   int leftArmAP;
@@ -10,17 +11,22 @@ class Armour extends Item {
   int rightLegAP;
 
   Armour(
-      {required id,
-      required name,
-      required this.headAP,
+      {required this.headAP,
       required this.bodyAP,
       required this.leftArmAP,
       required this.rightArmAP,
       required this.leftLegAP,
       required this.rightLegAP,
+      id,
+      name,
+      itemCategory,
       List<ItemQuality> qualities = const []})
-      : super(id: id, name: name, qualities: qualities);
-
+      : super(
+            id: id,
+            name: name,
+            category: "ARMOUR",
+            encumbrance: 0,
+            qualities: qualities);
 
   @override
   bool operator ==(Object other) =>
@@ -33,7 +39,8 @@ class Armour extends Item {
           leftArmAP == other.leftArmAP &&
           rightArmAP == other.rightArmAP &&
           leftLegAP == other.leftLegAP &&
-          rightLegAP == other.rightLegAP;
+          rightLegAP == other.rightLegAP &&
+          listEquals(qualities, other.qualities);
 
   @override
   int get hashCode =>

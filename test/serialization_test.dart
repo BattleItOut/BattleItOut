@@ -394,7 +394,12 @@ void rangedWeaponSerializationTest() {
     "NAME": "Test2",
     "WEAPON_RANGE": 100,
     "DAMAGE": 2,
-    "AMMUNITION": 10,
+    "AMMUNITION": [
+      {
+        "ID": 1,
+        "COUNT": 10,
+      }
+    ],
     "QUALITIES": [
       {
       "ID": 1
@@ -428,7 +433,8 @@ void rangedWeaponSerializationTest() {
       expect(maxCustomWeapon.name, "Test2");
       expect(maxCustomWeapon.range, 100);
       expect(maxCustomWeapon.damage, 2);
-      expect(maxCustomWeapon.ammunition, 10);
+      expect(maxCustomWeapon.ammunition[0].id, 1);
+      expect(maxCustomWeapon.ammunition[0].count, 10);
       expect(maxCustomWeapon.qualities[0].id, 1);
       expect(maxCustomWeapon.qualities[0].name, "LIGHTWEIGHT");
       expect(maxCustomWeapon.qualities[1].id, 2);

@@ -107,7 +107,12 @@ class BaseSkill {
 
   @override
   int get hashCode =>
-      id.hashCode ^ name.hashCode ^ description.hashCode ^ advanced.hashCode ^ grouped.hashCode ^ attributeID.hashCode;
+      id.hashCode ^
+      name.hashCode ^
+      description.hashCode ^
+      advanced.hashCode ^
+      grouped.hashCode ^
+      attributeID.hashCode;
 
   @override
   String toString() {

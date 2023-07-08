@@ -208,7 +208,12 @@
   "RANGED_WEAPONS": [
     {
       "ID": 19,
-      "AMMUNITION": 15,
+      "AMMUNITION": [
+        {
+          "ID": 8,
+          "COUNT": 15
+        }
+      ],
       "QUALITIES": [
         {
           "ID": 3

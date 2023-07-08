@@ -1,4 +1,5 @@
 import 'package:battle_it_out/localisation.dart';
+import 'package:battle_it_out/persistence/dao/ammunition_dao.dart';
 import 'package:battle_it_out/persistence/dao/armour_dao.dart';
 import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
 import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
@@ -10,6 +11,7 @@ import 'package:battle_it_out/persistence/dao/ranged_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/size_dao.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/dao/talent_dao.dart';
+import 'package:battle_it_out/persistence/dao/trait_dao.dart';
 import 'package:battle_it_out/utils/utilities.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -33,6 +35,7 @@ Future<void> main() async {
           }
         });
       }
+      performLocTest("Check npc traits localisations", TraitFactory(), (item) => [item.name, item.description]);
       performLocTest("Check base talent localisations", BaseTalentFactory(), (item) => [item.name, item.description]);
       performLocTest("Check talent localisations", TalentFactory(), (item) => [item.name, item.specialisation]);
       performLocTest("Check talent test localisations", TalentTestFactory(), (item) => [item.comment]);
@@ -49,6 +52,7 @@ Future<void> main() async {
       performLocTest("Check weapon length localisations", WeaponLengthFactory(), (item) => [item.name, item.description]);
       performLocTest("Check melee weapon localisations", MeleeWeaponFactory(), (item) => [item.name]);
       performLocTest("Check ranged weapon localisations", RangedWeaponFactory(), (item) => [item.name]);
+      performLocTest("Check ranged weapon ammo localisations", AmmunitionFactory(), (item) => [item.name]);
       performLocTest("Check item quality localisations", ItemQualityFactory(), (item) => [item.name, item.description]);
     });
 

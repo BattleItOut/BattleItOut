@@ -15,7 +15,7 @@ class TalentFactory extends Factory<Talent> {
   get tableName => 'talents';
 
   getAllTalents() async {
-    List<Talent> talents = await getAll(where: "BASE_TALENT IS NOT NULL");
+    List<Talent> talents = await getAll(where: "BASE_TALENT_ID IS NOT NULL");
     return talents;
   }
 
@@ -30,17 +30,17 @@ class TalentFactory extends Factory<Talent> {
 
     // Base talent
     if (map["BASE_TALENT_ID"] != null) {
-      talent.baseTalent = await BaseTalentFactory(attributes).get(map["BASE_TALENT_ID"]);
-    } if (map["BASE_TALENT"] != null) {
-      talent.baseTalent = await BaseTalentFactory(attributes).create(map["BASE_TALENT"]);
+      talent.baseTalent =
+          await BaseTalentFactory(attributes).get(map["BASE_TALENT_ID"]);
     }
 
     // Tests
     talent.tests = await TalentTestFactory(talent).getAllByTalent(map["ID"]);
     if (map["TESTS"] != null) {
-      talent.tests.addAll([for (map in map["TESTS"]) await TalentTestFactory(talent).create(map)]);
+      talent.tests.addAll([
+        for (map in map["TESTS"]) await TalentTestFactory(talent).create(map)
+      ]);
     }
-
     return talent;
   }
 
@@ -56,7 +56,9 @@ class TalentFactory extends Factory<Talent> {
     if (optimised) {
       map = await optimise(map);
     }
-    if (object.baseTalent != null && object.baseTalent != await BaseTalentFactory().get(object.baseTalent!.id)) {
+    if (object.baseTalent != null &&
+        object.baseTalent !=
+            await BaseTalentFactory().get(object.baseTalent!.id)) {
       map["BASE_TALENT"] = BaseTalentFactory().toMap(object.baseTalent!);
     }
     return map;
@@ -105,7 +107,7 @@ class TalentTestFactory extends Factory<TalentTest> {
   get tableName => 'talent_tests';
 
   Future<List<TalentTest>> getAllByTalent(int talentId) {
-    return getAll(where: "TALENT_ID == ?", whereArgs: [talentId]);
+    return getAll(where: "TALENT_ID = ?", whereArgs: [talentId]);
   }
 
   @override
@@ -114,9 +116,15 @@ class TalentTestFactory extends Factory<TalentTest> {
         id: map['ID'],
         talent: talent,
         comment: map["COMMENT"],
-        baseSkill: map["BASE_SKILL_ID"] == null ? null : await BaseSkillFactory().get(map["BASE_SKILL_ID"]),
-        skill: map["SKILL_ID"] == null ? null : await SkillFactory().get(map["SKILL_ID"]),
-        attribute: map["ATTRIBUTE_ID"] == null ? null : await AttributeFactory().get(map["ATTRIBUTE_ID"]));
+        baseSkill: map["BASE_SKILL_ID"] == null
+            ? null
+            : await BaseSkillFactory().get(map["BASE_SKILL_ID"]),
+        skill: map["SKILL_ID"] == null
+            ? null
+            : await SkillFactory().get(map["SKILL_ID"]),
+        attribute: map["ATTRIBUTE_ID"] == null
+            ? null
+            : await AttributeFactory().get(map["ATTRIBUTE_ID"]));
   }
 
   @override

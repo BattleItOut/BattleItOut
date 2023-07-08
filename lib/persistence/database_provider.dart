@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DatabaseProvider {
@@ -27,7 +26,8 @@ class DatabaseProvider {
         options: OpenDatabaseOptions(
             version: 1,
             onCreate: (Database db, int version) async =>
-                await BatchManager.execute("assets/database/create_db.sql", db)));
+                await BatchManager.execute(
+                    "assets/database/create_db.sql", db)));
     if (kDebugMode) {
       print("Database loaded");
     }
@@ -50,9 +50,13 @@ class BatchManager {
     RegExp valReg = RegExp(r'VALUES(.*)');
     if (insertRegex.hasMatch(line)) {
       var match = valReg.firstMatch(line);
-      List<dynamic> data = line.substring(match!.start + 7, match.end - 2).replaceAll("'", "").split(",");
+      List<dynamic> data = line
+          .substring(match!.start + 7, match.end - 2)
+          .replaceAll("'", "")
+          .split(",");
       var parsedData = [for (var object in data) _parseString(object)];
-      var parsedInsert = line.replaceAll(valReg, "VALUES(${[for (int i = 0; i < data.length; i++) "?"].join(", ")})");
+      var parsedInsert = line.replaceAll(valReg,
+          "VALUES(${[for (int i = 0; i < data.length; i++) "?"].join(", ")})");
       batch.rawInsert(parsedInsert, parsedData);
     } else {
       batch.execute(line);

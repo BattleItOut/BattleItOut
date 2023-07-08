@@ -1,7 +1,8 @@
 import 'package:battle_it_out/persistence/dao/item_dao.dart';
-import 'package:battle_it_out/persistence/dao/item_quality_dao.dart';
 import 'package:battle_it_out/persistence/entities/armour.dart';
 import 'package:battle_it_out/persistence/entities/item_quality.dart';
+
+import 'item_quality_dao.dart';
 
 class ArmourFactory extends ItemFactory<Armour> {
   @override
@@ -10,17 +11,20 @@ class ArmourFactory extends ItemFactory<Armour> {
   get qualitiesTableName => 'armour_qualities';
   @override
   Map<String, dynamic> get defaultValues => {
-    "HEAD_AP": 0,
-    "BODY_AP": 0,
-    "LEFT_ARM_AP": 0,
-    "RIGHT_ARM_AP": 0,
-    "LEFT_LEG_AP": 0,
-    "RIGHT_LEG_AP": 0
-  };
+        "ITEM_CATEGORY": "ARMOUR",
+        "HEAD_AP": 0,
+        "BODY_AP": 0,
+        "LEFT_ARM_AP": 0,
+        "RIGHT_ARM_AP": 0,
+        "LEFT_LEG_AP": 0,
+        "RIGHT_LEG_AP": 0
+      };
 
   @override
   Future<Armour> fromMap(Map<String, dynamic> map) async {
-    defaultValues.forEach((key, value) {map.putIfAbsent(key, () => value);});
+    defaultValues.forEach((key, value) {
+      map.putIfAbsent(key, () => value);
+    });
     Armour armour = Armour(
         id: map["ID"],
         name: map["NAME"],
@@ -32,8 +36,11 @@ class ArmourFactory extends ItemFactory<Armour> {
         rightLegAP: map["RIGHT_LEG_AP"]);
     if (armour.id != null) {
       armour.qualities = await getQualities(map["ID"]);
-    } if (map["QUALITIES"] != null) {
-      armour.qualities.addAll([for (map in map["QUALITIES"]) await ItemQualityFactory().create(map)]);
+    }
+    if (map["QUALITIES"] != null) {
+      armour.qualities.addAll([
+        for (map in map["QUALITIES"]) await ItemQualityFactory().create(map)
+      ]);
     }
     return armour;
   }
@@ -48,8 +55,12 @@ class ArmourFactory extends ItemFactory<Armour> {
       "LEFT_ARM_AP": object.leftArmAP,
       "RIGHT_ARM_AP": object.rightArmAP,
       "LEFT_LEG_AP": object.leftLegAP,
-      "RIGHT_LEG_AP": object.rightLegAP,
-      "QUALITIES": [for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded)) await ItemQualityFactory().toMap(quality)]
+      "RIGHT_LEG_AP": object.rightArmAP,
+      "ITEM_CATEGORY": object.category,
+      "QUALITIES": [
+        for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded))
+          await ItemQualityFactory().toMap(quality)
+      ]
     };
     if (optimised) {
       map = await optimise(map);

@@ -3,6 +3,8 @@ import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
 import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/persistence/entities/ammunition.dart';
+import 'package:battle_it_out/persistence/entities/item.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
 import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
@@ -47,6 +49,28 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             ]
         )
     ];
+  }
+  List<TableLine> createRangedWeapons(List<RangedWeapon> weapons, BuildContext context) {
+    List<TableLine> outputList = [];
+    for (RangedWeapon weapon in weapons) {
+      outputList.add(TableLine(children: [
+        LocalisedText(weapon.name, context, padding: const EdgeInsets.only(left: 20)),
+        IntegerText(null),
+        IntegerText(null),
+        const PaddedText(""),
+        PaddedText(weapon.qualities.map((quality) => quality.name.localise(context)).join(", "))
+      ]));
+      for (Ammunition ammo in weapon.ammunition) {
+        outputList.add(TableLine(children: [
+          LocalisedText(ammo.name, context, padding: const EdgeInsets.only(left: 40)),
+          IntegerText(ammo.count),
+          IntegerText(weapon.getRange(ammo)),
+          PaddedText("${weapon.getTotalDamage(ammo)} + SL", textAlign: TextAlign.center),
+          PaddedText(ammo.qualities.map((quality) => quality.name.localise(context)).join(", "))
+        ]));
+      }
+    }
+    return outputList;
   }
 
   @override
@@ -132,7 +156,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           SingleEntitiesTable(
               title: LocalisedText("ARMOUR", context, style: const TextStyle(fontSize: 24.0)),
               children: [
-                for (var armour in widget.character.armour)
+                for (var armour in widget.character.getArmour())
                   TableLine(children: [
                     LocalisedText(armour.name, context),
                     IntegerText(armour.headAP),
@@ -175,17 +199,35 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                         LocalisedText(entry.key.specialisation!, context),
                         IntegerText(null),
                         IntegerText(null),
-                        IntegerText(null),
+                        const PaddedText(""),
+                        const PaddedText(""),
                       ]),
-                      children: [
-                        for (var weapon in entry.value)
-                          TableLine(children: [
-                            LocalisedText(weapon.name, context, padding: const EdgeInsets.only(left: 20)),
-                            IntegerText(weapon.range),
-                            PaddedText("${weapon.getTotalDamage()} + SL", textAlign: TextAlign.center),
-                            PaddedText(weapon.qualities.map((quality) => quality.name.localise(context)).join(", "))
-                          ])
-                      ])
+                      children: createRangedWeapons(entry.value, context)
+                  )
+              ],
+              context: context),
+          GroupedEntitiesTable(
+              title: LocalisedText("ITEMS", context, style: const TextStyle(fontSize: 24.0)),
+              children: [
+                for (MapEntry<String, Map<Item, int>> entry in widget.character.getCommonItemsGrouped().entries)
+                  TableSubsection(
+                      header: TableLine(children: [
+                        IntegerText(null),
+                        LocalisedText(entry.key, context, style: const TextStyle(fontWeight: FontWeight.bold)),
+                        IntegerText(null),
+                        const PaddedText(""),
+                      ]),
+                      headerHidden: entry.key=="NONE",
+                    children: [
+                      for (MapEntry<Item, int> secondaryEntry in entry.value.entries)
+                        TableLine(children: [
+                          IntegerText(secondaryEntry.value),
+                          LocalisedText(secondaryEntry.key.name, context),
+                          IntegerText(secondaryEntry.key.encumbrance),
+                          PaddedText(secondaryEntry.key.qualities.map((quality) => quality.name.localise(context)).join(", "))
+                        ])
+                    ],
+                  )
               ],
               context: context)
         ]));

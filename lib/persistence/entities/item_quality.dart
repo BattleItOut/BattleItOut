@@ -31,7 +31,13 @@ class ItemQuality {
 
   @override
   int get hashCode =>
-      id.hashCode ^ name.hashCode ^ positive.hashCode ^ equipment.hashCode ^ description.hashCode ^ value.hashCode ^ mapNeeded.hashCode;
+      id.hashCode ^
+      name.hashCode ^
+      positive.hashCode ^
+      equipment.hashCode ^
+      description.hashCode ^
+      value.hashCode ^
+      mapNeeded.hashCode;
 
   @override
   String toString() {

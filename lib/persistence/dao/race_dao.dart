@@ -7,18 +7,19 @@ class RaceFactory extends Factory<Race> {
   get tableName => 'races';
 
   @override
-  Map<String, dynamic> get defaultValues => {
-    "EXTRA_POINTS": 0,
-    "SRC": "Custom"
-  };
+  Map<String, dynamic> get defaultValues =>
+      {"EXTRA_POINTS": 0, "SRC": "Custom"};
 
   getDefaultSubrace(int raceID) async {
-    return SubraceFactory().getWhere(where: "RACE_ID = ? AND DEF = ?", whereArgs: [raceID, 1]);
+    return SubraceFactory()
+        .getWhere(where: "RACE_ID = ? AND DEF = ?", whereArgs: [raceID, 1]);
   }
 
   @override
   Future<Race> fromMap(Map<String, dynamic> map) async {
-    defaultValues.forEach((key, value) {map.putIfAbsent(key, () => value);});
+    defaultValues.forEach((key, value) {
+      map.putIfAbsent(key, () => value);
+    });
     Race race = Race(
         id: map["ID"],
         name: map["NAME"],
@@ -36,17 +37,19 @@ class RaceFactory extends Factory<Race> {
   @override
   Future<Map<String, dynamic>> toMap(Race object, [optimised = true]) async {
     Map<String, dynamic> map = {
-        "ID": object.id,
-        "NAME": object.name,
-        "EXTRA_POINTS": object.extraPoints,
-        "SIZE": object.size.id,
-        "SRC": object.source
-      };
+      "ID": object.id,
+      "NAME": object.name,
+      "EXTRA_POINTS": object.extraPoints,
+      "SIZE": object.size.id,
+      "SRC": object.source
+    };
     if (optimised) {
       map = await optimise(map);
     }
 
-    if (object.subrace != null && (object.id == null || object.subrace != await getDefaultSubrace(map["ID"]))) {
+    if (object.subrace != null &&
+        (object.id == null ||
+            object.subrace != await getDefaultSubrace(map["ID"]))) {
       map["SUBRACE"] = await SubraceFactory().toMap(object.subrace!);
     } else {
       map.remove("SUBRACE");
@@ -60,22 +63,20 @@ class SubraceFactory extends Factory<Subrace> {
   get tableName => 'subraces';
 
   @override
-  Map<String, dynamic> get defaultValues => {
-    "RANDOM_TALENTS": 0,
-    "SRC": "Custom",
-    "DEF": 1
-  };
+  Map<String, dynamic> get defaultValues =>
+      {"RANDOM_TALENTS": 0, "SRC": "Custom", "DEF": 1};
 
   @override
   Subrace fromMap(Map<String, dynamic> map) {
-    defaultValues.forEach((key, value) {map.putIfAbsent(key, () => value);});
+    defaultValues.forEach((key, value) {
+      map.putIfAbsent(key, () => value);
+    });
     return Subrace(
         id: map["ID"],
         name: map["NAME"],
         randomTalents: map["RANDOM_TALENTS"],
         source: map["SRC"],
-        defaultSubrace: map["DEF"] == 1
-    );
+        defaultSubrace: map["DEF"] == 1);
   }
 
   @override
