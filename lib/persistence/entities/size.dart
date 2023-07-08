@@ -1,9 +1,9 @@
 class Size {
-  int? id;
+  int id;
   String name;
   String source;
 
-  Size({this.id, required this.name, this.source = "Custom"});
+  Size({required this.id, required this.name, this.source = "Custom"});
 
   @override
   bool operator ==(Object other) =>

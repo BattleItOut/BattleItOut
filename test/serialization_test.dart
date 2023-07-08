@@ -72,7 +72,7 @@ void raceSerializationTest() {
       expect(basicRace.size.id, 4);
       expect(basicRace.extraPoints, 3);
       expect(basicRace.source, "Main Rulebook");
-      expect(basicRace.subrace!.id, 1);
+      expect(basicRace.subrace!.databaseId, 1);
       expect(basicRace.subrace!.name, "REIKLANDER");
     });
     test("Minimal custom", () async {
@@ -114,27 +114,27 @@ void professionSerializationTest() {
   group("Profession serialization", () {
     test("Basic from database", () async {
       Profession basicProfession = await ProfessionFactory().create(basicProfessionMap);
-      expect(basicProfession.id, 1);
+      expect(basicProfession.databaseId, 1);
       expect(basicProfession.name, "APOTHECARY_1");
       expect(basicProfession.source, "Main Rulebook");
       expect(basicProfession.level!, 1);
-      expect(basicProfession.career!.id, 1);
+      expect(basicProfession.career!.databaseId, 1);
       expect(basicProfession.career!.name, "APOTHECARY_2");
       expect(basicProfession.career!.source, "Main Rulebook");
-      expect(basicProfession.career!.professionClass!.id, 1);
+      expect(basicProfession.career!.professionClass!.databaseId, 1);
       expect(basicProfession.career!.professionClass!.name, "ACADEMIC");
       expect(basicProfession.career!.professionClass!.source, "Main Rulebook");
     });
     test("Minimal custom", () async {
       Profession minCustomProfession = await ProfessionFactory().create(minCustomProfessionMap);
-      expect(minCustomProfession.id, null);
+      expect(minCustomProfession.databaseId, null);
       expect(minCustomProfession.name, "Test");
       expect(minCustomProfession.source, "Custom");
       expect(minCustomProfession.career, null);
     });
     test("Maximal custom", () async {
       Profession maxCustomProfession = await ProfessionFactory().create(maxCustomProfessionMap);
-      expect(maxCustomProfession.id, null);
+      expect(maxCustomProfession.databaseId, null);
       expect(maxCustomProfession.name, "Test");
       expect(maxCustomProfession.source, "Custom");
       expect(maxCustomProfession.career!.name, "Test2");

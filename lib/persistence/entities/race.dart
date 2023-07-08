@@ -42,27 +42,37 @@ class Race {
 }
 
 class Subrace {
-  int? id;
+  late String id;
+  int? databaseId;
   String name;
   String source;
   int randomTalents;
   bool defaultSubrace;
 
-  Subrace({this.id, required this.name, this.source = "Custom", this.randomTalents = 0, this.defaultSubrace = true});
+  Subrace(
+      {String? id,
+      this.databaseId,
+      required this.name,
+      this.source = "Custom",
+      this.randomTalents = 0,
+      this.defaultSubrace = true}) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Subrace &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
+          databaseId == other.databaseId &&
           name == other.name &&
           source == other.source &&
           randomTalents == other.randomTalents &&
           defaultSubrace == other.defaultSubrace;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ source.hashCode ^ randomTalents.hashCode ^ defaultSubrace.hashCode;
+  int get hashCode =>
+      databaseId.hashCode ^ name.hashCode ^ source.hashCode ^ randomTalents.hashCode ^ defaultSubrace.hashCode;
 
   @override
   String toString() => 'Subrace ($id, $name)';

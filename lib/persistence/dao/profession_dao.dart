@@ -13,7 +13,8 @@ class ProfessionFactory extends Factory<Profession> {
     defaultValues.forEach((key, value) {
       map.putIfAbsent(key, () => value);
     });
-    Profession profession = Profession(id: map["ID"], name: map["NAME"], level: map["LEVEL"], source: map["SOURCE"]);
+    Profession profession =
+        Profession(databaseId: map["ID"], name: map["NAME"], level: map["LEVEL"], source: map["SOURCE"]);
     if (map["CAREER_ID"] != null) {
       profession.career = await ProfessionCareerFactory().get(map["CAREER_ID"]);
     } else if (map["CAREER"] != null) {
@@ -24,12 +25,18 @@ class ProfessionFactory extends Factory<Profession> {
 
   @override
   Future<Map<String, dynamic>> toMap(Profession object, [optimised = true]) async {
-    Map<String, dynamic> map = {"ID": object.id, "NAME": object.name, "LEVEL": object.level, "SOURCE": object.source};
+    Map<String, dynamic> map = {
+      "ID": object.databaseId,
+      "NAME": object.name,
+      "LEVEL": object.level,
+      "SOURCE": object.source
+    };
     if (optimised) {
       map = await optimise(map);
     }
     if (object.career != null &&
-        (object.career!.id == null || object.career != await ProfessionCareerFactory().get(object.career!.id!))) {
+        (object.career!.databaseId == null ||
+            object.career != await ProfessionCareerFactory().get(object.career!.databaseId!))) {
       map["CAREER"] = await ProfessionCareerFactory().toMap(object.career!);
     }
     return map;
@@ -48,7 +55,7 @@ class ProfessionCareerFactory extends Factory<ProfessionCareer> {
     defaultValues.forEach((key, value) {
       map.putIfAbsent(key, () => value);
     });
-    ProfessionCareer professionCareer = ProfessionCareer(id: map["ID"], name: map["NAME"], source: map["SOURCE"]);
+    ProfessionCareer professionCareer = ProfessionCareer(databaseId: map["ID"], name: map["NAME"], source: map["SOURCE"]);
     if (map["CLASS_ID"] != null) {
       professionCareer.professionClass = await ProfessionClassFactory().get(map["CLASS_ID"]);
     } else if (map["CLASS"] != null) {
@@ -59,13 +66,13 @@ class ProfessionCareerFactory extends Factory<ProfessionCareer> {
 
   @override
   Future<Map<String, dynamic>> toMap(ProfessionCareer object, [optimised = true]) async {
-    Map<String, dynamic> map = {"ID": object.id, "NAME": object.name, "SOURCE": object.source};
+    Map<String, dynamic> map = {"ID": object.databaseId, "NAME": object.name, "SOURCE": object.source};
     if (optimised) {
       map = await optimise(map);
     }
     if (object.professionClass != null &&
-        (object.professionClass!.id == null ||
-            object.professionClass != await ProfessionClassFactory().get(object.professionClass!.id!))) {
+        (object.professionClass!.databaseId == null ||
+            object.professionClass != await ProfessionClassFactory().get(object.professionClass!.databaseId!))) {
       map["CLASS"] = await ProfessionClassFactory().toMap(object.professionClass!);
     }
     return map;
@@ -84,12 +91,12 @@ class ProfessionClassFactory extends Factory<ProfessionClass> {
     defaultValues.forEach((key, value) {
       map.putIfAbsent(key, () => value);
     });
-    return ProfessionClass(id: map["ID"], name: map["NAME"], source: map["SOURCE"]);
+    return ProfessionClass(databaseId: map["ID"], name: map["NAME"], source: map["SOURCE"]);
   }
 
   @override
   Future<Map<String, dynamic>> toMap(ProfessionClass object, [optimised = true]) async {
-    Map<String, dynamic> map = {"ID": object.id, "NAME": object.name, "SOURCE": object.source};
+    Map<String, dynamic> map = {"ID": object.databaseId, "NAME": object.name, "SOURCE": object.source};
     if (optimised) {
       map = await optimise(map);
     }

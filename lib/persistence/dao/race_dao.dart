@@ -67,7 +67,7 @@ class SubraceFactory extends Factory<Subrace> {
       map.putIfAbsent(key, () => value);
     });
     return Subrace(
-        id: map["ID"],
+        databaseId: map["ID"],
         name: map["NAME"],
         randomTalents: map["RANDOM_TALENTS"],
         source: map["SRC"],
@@ -77,7 +77,7 @@ class SubraceFactory extends Factory<Subrace> {
   @override
   Future<Map<String, dynamic>> toMap(Subrace object, [optimised = true]) async {
     Map<String, dynamic> map = {
-      "ID": object.id,
+      "ID": object.databaseId,
       "NAME": object.name,
       "RANDOM_TALENTS": object.randomTalents,
       "SRC": object.source,

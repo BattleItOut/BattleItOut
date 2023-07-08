@@ -1,11 +1,16 @@
+import 'package:uuid/uuid.dart';
+
 class Profession {
-  int? id;
+  late String id;
+  int? databaseId;
   String name;
   String source;
   int? level;
   ProfessionCareer? career;
 
-  Profession({this.id, required this.name, this.level, this.source = "Custom", this.career});
+  Profession({String? id, this.databaseId, required this.name, this.level, this.source = "Custom", this.career}) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   @override
   String toString() {
@@ -17,7 +22,7 @@ class Profession {
       identical(this, other) ||
       other is Profession &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
+          databaseId == other.databaseId &&
           name == other.name &&
           source == other.source &&
           level == other.level &&
@@ -28,12 +33,15 @@ class Profession {
 }
 
 class ProfessionCareer {
-  int? id;
+  late String id;
+  int? databaseId;
   String name;
   String source;
   ProfessionClass? professionClass;
 
-  ProfessionCareer({required this.id, required this.name, this.professionClass, required this.source});
+  ProfessionCareer({String? id, this.databaseId, required this.name, this.professionClass, required this.source}) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   @override
   String toString() {
@@ -45,7 +53,7 @@ class ProfessionCareer {
       identical(this, other) ||
       other is ProfessionCareer &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
+          databaseId == other.databaseId &&
           name == other.name &&
           source == other.source &&
           professionClass == other.professionClass;
@@ -55,11 +63,14 @@ class ProfessionCareer {
 }
 
 class ProfessionClass {
-  int? id;
+  late String id;
+  int? databaseId;
   String name;
   String source;
 
-  ProfessionClass({required this.id, required this.name, required this.source});
+  ProfessionClass({String? id, this.databaseId, required this.name, required this.source}) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   @override
   String toString() {
@@ -71,7 +82,7 @@ class ProfessionClass {
       identical(this, other) ||
       other is ProfessionClass &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
+          databaseId == other.databaseId &&
           name == other.name &&
           source == other.source;
 
