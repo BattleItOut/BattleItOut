@@ -6,14 +6,14 @@ import 'package:battle_it_out/persistence/dao/race_dao.dart';
 import 'package:battle_it_out/persistence/dao/ranged_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/dao/talent_dao.dart';
+import 'package:battle_it_out/persistence/entities/armour.dart';
+import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
+import 'package:battle_it_out/persistence/entities/profession.dart';
+import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
-import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/profession.dart';
-import 'package:battle_it_out/persistence/entities/race.dart';
-import 'package:battle_it_out/persistence/entities/armour.dart';
 import 'package:flutter/foundation.dart';
 
 class Character {
@@ -176,8 +176,6 @@ class Character {
   Future<Map<String, dynamic>> toMap() async {
     Map<String, dynamic> map = {
       "NAME": name,
-      "RACE": await RaceFactory().toMap(race),
-      "PROFESSION": await ProfessionFactory().toMap(profession),
       "ATTRIBUTES": [for (Attribute attribute in attributes.values.where((element) => element.base != 0)) await AttributeFactory().toMap(attribute)],
       "SKILLS": [for (Skill skill in skills.values.where((element) => element.advances != 0 || element.advancable || element.earning)) await SkillFactory().toMap(skill)],
       "TALENTS": [for (Talent talent in talents.values) await TalentFactory().toMap(talent)],
@@ -185,6 +183,13 @@ class Character {
       "RANGED_WEAPONS": [for (RangedWeapon weapon in rangedWeapons) await RangedWeaponFactory().toMap(weapon)],
       "ARMOUR": [for (Armour armour in this.armour) await ArmourFactory().toMap(armour)],
     };
+    if (race != null) {
+      map["RACE"] = await RaceFactory().toMap(race!);
+    }
+    if (profession != null) {
+      map["PROFESSION"] = await ProfessionFactory().toMap(profession!);
+    }
+
     map.removeWhere((key, value) => value is List && value.isEmpty);
     return map;
   }
