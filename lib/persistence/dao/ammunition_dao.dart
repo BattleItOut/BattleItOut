@@ -11,7 +11,8 @@ class AmmunitionFactory extends ItemFactory<Ammunition> {
   get qualitiesTableName => 'weapons_ranged_ammunition_qualities';
 
   @override
-  Future<Ammunition> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
+  Future<Ammunition> fromMap(Map<String, dynamic> map,
+      [Map overrideMap = const {}]) async {
     return Ammunition(
         id: map["ID"],
         name: map["NAME"],
@@ -32,7 +33,10 @@ class AmmunitionFactory extends ItemFactory<Ammunition> {
       "RANGE_BONUS": object.rangeBonus,
       "DAMAGE_BONUS": object.damageBonus,
       "COUNT": object.count,
-      "QUALITIES": [for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded)) await ItemQualityFactory().toMap(quality)]
+      "QUALITIES": [
+        for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded))
+          await ItemQualityFactory().toMap(quality)
+      ]
     };
     if (optimised) {
       map = await optimise(map);

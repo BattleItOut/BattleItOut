@@ -4,7 +4,11 @@ class WeaponLength {
   String description;
   String source;
 
-  WeaponLength({this.id, required this.name, this.description = "", this.source = "Custom"});
+  WeaponLength(
+      {this.id,
+      required this.name,
+      this.description = "",
+      this.source = "Custom"});
 
   @override
   bool operator ==(Object other) =>
@@ -17,7 +21,8 @@ class WeaponLength {
           source == other.source;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ description.hashCode ^ source.hashCode;
+  int get hashCode =>
+      id.hashCode ^ name.hashCode ^ description.hashCode ^ source.hashCode;
 
   @override
   String toString() {

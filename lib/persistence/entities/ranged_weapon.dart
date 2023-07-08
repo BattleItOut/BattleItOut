@@ -22,7 +22,15 @@ class RangedWeapon extends Weapon {
       skill,
       List<ItemQuality> qualities = const [],
       List<Ammunition> ammunition = const []})
-      : super(id: id, name: name, qualities: qualities, damage: damage, twoHanded: twoHanded, damageAttribute: damageAttribute, skill: skill) {
+      : super(
+            id: id,
+            name: name,
+            qualities: qualities,
+            damage: damage,
+            twoHanded: twoHanded,
+            itemCategory: "RANGED_WEAPONS",
+            damageAttribute: damageAttribute,
+            skill: skill) {
     this.ammunition.addAll(ammunition);
   }
 

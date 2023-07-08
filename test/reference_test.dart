@@ -25,7 +25,7 @@ Future<void> main() async {
       expect(character.talents[26]!.getMaxLvl(), 3);
 
       // Weapon
-      expect(character.meleeWeapons[0].getTotalSkillValue(), 44);
+      expect(character.getMeleeWeapons()[0].getTotalSkillValue(), 44);
     });
     test('Increasing base value', () async {
       Character character = await createTestCharacter();
@@ -41,7 +41,7 @@ Future<void> main() async {
       expect(character.talents[26]!.getMaxLvl(), 4);
 
       // Weapon
-      expect(character.meleeWeapons[0].getTotalSkillValue(), 45);
+      expect(character.getMeleeWeapons()[0].getTotalSkillValue(), 45);
     });
     test('Increasing advance value', () async {
       Character character = await createTestCharacter();
@@ -57,7 +57,7 @@ Future<void> main() async {
       expect(character.talents[26]!.getMaxLvl(), 5);
 
       // Weapon
-      expect(character.meleeWeapons[0].getTotalSkillValue(), 55);
+      expect(character.getMeleeWeapons()[0].getTotalSkillValue(), 55);
     });
     test('Increasing skill advance value', () async {
       Character character = await createTestCharacter();
@@ -73,7 +73,7 @@ Future<void> main() async {
       expect(character.talents[26]!.getMaxLvl(), 3);
 
       // Weapon
-      expect(character.meleeWeapons[0].getTotalSkillValue(), 65);
+      expect(character.getMeleeWeapons()[0].getTotalSkillValue(), 65);
     });
   });
 }
