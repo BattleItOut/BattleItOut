@@ -13,8 +13,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Checkout submodules
+        uses: actions/checkout@v3
         with:
-          submodules: recursive
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PAT_TOKEN }}
+          repository: BattleItOut/WFRP4-database
+          path: assets/database
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
