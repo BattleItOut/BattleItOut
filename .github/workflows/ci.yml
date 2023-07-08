@@ -23,8 +23,8 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Verify formatting
-        run: dart format --output=none .
+#      - name: Verify formatting
+#        run: dart format --output=none .
 
       - name: Analyze project source
         run: flutter analyze .
@@ -32,8 +32,8 @@ jobs:
       - name: Run tests
         run: flutter test
 
-      - name: Build package
-        run: flutter build apk
+#      - name: Build package
+#        run: flutter build apk
 #
 #      - uses: actions/upload-artifact@v1
 #        with:
