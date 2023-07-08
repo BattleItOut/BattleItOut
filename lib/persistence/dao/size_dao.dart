@@ -8,10 +8,7 @@ class SizeFactory extends Factory<Size> {
   @override
   fromMap(Map<String, dynamic> map) async {
     return Size(
-        id: map["ID"],
-        name: map["NAME"],
-        source: map["SOURCE"] ?? 'Custom'
-    );
+        id: map["ID"], name: map["NAME"], source: map["SOURCE"] ?? 'Custom');
   }
 
   @override

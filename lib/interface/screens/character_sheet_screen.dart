@@ -136,6 +136,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                         IntegerText(null),
                         IntegerText(null)
                       ]),
+                      headerHidden: !entry.key.grouped,
                       children: [
                         for (Talent talent in entry.value)
                           TableLine(
@@ -154,7 +155,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           SingleEntitiesTable(
               title: LocalisedText("ARMOUR", context, style: const TextStyle(fontSize: 24.0)),
               children: [
-                for (var armour in widget.character.armour)
+                for (var armour in widget.character.getArmour())
                   TableLine(children: [
                     LocalisedText(armour.name, context),
                     IntegerText(armour.headAP),
@@ -207,7 +208,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           GroupedEntitiesTable(
               title: LocalisedText("ITEMS", context, style: const TextStyle(fontSize: 24.0)),
               children: [
-                for (MapEntry<String, Map<Item, int>> entry in widget.character.getItemsGrouped().entries)
+                for (MapEntry<String, Map<Item, int>> entry in widget.character.getCommonItemsGrouped().entries)
                   TableSubsection(
                       header: TableLine(children: [
                         IntegerText(null),

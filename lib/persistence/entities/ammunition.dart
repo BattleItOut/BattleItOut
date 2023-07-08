@@ -6,9 +6,23 @@ class Ammunition extends Item {
   int rangeBonus;
   int damageBonus;
 
-  Ammunition({required int id, required String name, itemCategory, count = 1,
-    this.rangeModifier = 1, this.rangeBonus = 0, this.damageBonus = 0, encumbrance = 0, List<ItemQuality> qualities = const []})
-      : super(id: id, name: name, count: count, encumbrance: encumbrance, category: itemCategory, qualities: qualities);
+  Ammunition(
+      {required int id,
+      required String name,
+      this.rangeModifier = 1,
+      this.rangeBonus = 0,
+      this.damageBonus = 0,
+      itemCategory,
+      count = 1,
+      encumbrance = 0,
+      List<ItemQuality> qualities = const []})
+      : super(
+            id: id,
+            name: name,
+            count: count,
+            encumbrance: encumbrance,
+            category: itemCategory,
+            qualities: qualities);
 
   @override
   bool operator ==(Object other) =>

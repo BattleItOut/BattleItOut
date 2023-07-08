@@ -11,7 +11,8 @@ class Skill {
   bool earning;
   bool advancable;
 
-  Skill({required this.id,
+  Skill(
+      {required this.id,
       required this.name,
       required this.specialisation,
       this.advances = 0,
@@ -106,7 +107,12 @@ class BaseSkill {
 
   @override
   int get hashCode =>
-      id.hashCode ^ name.hashCode ^ description.hashCode ^ advanced.hashCode ^ grouped.hashCode ^ attributeID.hashCode;
+      id.hashCode ^
+      name.hashCode ^
+      description.hashCode ^
+      advanced.hashCode ^
+      grouped.hashCode ^
+      attributeID.hashCode;
 
   @override
   String toString() {

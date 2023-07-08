@@ -25,6 +25,10 @@ class Item {
     this.qualities.addAll(qualities);
   }
 
+  bool isCommonItem() {
+    return true;
+  }
+
   void addQuality(ItemQuality quality) {
     qualities.add(quality);
   }
@@ -40,4 +44,10 @@ class Item {
 
   @override
   int get hashCode => id.hashCode ^ name.hashCode ^ qualities.hashCode;
+}
+
+mixin SpecialItem {
+  bool isCommonItem() {
+    return false;
+  }
 }

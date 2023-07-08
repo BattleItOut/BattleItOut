@@ -8,13 +8,16 @@ abstract class DAO<T> {
     return getMapWhere(where: "ID = ?", whereArgs: [id]);
   }
 
-  Future<Map<String, dynamic>> getMapWhere({where, List<Object>? whereArgs}) async {
+  Future<Map<String, dynamic>> getMapWhere(
+      {where, List<Object>? whereArgs}) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
-    return (await database.query(tableName, where: where, whereArgs: whereArgs))[0];
+    return (await database.query(tableName,
+        where: where, whereArgs: whereArgs))[0];
   }
 
-  Future<List<Map<String, Object?>>> getMapAll({String? where, List<Object>? whereArgs}) async {
+  Future<List<Map<String, Object?>>> getMapAll(
+      {String? where, List<Object>? whereArgs}) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
     return await database.query(tableName, where: where, whereArgs: whereArgs);
@@ -29,7 +32,8 @@ abstract class DAO<T> {
   Future<int> set(int id, map) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
-    return await database.update(tableName, map, where: "ID = ?", whereArgs: [id]);
+    return await database
+        .update(tableName, map, where: "ID = ?", whereArgs: [id]);
   }
 
   Future<int> delete(int id) async {
@@ -37,5 +41,4 @@ abstract class DAO<T> {
 
     return await database.delete(tableName, where: "ID = ?", whereArgs: [id]);
   }
-
 }

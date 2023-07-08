@@ -8,7 +8,13 @@ class Race {
   String source;
   Subrace? subrace;
 
-  Race({this.id, required this.name, required this.size, required this.extraPoints, required this.source, this.subrace});
+  Race(
+      {this.id,
+      required this.name,
+      required this.size,
+      required this.extraPoints,
+      required this.source,
+      this.subrace});
 
   @override
   bool operator ==(Object other) =>
@@ -42,7 +48,12 @@ class Subrace {
   int randomTalents;
   bool defaultSubrace;
 
-  Subrace({this.id, required this.name, this.source = "Custom", this.randomTalents = 0, this.defaultSubrace = true});
+  Subrace(
+      {this.id,
+      required this.name,
+      this.source = "Custom",
+      this.randomTalents = 0,
+      this.defaultSubrace = true});
 
   @override
   bool operator ==(Object other) =>
@@ -56,7 +67,12 @@ class Subrace {
           defaultSubrace == other.defaultSubrace;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ source.hashCode ^ randomTalents.hashCode ^ defaultSubrace.hashCode;
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      source.hashCode ^
+      randomTalents.hashCode ^
+      defaultSubrace.hashCode;
 
   @override
   String toString() => 'Subrace ($id, $name)';

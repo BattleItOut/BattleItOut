@@ -5,7 +5,12 @@ class Profession {
   int? level;
   ProfessionCareer? career;
 
-  Profession({this.id, required this.name, this.level, this.source = "Custom", this.career});
+  Profession(
+      {this.id,
+      required this.name,
+      this.level,
+      this.source = "Custom",
+      this.career});
 
   @override
   String toString() {
@@ -24,7 +29,12 @@ class Profession {
           career == other.career;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ source.hashCode ^ level.hashCode ^ career.hashCode;
+  int get hashCode =>
+      id.hashCode ^
+      name.hashCode ^
+      source.hashCode ^
+      level.hashCode ^
+      career.hashCode;
 }
 
 class ProfessionCareer {
@@ -33,7 +43,11 @@ class ProfessionCareer {
   String source;
   ProfessionClass? professionClass;
 
-  ProfessionCareer({required this.id, required this.name, this.professionClass, required this.source});
+  ProfessionCareer(
+      {required this.id,
+      required this.name,
+      this.professionClass,
+      required this.source});
 
   @override
   String toString() {
@@ -43,11 +57,16 @@ class ProfessionCareer {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is ProfessionCareer && runtimeType == other.runtimeType && id == other.id && name == other.name &&
-              source == other.source && professionClass == other.professionClass;
+      other is ProfessionCareer &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          source == other.source &&
+          professionClass == other.professionClass;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ source.hashCode ^ professionClass.hashCode;
+  int get hashCode =>
+      id.hashCode ^ name.hashCode ^ source.hashCode ^ professionClass.hashCode;
 }
 
 class ProfessionClass {

@@ -11,11 +11,12 @@ abstract class ItemFactory<T> extends Factory<T> {
   Future<List<ItemQuality>> getQualities(int id) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
-    final List<Map<String, dynamic>> map =
-        await database.query(qualitiesTableName, where: "ITEM_ID = ?", whereArgs: [id]);
+    final List<Map<String, dynamic>> map = await database
+        .query(qualitiesTableName, where: "ITEM_ID = ?", whereArgs: [id]);
     List<ItemQuality> qualities = [];
     for (var entry in map) {
-      ItemQuality itemQuality = await ItemQualityFactory().get(entry["QUALITY_ID"]);
+      ItemQuality itemQuality =
+          await ItemQualityFactory().get(entry["QUALITY_ID"]);
       itemQuality.mapNeeded = false;
       qualities.add(itemQuality);
     }
@@ -23,14 +24,13 @@ abstract class ItemFactory<T> extends Factory<T> {
   }
 
   @override
-  fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
+  fromMap(Map<String, dynamic> map) {
     return Item(
         id: map["ID"],
         name: map["NAME"],
         cost: map["COST"],
         encumbrance: map["ENCUMBRANCE"],
         availability: map["AVAILABILITY"],
-        category: map["CATEGORY"]
-    );
+        category: map["CATEGORY"]);
   }
 }
