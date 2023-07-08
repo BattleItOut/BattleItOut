@@ -75,7 +75,7 @@ class BatchManager {
     String command = "";
     for (String line in dbCreateString.split("\n")) {
       line = line.trim();
-      command = command + " " + line;
+      command = "$command $line";
       if (line != "" && line[line.length - 1] == ";") {
         _register(command.trim(), batch);
         command = "";

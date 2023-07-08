@@ -270,23 +270,6 @@ class Character {
       "ATTRIBUTES": [for (Attribute attribute in attributes.values.where((element) => element.base != 0)) await AttributeFactory().toMap(attribute)],
       "SKILLS": [for (Skill skill in skills.values.where((element) => element.advances != 0 || element.advancable || element.earning)) await SkillFactory().toMap(skill)],
       "TALENTS": [for (Talent talent in talents.values) await TalentFactory().toMap(talent)],
-      "MELEE_WEAPONS": [for (MeleeWeapon weapon in meleeWeapons) await MeleeWeaponFactory().toMap(weapon)],
-      "RANGED_WEAPONS": [for (RangedWeapon weapon in rangedWeapons) await RangedWeaponFactory().toMap(weapon)],
-      "ARMOUR": [for (Armour armour in this.armour) await ArmourFactory().toMap(armour)],
-      "ATTRIBUTES": [
-        for (Attribute attribute
-            in attributes.values.where((element) => element.base != 0))
-          await AttributeFactory().toMap(attribute)
-      ],
-      "SKILLS": [
-        for (Skill skill in skills.values.where((element) =>
-            element.advances != 0 || element.advancable || element.earning))
-          await SkillFactory().toMap(skill)
-      ],
-      "TALENTS": [
-        for (Talent talent in talents.values)
-          await TalentFactory().toMap(talent)
-      ],
       "MELEE_WEAPONS": meleeWeapons,
       "RANGED_WEAPONS": rangedWeapons,
       "ARMOUR": armourList,

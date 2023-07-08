@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   sqflite:
+  sqflite_common_ffi:
   flutter_localizations:
     sdk: flutter
   path_provider:
@@ -20,7 +21,6 @@ dependencies:
   tuple: ^2.0.0
 
 dev_dependencies:
-  sqflite_common_ffi:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.2

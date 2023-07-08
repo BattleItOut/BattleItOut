@@ -35,8 +35,8 @@ void showAlert(
             },
           ),
           TextButton(
-            child: Text("PROCEED".localise(context)),
-            onPressed: onProceedPressed
+            onPressed: onProceedPressed,
+            child: Text("PROCEED".localise(context))
           ),
         ],
       );

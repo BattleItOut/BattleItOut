@@ -20,7 +20,7 @@ class ContainerWithTitle extends Container {
       widgets.add(const Divider());
     }
     widgets.add(child);
-    return ContainerWithTitle(child: Column(children: widgets), key: key);
+    return ContainerWithTitle(key: key, child: Column(children: widgets));
   }
 }
 
