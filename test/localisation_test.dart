@@ -18,8 +18,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
-  var _languages = await AppLocalizationsDelegate.loadYML();
-  for (var entry in _languages.entries) {
+  var languages = await AppLocalizationsDelegate.loadYML();
+  for (var entry in languages.entries) {
     String languageName = entry.key;
     Map<String, String> localisationMap = entry.value;
 

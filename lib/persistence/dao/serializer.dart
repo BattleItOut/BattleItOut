@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 abstract class Serializer<T> {
   get defaultValues;
 
-  dynamic fromMap(Map<String, dynamic> _map);
+  dynamic fromMap(Map<String, dynamic> map);
   dynamic toMap(T object, [optimised = true]);
 }
 
