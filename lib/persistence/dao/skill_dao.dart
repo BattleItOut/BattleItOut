@@ -21,14 +21,13 @@ class SkillFactory extends Factory<Skill> {
   @override
   Future<Skill> fromMap(Map<String, dynamic> map) async {
     Skill skill = Skill(
-        id: map["ID"],
+        databaseId: map["ID"],
         name: map["NAME"],
         specialisation: map["SPECIALISATION"],
         advances: map["ADVANCES"] ?? 0,
         earning: map["EARNING"] ?? false,
         canAdvance: map["ADVANCABLE"] ?? false);
     if (map["BASE_SKILL_ID"] != null) {
-      skill.baseSkillID = map["BASE_SKILL_ID"];
       skill.baseSkill = await BaseSkillFactory(attributes).get(map["BASE_SKILL_ID"]);
     }
     return skill;
@@ -37,7 +36,7 @@ class SkillFactory extends Factory<Skill> {
   @override
   Future<Map<String, dynamic>> toMap(Skill object, [optimised = true]) async {
     Map<String, dynamic> map = {
-      "ID": object.id,
+      "ID": object.databaseId,
       "NAME": object.name,
       "SPECIALISATION": object.specialisation,
       "ADVANCES": object.advances,
@@ -48,7 +47,8 @@ class SkillFactory extends Factory<Skill> {
       map = await optimise(map);
     }
     if (object.baseSkill != null &&
-        (object.baseSkill!.id == null || object.baseSkill != await BaseSkillFactory().get(object.baseSkill!.id!))) {
+        (object.baseSkill!.databaseId == null ||
+            object.baseSkill != await BaseSkillFactory().get(object.baseSkill!.databaseId!))) {
       map["BASE_SKILL"] = BaseSkillFactory().toMap(object.baseSkill!);
     }
     return map;
@@ -67,7 +67,7 @@ class BaseSkillFactory extends Factory<BaseSkill> {
   BaseSkill fromMap(Map<String, dynamic> map) {
     Attribute? attribute = attributes?.firstWhere((attribute) => attribute.id == map["ATTRIBUTE_ID"]);
     return BaseSkill(
-        id: map["ID"],
+        databaseId: map["ID"],
         name: map["NAME"],
         advanced: map["ADVANCED"] == 1,
         grouped: map["GROUPED"] == 1,
@@ -78,7 +78,7 @@ class BaseSkillFactory extends Factory<BaseSkill> {
   @override
   Map<String, dynamic> toMap(BaseSkill object, [optimised = true]) {
     return {
-      "ID": object.id,
+      "ID": object.databaseId,
       "NAME": object.name,
       "DESCRIPTION": object.description,
       "ADVANCED": object.advanced ? 1 : 0,

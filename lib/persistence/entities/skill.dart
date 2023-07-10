@@ -1,10 +1,11 @@
 import 'package:battle_it_out/persistence/entities/attribute.dart';
+import 'package:uuid/uuid.dart';
 
 class Skill {
-  int id;
+  late String id;
+  int? databaseId;
   String name;
   String? specialisation;
-  int? baseSkillID;
   BaseSkill? baseSkill;
 
   int advances;
@@ -12,13 +13,16 @@ class Skill {
   bool canAdvance;
 
   Skill(
-      {required this.id,
+      {String? id,
+      this.databaseId,
       required this.name,
       required this.specialisation,
       this.advances = 0,
       this.earning = false,
       this.canAdvance = false,
-      this.baseSkill});
+      this.baseSkill}) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   bool isGroup() {
     return baseSkill == null;
@@ -45,13 +49,12 @@ class Skill {
       identical(this, other) ||
       other is Skill &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
+          databaseId == other.databaseId &&
           name == other.name &&
-          specialisation == other.specialisation &&
-          baseSkillID == other.baseSkillID;
+          specialisation == other.specialisation;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ specialisation.hashCode ^ baseSkillID.hashCode;
+  int get hashCode => databaseId.hashCode ^ name.hashCode ^ specialisation.hashCode;
 
   @override
   String toString() {
@@ -60,21 +63,24 @@ class Skill {
 }
 
 class BaseSkill {
-  int? id;
+  late String id;
+  int? databaseId;
   String name;
   String description;
   bool advanced;
   bool grouped;
-  int? attributeID;
   Attribute? attribute;
 
   BaseSkill(
-      {required this.id,
+      {String? id,
+      this.databaseId,
       required this.name,
       required this.description,
       required this.advanced,
       required this.grouped,
-      this.attribute});
+      this.attribute}) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   int getTotalValue() {
     return attribute!.getTotalValue();
@@ -88,16 +94,14 @@ class BaseSkill {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is BaseSkill &&
-          id == other.id &&
+          databaseId == other.databaseId &&
           name == other.name &&
           description == other.description &&
           advanced == other.advanced &&
-          grouped == other.grouped &&
-          attributeID == other.attributeID;
+          grouped == other.grouped;
 
   @override
-  int get hashCode =>
-      id.hashCode ^ name.hashCode ^ description.hashCode ^ advanced.hashCode ^ grouped.hashCode ^ attributeID.hashCode;
+  int get hashCode => databaseId.hashCode ^ name.hashCode ^ description.hashCode ^ advanced.hashCode ^ grouped.hashCode;
 
   @override
   String toString() {

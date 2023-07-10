@@ -55,7 +55,8 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
           if (!localizedValues[language]!.containsKey(entry.key)) {
             localizedValues[language]![entry.key] = entry.value;
           } else {
-            throw Exception("Duplicated key [${entry.key}, ${localizedValues[language]![entry.key]}], [${entry.key}, ${entry.value}]");
+            throw Exception(
+                "Duplicated key [${entry.key}, ${localizedValues[language]![entry.key]}], [${entry.key}, ${entry.value}]");
           }
         }
       }

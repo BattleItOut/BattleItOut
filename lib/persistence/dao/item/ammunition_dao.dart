@@ -13,20 +13,20 @@ class AmmunitionFactory extends ItemFactory<Ammunition> {
   @override
   Future<Ammunition> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
     return Ammunition(
-        id: map["ID"],
+        databaseId: map["ID"],
         name: map["NAME"],
         rangeModifier: map["RANGE_MOD"],
         rangeBonus: map["RANGE_BONUS"],
         damageBonus: map["DAMAGE_BONUS"],
         count: map["COUNT"] ?? 0,
-        itemCategory: map["ITEM_CATEGORY"],
+        category: map["ITEM_CATEGORY"],
         qualities: await getQualities(map["ID"]));
   }
 
   @override
   toMap(Ammunition object, [optimised = true]) async {
     Map<String, dynamic> map = {
-      "ID": object.id,
+      "ID": object.databaseId,
       "NAME": object.name,
       "RANGE_MOD": object.rangeModifier,
       "RANGE_BONUS": object.rangeBonus,

@@ -17,11 +17,21 @@ class Armour extends Item with SpecialItem {
       required this.rightArmAP,
       required this.leftLegAP,
       required this.rightLegAP,
-      id,
-      name,
-      itemCategory,
+      String? id,
+      int? databaseId,
+      required String name,
+      int count = 1,
+      int encumbrance = 0,
+      String category = "ARMOUR",
       List<ItemQuality> qualities = const []})
-      : super(id: id, name: name, category: "ARMOUR", encumbrance: 0, qualities: qualities);
+      : super(
+            id: id,
+            databaseId: databaseId,
+            name: name,
+            count: count,
+            encumbrance: encumbrance,
+            category: category,
+            qualities: qualities);
 
   @override
   bool operator ==(Object other) =>

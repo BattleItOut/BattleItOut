@@ -194,12 +194,12 @@ void skillSerializationTest() {
   group("Skill serialization", () {
     test("Basic from database", () async {
       Skill basicSkill = await SkillFactory().create(basicSkillMap);
-      expect(basicSkill.id, 1);
+      expect(basicSkill.databaseId, 1);
       expect(basicSkill.name, "ATHLETICS");
       expect(basicSkill.specialisation, null);
       expect(basicSkill.advances, 0);
       expect(basicSkill.canAdvance, false);
-      expect(basicSkill.baseSkill!.id, 1);
+      expect(basicSkill.baseSkill!.databaseId, 1);
       expect(basicSkill.baseSkill!.name, "ATHLETICS");
       expect(basicSkill.baseSkill!.description, "ATHLETICS_DESC");
       expect(basicSkill.baseSkill!.advanced, false);
@@ -207,13 +207,13 @@ void skillSerializationTest() {
     });
     test("Edited", () async {
       Skill maxEditedSkill = await SkillFactory().create(maxEditedSkillMap);
-      expect(maxEditedSkill.id, 1);
+      expect(maxEditedSkill.databaseId, 1);
       expect(maxEditedSkill.name, "ATHLETICS");
       expect(maxEditedSkill.specialisation, null);
       expect(maxEditedSkill.advances, 2);
       expect(maxEditedSkill.canAdvance, true);
       expect(maxEditedSkill.earning, true);
-      expect(maxEditedSkill.baseSkill!.id, 1);
+      expect(maxEditedSkill.baseSkill!.databaseId, 1);
       expect(maxEditedSkill.baseSkill!.name, "ATHLETICS");
       expect(maxEditedSkill.baseSkill!.description, "ATHLETICS_DESC");
       expect(maxEditedSkill.baseSkill!.advanced, false);
@@ -233,34 +233,34 @@ void talentSerializationTest() {
   group("Talent serialization", () {
     test("Basic from database", () async {
       Talent basicTalent = await TalentFactory().create(basicTalentMap);
-      expect(basicTalent.id, 1);
+      expect(basicTalent.databaseId, 1);
       expect(basicTalent.name, "PHARMACIST");
       expect(basicTalent.specialisation, null);
       expect(basicTalent.currentLvl, 0);
       expect(basicTalent.canAdvance, false);
-      expect(basicTalent.baseTalent!.id, 1);
+      expect(basicTalent.baseTalent!.databaseId, 1);
       expect(basicTalent.baseTalent!.name, "PHARMACIST");
       expect(basicTalent.baseTalent!.description, "PHARMACIST_DESC");
       expect(basicTalent.baseTalent!.source, "Main Rulebook");
       expect(basicTalent.baseTalent!.constLvl, null);
       expect(basicTalent.baseTalent!.grouped, false);
-      expect(basicTalent.tests[0].id, 1);
+      expect(basicTalent.tests[0].databaseId, 1);
       expect(basicTalent.tests[0].comment, null);
     });
     test("Edited", () async {
       Talent maxEditedTalent = await TalentFactory().create(maxEditedTalentMap);
-      expect(maxEditedTalent.id, 1);
+      expect(maxEditedTalent.databaseId, 1);
       expect(maxEditedTalent.name, "PHARMACIST");
       expect(maxEditedTalent.specialisation, null);
       expect(maxEditedTalent.currentLvl, 1);
       expect(maxEditedTalent.canAdvance, true);
-      expect(maxEditedTalent.baseTalent!.id, 1);
+      expect(maxEditedTalent.baseTalent!.databaseId, 1);
       expect(maxEditedTalent.baseTalent!.name, "PHARMACIST");
       expect(maxEditedTalent.baseTalent!.description, "PHARMACIST_DESC");
       expect(maxEditedTalent.baseTalent!.source, "Main Rulebook");
       expect(maxEditedTalent.baseTalent!.constLvl, null);
       expect(maxEditedTalent.baseTalent!.grouped, false);
-      expect(maxEditedTalent.tests[0].id, 1);
+      expect(maxEditedTalent.tests[0].databaseId, 1);
       expect(maxEditedTalent.tests[0].comment, null);
     });
     doubleSerializationTest(TalentFactory(), [basicTalentMap, maxEditedTalentMap]);
@@ -293,7 +293,7 @@ void armourSerializationTest() {
   group("Armour serialization", () {
     test("Basic from database", () async {
       Armour basicArmour = await ArmourFactory().create(basicArmourMap);
-      expect(basicArmour.id, 1);
+      expect(basicArmour.databaseId, 1);
       expect(basicArmour.name, "LEATHER_JACK");
       expect(basicArmour.headAP, 0);
       expect(basicArmour.bodyAP, 1);
@@ -304,7 +304,7 @@ void armourSerializationTest() {
     });
     test("Minimal custom", () async {
       Armour minCustomArmour = await ArmourFactory().create(minCustomArmourMap);
-      expect(minCustomArmour.id, null);
+      expect(minCustomArmour.databaseId, null);
       expect(minCustomArmour.name, "Test");
       expect(minCustomArmour.headAP, 1);
       expect(minCustomArmour.bodyAP, 0);
@@ -315,7 +315,7 @@ void armourSerializationTest() {
     });
     test("Maximal custom", () async {
       Armour maxCustomArmour = await ArmourFactory().create(maxCustomArmourMap);
-      expect(maxCustomArmour.id, null);
+      expect(maxCustomArmour.databaseId, null);
       expect(maxCustomArmour.name, "Test2");
       expect(maxCustomArmour.headAP, 1);
       expect(maxCustomArmour.bodyAP, 1);
@@ -323,9 +323,9 @@ void armourSerializationTest() {
       expect(maxCustomArmour.rightArmAP, 1);
       expect(maxCustomArmour.leftLegAP, 1);
       expect(maxCustomArmour.rightLegAP, 1);
-      expect(maxCustomArmour.qualities[0].id, 1);
+      expect(maxCustomArmour.qualities[0].databaseId, 1);
       expect(maxCustomArmour.qualities[0].name, "LIGHTWEIGHT");
-      expect(maxCustomArmour.qualities[1].id, 2);
+      expect(maxCustomArmour.qualities[1].databaseId, 2);
       expect(maxCustomArmour.qualities[1].name, "PRACTICAL");
     });
     doubleSerializationTest(ArmourFactory(), [basicArmourMap, minCustomArmourMap, maxCustomArmourMap]);
@@ -355,7 +355,7 @@ void meleeWeaponSerializationTest() {
   group("Melee weapon serialization", () {
     test("Basic from database", () async {
       MeleeWeapon basicMeleeWeapon = await MeleeWeaponFactory().create(basicMeleeWeaponMap);
-      expect(basicMeleeWeapon.id, 1);
+      expect(basicMeleeWeapon.databaseId, 1);
       expect(basicMeleeWeapon.name, "SWORD");
       expect(basicMeleeWeapon.length.id, 4);
       expect(basicMeleeWeapon.damage, 4);
@@ -363,7 +363,7 @@ void meleeWeaponSerializationTest() {
     });
     test("Minimal custom", () async {
       MeleeWeapon minCustomWeapon = await MeleeWeaponFactory().create(minCustomWeaponMap);
-      expect(minCustomWeapon.id, null);
+      expect(minCustomWeapon.databaseId, null);
       expect(minCustomWeapon.name, "Test");
       expect(minCustomWeapon.length.id, 1);
       expect(minCustomWeapon.damage, 2);
@@ -371,14 +371,14 @@ void meleeWeaponSerializationTest() {
     });
     test("Maximal custom", () async {
       MeleeWeapon maxCustomWeapon = await MeleeWeaponFactory().create(maxCustomWeaponMap);
-      expect(maxCustomWeapon.id, null);
+      expect(maxCustomWeapon.databaseId, null);
       expect(maxCustomWeapon.name, "Test2");
       expect(maxCustomWeapon.length.id, 1);
       expect(maxCustomWeapon.damage, 2);
       expect(maxCustomWeapon.qualities.length, 2);
-      expect(maxCustomWeapon.qualities[0].id, 1);
+      expect(maxCustomWeapon.qualities[0].databaseId, 1);
       expect(maxCustomWeapon.qualities[0].name, "LIGHTWEIGHT");
-      expect(maxCustomWeapon.qualities[1].id, 2);
+      expect(maxCustomWeapon.qualities[1].databaseId, 2);
       expect(maxCustomWeapon.qualities[1].name, "PRACTICAL");
     });
     doubleSerializationTest(MeleeWeaponFactory(), [basicMeleeWeaponMap, minCustomWeaponMap, maxCustomWeaponMap]);
@@ -414,7 +414,7 @@ void rangedWeaponSerializationTest() {
   group("Ranged weapon serialization", () {
     test("Basic from database", () async {
       RangedWeapon basicRangedWeapon = await RangedWeaponFactory().create(basicRangedWeaponMap);
-      expect(basicRangedWeapon.id, 1);
+      expect(basicRangedWeapon.databaseId, 1);
       expect(basicRangedWeapon.name, "BLUNDERBUSS");
       expect(basicRangedWeapon.range, 20);
       expect(basicRangedWeapon.damage, 8);
@@ -422,7 +422,7 @@ void rangedWeaponSerializationTest() {
     });
     test("Minimal custom", () async {
       RangedWeapon minCustomWeapon = await RangedWeaponFactory().create(minCustomWeaponMap);
-      expect(minCustomWeapon.id, null);
+      expect(minCustomWeapon.databaseId, null);
       expect(minCustomWeapon.name, "Test");
       expect(minCustomWeapon.range, 100);
       expect(minCustomWeapon.damage, 2);
@@ -430,15 +430,15 @@ void rangedWeaponSerializationTest() {
     });
     test("Maximal custom", () async {
       RangedWeapon maxCustomWeapon = await RangedWeaponFactory().create(maxCustomWeaponMap);
-      expect(maxCustomWeapon.id, null);
+      expect(maxCustomWeapon.databaseId, null);
       expect(maxCustomWeapon.name, "Test2");
       expect(maxCustomWeapon.range, 100);
       expect(maxCustomWeapon.damage, 2);
-      expect(maxCustomWeapon.ammunition[0].id, 1);
+      expect(maxCustomWeapon.ammunition[0].databaseId, 1);
       expect(maxCustomWeapon.ammunition[0].count, 10);
-      expect(maxCustomWeapon.qualities[0].id, 1);
+      expect(maxCustomWeapon.qualities[0].databaseId, 1);
       expect(maxCustomWeapon.qualities[0].name, "LIGHTWEIGHT");
-      expect(maxCustomWeapon.qualities[1].id, 2);
+      expect(maxCustomWeapon.qualities[1].databaseId, 2);
       expect(maxCustomWeapon.qualities[1].name, "PRACTICAL");
     });
     doubleSerializationTest(RangedWeaponFactory(), [basicRangedWeaponMap, minCustomWeaponMap, maxCustomWeaponMap]);

@@ -35,21 +35,21 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
       damageAttribute = attributes?.firstWhere((attribute) => attribute.id == map["DAMAGE_ATTRIBUTE"]);
     }
     RangedWeapon rangedWeapon = RangedWeapon(
-      id: map["ID"],
+      databaseId: map["ID"],
       name: map["NAME"],
       range: map["WEAPON_RANGE"],
       twoHanded: map["TWO_HANDED"] == 1,
       useAmmo: map["USE_AMMO"] == 1,
       rangeAttribute: rangeAttribute,
       damage: map["DAMAGE"],
-      itemCategory: map["ITEM_CATEGORY"],
+      category: map["ITEM_CATEGORY"],
       damageAttribute: damageAttribute,
     );
     if (map["SKILL"] != null) {
       Skill? skill = skills?.firstWhere((element) => element.id == map['SKILL']);
       rangedWeapon.skill = skill ?? await SkillFactory(attributes).get(map['SKILL']);
     }
-    if (rangedWeapon.id != null) {
+    if (rangedWeapon.databaseId != null) {
       rangedWeapon.qualities = await getQualities(map["ID"]);
     }
     if (map["QUALITIES"] != null) {
@@ -65,13 +65,13 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
   @override
   Future<Map<String, dynamic>> toMap(RangedWeapon object, [optimised = true]) async {
     Map<String, dynamic> map = {
-      "ID": object.id,
+      "ID": object.databaseId,
       "NAME": object.name,
       "WEAPON_RANGE": object.range,
       "RANGE_ATTRIBUTE": object.rangeAttribute?.id,
       "DAMAGE": object.damage,
       "DAMAGE_ATTRIBUTE": object.damageAttribute?.id,
-      "SKILL": object.skill?.id,
+      "SKILL": object.skill?.databaseId ?? object.skill?.id,
       "QUALITIES": [
         for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded))
           await ItemQualityFactory().toMap(quality)

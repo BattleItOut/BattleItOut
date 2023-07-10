@@ -6,17 +6,13 @@ import 'package:tuple/tuple.dart';
 class AlertTextField {}
 
 void showAlert(
-  String title,
-  List<Tuple2<Function(String), Type>> fields,
-  void Function() onProceedPressed,
-  BuildContext context
-) {
+    String title, List<Tuple2<Function(String), Type>> fields, void Function() onProceedPressed, BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(title),
-        content: Column(children:[
+        content: Column(children: [
           for (var field in fields)
             TextField(
               onChanged: (value) {
@@ -34,10 +30,7 @@ void showAlert(
               Navigator.of(context).pop();
             },
           ),
-          TextButton(
-            onPressed: onProceedPressed,
-            child: Text("PROCEED".localise(context))
-          ),
+          TextButton(onPressed: onProceedPressed, child: Text("PROCEED".localise(context))),
         ],
       );
     },

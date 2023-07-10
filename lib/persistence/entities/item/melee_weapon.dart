@@ -1,6 +1,8 @@
+import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
 import 'package:battle_it_out/persistence/entities/item/weapon.dart';
 import 'package:battle_it_out/persistence/entities/item/weapon_length.dart';
+import 'package:battle_it_out/persistence/entities/skill.dart';
 
 class MeleeWeapon extends Weapon {
   WeaponLength length;
@@ -10,19 +12,21 @@ class MeleeWeapon extends Weapon {
       required this.length,
       required damage,
       required twoHanded,
-      id,
-      damageAttribute,
-      skill,
-      itemCategory,
+      String? id,
+      int? databaseId,
+      Attribute? damageAttribute,
+      Skill? skill,
+      String? category,
       List<ItemQuality> qualities = const []})
       : super(
             id: id,
+            databaseId: databaseId,
             name: name,
             qualities: qualities,
             damage: damage,
             twoHanded: twoHanded,
             damageAttribute: damageAttribute,
-            itemCategory: "MELEE_WEAPONS",
+            category: category ?? "MELEE_WEAPONS",
             skill: skill);
 
   int getTotalSkillValue() {

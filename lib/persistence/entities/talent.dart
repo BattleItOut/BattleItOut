@@ -1,26 +1,29 @@
 import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
+import 'package:uuid/uuid.dart';
 
 class Talent {
-  int id;
+  late String id;
+  int? databaseId;
   String name;
   String? specialisation;
   BaseTalent? baseTalent;
-  int? baseTalentID;
   List<TalentTest> tests = [];
 
   int currentLvl = 0;
   bool canAdvance = false;
 
   Talent(
-      {required this.id,
+      {String? id,
+      this.databaseId,
       required this.name,
       this.specialisation,
       this.baseTalent,
-      List<TalentTest> tests = const [],
       this.currentLvl = 0,
-      this.canAdvance = false}) {
+      this.canAdvance = false,
+      List<TalentTest> tests = const []}) {
     this.tests.addAll(tests);
+    this.id = id ?? const Uuid().v4();
   }
 
   bool isSpecialised() {
@@ -36,21 +39,14 @@ class Talent {
       identical(this, other) ||
       other is Talent &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
+          databaseId == other.databaseId &&
           name == other.name &&
           specialisation == other.specialisation &&
-          baseTalentID == other.baseTalentID &&
           currentLvl == other.currentLvl &&
           canAdvance == other.canAdvance;
 
   @override
-  int get hashCode =>
-      id.hashCode ^
-      name.hashCode ^
-      specialisation.hashCode ^
-      baseTalentID.hashCode ^
-      currentLvl.hashCode ^
-      canAdvance.hashCode;
+  int get hashCode => id.hashCode ^ name.hashCode ^ specialisation.hashCode ^ currentLvl.hashCode ^ canAdvance.hashCode;
 
   @override
   String toString() {
@@ -59,7 +55,8 @@ class Talent {
 }
 
 class BaseTalent {
-  int id;
+  late String id;
+  int? databaseId;
   String name;
   String description;
   String source;
@@ -69,13 +66,16 @@ class BaseTalent {
   bool grouped;
 
   BaseTalent(
-      {required this.id,
+      {String? id,
+      this.databaseId,
       required this.name,
       required this.description,
       required this.source,
       this.attribute,
       this.constLvl,
-      required this.grouped});
+      required this.grouped}) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   int? getMaxLvl() {
     if (attribute != null) {
@@ -91,7 +91,7 @@ class BaseTalent {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is BaseTalent &&
-          id == other.id &&
+          databaseId == other.databaseId &&
           name == other.name &&
           description == other.description &&
           source == other.source &&
@@ -101,7 +101,7 @@ class BaseTalent {
 
   @override
   int get hashCode =>
-      id.hashCode ^
+      databaseId.hashCode ^
       name.hashCode ^
       description.hashCode ^
       constLvl.hashCode ^
@@ -111,7 +111,8 @@ class BaseTalent {
 }
 
 class TalentTest {
-  int? id;
+  late String id;
+  int? databaseId;
   Talent? talent;
   String? comment;
 
@@ -119,7 +120,10 @@ class TalentTest {
   Skill? skill;
   Attribute? attribute;
 
-  TalentTest({required this.id, required this.talent, this.comment, this.baseSkill, this.skill, this.attribute});
+  TalentTest(
+      {String? id, this.databaseId, required this.talent, this.comment, this.baseSkill, this.skill, this.attribute}) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   @override
   String toString() {

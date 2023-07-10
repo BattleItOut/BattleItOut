@@ -1,5 +1,8 @@
+import 'package:uuid/uuid.dart';
+
 class ItemQuality {
-  int id;
+  late String id;
+  int? databaseId;
   String name;
   bool positive;
   String equipment;
@@ -9,19 +12,22 @@ class ItemQuality {
   bool mapNeeded = true;
 
   ItemQuality(
-      {required this.id,
+      {String? id,
+      this.databaseId,
       required this.name,
       required this.positive,
       required this.equipment,
       required this.description,
-      this.value});
+      this.value}) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ItemQuality &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
+          databaseId == other.databaseId &&
           name == other.name &&
           positive == other.positive &&
           equipment == other.equipment &&
@@ -31,7 +37,7 @@ class ItemQuality {
 
   @override
   int get hashCode =>
-      id.hashCode ^
+      databaseId.hashCode ^
       name.hashCode ^
       positive.hashCode ^
       equipment.hashCode ^

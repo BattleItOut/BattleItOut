@@ -55,7 +55,8 @@ class ProfessionCareerFactory extends Factory<ProfessionCareer> {
     defaultValues.forEach((key, value) {
       map.putIfAbsent(key, () => value);
     });
-    ProfessionCareer professionCareer = ProfessionCareer(databaseId: map["ID"], name: map["NAME"], source: map["SOURCE"]);
+    ProfessionCareer professionCareer =
+        ProfessionCareer(databaseId: map["ID"], name: map["NAME"], source: map["SOURCE"]);
     if (map["CLASS_ID"] != null) {
       professionCareer.professionClass = await ProfessionClassFactory().get(map["CLASS_ID"]);
     } else if (map["CLASS"] != null) {

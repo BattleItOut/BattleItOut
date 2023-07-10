@@ -7,7 +7,7 @@ class TraitFactory extends Factory<Trait> {
 
   @override
   fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
-    return Trait(id: map["ID"], name: map["NAME"], description: map["DESCRIPTION"]);
+    return Trait(databaseId: map["ID"], name: map["NAME"], description: map["DESCRIPTION"]);
   }
 
   @override

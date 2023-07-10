@@ -22,12 +22,12 @@ Future<void> main() async {
       expect(attribute.getTotalBonus(), 3);
 
       // Skill
-      Skill skill = character.skills.firstWhere((skill) => skill.id == 38);
+      Skill skill = character.skills.firstWhere((skill) => skill.databaseId == 38);
       expect(skill.advances, 5);
       expect(skill.getTotalValue(), 44);
 
       // Talent
-      Talent talent = character.talents.firstWhere((talent) => talent.id == 26);
+      Talent talent = character.talents.firstWhere((talent) => talent.databaseId == 26);
       expect(talent.currentLvl, 1);
       expect(talent.getMaxLvl(), 3);
 
@@ -44,11 +44,11 @@ Future<void> main() async {
       expect(attribute.getTotalBonus(), 4);
 
       // Skill
-      Skill skill = character.skills.firstWhere((skill) => skill.id == 38);
+      Skill skill = character.skills.firstWhere((skill) => skill.databaseId == 38);
       expect(skill.getTotalValue(), 45);
 
       // Talent
-      Talent talent = character.talents.firstWhere((talent) => talent.id == 26);
+      Talent talent = character.talents.firstWhere((talent) => talent.databaseId == 26);
       expect(talent.getMaxLvl(), 4);
 
       // Weapon
@@ -64,11 +64,11 @@ Future<void> main() async {
       expect(attribute.getTotalBonus(), 5);
 
       // Skill
-      Skill skill = character.skills.firstWhere((skill) => skill.id == 38);
+      Skill skill = character.skills.firstWhere((skill) => skill.databaseId == 38);
       expect(skill.getTotalValue(), 55);
 
       // Talent
-      Talent talent = character.talents.firstWhere((talent) => talent.id == 26);
+      Talent talent = character.talents.firstWhere((talent) => talent.databaseId == 26);
       expect(talent.getMaxLvl(), 5);
 
       // Weapon
@@ -76,7 +76,7 @@ Future<void> main() async {
     });
     test('Increasing skill advance value', () async {
       Character character = await createTestCharacter();
-      Skill skill = character.skills.firstWhere((skill) => skill.id == 38);
+      Skill skill = character.skills.firstWhere((skill) => skill.databaseId == 38);
 
       skill.advances += 21;
 
@@ -85,11 +85,11 @@ Future<void> main() async {
       expect(attribute.getTotalBonus(), 3);
 
       // Skill
-      skill = character.skills.firstWhere((skill) => skill.id == 38);
+      skill = character.skills.firstWhere((skill) => skill.databaseId == 38);
       expect(skill.getTotalValue(), 65);
 
       // Talent
-      Talent talent = character.talents.firstWhere((talent) => talent.id == 26);
+      Talent talent = character.talents.firstWhere((talent) => talent.databaseId == 26);
       expect(talent.getMaxLvl(), 3);
 
       // Weapon

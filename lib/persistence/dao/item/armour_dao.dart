@@ -25,7 +25,7 @@ class ArmourFactory extends ItemFactory<Armour> {
       map.putIfAbsent(key, () => value);
     });
     Armour armour = Armour(
-        id: map["ID"],
+        databaseId: map["ID"],
         name: map["NAME"],
         headAP: map["HEAD_AP"],
         bodyAP: map["BODY_AP"],
@@ -33,7 +33,7 @@ class ArmourFactory extends ItemFactory<Armour> {
         rightArmAP: map["RIGHT_ARM_AP"],
         leftLegAP: map["LEFT_LEG_AP"],
         rightLegAP: map["RIGHT_LEG_AP"]);
-    if (armour.id != null) {
+    if (armour.databaseId != null) {
       armour.qualities = await getQualities(map["ID"]);
     }
     if (map["QUALITIES"] != null) {
@@ -45,7 +45,7 @@ class ArmourFactory extends ItemFactory<Armour> {
   @override
   Future<Map<String, dynamic>> toMap(Armour object, [optimised = true]) async {
     Map<String, dynamic> map = {
-      "ID": object.id,
+      "ID": object.databaseId,
       "NAME": object.name,
       "HEAD_AP": object.headAP,
       "BODY_AP": object.bodyAP,

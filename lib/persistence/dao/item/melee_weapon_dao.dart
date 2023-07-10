@@ -27,17 +27,17 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
     });
     Attribute? damageAttribute = attributes?.firstWhere((attribute) => attribute.id == map["DAMAGE_ATTRIBUTE"]);
     MeleeWeapon meleeWeapon = MeleeWeapon(
-        id: map["ID"],
+        databaseId: map["ID"],
         name: map["NAME"],
         length: await WeaponLengthFactory().get(map["LENGTH"]),
         damage: map["DAMAGE"],
         twoHanded: map["TWO_HANDED"] == 1,
         damageAttribute: damageAttribute);
     if (map["SKILL"] != null) {
-      Skill? skill = skills?.firstWhere((element) => element.id == map['SKILL']);
+      Skill? skill = skills?.firstWhere((element) => element.databaseId == map['SKILL']);
       meleeWeapon.skill = skill ?? await SkillFactory(attributes).get(map['SKILL']);
     }
-    if (meleeWeapon.id != null) {
+    if (meleeWeapon.databaseId != null) {
       meleeWeapon.qualities = await getQualities(map["ID"]);
     }
     if (map["QUALITIES"] != null) {
@@ -49,11 +49,11 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
   @override
   Future<Map<String, dynamic>> toMap(MeleeWeapon object, [optimised = true]) async {
     Map<String, dynamic> map = {
-      "ID": object.id,
+      "ID": object.databaseId,
       "NAME": object.name,
       "LENGTH": object.length.id,
       "DAMAGE": object.damage,
-      "SKILL": object.skill?.id,
+      "SKILL": object.skill?.databaseId,
       "DAMAGE_ATTRIBUTE": object.damageAttribute?.id,
       "ITEM_CATEGORY": object.category,
       "QUALITIES": [

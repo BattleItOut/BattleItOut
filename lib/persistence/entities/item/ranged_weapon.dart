@@ -2,6 +2,7 @@ import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/item/ammunition.dart';
 import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
 import 'package:battle_it_out/persistence/entities/item/weapon.dart';
+import 'package:battle_it_out/persistence/entities/skill.dart';
 
 class RangedWeapon extends Weapon {
   int range;
@@ -10,25 +11,27 @@ class RangedWeapon extends Weapon {
   List<Ammunition> ammunition = [];
 
   RangedWeapon(
-      {required id,
-      required name,
+      {required name,
       required this.range,
       required this.useAmmo,
       required damage,
       required damageAttribute,
       this.rangeAttribute,
-      twoHanded,
-      itemCategory,
-      skill,
+      String? id,
+      int? databaseId,
+      bool twoHanded = false,
+      String? category,
+      Skill? skill,
       List<ItemQuality> qualities = const [],
       List<Ammunition> ammunition = const []})
       : super(
             id: id,
+            databaseId: databaseId,
             name: name,
             qualities: qualities,
             damage: damage,
             twoHanded: twoHanded,
-            itemCategory: "RANGED_WEAPONS",
+            category: category ?? "RANGED_WEAPONS",
             damageAttribute: damageAttribute,
             skill: skill) {
     this.ammunition.addAll(ammunition);

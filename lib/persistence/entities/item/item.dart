@@ -1,11 +1,12 @@
 import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
 import 'package:flutter/foundation.dart';
+import 'package:uuid/uuid.dart';
 
 class Item {
-  int? id;
+  late String id;
+  int? databaseId;
   String name;
   int count;
-
   int? cost;
   int encumbrance;
   String? availability;
@@ -14,7 +15,8 @@ class Item {
   List<ItemQuality> qualities = [];
 
   Item(
-      {this.id,
+      {String? id,
+      this.databaseId,
       required this.name,
       required this.encumbrance,
       this.cost,
@@ -23,6 +25,7 @@ class Item {
       this.count = 1,
       List<ItemQuality> qualities = const []}) {
     this.qualities.addAll(qualities);
+    this.id = id ?? const Uuid().v4();
   }
 
   bool isCommonItem() {
@@ -38,12 +41,12 @@ class Item {
       identical(this, other) ||
       other is Item &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
+          databaseId == other.databaseId &&
           name == other.name &&
           listEquals(qualities, other.qualities);
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ qualities.hashCode;
+  int get hashCode => databaseId.hashCode ^ name.hashCode ^ qualities.hashCode;
 }
 
 mixin SpecialItem {

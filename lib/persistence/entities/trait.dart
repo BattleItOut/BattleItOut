@@ -1,9 +1,14 @@
+import 'package:uuid/uuid.dart';
+
 class Trait {
-  int id;
+  late String id;
+  int? databaseId;
   String name;
   String description;
 
-  Trait({required this.id, required this.name, required this.description});
+  Trait({String? id, this.databaseId, required this.name, required this.description}) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   @override
   String toString() {
