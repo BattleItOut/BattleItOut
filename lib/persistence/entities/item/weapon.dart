@@ -1,5 +1,5 @@
 import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/item.dart';
+import 'package:battle_it_out/persistence/entities/item/item.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 
 abstract class Weapon extends Item with SpecialItem {
@@ -17,12 +17,7 @@ abstract class Weapon extends Item with SpecialItem {
     this.skill,
     itemCategory,
     qualities,
-  }) : super(
-            id: id,
-            name: name,
-            category: itemCategory,
-            encumbrance: 0,
-            qualities: qualities);
+  }) : super(id: id, name: name, category: itemCategory, encumbrance: 0, qualities: qualities);
 
   int getTotalDamage() {
     return damageAttribute?.getTotalBonus() ?? 0 + damage;
@@ -39,9 +34,5 @@ abstract class Weapon extends Item with SpecialItem {
           skill == other.skill;
 
   @override
-  int get hashCode =>
-      super.hashCode ^
-      damage.hashCode ^
-      damageAttribute.hashCode ^
-      skill.hashCode;
+  int get hashCode => super.hashCode ^ damage.hashCode ^ damageAttribute.hashCode ^ skill.hashCode;
 }

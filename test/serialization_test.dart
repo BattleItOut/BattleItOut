@@ -1,21 +1,22 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:battle_it_out/persistence/character.dart';
-import 'package:battle_it_out/persistence/dao/armour_dao.dart';
 import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
-import 'package:battle_it_out/persistence/dao/melee_weapon_dao.dart';
+import 'package:battle_it_out/persistence/dao/character_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/armour_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/melee_weapon_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/ranged_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/profession_dao.dart';
 import 'package:battle_it_out/persistence/dao/race_dao.dart';
-import 'package:battle_it_out/persistence/dao/ranged_weapon_dao.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/dao/talent_dao.dart';
-import 'package:battle_it_out/persistence/entities/armour.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
+import 'package:battle_it_out/persistence/entities/character.dart';
+import 'package:battle_it_out/persistence/entities/item/armour.dart';
+import 'package:battle_it_out/persistence/entities/item/melee_weapon.dart';
+import 'package:battle_it_out/persistence/entities/item/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
-import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -66,7 +67,7 @@ void raceSerializationTest() {
   group("Race serialization", () {
     test("Basic from database", () async {
       Race basicRace = await RaceFactory().create(basicRaceMap);
-      expect(basicRace.id, 1);
+      expect(basicRace.databaseId, 1);
       expect(basicRace.name, "HUMAN");
       expect(basicRace.size.id, 4);
       expect(basicRace.extraPoints, 3);
@@ -76,7 +77,7 @@ void raceSerializationTest() {
     });
     test("Minimal custom", () async {
       Race minCustomRace = await RaceFactory().create(minCustomRaceMap);
-      expect(minCustomRace.id, null);
+      expect(minCustomRace.databaseId, null);
       expect(minCustomRace.name, "Test");
       expect(minCustomRace.size.id, 4);
       expect(minCustomRace.extraPoints, 0);
@@ -85,7 +86,7 @@ void raceSerializationTest() {
     });
     test("Maximal custom", () async {
       Race maxCustomRace = await RaceFactory().create(maxCustomRaceMap);
-      expect(maxCustomRace.id, null);
+      expect(maxCustomRace.databaseId, null);
       expect(maxCustomRace.name, "Test");
       expect(maxCustomRace.size.id, 4);
       expect(maxCustomRace.extraPoints, 4);
@@ -197,7 +198,7 @@ void skillSerializationTest() {
       expect(basicSkill.name, "ATHLETICS");
       expect(basicSkill.specialisation, null);
       expect(basicSkill.advances, 0);
-      expect(basicSkill.advancable, false);
+      expect(basicSkill.canAdvance, false);
       expect(basicSkill.baseSkill!.id, 1);
       expect(basicSkill.baseSkill!.name, "ATHLETICS");
       expect(basicSkill.baseSkill!.description, "ATHLETICS_DESC");
@@ -210,7 +211,7 @@ void skillSerializationTest() {
       expect(maxEditedSkill.name, "ATHLETICS");
       expect(maxEditedSkill.specialisation, null);
       expect(maxEditedSkill.advances, 2);
-      expect(maxEditedSkill.advancable, true);
+      expect(maxEditedSkill.canAdvance, true);
       expect(maxEditedSkill.earning, true);
       expect(maxEditedSkill.baseSkill!.id, 1);
       expect(maxEditedSkill.baseSkill!.name, "ATHLETICS");
@@ -236,7 +237,7 @@ void talentSerializationTest() {
       expect(basicTalent.name, "PHARMACIST");
       expect(basicTalent.specialisation, null);
       expect(basicTalent.currentLvl, 0);
-      expect(basicTalent.advancable, false);
+      expect(basicTalent.canAdvance, false);
       expect(basicTalent.baseTalent!.id, 1);
       expect(basicTalent.baseTalent!.name, "PHARMACIST");
       expect(basicTalent.baseTalent!.description, "PHARMACIST_DESC");
@@ -252,7 +253,7 @@ void talentSerializationTest() {
       expect(maxEditedTalent.name, "PHARMACIST");
       expect(maxEditedTalent.specialisation, null);
       expect(maxEditedTalent.currentLvl, 1);
-      expect(maxEditedTalent.advancable, true);
+      expect(maxEditedTalent.canAdvance, true);
       expect(maxEditedTalent.baseTalent!.id, 1);
       expect(maxEditedTalent.baseTalent!.name, "PHARMACIST");
       expect(maxEditedTalent.baseTalent!.description, "PHARMACIST_DESC");
@@ -448,10 +449,10 @@ void characterSerializationTest() {
     test("Serialize and deserialize", () async {
       File file = File('assets/test/character_test2.json');
       Map<String, dynamic> serialisedCharacter = jsonDecode(await file.readAsString());
-      Character character = await Character.create(serialisedCharacter);
-      Map<String, dynamic> map = await character.toMap();
+      Character character = await CharacterFactory().fromMap(serialisedCharacter);
+      Map<String, dynamic> map = await CharacterFactory().toMap(character);
       expect(serialisedCharacter, map);
-      var character2 = await Character.create(map);
+      var character2 = await CharacterFactory().fromMap(map);
       expect(character2, character);
     });
   });

@@ -2,11 +2,11 @@ import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
-import 'package:battle_it_out/persistence/character.dart';
-import 'package:battle_it_out/persistence/entities/ammunition.dart';
-import 'package:battle_it_out/persistence/entities/item.dart';
-import 'package:battle_it_out/persistence/entities/melee_weapon.dart';
-import 'package:battle_it_out/persistence/entities/ranged_weapon.dart';
+import 'package:battle_it_out/persistence/entities/character.dart';
+import 'package:battle_it_out/persistence/entities/item/ammunition.dart';
+import 'package:battle_it_out/persistence/entities/item/item.dart';
+import 'package:battle_it_out/persistence/entities/item/melee_weapon.dart';
+import 'package:battle_it_out/persistence/entities/item/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +36,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
             children: [
               for (Skill skill in entry.value.where((Skill skill) => skill.advances > 0 || !skill.isSpecialised()))
                 TableLine(
-                    defaultStyle: TextStyle(fontWeight: skill.advancable ? FontWeight.bold : FontWeight.normal),
+                    defaultStyle: TextStyle(fontWeight: skill.canAdvance ? FontWeight.bold : FontWeight.normal),
                     children: [
                       LocalisedText(skill.specialisation ?? skill.name, context,
                           style: TextStyle(fontStyle: skill.earning ? FontStyle.italic : FontStyle.normal),
@@ -97,25 +97,25 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               title: LocalisedText("ATTRIBUTES", context, style: const TextStyle(fontSize: 24.0)),
               children: widget.character.attributes.isEmpty ? [] : [
                 TableLine(children: [
-                  for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0))
+                  for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
                     LocalisedText(attribute.shortName, context, textAlign: TextAlign.center)
                 ]),
                 TableLine(children: [
-                  for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0))
+                  for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
                     IntegerText(attribute.base)
                 ]),
                 TableLine(children: [
-                  for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0))
+                  for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
                     IntegerText(attribute.advances)
                 ]),
                 TableLine(children: [
-                  for (var attribute in widget.character.attributes.values.where((attr) => attr.importance == 0))
+                  for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
                     IntegerText(attribute.getTotalValue())
                 ])
               ],
               context: context),
           SingleEntitiesTable(children: [
-            for (var attribute in widget.character.attributes.values.where((attr) => attr.importance > 0))
+            for (var attribute in widget.character.attributes.where((attr) => attr.importance > 0))
               TableLine(children: [LocalisedText(attribute.name, context), IntegerText(attribute.getTotalValue())])
           ], context: context),
           GroupedEntitiesTable(
@@ -142,7 +142,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                         for (Talent talent in entry.value)
                           TableLine(
                               defaultStyle:
-                                  TextStyle(fontWeight: talent.advancable ? FontWeight.bold : FontWeight.normal),
+                                  TextStyle(fontWeight: talent.canAdvance ? FontWeight.bold : FontWeight.normal),
                               children: [
                                 LocalisedText(talent.specialisation ?? talent.name, context,
                                     padding: talent.isSpecialised() ? const EdgeInsets.only(left: 20) : null),

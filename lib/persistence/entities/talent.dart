@@ -10,7 +10,7 @@ class Talent {
   List<TalentTest> tests = [];
 
   int currentLvl = 0;
-  bool advancable = false;
+  bool canAdvance = false;
 
   Talent(
       {required this.id,
@@ -19,7 +19,7 @@ class Talent {
       this.baseTalent,
       List<TalentTest> tests = const [],
       this.currentLvl = 0,
-      this.advancable = false}) {
+      this.canAdvance = false}) {
     this.tests.addAll(tests);
   }
 
@@ -41,7 +41,7 @@ class Talent {
           specialisation == other.specialisation &&
           baseTalentID == other.baseTalentID &&
           currentLvl == other.currentLvl &&
-          advancable == other.advancable;
+          canAdvance == other.canAdvance;
 
   @override
   int get hashCode =>
@@ -50,7 +50,7 @@ class Talent {
       specialisation.hashCode ^
       baseTalentID.hashCode ^
       currentLvl.hashCode ^
-      advancable.hashCode;
+      canAdvance.hashCode;
 
   @override
   String toString() {
@@ -119,13 +119,7 @@ class TalentTest {
   Skill? skill;
   Attribute? attribute;
 
-  TalentTest(
-      {required this.id,
-      required this.talent,
-      this.comment,
-      this.baseSkill,
-      this.skill,
-      this.attribute});
+  TalentTest({required this.id, required this.talent, this.comment, this.baseSkill, this.skill, this.attribute});
 
   @override
   String toString() {

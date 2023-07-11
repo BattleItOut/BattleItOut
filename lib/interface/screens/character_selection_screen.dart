@@ -2,8 +2,8 @@ import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/alert.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
-import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/interface/state_container.dart';
+import 'package:battle_it_out/persistence/entities/character.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 

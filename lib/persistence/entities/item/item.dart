@@ -1,4 +1,4 @@
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
+import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
 import 'package:flutter/foundation.dart';
 
 class Item {

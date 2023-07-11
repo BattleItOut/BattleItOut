@@ -1,5 +1,5 @@
-import 'package:battle_it_out/persistence/entities/item.dart';
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
+import 'package:battle_it_out/persistence/entities/item/item.dart';
+import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
 import 'package:flutter/foundation.dart';
 
 class Armour extends Item with SpecialItem {
@@ -21,12 +21,7 @@ class Armour extends Item with SpecialItem {
       name,
       itemCategory,
       List<ItemQuality> qualities = const []})
-      : super(
-            id: id,
-            name: name,
-            category: "ARMOUR",
-            encumbrance: 0,
-            qualities: qualities);
+      : super(id: id, name: name, category: "ARMOUR", encumbrance: 0, qualities: qualities);
 
   @override
   bool operator ==(Object other) =>

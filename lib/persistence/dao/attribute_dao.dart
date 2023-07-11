@@ -20,8 +20,7 @@ class AttributeFactory extends Factory<Attribute> {
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(Attribute object,
-      [optimised = true]) async {
+  Future<Map<String, dynamic>> toMap(Attribute object, [optimised = true]) async {
     Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,

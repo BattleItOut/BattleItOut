@@ -9,7 +9,7 @@ class Skill {
 
   int advances;
   bool earning;
-  bool advancable;
+  bool canAdvance;
 
   Skill(
       {required this.id,
@@ -17,7 +17,7 @@ class Skill {
       required this.specialisation,
       this.advances = 0,
       this.earning = false,
-      this.advancable = false,
+      this.canAdvance = false,
       this.baseSkill});
 
   bool isGroup() {
@@ -48,20 +48,10 @@ class Skill {
           id == other.id &&
           name == other.name &&
           specialisation == other.specialisation &&
-          baseSkillID == other.baseSkillID &&
-          advances == other.advances &&
-          earning == other.earning &&
-          advancable == other.advancable;
+          baseSkillID == other.baseSkillID;
 
   @override
-  int get hashCode =>
-      id.hashCode ^
-      name.hashCode ^
-      specialisation.hashCode ^
-      baseSkillID.hashCode ^
-      advances.hashCode ^
-      earning.hashCode ^
-      advancable.hashCode;
+  int get hashCode => id.hashCode ^ name.hashCode ^ specialisation.hashCode ^ baseSkillID.hashCode;
 
   @override
   String toString() {
@@ -107,12 +97,7 @@ class BaseSkill {
 
   @override
   int get hashCode =>
-      id.hashCode ^
-      name.hashCode ^
-      description.hashCode ^
-      advanced.hashCode ^
-      grouped.hashCode ^
-      attributeID.hashCode;
+      id.hashCode ^ name.hashCode ^ description.hashCode ^ advanced.hashCode ^ grouped.hashCode ^ attributeID.hashCode;
 
   @override
   String toString() {

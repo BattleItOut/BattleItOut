@@ -3,7 +3,7 @@ import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 
 class SkillFactory extends Factory<Skill> {
-  Map<int, Attribute>? attributes;
+  List<Attribute>? attributes;
 
   SkillFactory([this.attributes]);
 
@@ -13,8 +13,7 @@ class SkillFactory extends Factory<Skill> {
   getSkills({bool? advanced}) async {
     List<Skill> skills = await getAll(where: "BASE_SKILL_ID IS NOT NULL");
     if (advanced != null) {
-      skills = List.of(
-          skills.where((skill) => skill.baseSkill!.advanced == advanced));
+      skills = List.of(skills.where((skill) => skill.baseSkill!.advanced == advanced));
     }
     return skills;
   }
@@ -27,11 +26,10 @@ class SkillFactory extends Factory<Skill> {
         specialisation: map["SPECIALISATION"],
         advances: map["ADVANCES"] ?? 0,
         earning: map["EARNING"] ?? false,
-        advancable: map["ADVANCABLE"] ?? false);
+        canAdvance: map["ADVANCABLE"] ?? false);
     if (map["BASE_SKILL_ID"] != null) {
       skill.baseSkillID = map["BASE_SKILL_ID"];
-      skill.baseSkill =
-          await BaseSkillFactory(attributes).get(map["BASE_SKILL_ID"]);
+      skill.baseSkill = await BaseSkillFactory(attributes).get(map["BASE_SKILL_ID"]);
     }
     return skill;
   }
@@ -44,15 +42,13 @@ class SkillFactory extends Factory<Skill> {
       "SPECIALISATION": object.specialisation,
       "ADVANCES": object.advances,
       "EARNING": object.earning,
-      "ADVANCABLE": object.advancable
+      "ADVANCABLE": object.canAdvance
     };
     if (optimised) {
       map = await optimise(map);
     }
     if (object.baseSkill != null &&
-        (object.baseSkill!.id == null ||
-            object.baseSkill !=
-                await BaseSkillFactory().get(object.baseSkill!.id!))) {
+        (object.baseSkill!.id == null || object.baseSkill != await BaseSkillFactory().get(object.baseSkill!.id!))) {
       map["BASE_SKILL"] = BaseSkillFactory().toMap(object.baseSkill!);
     }
     return map;
@@ -60,7 +56,7 @@ class SkillFactory extends Factory<Skill> {
 }
 
 class BaseSkillFactory extends Factory<BaseSkill> {
-  Map<int, Attribute>? attributes;
+  List<Attribute>? attributes;
 
   BaseSkillFactory([this.attributes]);
 
@@ -69,13 +65,14 @@ class BaseSkillFactory extends Factory<BaseSkill> {
 
   @override
   BaseSkill fromMap(Map<String, dynamic> map) {
+    Attribute? attribute = attributes?.firstWhere((attribute) => attribute.id == map["ATTRIBUTE_ID"]);
     return BaseSkill(
         id: map["ID"],
         name: map["NAME"],
         advanced: map["ADVANCED"] == 1,
         grouped: map["GROUPED"] == 1,
         description: map["DESCRIPTION"],
-        attribute: attributes?[map["ATTRIBUTE_ID"]]);
+        attribute: attribute);
   }
 
   @override

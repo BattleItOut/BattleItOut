@@ -1,8 +1,7 @@
-import 'package:battle_it_out/persistence/dao/item_dao.dart';
-import 'package:battle_it_out/persistence/entities/armour.dart';
-import 'package:battle_it_out/persistence/entities/item_quality.dart';
-
-import 'item_quality_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/item_dao.dart';
+import 'package:battle_it_out/persistence/dao/item/item_quality_dao.dart';
+import 'package:battle_it_out/persistence/entities/item/armour.dart';
+import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
 
 class ArmourFactory extends ItemFactory<Armour> {
   @override
@@ -38,9 +37,7 @@ class ArmourFactory extends ItemFactory<Armour> {
       armour.qualities = await getQualities(map["ID"]);
     }
     if (map["QUALITIES"] != null) {
-      armour.qualities.addAll([
-        for (map in map["QUALITIES"]) await ItemQualityFactory().create(map)
-      ]);
+      armour.qualities.addAll([for (map in map["QUALITIES"]) await ItemQualityFactory().create(map)]);
     }
     return armour;
   }
