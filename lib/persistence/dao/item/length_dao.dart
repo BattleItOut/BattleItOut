@@ -7,11 +7,11 @@ class WeaponLengthFactory extends Factory<WeaponLength> {
 
   @override
   fromMap(Map<String, dynamic> map) {
-    return WeaponLength(id: map["ID"], name: map["NAME"], description: map["DESCRIPTION"], source: map["SOURCE"]);
+    return WeaponLength(databaseId: map["ID"], name: map["NAME"], description: map["DESCRIPTION"], source: map["SOURCE"]);
   }
 
   @override
   Map<String, dynamic> toMap(WeaponLength object, [optimised = true]) {
-    return {"ID": object.id, "NAME": object.name, "DESCRIPTION": object.description, "SOURCE": object.source};
+    return {"ID": object.databaseId, "NAME": object.name, "DESCRIPTION": object.description, "SOURCE": object.source};
   }
 }

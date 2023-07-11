@@ -38,7 +38,7 @@ class RaceFactory extends Factory<Race> {
       "ID": object.databaseId,
       "NAME": object.name,
       "EXTRA_POINTS": object.extraPoints,
-      "SIZE": object.size.id,
+      "SIZE": object.size.databaseId,
       "SRC": object.source
     };
     if (optimised) {

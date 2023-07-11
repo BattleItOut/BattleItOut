@@ -72,7 +72,7 @@ class BaseTalentFactory extends Factory<BaseTalent> {
   BaseTalent fromMap(Map<String, dynamic> map) {
     Attribute? attribute;
     if (map["MAX_LVL"] != null) {
-      attribute = attributes?.firstWhere((attribute) => attribute.id == map["MAX_LVL"]);
+      attribute = attributes?.firstWhere((attribute) => attribute.databaseId == map["MAX_LVL"]);
     }
     return BaseTalent(
         databaseId: map['ID'],

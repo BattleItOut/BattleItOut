@@ -25,7 +25,7 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
     defaultValues.forEach((key, value) {
       map.putIfAbsent(key, () => value);
     });
-    Attribute? damageAttribute = attributes?.firstWhere((attribute) => attribute.id == map["DAMAGE_ATTRIBUTE"]);
+    Attribute? damageAttribute = attributes?.firstWhere((attribute) => attribute.databaseId == map["DAMAGE_ATTRIBUTE"]);
     MeleeWeapon meleeWeapon = MeleeWeapon(
         databaseId: map["ID"],
         name: map["NAME"],
@@ -51,10 +51,10 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
     Map<String, dynamic> map = {
       "ID": object.databaseId,
       "NAME": object.name,
-      "LENGTH": object.length.id,
+      "LENGTH": object.length.databaseId,
       "DAMAGE": object.damage,
       "SKILL": object.skill?.databaseId,
-      "DAMAGE_ATTRIBUTE": object.damageAttribute?.id,
+      "DAMAGE_ATTRIBUTE": object.damageAttribute?.databaseId,
       "ITEM_CATEGORY": object.category,
       "QUALITIES": [
         for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded))

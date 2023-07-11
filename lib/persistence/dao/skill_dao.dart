@@ -65,7 +65,7 @@ class BaseSkillFactory extends Factory<BaseSkill> {
 
   @override
   BaseSkill fromMap(Map<String, dynamic> map) {
-    Attribute? attribute = attributes?.firstWhere((attribute) => attribute.id == map["ATTRIBUTE_ID"]);
+    Attribute? attribute = attributes?.firstWhere((attribute) => attribute.databaseId == map["ATTRIBUTE_ID"]);
     return BaseSkill(
         databaseId: map["ID"],
         name: map["NAME"],

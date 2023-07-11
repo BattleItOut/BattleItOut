@@ -46,7 +46,7 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
       damageAttribute: damageAttribute,
     );
     if (map["SKILL"] != null) {
-      Skill? skill = skills?.firstWhere((element) => element.id == map['SKILL']);
+      Skill? skill = skills?.firstWhere((element) => element.databaseId == map['SKILL']);
       rangedWeapon.skill = skill ?? await SkillFactory(attributes).get(map['SKILL']);
     }
     if (rangedWeapon.databaseId != null) {

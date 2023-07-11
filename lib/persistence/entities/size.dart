@@ -1,21 +1,26 @@
+import 'package:uuid/uuid.dart';
+
 class Size {
-  int id;
+  String? id;
+  int? databaseId;
   String name;
   String source;
 
-  Size({required this.id, required this.name, this.source = "Custom"});
+  Size({String? id, this.databaseId, required this.name, this.source = "Custom"}) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Size &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
+          databaseId == other.databaseId &&
           name == other.name &&
           source == other.source;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ source.hashCode;
+  int get hashCode => databaseId.hashCode ^ name.hashCode ^ source.hashCode;
 
   @override
   String toString() {

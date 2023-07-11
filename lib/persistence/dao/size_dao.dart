@@ -7,11 +7,11 @@ class SizeFactory extends Factory<Size> {
 
   @override
   fromMap(Map<String, dynamic> map) async {
-    return Size(id: map["ID"], name: map["NAME"], source: map["SOURCE"] ?? 'Custom');
+    return Size(databaseId: map["ID"], name: map["NAME"], source: map["SOURCE"] ?? 'Custom');
   }
 
   @override
   Map<String, dynamic> toMap(Size object, [optimised = true]) {
-    return {"ID": object.id, "NAME": object.name, "SOURCE": object.source};
+    return {"ID": object.databaseId, "NAME": object.name, "SOURCE": object.source};
   }
 }

@@ -1,5 +1,8 @@
+import 'package:uuid/uuid.dart';
+
 class Attribute {
-  int id;
+  late String id;
+  int? databaseId;
   String name;
   String shortName;
   String description;
@@ -11,7 +14,8 @@ class Attribute {
   bool advancable;
 
   Attribute(
-      {required this.id,
+      {String? id,
+      this.databaseId,
       required this.name,
       required this.shortName,
       required this.description,
@@ -19,7 +23,9 @@ class Attribute {
       required this.importance,
       this.base = 0,
       this.advances = 0,
-      this.advancable = false});
+      this.advancable = false}) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   int getTotalValue() {
     return base + advances;
@@ -34,7 +40,7 @@ class Attribute {
       identical(this, other) ||
       other is Attribute &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
+          databaseId == other.databaseId &&
           name == other.name &&
           shortName == other.shortName &&
           description == other.description &&
@@ -43,7 +49,7 @@ class Attribute {
 
   @override
   int get hashCode =>
-      id.hashCode ^ name.hashCode ^ shortName.hashCode ^ description.hashCode ^ rollable.hashCode ^ importance.hashCode;
+      databaseId.hashCode ^ name.hashCode ^ shortName.hashCode ^ description.hashCode ^ rollable.hashCode ^ importance.hashCode;
 
   @override
   String toString() {

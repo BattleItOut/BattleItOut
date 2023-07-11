@@ -15,7 +15,7 @@ Future<void> main() async {
       Character character = await createTestCharacter();
 
       // Attribute
-      Attribute attribute = character.attributes.firstWhere((attribute) => attribute.id == 1);
+      Attribute attribute = character.attributes.firstWhere((attribute) => attribute.databaseId == 1);
       expect(attribute.base, 34);
       expect(attribute.advances, 5);
       expect(attribute.getTotalValue(), 39);
@@ -38,7 +38,7 @@ Future<void> main() async {
       Character character = await createTestCharacter();
 
       // Attribute
-      Attribute attribute = character.attributes.firstWhere((attribute) => attribute.id == 1);
+      Attribute attribute = character.attributes.firstWhere((attribute) => attribute.databaseId == 1);
       attribute.base++;
       expect(attribute.getTotalValue(), 40);
       expect(attribute.getTotalBonus(), 4);
@@ -58,7 +58,7 @@ Future<void> main() async {
       Character character = await createTestCharacter();
 
       // Attribute
-      Attribute attribute = character.attributes.firstWhere((attribute) => attribute.id == 1);
+      Attribute attribute = character.attributes.firstWhere((attribute) => attribute.databaseId == 1);
       attribute.advances += 11;
       expect(attribute.getTotalValue(), 50);
       expect(attribute.getTotalBonus(), 5);
@@ -80,7 +80,7 @@ Future<void> main() async {
 
       skill.advances += 21;
 
-      Attribute attribute = character.attributes.firstWhere((attribute) => attribute.id == 1);
+      Attribute attribute = character.attributes.firstWhere((attribute) => attribute.databaseId == 1);
       expect(attribute.getTotalValue(), 39);
       expect(attribute.getTotalBonus(), 3);
 

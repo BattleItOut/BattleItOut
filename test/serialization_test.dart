@@ -69,7 +69,7 @@ void raceSerializationTest() {
       Race basicRace = await RaceFactory().create(basicRaceMap);
       expect(basicRace.databaseId, 1);
       expect(basicRace.name, "HUMAN");
-      expect(basicRace.size.id, 4);
+      expect(basicRace.size.databaseId, 4);
       expect(basicRace.extraPoints, 3);
       expect(basicRace.source, "Main Rulebook");
       expect(basicRace.subrace!.databaseId, 1);
@@ -79,7 +79,7 @@ void raceSerializationTest() {
       Race minCustomRace = await RaceFactory().create(minCustomRaceMap);
       expect(minCustomRace.databaseId, null);
       expect(minCustomRace.name, "Test");
-      expect(minCustomRace.size.id, 4);
+      expect(minCustomRace.size.databaseId, 4);
       expect(minCustomRace.extraPoints, 0);
       expect(minCustomRace.source, "Custom");
       expect(minCustomRace.subrace, null);
@@ -88,7 +88,7 @@ void raceSerializationTest() {
       Race maxCustomRace = await RaceFactory().create(maxCustomRaceMap);
       expect(maxCustomRace.databaseId, null);
       expect(maxCustomRace.name, "Test");
-      expect(maxCustomRace.size.id, 4);
+      expect(maxCustomRace.size.databaseId, 4);
       expect(maxCustomRace.extraPoints, 4);
       expect(maxCustomRace.source, "Custom");
       expect(maxCustomRace.subrace!.name, "Test2");
@@ -157,7 +157,7 @@ void attributeSerializationTest() {
   group("Attribute serialization", () {
     test("Basic from database", () async {
       Attribute basicAttribute = await AttributeFactory().create(basicAttributeMap);
-      expect(basicAttribute.id, 1);
+      expect(basicAttribute.databaseId, 1);
       expect(basicAttribute.name, "WEAPON_SKILL");
       expect(basicAttribute.shortName, "WEAPON_SKILL_SHORT");
       expect(basicAttribute.description, "WEAPON_SKILL_DESC");
@@ -169,7 +169,7 @@ void attributeSerializationTest() {
     });
     test("Edited", () async {
       Attribute maxEditedAttribute = await AttributeFactory().create(maxEditedAttributeMap);
-      expect(maxEditedAttribute.id, 1);
+      expect(maxEditedAttribute.databaseId, 1);
       expect(maxEditedAttribute.name, "WEAPON_SKILL");
       expect(maxEditedAttribute.shortName, "WEAPON_SKILL_SHORT");
       expect(maxEditedAttribute.description, "WEAPON_SKILL_DESC");
@@ -357,7 +357,7 @@ void meleeWeaponSerializationTest() {
       MeleeWeapon basicMeleeWeapon = await MeleeWeaponFactory().create(basicMeleeWeaponMap);
       expect(basicMeleeWeapon.databaseId, 1);
       expect(basicMeleeWeapon.name, "SWORD");
-      expect(basicMeleeWeapon.length.id, 4);
+      expect(basicMeleeWeapon.length.databaseId, 4);
       expect(basicMeleeWeapon.damage, 4);
       expect(basicMeleeWeapon.qualities.length, 0);
     });
@@ -365,7 +365,7 @@ void meleeWeaponSerializationTest() {
       MeleeWeapon minCustomWeapon = await MeleeWeaponFactory().create(minCustomWeaponMap);
       expect(minCustomWeapon.databaseId, null);
       expect(minCustomWeapon.name, "Test");
-      expect(minCustomWeapon.length.id, 1);
+      expect(minCustomWeapon.length.databaseId, 1);
       expect(minCustomWeapon.damage, 2);
       expect(minCustomWeapon.qualities.length, 0);
     });
@@ -373,7 +373,7 @@ void meleeWeaponSerializationTest() {
       MeleeWeapon maxCustomWeapon = await MeleeWeaponFactory().create(maxCustomWeaponMap);
       expect(maxCustomWeapon.databaseId, null);
       expect(maxCustomWeapon.name, "Test2");
-      expect(maxCustomWeapon.length.id, 1);
+      expect(maxCustomWeapon.length.databaseId, 1);
       expect(maxCustomWeapon.damage, 2);
       expect(maxCustomWeapon.qualities.length, 2);
       expect(maxCustomWeapon.qualities[0].databaseId, 1);

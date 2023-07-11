@@ -1,23 +1,28 @@
+import 'package:uuid/uuid.dart';
+
 class WeaponLength {
-  int? id;
+  late String id;
+  int? databaseId;
   String name;
   String description;
   String source;
 
-  WeaponLength({this.id, required this.name, this.description = "", this.source = "Custom"});
+  WeaponLength({String? id, this.databaseId, required this.name, this.description = "", this.source = "Custom"}) {
+    this.id = id ?? const Uuid().v4();
+  }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is WeaponLength &&
           runtimeType == other.runtimeType &&
-          id == other.id &&
+          databaseId == other.databaseId &&
           name == other.name &&
           description == other.description &&
           source == other.source;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ description.hashCode ^ source.hashCode;
+  int get hashCode => databaseId.hashCode ^ name.hashCode ^ description.hashCode ^ source.hashCode;
 
   @override
   String toString() {
