@@ -42,7 +42,7 @@ class TalentFactory extends Factory<Talent> {
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(Talent object, [optimised = true]) async {
+  Future<Map<String, dynamic>> toMap(Talent object, {optimised = true, database = false}) async {
     Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,
@@ -70,7 +70,7 @@ class BaseTalentFactory extends Factory<BaseTalent> {
   get tableName => 'talents_base';
 
   @override
-  BaseTalent fromMap(Map<String, dynamic> map) {
+  Future<BaseTalent> fromMap(Map<String, dynamic> map) async {
     Attribute? attribute;
     if (map["MAX_LVL"] != null) {
       attribute = attributes?.firstWhere((attribute) => attribute.id == map["MAX_LVL"]);
@@ -86,7 +86,7 @@ class BaseTalentFactory extends Factory<BaseTalent> {
   }
 
   @override
-  Map<String, dynamic> toMap(BaseTalent object, [optimised = true]) {
+  Future<Map<String, dynamic>> toMap(BaseTalent object, {optimised = true, database = false}) async {
     return {
       "ID": object.id,
       "NAME": object.name,
@@ -122,7 +122,7 @@ class TalentTestFactory extends Factory<TalentTest> {
   }
 
   @override
-  Map<String, dynamic> toMap(TalentTest object, [optimised = true]) {
+  Future<Map<String, dynamic>> toMap(TalentTest object, {optimised = true, database = false}) async {
     return {
       "ID": object.id,
       "TALENT_ID": object.talent!.id,

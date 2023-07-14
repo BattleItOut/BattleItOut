@@ -4,47 +4,60 @@ import 'package:flutter/foundation.dart';
 abstract class Serializer<T> {
   get defaultValues;
 
-  dynamic fromMap(Map<String, dynamic> map);
+  Future<T> fromMap(Map<String, dynamic> map);
 
-  dynamic toMap(T object, [optimised = true]);
+  Future<Map<String, Object?>> toMap(T object, {optimised = true, database = false});
 }
 
-abstract class Factory<T> extends DAO<T> implements Serializer<T> {
+abstract class Factory<T> extends DAO implements Serializer<T> {
   @override
   get defaultValues => {};
 
   Future<T> create(Map<String, dynamic> map) async {
-    Map<String, dynamic> newMap = {};
+    Map<String, Object?> newMap = {};
     if (map["ID"] != null) {
       newMap.addAll(await getMap(map["ID"]));
     }
-    for (MapEntry<String, dynamic> entry in map.entries) {
-      newMap.update(entry.key, (value) => entry.value, ifAbsent: () => entry.value);
+    defaultValues.forEach((key, value) => newMap.putIfAbsent(key, () => value));
+    map.forEach((key, newValue) => newMap.update(key, (oldValue) => newValue, ifAbsent: () => newValue));
+
+    T object = await fromMap(newMap);
+    if (map["ID"] == null) {
+      await insert(object);
     }
-    return await fromMap(newMap);
+    return object;
   }
 
-  dynamic get(int id) async {
+  Future<void> insert(T object) async {
+    insertMap(await toMap(object, optimised: false, database: true));
+  }
+
+  Future<T> get(int id) async {
     return fromMap({for (var entry in (await getMap(id)).entries) entry.key: entry.value});
   }
 
-  dynamic getWhere({where, List<Object>? whereArgs}) async {
-    return fromMap(await getMapWhere(where: where, whereArgs: whereArgs));
+  Future<T?> getWhere({where, List<Object>? whereArgs}) async {
+    Map<String, dynamic> map = await getMapWhere(where: where, whereArgs: whereArgs);
+    return map.isNotEmpty ? fromMap(map) : null;
   }
 
   Future<List<T>> getAll({String? where, List<Object>? whereArgs}) async {
     return [
-      for (var map in await getMapAll(where: where, whereArgs: whereArgs))
-        await fromMap({for (var entry in map.entries) entry.key: entry.value})
+      for (var map in await getMapAll(where: where, whereArgs: whereArgs))await fromMap(
+          {for (var entry in map.entries) entry.key: entry.value})
     ];
+  }
+
+  Future<int> getNextId() async {
+    return (await getNextIdMap())["NEXT_ID"] ?? 1;
   }
 
   Future<Map<String, dynamic>> optimise(Map<String, dynamic> map) async {
     map.removeWhere((key, value) => value == null || defaultValues[key] == value);
     if (map["ID"] != null) {
-      Map<String, dynamic> defaultMap = await toMap(await get(map["ID"]), false);
+      Map<String, dynamic> defaultMap = await toMap(await get(map["ID"]), optimised: false);
       map.removeWhere((key, value) =>
-          key != "ID" &&
+      key != "ID" &&
           (value is List && listEquals(value, defaultMap[key]) || value is! List && value == defaultMap[key]));
     }
     return map;

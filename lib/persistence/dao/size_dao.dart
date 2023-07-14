@@ -6,12 +6,12 @@ class SizeFactory extends Factory<Size> {
   get tableName => 'sizes';
 
   @override
-  fromMap(Map<String, dynamic> map) async {
+  Future<Size> fromMap(Map<String, dynamic> map) async {
     return Size(id: map["ID"], name: map["NAME"], source: map["SOURCE"] ?? 'Custom');
   }
 
   @override
-  Map<String, dynamic> toMap(Size object, [optimised = true]) {
+  Future<Map<String, dynamic>> toMap(Size object, {optimised = true, database = false}) async {
     return {"ID": object.id, "NAME": object.name, "SOURCE": object.source};
   }
 }

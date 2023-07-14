@@ -6,9 +6,10 @@ import 'package:battle_it_out/persistence/entities/item/item_quality.dart';
 class AmmunitionFactory extends ItemFactory<Ammunition> {
   @override
   get tableName => 'weapons_ranged_ammunition';
-
   @override
-  get qualitiesTableName => 'weapons_ranged_ammunition_qualities';
+  get qualitiesTableName => 'item_qualities';
+  @override
+  get linkTableName => 'weapons_ranged_ammunition_qualities';
 
   @override
   Future<Ammunition> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
@@ -24,7 +25,7 @@ class AmmunitionFactory extends ItemFactory<Ammunition> {
   }
 
   @override
-  toMap(Ammunition object, [optimised = true]) async {
+  Future<Map<String, dynamic>> toMap(Ammunition object, {optimised = true, database = false}) async {
     Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,

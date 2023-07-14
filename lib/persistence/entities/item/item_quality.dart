@@ -2,8 +2,8 @@ class ItemQuality {
   int id;
   String name;
   bool positive;
-  String equipment;
-  String description;
+  String? equipment;
+  String? description;
   int? value;
 
   bool mapNeeded = true;
@@ -26,8 +26,7 @@ class ItemQuality {
           positive == other.positive &&
           equipment == other.equipment &&
           description == other.description &&
-          value == other.value &&
-          mapNeeded == other.mapNeeded;
+          value == other.value;
 
   @override
   int get hashCode =>
@@ -36,8 +35,7 @@ class ItemQuality {
       positive.hashCode ^
       equipment.hashCode ^
       description.hashCode ^
-      value.hashCode ^
-      mapNeeded.hashCode;
+      value.hashCode;
 
   @override
   String toString() {

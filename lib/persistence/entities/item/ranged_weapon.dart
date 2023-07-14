@@ -58,13 +58,15 @@ class RangedWeapon extends Weapon {
           other is RangedWeapon &&
           runtimeType == other.runtimeType &&
           range == other.range &&
-          rangeAttribute == other.rangeAttribute;
+          rangeAttribute == other.rangeAttribute &&
+          useAmmo == other.useAmmo;
 
   @override
-  int get hashCode => super.hashCode ^ range.hashCode ^ rangeAttribute.hashCode;
+  int get hashCode =>
+      super.hashCode ^ range.hashCode ^ rangeAttribute.hashCode ^ useAmmo.hashCode;
 
   @override
   String toString() {
-    return 'RangedWeapon{range: $range, rangeAttribute: $rangeAttribute, useAmmo: $useAmmo}';
+    return 'RangedWeapon{range: $range, rangeAttribute: $rangeAttribute, useAmmo: $useAmmo, ammunition: $ammunition}';
   }
 }

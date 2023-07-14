@@ -31,8 +31,9 @@ abstract class Weapon extends Item with SpecialItem {
           runtimeType == other.runtimeType &&
           damage == other.damage &&
           damageAttribute == other.damageAttribute &&
-          skill == other.skill;
+          skill == other.skill &&
+          twoHanded == other.twoHanded;
 
   @override
-  int get hashCode => super.hashCode ^ damage.hashCode ^ damageAttribute.hashCode ^ skill.hashCode;
+  int get hashCode => super.hashCode ^ damage.hashCode ^ damageAttribute.hashCode ^ skill.hashCode ^ twoHanded.hashCode;
 }

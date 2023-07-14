@@ -6,7 +6,7 @@ class AttributeFactory extends Factory<Attribute> {
   get tableName => 'attributes';
 
   @override
-  Attribute fromMap(Map<String, dynamic> map) {
+  Future<Attribute> fromMap(Map<String, dynamic> map) async {
     return Attribute(
         id: map['ID'],
         name: map['NAME'],
@@ -20,7 +20,7 @@ class AttributeFactory extends Factory<Attribute> {
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(Attribute object, [optimised = true]) async {
+  Future<Map<String, dynamic>> toMap(Attribute object, {optimised = true, database = false}) async {
     Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,

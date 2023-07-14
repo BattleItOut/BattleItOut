@@ -4,10 +4,10 @@ import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
 import 'package:flutter/widgets.dart';
 
-extension RaceLocalisation on Race {
+extension RaceLocalisation on Subrace {
   String getLocalName(BuildContext context) {
-    if (subrace != null && name != subrace!.name) {
-      return "${AppLocalizations.of(context).localise(name)} (${AppLocalizations.of(context).localise(subrace!.name)})";
+    if (name != race.name) {
+      return "${AppLocalizations.of(context).localise(name)} (${AppLocalizations.of(context).localise(race.name)})";
     } else {
       return AppLocalizations.of(context).localise(name);
     }
@@ -16,11 +16,7 @@ extension RaceLocalisation on Race {
 
 extension ProfessionLocalisation on Profession {
   String getLocalName(BuildContext context) {
-    if (career != null) {
-      return "${AppLocalizations.of(context).localise(name)} (${AppLocalizations.of(context).localise(career!.name)})";
-    } else {
-      return AppLocalizations.of(context).localise(name);
-    }
+    return "${AppLocalizations.of(context).localise(name)} (${AppLocalizations.of(context).localise(career.name)})";
   }
 }
 
