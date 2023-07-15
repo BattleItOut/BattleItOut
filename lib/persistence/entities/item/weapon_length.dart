@@ -1,10 +1,10 @@
 class WeaponLength {
   int? id;
   String name;
-  String description;
+  String? description;
   String source;
 
-  WeaponLength({this.id, required this.name, this.description = "", this.source = "Custom"});
+  WeaponLength({this.id, required this.name, this.description, this.source = "Custom"});
 
   @override
   bool operator ==(Object other) =>

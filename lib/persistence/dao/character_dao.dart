@@ -25,7 +25,7 @@ class CharacterFactory extends Factory<Character> {
   @override
   Future<Character> fromMap(dynamic json) async {
     String name = json['NAME'];
-    Race race = await RaceFactory().create(json["RACE"]);
+    Subrace subrace = await SubraceFactory().create(json["SUBRACE"]);
     Profession profession = await ProfessionFactory().create(json["PROFESSION"]);
     List<Attribute> attributes = await _createAttributes(json["ATTRIBUTES"]);
     List<Skill> skills = await _createSkills(json['SKILLS'] ?? [], attributes);
@@ -47,7 +47,7 @@ class CharacterFactory extends Factory<Character> {
 
     Character character = Character(
         name: name,
-        race: race,
+        subrace: subrace,
         profession: profession,
         attributes: attributes,
         skills: skills,
@@ -58,7 +58,7 @@ class CharacterFactory extends Factory<Character> {
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(Character object, [optimised = true]) async {
+  Future<Map<String, dynamic>> toMap(Character object, {optimised = true, database = false}) async {
     List meleeWeapons = [];
     for (MeleeWeapon weapon in object.getMeleeWeapons()) {
       meleeWeapons.add(await MeleeWeaponFactory().toMap(weapon));
@@ -90,8 +90,8 @@ class CharacterFactory extends Factory<Character> {
       "RANGED_WEAPONS": rangedWeapons,
       "ARMOUR": armourList,
     };
-    if (object.race != null) {
-      map["RACE"] = await RaceFactory().toMap(object.race!);
+    if (object.subrace != null) {
+      map["SUBRACE"] = await SubraceFactory().toMap(object.subrace!);
     }
     if (object.profession != null) {
       map["PROFESSION"] = await ProfessionFactory().toMap(object.profession!);

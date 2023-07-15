@@ -62,7 +62,7 @@ class Skill {
 class BaseSkill {
   int? id;
   String name;
-  String description;
+  String? description;
   bool advanced;
   bool grouped;
   int? attributeID;
@@ -71,9 +71,9 @@ class BaseSkill {
   BaseSkill(
       {required this.id,
       required this.name,
-      required this.description,
       required this.advanced,
       required this.grouped,
+      this.description,
       this.attribute});
 
   int getTotalValue() {

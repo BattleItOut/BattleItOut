@@ -26,7 +26,7 @@ class SkillFactory extends Factory<Skill> {
         specialisation: map["SPECIALISATION"],
         advances: map["ADVANCES"] ?? 0,
         earning: map["EARNING"] ?? false,
-        canAdvance: map["ADVANCABLE"] ?? false);
+        canAdvance: map["CAN_ADVANCE"] ?? false);
     if (map["BASE_SKILL_ID"] != null) {
       skill.baseSkillID = map["BASE_SKILL_ID"];
       skill.baseSkill = await BaseSkillFactory(attributes).get(map["BASE_SKILL_ID"]);
@@ -35,14 +35,14 @@ class SkillFactory extends Factory<Skill> {
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(Skill object, [optimised = true]) async {
+  Future<Map<String, dynamic>> toMap(Skill object, {optimised = true, database = false}) async {
     Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,
       "SPECIALISATION": object.specialisation,
       "ADVANCES": object.advances,
       "EARNING": object.earning,
-      "ADVANCABLE": object.canAdvance
+      "CAN_ADVANCE": object.canAdvance
     };
     if (optimised) {
       map = await optimise(map);
@@ -64,7 +64,7 @@ class BaseSkillFactory extends Factory<BaseSkill> {
   get tableName => 'skills_base';
 
   @override
-  BaseSkill fromMap(Map<String, dynamic> map) {
+  Future<BaseSkill> fromMap(Map<String, dynamic> map) async {
     Attribute? attribute = attributes?.firstWhere((attribute) => attribute.id == map["ATTRIBUTE_ID"]);
     return BaseSkill(
         id: map["ID"],
@@ -76,7 +76,7 @@ class BaseSkillFactory extends Factory<BaseSkill> {
   }
 
   @override
-  Map<String, dynamic> toMap(BaseSkill object, [optimised = true]) {
+  Future<Map<String, dynamic>> toMap(BaseSkill object, {optimised = true, database = false}) async {
     return {
       "ID": object.id,
       "NAME": object.name,

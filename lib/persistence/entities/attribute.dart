@@ -3,23 +3,23 @@ class Attribute {
   String name;
   String shortName;
   String description;
-  int rollable;
+  bool canRoll;
   int importance;
 
   int base;
   int advances;
-  bool advancable;
+  bool canAdvance;
 
   Attribute(
       {required this.id,
       required this.name,
       required this.shortName,
       required this.description,
-      required this.rollable,
+      required this.canRoll,
       required this.importance,
       this.base = 0,
       this.advances = 0,
-      this.advancable = false});
+      this.canAdvance = false});
 
   int getTotalValue() {
     return base + advances;
@@ -38,12 +38,12 @@ class Attribute {
           name == other.name &&
           shortName == other.shortName &&
           description == other.description &&
-          rollable == other.rollable &&
+          canRoll == other.canRoll &&
           importance == other.importance;
 
   @override
   int get hashCode =>
-      id.hashCode ^ name.hashCode ^ shortName.hashCode ^ description.hashCode ^ rollable.hashCode ^ importance.hashCode;
+      id.hashCode ^ name.hashCode ^ shortName.hashCode ^ description.hashCode ^ canRoll.hashCode ^ importance.hashCode;
 
   @override
   String toString() {

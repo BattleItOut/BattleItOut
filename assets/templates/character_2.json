@@ -1,6 +1,6 @@
 {
   "NAME": "Matei Gwiazdowróż",
-  "RACE": {
+  "SUBRACE": {
     "ID": 6
   },
   "PROFESSION": {
@@ -11,7 +11,7 @@
       "ID": 1,
       "BASE": 29,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 2,
@@ -41,13 +41,13 @@
       "ID": 8,
       "BASE": 44,
       "ADVANCES": 7,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 9,
       "BASE": 57,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 10,
@@ -58,12 +58,12 @@
     {
       "ID": 3,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 8,
       "ADVANCES": 3,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 12,
@@ -72,7 +72,7 @@
     {
       "ID": 24,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 161,
@@ -89,32 +89,32 @@
     {
       "ID": 6,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 38,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 33,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 15,
       "ADVANCES": 10,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 104,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 58,
       "ADVANCES": 15,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 53,
@@ -127,14 +127,14 @@
     {
       "ID": 128,
       "ADVANCES": 9,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     }
   ],
   "TALENTS": [
     {
       "ID": 31,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 38,
@@ -147,7 +147,7 @@
     {
       "ID": 134,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 74,
@@ -160,12 +160,12 @@
     {
       "ID": 38,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 223,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     }
   ],
   "MELEE_WEAPONS": [

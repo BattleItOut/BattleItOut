@@ -6,12 +6,12 @@ class TraitFactory extends Factory<Trait> {
   get tableName => 'npc_traits';
 
   @override
-  fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
+  Future<Trait> fromMap(Map<String, dynamic> map) async {
     return Trait(id: map["ID"], name: map["NAME"], description: map["DESCRIPTION"]);
   }
 
   @override
-  Map<String, dynamic> toMap(Trait object, [optimised = true]) {
+  Future<Map<String, dynamic>> toMap(Trait object, {optimised = true, database = false}) async {
     return {
       "ID": object.id,
       "NAME": object.name,

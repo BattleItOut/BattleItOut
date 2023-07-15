@@ -1,17 +1,25 @@
 import 'package:battle_it_out/persistence/database_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
-abstract class DAO<T> {
+abstract class DAO {
   get tableName;
 
-  Future<Map<String, dynamic>> getMap(int id) async {
+  Future<Map<String, Object?>> getMap(int id) async {
     return getMapWhere(where: "ID = ?", whereArgs: [id]);
   }
 
-  Future<Map<String, dynamic>> getMapWhere({where, List<Object>? whereArgs}) async {
+  Future<Map<String, Object?>> getMapWhere({String? where, List<Object>? whereArgs}) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
-    return (await database.query(tableName, where: where, whereArgs: whereArgs))[0];
+    List<Map<String, Object?>> list = (await database.query(tableName, where: where, whereArgs: whereArgs));
+    return list.firstOrNull ?? {};
+  }
+
+  Future<int> getNextId() async {
+    Database? database = await DatabaseProvider.instance.getDatabase();
+
+    Map<String, Object?>? list = (await database.rawQuery("SELECT MAX(ID)+1 AS NEXT_ID FROM $tableName")).firstOrNull;
+    return (list?["NEXT_ID"] as int?) ?? 1;
   }
 
   Future<List<Map<String, Object?>>> getMapAll({String? where, List<Object>? whereArgs}) async {
@@ -20,13 +28,13 @@ abstract class DAO<T> {
     return await database.query(tableName, where: where, whereArgs: whereArgs);
   }
 
-  Future<int> put(map) async {
+  Future<void> insertMap(Map<String, Object?> map, [String? tableName]) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
-    return await database.insert(tableName, map);
+    database.insert(tableName ?? this.tableName, map);
   }
 
-  Future<int> set(int id, map) async {
+  Future<int> set(int id, Map<String, Object?> map) async {
     Database? database = await DatabaseProvider.instance.getDatabase();
 
     return await database.update(tableName, map, where: "ID = ?", whereArgs: [id]);

@@ -1,11 +1,11 @@
 class Profession {
-  int? id;
+  int id;
   String name;
   String source;
-  int? level;
-  ProfessionCareer? career;
+  int level;
+  ProfessionCareer career;
 
-  Profession({this.id, required this.name, this.level, this.source = "Custom", this.career});
+  Profession({required this.id, required this.name, required this.career, this.level = 1, this.source = "Custom"});
 
   @override
   String toString() {
@@ -28,12 +28,12 @@ class Profession {
 }
 
 class ProfessionCareer {
-  int? id;
+  int id;
   String name;
   String source;
-  ProfessionClass? professionClass;
+  ProfessionClass professionClass;
 
-  ProfessionCareer({required this.id, required this.name, this.professionClass, required this.source});
+  ProfessionCareer({required this.id, required this.name, required this.professionClass, required this.source});
 
   @override
   String toString() {
@@ -55,7 +55,7 @@ class ProfessionCareer {
 }
 
 class ProfessionClass {
-  int? id;
+  int id;
   String name;
   String source;
 

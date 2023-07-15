@@ -11,7 +11,7 @@ import 'package:flutter/foundation.dart';
 
 class Character {
   String name;
-  Race? race;
+  Subrace? subrace;
   Profession? profession;
   List<Attribute> attributes = [];
   List<Skill> skills = [];
@@ -23,7 +23,7 @@ class Character {
 
   Character(
       {required this.name,
-      this.race,
+      this.subrace,
       this.profession,
       List<Attribute> attributes = const [],
       List<Skill> skills = const [],
@@ -37,7 +37,7 @@ class Character {
 
   static Character from(Character character) {
     var newInstance = Character(
-        name: character.name, race: character.race, profession: character.profession, attributes: character.attributes);
+        name: character.name, subrace: character.subrace, profession: character.profession, attributes: character.attributes);
     newInstance.skills = character.skills;
     newInstance.talents = character.talents;
     newInstance.initiative = character.initiative;
@@ -160,7 +160,7 @@ class Character {
       other is Character &&
           runtimeType == other.runtimeType &&
           name == other.name &&
-          race == other.race &&
+          subrace == other.subrace &&
           profession == other.profession &&
           listEquals(attributes, other.attributes) &&
           listEquals(skills, other.skills) &&
@@ -171,7 +171,7 @@ class Character {
   @override
   int get hashCode =>
       name.hashCode ^
-      race.hashCode ^
+      subrace.hashCode ^
       profession.hashCode ^
       attributes.hashCode ^
       skills.hashCode ^
@@ -181,6 +181,6 @@ class Character {
 
   @override
   String toString() {
-    return "Character (name=$name, race=$race, profession=$profession)";
+    return "Character (name=$name, subrace=$subrace, profession=$profession)";
   }
 }

@@ -61,7 +61,7 @@ class Talent {
 class BaseTalent {
   int id;
   String name;
-  String description;
+  String? description;
   String source;
   Attribute? attribute;
   int? attributeID;
@@ -71,8 +71,8 @@ class BaseTalent {
   BaseTalent(
       {required this.id,
       required this.name,
-      required this.description,
       required this.source,
+      this.description,
       this.attribute,
       this.constLvl,
       required this.grouped});

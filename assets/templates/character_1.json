@@ -1,6 +1,6 @@
 {
   "NAME": "Logazgrum Odanirson",
-  "RACE": {
+  "SUBRACE": {
     "ID": 2
   },
   "PROFESSION": {
@@ -11,7 +11,7 @@
       "ID": 1,
       "BASE": 47,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 2,
@@ -25,7 +25,7 @@
       "ID": 4,
       "BASE": 36,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 5,
@@ -35,7 +35,7 @@
       "ID": 6,
       "BASE": 26,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 7,
@@ -58,37 +58,37 @@
     {
       "ID": 1,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 24,
       "ADVANCES": 7,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 11,
       "ADVANCES": 10,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 159,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 17,
       "ADVANCES": 7,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 22,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 29,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 38,
@@ -97,7 +97,7 @@
     {
       "ID": 32,
       "ADVANCES": 10,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 16,
@@ -152,22 +152,22 @@
     {
       "ID": 26,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 57,
       "LVL": 0,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 157,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 185,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     }
   ],
   "MELEE_WEAPONS": [
