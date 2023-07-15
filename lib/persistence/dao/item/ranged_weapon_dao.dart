@@ -61,8 +61,7 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
       }
     }
     if (map["AMMUNITION"] != null) {
-      rangedWeapon.ammunition
-          .addAll([for (var tempMap in map["AMMUNITION"]) await AmmunitionFactory().create(tempMap)]);
+      rangedWeapon.ammunition.addAll([for (var tempMap in map["AMMUNITION"]) await AmmunitionFactory().create(tempMap)]);
     }
     return rangedWeapon;
   }
@@ -80,19 +79,14 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
       "USE_AMMO": object.useAmmo ? 1 : 0
     };
     if (!database) {
-      map["QUALITIES"] = [
-        for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded))
-          await ItemQualityFactory().toMap(quality)
-      ];
-      map["AMMUNITION"] = [for (Ammunition ammo in object.ammunition) await AmmunitionFactory().toMap(ammo)];
+      if (object.qualities.isNotEmpty) {
+        map["QUALITIES"] = [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toMap(quality)];
+      }
+      if (object.ammunition.isNotEmpty) {
+        map["AMMUNITION"] = [for (Ammunition ammo in object.ammunition) await AmmunitionFactory().toMap(ammo)];
+      }
       if (optimised) {
         map = await optimise(map);
-        if (object.qualities.isEmpty) {
-          map.remove("QUALITIES");
-        }
-        if (object.ammunition.isEmpty) {
-          map.remove("AMMUNITION");
-        }
       }
     }
     return map;

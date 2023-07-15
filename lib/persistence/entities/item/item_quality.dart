@@ -6,8 +6,6 @@ class ItemQuality {
   String? description;
   int? value;
 
-  bool mapNeeded = true;
-
   ItemQuality(
       {required this.id,
       required this.name,

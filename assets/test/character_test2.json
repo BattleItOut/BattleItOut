@@ -11,7 +11,7 @@
       "ID": 1,
       "BASE": 34,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 2,
@@ -25,7 +25,7 @@
       "ID": 4,
       "BASE": 30,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 5,
@@ -47,7 +47,7 @@
       "ID": 9,
       "BASE": 30,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 10,
@@ -74,18 +74,18 @@
     {
       "ID": 4,
       "ADVANCES": 5,
-      "ADVANCABLE": true,
+      "CAN_ADVANCE": true,
       "EARNING": true
     },
     {
       "ID": 11,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 12,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 17,
@@ -94,12 +94,12 @@
     {
       "ID": 24,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 34,
       "ADVANCES": 12,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 38,
@@ -112,7 +112,7 @@
     {
       "ID": 7,
       "ADVANCES": 8,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 197,
@@ -125,12 +125,12 @@
     {
       "ID": 146,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 9,
       "ADVANCES": 12,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 46,
@@ -161,22 +161,22 @@
     {
       "ID": 14,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 31,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 124,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 48,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     }
   ],
   "ARMOUR": [

@@ -33,15 +33,13 @@ class AmmunitionFactory extends ItemFactory<Ammunition> {
       "RANGE_BONUS": object.rangeBonus,
       "DAMAGE_BONUS": object.damageBonus,
       "COUNT": object.count,
-      "QUALITIES": [
-        for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded))
-          await ItemQualityFactory().toMap(quality)
-      ]
     };
-    if (optimised) {
-      map = await optimise(map);
-      if (object.qualities.isEmpty) {
-        map.remove("QUALITIES");
+    if (!database) {
+      if (object.qualities.isNotEmpty) {
+        map["QUALITIES"] = [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toMap(quality)];
+      }
+      if (optimised) {
+        map = await optimise(map);
       }
     }
     return map;

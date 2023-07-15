@@ -48,10 +48,6 @@ abstract class Factory<T> extends DAO implements Serializer<T> {
     ];
   }
 
-  Future<int> getNextId() async {
-    return (await getNextIdMap())["NEXT_ID"] ?? 1;
-  }
-
   Future<Map<String, dynamic>> optimise(Map<String, dynamic> map) async {
     map.removeWhere((key, value) => value == null || defaultValues[key] == value);
     if (map["ID"] != null) {

@@ -140,7 +140,7 @@ void professionSerializationTest() {
 }
 void attributeSerializationTest() {
   Map<String, dynamic> basicAttributeMap = {"ID": 1};
-  Map<String, dynamic> maxEditedAttributeMap = {"ID": 1, "BASE": 38, "ADVANCES": 5, "ADVANCABLE": true};
+  Map<String, dynamic> maxEditedAttributeMap = {"ID": 1, "BASE": 38, "ADVANCES": 5, "CAN_ADVANCE": true};
 
   group("Attribute serialization", () {
     test("Basic from database", () async {
@@ -149,11 +149,11 @@ void attributeSerializationTest() {
       expect(basicAttribute.name, "WEAPON_SKILL");
       expect(basicAttribute.shortName, "WEAPON_SKILL_SHORT");
       expect(basicAttribute.description, "WEAPON_SKILL_DESC");
-      expect(basicAttribute.rollable, 1);
+      expect(basicAttribute.canRoll, true);
       expect(basicAttribute.importance, 0);
       expect(basicAttribute.base, 0);
       expect(basicAttribute.advances, 0);
-      expect(basicAttribute.advancable, false);
+      expect(basicAttribute.canAdvance, false);
     });
     test("Edited", () async {
       Attribute maxEditedAttribute = await AttributeFactory().create(maxEditedAttributeMap);
@@ -161,18 +161,18 @@ void attributeSerializationTest() {
       expect(maxEditedAttribute.name, "WEAPON_SKILL");
       expect(maxEditedAttribute.shortName, "WEAPON_SKILL_SHORT");
       expect(maxEditedAttribute.description, "WEAPON_SKILL_DESC");
-      expect(maxEditedAttribute.rollable, 1);
+      expect(maxEditedAttribute.canRoll, true);
       expect(maxEditedAttribute.importance, 0);
       expect(maxEditedAttribute.base, 38);
       expect(maxEditedAttribute.advances, 5);
-      expect(maxEditedAttribute.advancable, true);
+      expect(maxEditedAttribute.canAdvance, true);
     });
     doubleSerializationTest(AttributeFactory(), [basicAttributeMap, maxEditedAttributeMap]);
   });
 }
 void skillSerializationTest() {
   Map<String, dynamic> basicSkillMap = {"ID": 1};
-  Map<String, dynamic> maxEditedSkillMap = {"ID": 1, "ADVANCES": 2, "ADVANCABLE": true, "EARNING": true};
+  Map<String, dynamic> maxEditedSkillMap = {"ID": 1, "ADVANCES": 2, "CAN_ADVANCE": true, "EARNING": true};
 
   group("Skill serialization", () {
     test("Basic from database", () async {
@@ -207,7 +207,7 @@ void skillSerializationTest() {
 }
 void talentSerializationTest() {
   Map<String, dynamic> basicTalentMap = {"ID": 1};
-  Map<String, dynamic> maxEditedTalentMap = {"ID": 1, "LVL": 1, "ADVANCABLE": true};
+  Map<String, dynamic> maxEditedTalentMap = {"ID": 1, "LVL": 1, "CAN_ADVANCE": true};
 
   group("Talent serialization", () {
     test("Basic from database", () async {

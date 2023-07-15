@@ -35,7 +35,7 @@
       "ID": 7,
       "BASE": 35,
       "ADVANCES": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 8,
@@ -49,7 +49,7 @@
       "ID": 10,
       "BASE": 43,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 11,
@@ -76,27 +76,27 @@
     {
       "ID": 1,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 3,
       "ADVANCES": 15,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 202,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 17,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 22,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 38,
@@ -125,17 +125,17 @@
     {
       "ID": 174,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 69,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 30,
       "ADVANCES": 4,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     }
   ],
   "TALENTS": [
@@ -158,22 +158,22 @@
     {
       "ID": 21,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 5,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 90,
       "LVL": 0,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 87,
       "LVL": 0,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     }
   ],
   "MELEE_WEAPONS": [

@@ -19,13 +19,13 @@
       "ID": 3,
       "BASE": 41,
       "ADVANCES": 9,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 4,
       "BASE": 36,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 5,
@@ -39,7 +39,7 @@
       "ID": 7,
       "BASE": 36,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 8,
@@ -58,32 +58,32 @@
     {
       "ID": 106,
       "ADVANCES": 0,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 1,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 8,
       "ADVANCES": 0,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 12,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 24,
       "ADVANCES": 10,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 11,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 22,
@@ -104,7 +104,7 @@
     {
       "ID": 99,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 13,
@@ -113,7 +113,7 @@
     {
       "ID": 27,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 197,
@@ -130,17 +130,17 @@
     {
       "ID": 27,
       "ADVANCES": 5,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 82,
       "ADVANCES": 10,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 200,
       "ADVANCES": 2,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     }
   ],
   "TALENTS": [
@@ -167,22 +167,22 @@
     {
       "ID": 6,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 244,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 243,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     },
     {
       "ID": 83,
       "LVL": 1,
-      "ADVANCABLE": true
+      "CAN_ADVANCE": true
     }
   ],
   "MELEE_WEAPONS": [

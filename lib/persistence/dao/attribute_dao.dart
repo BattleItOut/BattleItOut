@@ -12,11 +12,11 @@ class AttributeFactory extends Factory<Attribute> {
         name: map['NAME'],
         shortName: map["SHORT_NAME"],
         description: map["DESCRIPTION"],
-        rollable: map['ROLLABLE'],
+        canRoll: map['CAN_ROLL'] == 1,
         importance: map['IMPORTANCE'],
         base: map["BASE"] ?? 0,
         advances: map["ADVANCES"] ?? 0,
-        advancable: map["ADVANCABLE"] ?? false);
+        canAdvance: map["CAN_ADVANCE"] ?? false);
   }
 
   @override
@@ -26,11 +26,11 @@ class AttributeFactory extends Factory<Attribute> {
       "NAME": object.name,
       "SHORT_NAME": object.shortName,
       "DESCRIPTION": object.description,
-      "ROLLABLE": object.rollable,
+      "CAN_ROLL": object.canRoll ? 1 : 0,
       "IMPORTANCE": object.importance,
       "BASE": object.base,
       "ADVANCES": object.advances,
-      "ADVANCABLE": object.advancable
+      "CAN_ADVANCE": object.canAdvance
     };
     if (optimised) {
       map = await optimise(map);

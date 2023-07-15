@@ -65,10 +65,7 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
       "ITEM_CATEGORY": object.category,
     };
     if (!database) {
-      map["QUALITIES"] = [
-        for (ItemQuality quality in object.qualities.where((e) => e.mapNeeded)) await ItemQualityFactory().toMap(
-            quality)
-      ];
+      map["QUALITIES"] = [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toMap(quality)];
       if (optimised) {
         map = await optimise(map);
         if (object.qualities.isEmpty) {

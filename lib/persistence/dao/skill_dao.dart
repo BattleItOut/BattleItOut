@@ -26,7 +26,7 @@ class SkillFactory extends Factory<Skill> {
         specialisation: map["SPECIALISATION"],
         advances: map["ADVANCES"] ?? 0,
         earning: map["EARNING"] ?? false,
-        canAdvance: map["ADVANCABLE"] ?? false);
+        canAdvance: map["CAN_ADVANCE"] ?? false);
     if (map["BASE_SKILL_ID"] != null) {
       skill.baseSkillID = map["BASE_SKILL_ID"];
       skill.baseSkill = await BaseSkillFactory(attributes).get(map["BASE_SKILL_ID"]);
@@ -42,7 +42,7 @@ class SkillFactory extends Factory<Skill> {
       "SPECIALISATION": object.specialisation,
       "ADVANCES": object.advances,
       "EARNING": object.earning,
-      "ADVANCABLE": object.canAdvance
+      "CAN_ADVANCE": object.canAdvance
     };
     if (optimised) {
       map = await optimise(map);

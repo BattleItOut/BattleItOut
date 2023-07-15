@@ -44,7 +44,6 @@ abstract class ItemFactory<T extends Item> extends Factory<T> {
     List<ItemQuality> qualities = [];
     for (var entry in map) {
       ItemQuality itemQuality = await ItemQualityFactory().get(entry["QUALITY_ID"]);
-      itemQuality.mapNeeded = false;
       qualities.add(itemQuality);
     }
     return qualities;

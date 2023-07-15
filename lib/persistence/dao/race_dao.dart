@@ -44,9 +44,9 @@ class SubraceFactory extends Factory<Subrace> {
       "SRC": object.source,
       "DEF": object.defaultSubrace ? 1 : 0
     };
-    // if (optimised) {
-    //   map = await optimise(map);
-    // }
+    if (optimised) {
+      map = await optimise(map);
+    }
     return map;
   }
 }
@@ -81,12 +81,6 @@ class RaceFactory extends Factory<Race> {
     if (optimised) {
       map = await optimise(map);
     }
-
-    // if (object.subrace != null && (object.subrace != await getDefaultSubrace(map["ID"]))) {
-    //   map["SUBRACE"] = await SubraceFactory().toMap(object.subrace!);
-    // } else {
-    //   map.remove("SUBRACE");
-    // }
     return map;
   }
 }

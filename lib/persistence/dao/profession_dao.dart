@@ -20,14 +20,13 @@ class ProfessionFactory extends Factory<Profession> {
 
   @override
   Future<Profession> fromMap(Map<String, dynamic> map) async {
-    Profession profession = Profession(
+    return Profession(
       id: map["ID"] ?? await getNextId(),
       name: map["NAME"],
       level: map["LEVEL"],
       source: map["SOURCE"],
       career: await getCareer(map),
     );
-    return profession;
   }
 
   @override

@@ -26,7 +26,7 @@ class TalentFactory extends Factory<Talent> {
         name: map['NAME'],
         specialisation: map["SPECIALISATION"],
         currentLvl: map["LVL"] ?? 0,
-        canAdvance: map["ADVANCABLE"] ?? false);
+        canAdvance: map["CAN_ADVANCE"] ?? false);
 
     // Base talent
     if (map["BASE_TALENT_ID"] != null) {
@@ -48,7 +48,7 @@ class TalentFactory extends Factory<Talent> {
       "NAME": object.name,
       "SPECIALISATION": object.specialisation,
       "LVL": object.currentLvl,
-      "ADVANCABLE": object.canAdvance
+      "CAN_ADVANCE": object.canAdvance
     };
     if (optimised) {
       map = await optimise(map);
