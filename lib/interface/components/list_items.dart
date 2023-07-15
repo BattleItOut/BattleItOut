@@ -1,7 +1,7 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
-import 'package:battle_it_out/persistence/entities/character.dart';
+import 'package:battle_it_out/persistence/entities/character/simple_character.dart';
 import 'package:flutter/material.dart';
 
 class ListItem extends Container {
@@ -44,7 +44,7 @@ class TileListItem extends ListItem {
 }
 
 class CharacterListItem extends TileListItem {
-  CharacterListItem({Key? key, required Character character, required BuildContext context}) : super(
+  CharacterListItem({Key? key, required SimpleCharacter character, required BuildContext context}) : super(
     key: key,
     child: ListTile(
       subtitle: Text("${character.subrace?.name.localise(context) ?? ""}, ${character.profession?.name.localise(context) ?? ""}"),

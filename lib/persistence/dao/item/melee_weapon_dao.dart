@@ -68,9 +68,6 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
       map["QUALITIES"] = [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toMap(quality)];
       if (optimised) {
         map = await optimise(map);
-        if (object.qualities.isEmpty) {
-          map.remove("QUALITIES");
-        }
       }
     }
     return map;

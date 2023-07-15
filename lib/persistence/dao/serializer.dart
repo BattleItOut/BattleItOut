@@ -50,6 +50,7 @@ abstract class Factory<T> extends DAO implements Serializer<T> {
 
   Future<Map<String, dynamic>> optimise(Map<String, dynamic> map) async {
     map.removeWhere((key, value) => value == null || defaultValues[key] == value);
+    map.removeWhere((key, value) => value is List && value.isEmpty);
     if (map["ID"] != null) {
       Map<String, dynamic> defaultMap = await toMap(await get(map["ID"]), optimised: false);
       map.removeWhere((key, value) =>

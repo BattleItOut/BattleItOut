@@ -61,9 +61,7 @@ class ArmourFactory extends ItemFactory<Armour> {
       "ITEM_CATEGORY": object.category
     };
     if (!database) {
-      if (object.qualities.isNotEmpty) {
-        map["QUALITIES"] = [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toMap(quality)];
-      }
+      map["QUALITIES"] = [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toMap(quality)];
       if (optimised) {
         map = await optimise(map);
       }

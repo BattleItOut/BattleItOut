@@ -32,6 +32,10 @@ class Skill {
     return specialisation != null;
   }
 
+  bool isImportant() {
+    return advances != 0 || canAdvance || earning;
+  }
+
   Attribute? getAttribute() {
     return baseSkill!.getAttribute();
   }

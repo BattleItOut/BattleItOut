@@ -79,12 +79,8 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
       "USE_AMMO": object.useAmmo ? 1 : 0
     };
     if (!database) {
-      if (object.qualities.isNotEmpty) {
-        map["QUALITIES"] = [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toMap(quality)];
-      }
-      if (object.ammunition.isNotEmpty) {
-        map["AMMUNITION"] = [for (Ammunition ammo in object.ammunition) await AmmunitionFactory().toMap(ammo)];
-      }
+      map["QUALITIES"] = [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toMap(quality)];
+      map["AMMUNITION"] = [for (Ammunition ammo in object.ammunition) await AmmunitionFactory().toMap(ammo)];
       if (optimised) {
         map = await optimise(map);
       }

@@ -12,7 +12,7 @@ import 'package:battle_it_out/persistence/dao/serializer.dart';
 import 'package:battle_it_out/persistence/dao/skill_dao.dart';
 import 'package:battle_it_out/persistence/dao/talent_dao.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/character.dart';
+import 'package:battle_it_out/persistence/entities/character/character.dart';
 import 'package:battle_it_out/persistence/entities/item/armour.dart';
 import 'package:battle_it_out/persistence/entities/item/melee_weapon.dart';
 import 'package:battle_it_out/persistence/entities/item/ranged_weapon.dart';

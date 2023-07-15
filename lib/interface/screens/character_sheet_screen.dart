@@ -2,7 +2,7 @@ import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
-import 'package:battle_it_out/persistence/entities/character.dart';
+import 'package:battle_it_out/persistence/entities/character/simple_character.dart';
 import 'package:battle_it_out/persistence/entities/item/ammunition.dart';
 import 'package:battle_it_out/persistence/entities/item/item.dart';
 import 'package:battle_it_out/persistence/entities/item/melee_weapon.dart';
@@ -12,9 +12,9 @@ import 'package:battle_it_out/persistence/entities/talent.dart';
 import 'package:flutter/material.dart';
 
 class CharacterSheetScreen extends StatefulWidget {
-  const CharacterSheetScreen({Key? key, required this.character}) : super(key: key);
+  final SimpleCharacter character;
 
-  final Character character;
+  const CharacterSheetScreen({Key? key, required this.character}) : super(key: key);
 
   @override
   State<CharacterSheetScreen> createState() => _CharacterSheetScreenState();

@@ -1,6 +1,6 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/screens/character_selection_screen.dart';
-import 'package:battle_it_out/persistence/entities/character.dart';
+import 'package:battle_it_out/persistence/entities/character/character.dart';
 import 'package:flutter/material.dart';
 
 import '../components/list_items.dart';

@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:battle_it_out/persistence/dao/character_dao.dart';
 import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/character.dart';
+import 'package:battle_it_out/persistence/entities/character/character.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
 import 'package:flutter_test/flutter_test.dart';

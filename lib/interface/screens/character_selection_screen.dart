@@ -3,7 +3,7 @@ import 'package:battle_it_out/interface/components/alert.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/interface/state_container.dart';
-import 'package:battle_it_out/persistence/entities/character.dart';
+import 'package:battle_it_out/persistence/entities/character/simple_character.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
@@ -16,7 +16,7 @@ class CharacterSelectionScreen extends StatefulWidget {
 }
 
 class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
-  List<Character> savedCharacters = [];
+  List<SimpleCharacter> savedCharacters = [];
 
   List<CharacterListItem> _generateCharacters() {
     return List<CharacterListItem>.generate(
@@ -29,7 +29,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
   }
 
   void _select(int index) {
-    var character = Character.from(savedCharacters[index]);
+    var character = SimpleCharacter.from(savedCharacters[index]);
     showAlert(
       "INITIATIVE".localise(context),
       [
@@ -57,7 +57,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
         Tuple2((value) => name = value, String)
       ],
       () {
-        var newCharacter = Character(
+        var newCharacter = SimpleCharacter(
           name: name!,
         );
         StateContainer.of(context).addCharacter(newCharacter);

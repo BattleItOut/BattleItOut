@@ -1,4 +1,5 @@
 import 'package:battle_it_out/persistence/entities/attribute.dart';
+import 'package:battle_it_out/persistence/entities/character/base_character.dart';
 import 'package:battle_it_out/persistence/entities/item/armour.dart';
 import 'package:battle_it_out/persistence/entities/item/item.dart';
 import 'package:battle_it_out/persistence/entities/item/melee_weapon.dart';
@@ -7,56 +8,36 @@ import 'package:battle_it_out/persistence/entities/profession.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
 import 'package:battle_it_out/persistence/entities/skill.dart';
 import 'package:battle_it_out/persistence/entities/talent.dart';
-import 'package:flutter/foundation.dart';
+import 'package:battle_it_out/persistence/entities/trait.dart';
 
-class Character {
-  String name;
+class SimpleCharacter extends BaseCharacter {
   Subrace? subrace;
   Profession? profession;
   List<Attribute> attributes = [];
   List<Skill> skills = [];
   List<Talent> talents = [];
-
+  List<Trait> traits = [];
   List<Item> items = [];
-  int? initiative;
-  // List<Trait> traits;
 
-  Character(
-      {required this.name,
+  @override
+  get initiativeHidden => false;
+
+  SimpleCharacter(
+      {required super.name,
+      super.description,
       this.subrace,
       this.profession,
+      super.initiative,
       List<Attribute> attributes = const [],
       List<Skill> skills = const [],
       List<Talent> talents = const [],
+      List<Trait> traits = const [],
       List<Item> items = const []}) {
     this.items.addAll(items);
     this.attributes.addAll(attributes);
     this.skills.addAll(skills);
     this.talents.addAll(talents);
-  }
-
-  static Character from(Character character) {
-    var newInstance = Character(
-        name: character.name, subrace: character.subrace, profession: character.profession, attributes: character.attributes);
-    newInstance.skills = character.skills;
-    newInstance.talents = character.talents;
-    newInstance.initiative = character.initiative;
-    return newInstance;
-  }
-
-  void addItem(Item item) {
-    int index = items.indexOf(item);
-    if (index == -1) {
-      items.add(item);
-    } else {
-      items[index].count += 1;
-    }
-  }
-
-  void addItems(List<Item> items) {
-    for (Item item in items) {
-      addItem(item);
-    }
+    this.traits.addAll(traits);
   }
 
   // List getters
@@ -154,33 +135,16 @@ class Character {
     return output;
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Character &&
-          runtimeType == other.runtimeType &&
-          name == other.name &&
-          subrace == other.subrace &&
-          profession == other.profession &&
-          listEquals(attributes, other.attributes) &&
-          listEquals(skills, other.skills) &&
-          listEquals(talents, other.talents) &&
-          listEquals(items, other.items) &&
-          initiative == other.initiative;
-
-  @override
-  int get hashCode =>
-      name.hashCode ^
-      subrace.hashCode ^
-      profession.hashCode ^
-      attributes.hashCode ^
-      skills.hashCode ^
-      talents.hashCode ^
-      items.hashCode ^
-      initiative.hashCode;
-
-  @override
-  String toString() {
-    return "Character (name=$name, subrace=$subrace, profession=$profession)";
+  static SimpleCharacter from(SimpleCharacter character) {
+    return SimpleCharacter(
+        name: character.name,
+        subrace: character.subrace,
+        profession: character.profession,
+        attributes: character.attributes,
+        skills: character.skills,
+        talents: character.talents,
+        traits: character.traits,
+        items: character.items,
+        initiative: character.initiative);
   }
 }
