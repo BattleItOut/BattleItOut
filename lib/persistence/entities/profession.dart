@@ -1,16 +1,11 @@
-import 'package:battle_it_out/persistence/entities/dto.dart';
-import 'package:battle_it_out/persistence/entities/skill.dart';
-
-class Profession extends DTO {
-  int? id;
+class Profession {
+  int id;
   String name;
-  int level;
   String source;
-  ProfessionCareer? career;
+  int level;
+  ProfessionCareer career;
 
-  Map<int, Skill>? professionSkills;
-
-  Profession({this.id, required this.name, this.level = 1, this.source = "Custom", this.career});
+  Profession({required this.id, required this.name, required this.career, this.level = 1, this.source = "Custom"});
 
   @override
   String toString() {
@@ -18,13 +13,22 @@ class Profession extends DTO {
   }
 
   @override
-  Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "LEVEL": level, "SOURCE": source, "CAREER_ID": career?.id};
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Profession &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          source == other.source &&
+          level == other.level &&
+          career == other.career;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode ^ source.hashCode ^ level.hashCode ^ career.hashCode;
 }
 
-class ProfessionCareer extends DTO {
-  int? id;
+class ProfessionCareer {
+  int id;
   String name;
   String source;
   ProfessionClass professionClass;
@@ -37,12 +41,20 @@ class ProfessionCareer extends DTO {
   }
 
   @override
-  Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "CLASS_ID": professionClass.id, "SOURCE": source};
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProfessionCareer &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          source == other.source &&
+          professionClass == other.professionClass;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode ^ source.hashCode ^ professionClass.hashCode;
 }
 
-class ProfessionClass extends DTO {
+class ProfessionClass {
   int id;
   String name;
   String source;
@@ -55,7 +67,14 @@ class ProfessionClass extends DTO {
   }
 
   @override
-  Map<String, dynamic> toMap() {
-    return {"ID": id, "NAME": name, "SOURCE": source};
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProfessionClass &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          source == other.source;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode ^ source.hashCode;
 }

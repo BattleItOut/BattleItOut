@@ -1,0 +1,195 @@
+{
+  "NAME": "Test2",
+  "SUBRACE": {
+    "ID": 1
+  },
+  "PROFESSION": {
+    "ID": 229
+  },
+  "ATTRIBUTES": [
+    {
+      "ID": 1,
+      "BASE": 34,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 2,
+      "BASE": 30
+    },
+    {
+      "ID": 3,
+      "BASE": 31
+    },
+    {
+      "ID": 4,
+      "BASE": 30,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 5,
+      "BASE": 32
+    },
+    {
+      "ID": 6,
+      "BASE": 33
+    },
+    {
+      "ID": 7,
+      "BASE": 35
+    },
+    {
+      "ID": 8,
+      "BASE": 36
+    },
+    {
+      "ID": 9,
+      "BASE": 30,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 10,
+      "BASE": 43
+    },
+    {
+      "ID": 11,
+      "BASE": 4
+    },
+    {
+      "ID": 12,
+      "BASE": 3
+    },
+    {
+      "ID": 13,
+      "BASE": 3
+    }
+  ],
+  "SKILLS": [
+    {
+      "ID": 3,
+      "ADVANCES": 5
+    },
+    {
+      "ID": 4,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true,
+      "EARNING": true
+    },
+    {
+      "ID": 11,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 12,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 17,
+      "ADVANCES": 3
+    },
+    {
+      "ID": 24,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 34,
+      "ADVANCES": 12,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 38,
+      "ADVANCES": 3
+    },
+    {
+      "ID": 13,
+      "ADVANCES": 3
+    },
+    {
+      "ID": 7,
+      "ADVANCES": 8,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 197,
+      "ADVANCES": 10
+    },
+    {
+      "ID": 124,
+      "ADVANCES": 5
+    },
+    {
+      "ID": 146,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 9,
+      "ADVANCES": 12,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 46,
+      "ADVANCES": 5
+    }
+  ],
+  "TALENTS": [
+    {
+      "ID": 21,
+      "LVL": 1
+    },
+    {
+      "ID": 195,
+      "LVL": 1
+    },
+    {
+      "ID": 199,
+      "LVL": 1
+    },
+    {
+      "ID": 123,
+      "LVL": 1
+    },
+    {
+      "ID": 233,
+      "LVL": 1
+    },
+    {
+      "ID": 14,
+      "LVL": 1,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 31,
+      "LVL": 1,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 124,
+      "LVL": 1,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 48,
+      "LVL": 1,
+      "CAN_ADVANCE": true
+    }
+  ],
+  "ARMOUR": [
+    {
+      "ID": 2
+    }
+  ],
+  "MELEE_WEAPONS": [
+    {
+      "ID": 25
+    },
+    {
+      "ID": 11
+    }
+  ]
+}

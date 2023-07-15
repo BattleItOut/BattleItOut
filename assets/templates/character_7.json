@@ -1,0 +1,221 @@
+{
+  "NAME": "Sir Ulfrik von Apfelbaum",
+  "SUBRACE": {
+    "NAME": "Człowiek",
+    "SIZE": 3,
+    "SUBRACE": {
+      "ID": 8
+    }
+  },
+  "PROFESSION": {
+    "ID": 245
+  },
+  "ATTRIBUTES": [
+    {
+      "ID": 1,
+      "BASE": 43
+    },
+    {
+      "ID": 2,
+      "BASE": 26
+    },
+    {
+      "ID": 3,
+      "BASE": 35,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 4,
+      "BASE": 31
+    },
+    {
+      "ID": 5,
+      "BASE": 30
+    },
+    {
+      "ID": 6,
+      "BASE": 30
+    },
+    {
+      "ID": 7,
+      "BASE": 26
+    },
+    {
+      "ID": 8,
+      "BASE": 31
+    },
+    {
+      "ID": 9,
+      "BASE": 26
+    },
+    {
+      "ID": 10,
+      "BASE": 30
+    },
+    {
+      "ID": 11,
+      "BASE": 4
+    },
+    {
+      "ID": 12,
+      "BASE": 5
+    },
+    {
+      "ID": 13,
+      "BASE": 0
+    },
+    {
+      "ID": 14,
+      "BASE": 6
+    },
+    {
+      "ID": 15,
+      "BASE": 0
+    }
+  ],
+  "SKILLS": [
+    {
+      "ID": 1,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 14,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 12,
+      "ADVANCES": 3
+    },
+    {
+      "ID": 163,
+      "ADVANCES": 0,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 22,
+      "ADVANCES": 3
+    },
+    {
+      "ID": 29,
+      "ADVANCES": 5
+    },
+    {
+      "ID": 4,
+      "ADVANCES": 5
+    },
+    {
+      "ID": 38,
+      "ADVANCES": 5
+    },
+    {
+      "ID": 35,
+      "ADVANCES": 5
+    },
+    {
+      "ID": 21,
+      "ADVANCES": 3
+    },
+    {
+      "ID": 47,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 13,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 7,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 197,
+      "ADVANCES": 10
+    },
+    {
+      "ID": 122,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 84,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
+    }
+  ],
+  "TALENTS": [
+    {
+      "ID": 166,
+      "LVL": 1
+    },
+    {
+      "ID": 57,
+      "LVL": 1
+    },
+    {
+      "ID": 142,
+      "LVL": 1
+    },
+    {
+      "ID": 16,
+      "LVL": 1
+    },
+    {
+      "ID": 19,
+      "LVL": 1
+    },
+    {
+      "ID": 176,
+      "LVL": 1
+    },
+    {
+      "ID": 180,
+      "LVL": 0,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 185,
+      "LVL": 1,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 186,
+      "LVL": 1,
+      "CAN_ADVANCE": true
+    },
+    {
+      "ID": 50,
+      "LVL": 0,
+      "CAN_ADVANCE": true
+    }
+  ],
+  "ARMOUR": [
+    {
+      "ID": 1
+    },
+    {
+      "ID": 9
+    }
+  ],
+  "MELEE_WEAPONS": [
+    {
+      "ID": 1,
+      "QUALITIES": [
+        {
+          "ID": 3
+        }
+      ]
+    },
+    {
+      "ID": 6
+    },
+    {
+      "ID": 8
+    }
+  ]
+}

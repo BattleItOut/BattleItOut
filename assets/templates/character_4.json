@@ -1,226 +1,227 @@
 {
-  "name": "Maddoc Wiatrownik",
-  "race": {
-    "race_id": 3
+  "NAME": "Maddoc Wiatrownik",
+  "SUBRACE": {
+    "ID": 3
   },
-  "profession": {
-    "profession_id": 69
+  "PROFESSION": {
+    "ID": 69
   },
-  "attributes": [
+  "ATTRIBUTES": [
     {
-      "id": 1,
-      "base": 19,
-      "advances": 0
+      "ID": 1,
+      "BASE": 19
     },
     {
-      "id": 2,
-      "base": 39,
-      "advances": 0
+      "ID": 2,
+      "BASE": 39
     },
     {
-      "id": 3,
-      "base": 18,
-      "advances": 0
+      "ID": 3,
+      "BASE": 18
     },
     {
-      "id": 4,
-      "base": 30,
-      "advances": 0
+      "ID": 4,
+      "BASE": 30
     },
     {
-      "id": 5,
-      "base": 37,
-      "advances": 3
+      "ID": 5,
+      "BASE": 37,
+      "ADVANCES": 3,
+      "CAN_ADVANCE": true
     },
     {
-      "id": 6,
-      "base": 34,
-      "advances": 1
+      "ID": 6,
+      "BASE": 34,
+      "ADVANCES": 1,
+      "CAN_ADVANCE": true
     },
     {
-      "id": 7,
-      "base": 35,
-      "advances": 0
+      "ID": 7,
+      "BASE": 35
     },
     {
-      "id": 8,
-      "base": 29,
-      "advances": 1
+      "ID": 8,
+      "BASE": 29,
+      "ADVANCES": 1,
+      "CAN_ADVANCE": true
     },
     {
-      "id": 9,
-      "base": 43,
-      "advances": 0
+      "ID": 9,
+      "BASE": 43
     },
     {
-      "id": 10,
-      "base": 49,
-      "advances": 0
+      "ID": 10,
+      "BASE": 49
     }
   ],
-  "skills": [
+  "SKILLS": [
     {
-      "skill_id": 19,
-      "advances": 1,
-      "advancable": true
+      "ID": 19,
+      "ADVANCES": 1,
+      "CAN_ADVANCE": true
     },
     {
-      "skill_id": 3,
-      "advances": 11
+      "ID": 3,
+      "ADVANCES": 11
     },
     {
-      "skill_id": 3,
-      "advances": 11
+      "ID": 3,
+      "ADVANCES": 11
     },
     {
-      "skill_id": 8,
-      "advances": 0,
-      "advancable": true
+      "ID": 8,
+      "ADVANCES": 0,
+      "CAN_ADVANCE": true
     },
     {
-      "skill_id": 12,
-      "advances": 9
+      "ID": 12,
+      "ADVANCES": 9
     },
     {
-      "skill_id": 11,
-      "advances": 0
+      "ID": 11,
+      "ADVANCES": 0
     },
     {
-      "skill_id": 17,
-      "advances": 5,
-      "advancable": true
+      "ID": 17,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
     },
     {
-      "skill_id": 22,
-      "advances": 5,
-      "advancable": true
+      "ID": 22,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
     },
     {
-      "skill_id": 6,
-      "advances": 10
+      "ID": 6,
+      "ADVANCES": 10
     },
     {
-      "skill_id": 16,
-      "advances": 10,
-      "advancable": true
+      "ID": 16,
+      "ADVANCES": 10,
+      "CAN_ADVANCE": true
     },
     {
-      "skill_id": 101,
-      "advances": 5
+      "ID": 101,
+      "ADVANCES": 5
     },
     {
-      "skill_id": 99,
-      "advances": 5
+      "ID": 99,
+      "ADVANCES": 5
     },
     {
-      "skill_id": 59,
-      "advances": 10
+      "ID": 59,
+      "ADVANCES": 10
     },
     {
-      "skill_id": 197,
-      "advances": 3
+      "ID": 197,
+      "ADVANCES": 3
     },
     {
-      "skill_id": 57,
-      "advances": 5,
-      "advancable": true
+      "ID": 57,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
     },
     {
-      "skill_id": 124,
-      "advances": 3
+      "ID": 124,
+      "ADVANCES": 3
     },
     {
-      "skill_id": 135,
-      "advances": 5,
-      "advancable": true
+      "ID": 135,
+      "ADVANCES": 5,
+      "CAN_ADVANCE": true
     },
     {
-      "skill_id": 44,
-      "advances": 5
+      "ID": 44,
+      "ADVANCES": 5
     },
     {
-      "skill_id": 30,
-      "advances": 5
+      "ID": 30,
+      "ADVANCES": 5
     },
     {
-      "skill_id": 23,
-      "advances": 10
+      "ID": 23,
+      "ADVANCES": 10
     }
   ],
-  "talents": [
+  "TALENTS": [
     {
-      "talent_id": 21,
-      "lvl": 1
+      "ID": 21,
+      "LVL": 1
     },
     {
-      "talent_id": 127,
-      "lvl": 1
+      "ID": 127,
+      "LVL": 1
     },
     {
-      "talent_id": 203,
-      "lvl": 1
+      "ID": 203,
+      "LVL": 1
     },
     {
-      "talent_id": 74,
-      "lvl": 1
+      "ID": 74,
+      "LVL": 1
     },
     {
-      "talent_id": 49,
-      "lvl": 1
+      "ID": 49,
+      "LVL": 1
     },
     {
-      "talent_id": 28,
-      "lvl": 1
+      "ID": 28,
+      "LVL": 1
     },
     {
-      "talent_id": 163,
-      "lvl": 1
+      "ID": 163,
+      "LVL": 1
     },
     {
-      "talent_id": 184,
-      "lvl": 1
+      "ID": 184,
+      "LVL": 1
     },
     {
-      "talent_id": 31,
-      "lvl": 1,
-      "advancable": true
+      "ID": 31,
+      "LVL": 1,
+      "CAN_ADVANCE": true
     },
     {
-      "talent_id": 50,
-      "lvl": 1,
-      "advancable": true
+      "ID": 50,
+      "LVL": 1,
+      "CAN_ADVANCE": true
     },
     {
-      "talent_id": 92,
-      "lvl": 0,
-      "advancable": true
+      "ID": 92,
+      "LVL": 0,
+      "CAN_ADVANCE": true
     },
     {
-      "talent_id": 179,
-      "lvl": 0,
-      "advancable": true
+      "ID": 179,
+      "LVL": 0,
+      "CAN_ADVANCE": true
     }
   ],
-  "melee_weapons": [
+  "MELEE_WEAPONS": [
     {
-      "weapon_id": 2
+      "ID": 2
     },
     {
-      "weapon_id": 11
+      "ID": 11
     }
   ],
-  "ranged_weapons": [
+  "RANGED_WEAPONS": [
     {
-      "weapon_id": 19,
-      "ammunition": 15,
-      "qualities": [
+      "ID": 19,
+      "AMMUNITION": [
         {
-          "quality_id": 3
+          "ID": 8,
+          "COUNT": 15
+        }
+      ],
+      "QUALITIES": [
+        {
+          "ID": 3
         }
       ]
     }
   ],
-  "armour": [
+  "ARMOUR": [
 
   ]
 }

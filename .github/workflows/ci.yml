@@ -7,24 +7,29 @@ on:
     branches: [ main ]
 
 jobs:
-  verify:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
         with:
-          token: ${{ secrets.DB_TOKEN }}
-          submodules: 'true'
-      - uses: subosito/flutter-action@v2
+          token: ${{ secrets.PAT_TOKEN }}
+          submodules: recursive
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
 
       - name: Install dependencies
         run: flutter pub get
 
 #      - name: Verify formatting
-#        run: flutter format --output=none --set-exit-if-changed .
+#        run: dart format --output=none .
 
       - name: Analyze project source
-        run: flutter analyze
+        run: flutter analyze .
 
       - name: Run tests
         run: flutter test

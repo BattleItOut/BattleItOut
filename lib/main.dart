@@ -1,33 +1,11 @@
-import 'dart:convert';
-
 import 'package:battle_it_out/interface/themes.dart';
 import 'package:battle_it_out/interface/screens/turn_order_screen.dart';
 import 'package:battle_it_out/localisation.dart';
-import 'package:battle_it_out/persistence/character.dart';
-import 'package:battle_it_out/state_container.dart';
+import 'package:battle_it_out/interface/state_container.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(StateContainer(
-      child: const MyApp(),
-      savedCharacters: await loadTemplates()));
-}
-
-Future<List<Character>> loadTemplates() async {
-  final manifestJson = await rootBundle.loadString('AssetManifest.json');
-  final templates = json.decode(manifestJson).keys.where((String key) => key.startsWith('assets/templates'));
-
-  List<Character> templateCharacters = [];
-  for (var template in templates) {
-    var json = jsonDecode(await rootBundle.loadString(template));
-    Character character = await Character.create(json);
-    templateCharacters.add(character);
-  }
-  return templateCharacters;
-}
+void main() => runApp(const StateContainer(child: MyApp()));
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

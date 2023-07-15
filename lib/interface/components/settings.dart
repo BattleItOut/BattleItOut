@@ -1,6 +1,5 @@
 import 'package:battle_it_out/entities_localisation.dart';
-import 'package:battle_it_out/interface/themes.dart';
-import 'package:battle_it_out/state_container.dart';
+import 'package:battle_it_out/interface/state_container.dart';
 import 'package:flutter/material.dart';
 
 AppBar applicationBar(String title) {

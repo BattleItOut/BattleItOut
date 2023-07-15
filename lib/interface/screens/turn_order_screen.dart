@@ -1,12 +1,10 @@
 import 'package:battle_it_out/entities_localisation.dart';
+import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/settings.dart';
 import 'package:battle_it_out/interface/screens/character_selection_screen.dart';
-import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
+import 'package:battle_it_out/persistence/entities/character.dart';
 import 'package:flutter/material.dart';
-
-import '../../state_container.dart';
-import '../components/list_items.dart';
-import 'character_sheet_screen.dart';
 
 class TurnOrderScreen extends StatefulWidget {
   const TurnOrderScreen({Key? key}) : super(key: key);
@@ -40,7 +38,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
     return actualIndex;
   }
 
-  void _append() async {
+  Future<void> _append() async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const CharacterSelectionScreen()),

@@ -1,57 +1,86 @@
-import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
-import 'package:battle_it_out/persistence/dao/dao.dart';
+import 'package:battle_it_out/persistence/dao/serializer.dart';
 import 'package:battle_it_out/persistence/dao/size_dao.dart';
-import 'package:battle_it_out/persistence/entities/attribute.dart';
 import 'package:battle_it_out/persistence/entities/race.dart';
-import 'package:battle_it_out/persistence/database_provider.dart';
-import 'package:sqflite/sqflite.dart';
 
-class RaceDAO extends DAO<Race> {
-  @override
-  get tableName => 'races';
-  @override
-  Future<Race> fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) async {
-    return Race(
-        id: overrideMap["ID"] ?? map["ID"],
-        name: overrideMap["NAME"] ?? map["NAME"],
-        extraPoints: overrideMap["EXTRA_POINTS"] ?? map["EXTRA_POINTS"],
-        size: await SizeDAO().get(overrideMap["SIZE"] ?? map["SIZE"]),
-        source: overrideMap["SRC"] ?? map["SRC"]);
-  }
-
-  Future<Map<int, Attribute>> getAttributes(int raceID) async {
-    Database? database = await DatabaseProvider.instance.getDatabase();
-    final List<Map<String, dynamic>> attributes =
-        await database!.query("race_attributes", where: "RACE_ID = ?", whereArgs: [raceID]);
-
-    Map<int, Attribute> attributesMap = {};
-    for (var attributeMap in attributes) {
-      Attribute attribute = await AttributeDAO().get(attributeMap['ATTR_ID']);
-      attribute.base = attributeMap["VALUE"];
-      attributesMap[attribute.id] = attribute;
-    }
-    return attributesMap;
-  }
-
-  Future<Subrace>? getDefaultSubrace(int? raceID) {
-    if (raceID != null) {
-      return SubraceDAO().getWhere(where: "RACE_ID = ? AND DEF = ?", whereArgs: [raceID, 1]);
-    }
-    return null;
-  }
-}
-
-class SubraceDAO extends DAO<Subrace> {
+class SubraceFactory extends Factory<Subrace> {
   @override
   get tableName => 'subraces';
 
   @override
-  Subrace fromMap(Map<String, dynamic> map, [Map overrideMap = const {}]) {
+  Map<String, dynamic> get defaultValues => {
+    "RANDOM_TALENTS": 0,
+    "SRC": "Custom",
+    "DEF": 1
+  };
+
+  Future<Race> getRace(Map<String, dynamic> map) async {
+    if (map["RACE_ID"] != null) {
+      return RaceFactory().get(map["RACE_ID"]);
+    } else if (map["RACE"] != null) {
+      return RaceFactory().create(map["RACE"]);
+    } else {
+      return RaceFactory().create(map);
+    }
+  }
+
+  @override
+  Future<Subrace> fromMap(Map<String, dynamic> map) async {
     return Subrace(
-        id: overrideMap["ID"] ?? map["ID"],
-        name: overrideMap["NAME"] ?? map["NAME"],
-        randomTalents: overrideMap["RANDOM_TALENTS"] ?? map["RANDOM_TALENTS"],
-        source: overrideMap["SRC"] ?? map["SRC"],
-        defaultSubrace: overrideMap["DEF"] ?? map["DEF"] == 1);
+        id: map["ID"] ?? await getNextId(),
+        race: await getRace(map),
+        name: map["NAME"],
+        randomTalents: map["RANDOM_TALENTS"],
+        source: map["SRC"],
+        defaultSubrace: map["DEF"] == 1);
+  }
+
+  @override
+  Future<Map<String, dynamic>> toMap(Subrace object, {optimised = true, database = false}) async {
+    Map<String, dynamic> map = {
+      "ID": object.id,
+      "RACE_ID": object.race.id,
+      "NAME": object.name,
+      "RANDOM_TALENTS": object.randomTalents,
+      "SRC": object.source,
+      "DEF": object.defaultSubrace ? 1 : 0
+    };
+    if (optimised) {
+      map = await optimise(map);
+    }
+    return map;
+  }
+}
+
+class RaceFactory extends Factory<Race> {
+  @override
+  get tableName => 'races';
+
+  @override
+  Map<String, dynamic> get defaultValues => {"EXTRA_POINTS": 0, "SRC": "Custom", "SIZE": 4};
+
+  @override
+  Future<Race> fromMap(Map<String, dynamic> map) async {
+    Race race = Race(
+        id: map["ID"] ?? await getNextId(),
+        name: map["NAME"],
+        extraPoints: map["EXTRA_POINTS"],
+        source: map["SRC"],
+        size: await SizeFactory().get(map["SIZE"]));
+    return race;
+  }
+
+  @override
+  Future<Map<String, dynamic>> toMap(Race object, {optimised = true, database = false}) async {
+    Map<String, dynamic> map = {
+      "ID": object.id,
+      "NAME": object.name,
+      "EXTRA_POINTS": object.extraPoints,
+      "SIZE": object.size.id,
+      "SRC": object.source
+    };
+    if (optimised) {
+      map = await optimise(map);
+    }
+    return map;
   }
 }

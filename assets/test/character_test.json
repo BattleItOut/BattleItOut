@@ -1,38 +1,38 @@
 {
-  "name": "Test",
-  "race": {
-    "race_id": 1
+  "NAME": "Test",
+  "SUBRACE": {
+    "ID": 1
   },
-  "profession": {
-    "profession_id": 1
+  "PROFESSION": {
+    "ID": 1
   },
-  "attributes": [
+  "ATTRIBUTES": [
     {
-      "id": 1,
-      "base": 34,
-      "advances": 5
+      "ID": 1,
+      "BASE": 34,
+      "ADVANCES": 5
     }
   ],
-  "skills": [
+  "SKILLS": [
     {
-      "skill_id": 38,
-      "advances": 5
+      "ID": 38,
+      "ADVANCES": 5
     }
   ],
-  "talents": [
+  "TALENTS": [
     {
-      "talent_id": 26,
-      "lvl": 1
+      "ID": 26,
+      "LVL": 1
     }
   ],
-  "armour": [
+  "ARMOUR": [
     {
-      "armour_id": 2
+      "ID": 2
     }
   ],
-  "melee_weapons": [
+  "MELEE_WEAPONS": [
     {
-      "weapon_id": 1
+      "ID": 1
     }
   ]
 }
