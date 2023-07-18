@@ -1,7 +1,7 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
-import 'package:battle_it_out/persistence/entities/character/simple_character.dart';
+import 'package:battle_it_out/persistence/character/simple_character.dart';
 import 'package:flutter/material.dart';
 
 class ListItem extends Container {

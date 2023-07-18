@@ -3,7 +3,7 @@ import 'package:battle_it_out/interface/components/alert.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/interface/state_container.dart';
-import 'package:battle_it_out/persistence/entities/character/simple_character.dart';
+import 'package:battle_it_out/persistence/character/simple_character.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 

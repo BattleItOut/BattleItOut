@@ -2,13 +2,15 @@ import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
-import 'package:battle_it_out/persistence/entities/character/simple_character.dart';
-import 'package:battle_it_out/persistence/entities/item/ammunition.dart';
-import 'package:battle_it_out/persistence/entities/item/item.dart';
-import 'package:battle_it_out/persistence/entities/item/melee_weapon.dart';
-import 'package:battle_it_out/persistence/entities/item/ranged_weapon.dart';
-import 'package:battle_it_out/persistence/entities/skill.dart';
-import 'package:battle_it_out/persistence/entities/talent.dart';
+import 'package:battle_it_out/persistence/character/simple_character.dart';
+import 'package:battle_it_out/persistence/item/ammunition.dart';
+import 'package:battle_it_out/persistence/item/item.dart';
+import 'package:battle_it_out/persistence/item/melee_weapon.dart';
+import 'package:battle_it_out/persistence/item/ranged_weapon.dart';
+import 'package:battle_it_out/persistence/skill/skill.dart';
+import 'package:battle_it_out/persistence/skill/skill_base.dart';
+import 'package:battle_it_out/persistence/talent/talent.dart';
+import 'package:battle_it_out/persistence/talent/talent_base.dart';
 import 'package:flutter/material.dart';
 
 class CharacterSheetScreen extends StatefulWidget {

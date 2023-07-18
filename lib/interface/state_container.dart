@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:battle_it_out/persistence/dao/character_dao.dart';
-import 'package:battle_it_out/persistence/entities/character/simple_character.dart';
+import 'package:battle_it_out/persistence/character/character.dart';
+import 'package:battle_it_out/persistence/character/simple_character.dart';
 import 'package:battle_it_out/utils/utilities.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';

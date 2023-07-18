@@ -1,25 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
-import 'package:battle_it_out/persistence/dao/character_dao.dart';
-import 'package:battle_it_out/persistence/dao/item/armour_dao.dart';
-import 'package:battle_it_out/persistence/dao/item/melee_weapon_dao.dart';
-import 'package:battle_it_out/persistence/dao/item/ranged_weapon_dao.dart';
-import 'package:battle_it_out/persistence/dao/profession_dao.dart';
-import 'package:battle_it_out/persistence/dao/race_dao.dart';
-import 'package:battle_it_out/persistence/dao/serializer.dart';
-import 'package:battle_it_out/persistence/dao/skill_dao.dart';
-import 'package:battle_it_out/persistence/dao/talent_dao.dart';
-import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/character/character.dart';
-import 'package:battle_it_out/persistence/entities/item/armour.dart';
-import 'package:battle_it_out/persistence/entities/item/melee_weapon.dart';
-import 'package:battle_it_out/persistence/entities/item/ranged_weapon.dart';
-import 'package:battle_it_out/persistence/entities/profession.dart';
-import 'package:battle_it_out/persistence/entities/race.dart';
-import 'package:battle_it_out/persistence/entities/skill.dart';
-import 'package:battle_it_out/persistence/entities/talent.dart';
+import 'package:battle_it_out/persistence/attribute.dart';
+import 'package:battle_it_out/persistence/character/character.dart';
+import 'package:battle_it_out/persistence/item/armour.dart';
+import 'package:battle_it_out/persistence/item/melee_weapon.dart';
+import 'package:battle_it_out/persistence/item/ranged_weapon.dart';
+import 'package:battle_it_out/persistence/profession/profession.dart';
+import 'package:battle_it_out/persistence/race.dart';
+import 'package:battle_it_out/persistence/serializer.dart';
+import 'package:battle_it_out/persistence/skill/skill.dart';
+import 'package:battle_it_out/persistence/subrace.dart';
+import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<void> main() async {
