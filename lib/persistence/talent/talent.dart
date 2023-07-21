@@ -19,7 +19,6 @@ class Talent {
       {required this.id,
       required this.name,
       this.specialisation,
-      this.baseTalent,
       List<TalentTest> tests = const [],
       this.currentLvl = 0,
       this.canAdvance = false}) {

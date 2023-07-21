@@ -16,7 +16,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
         centerTitle: true,
         title: const Text("Library"),
       ),
-      body: RaceLibraryWidget(),
+      body: const RaceLibraryWidget(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.white,

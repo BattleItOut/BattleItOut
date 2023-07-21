@@ -19,8 +19,7 @@ class Skill {
       required this.specialisation,
       this.advances = 0,
       this.earning = false,
-      this.canAdvance = false,
-      this.baseSkill});
+      this.canAdvance = false});
 
   bool isGroup() {
     return baseSkill == null;
