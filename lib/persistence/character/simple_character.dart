@@ -1,5 +1,4 @@
 import 'package:battle_it_out/persistence/attribute.dart';
-import 'package:battle_it_out/persistence/character/base_character.dart';
 import 'package:battle_it_out/persistence/item/armour.dart';
 import 'package:battle_it_out/persistence/item/item.dart';
 import 'package:battle_it_out/persistence/item/melee_weapon.dart';
@@ -12,7 +11,9 @@ import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:battle_it_out/persistence/talent/talent_base.dart';
 import 'package:battle_it_out/persistence/trait.dart';
 
-class SimpleCharacter extends BaseCharacter {
+class SimpleCharacter {
+  String name;
+  String? description;
   Subrace? subrace;
   Profession? profession;
   List<Attribute> attributes = [];
@@ -21,15 +22,15 @@ class SimpleCharacter extends BaseCharacter {
   List<Trait> traits = [];
   List<Item> items = [];
 
-  @override
-  get initiativeHidden => false;
+  // Temporary
+  int? initiative;
 
   SimpleCharacter(
-      {required super.name,
-      super.description,
+      {required this.name,
+      this.description,
       this.subrace,
       this.profession,
-      super.initiative,
+      this.initiative,
       List<Attribute> attributes = const [],
       List<Skill> skills = const [],
       List<Talent> talents = const [],

@@ -60,7 +60,7 @@ class AttributeFactory extends Factory<Attribute> {
   @override
   Future<Attribute> fromMap(Map<String, dynamic> map) async {
     return Attribute._(
-        id: map['ID'],
+        id: map['ID'] ?? await getNextId(),
         name: map['NAME'],
         shortName: map["SHORT_NAME"],
         description: map["DESCRIPTION"],

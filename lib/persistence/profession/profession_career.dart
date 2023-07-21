@@ -17,12 +17,12 @@ class ProfessionCareer {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is ProfessionCareer &&
-              runtimeType == other.runtimeType &&
-              id == other.id &&
-              name == other.name &&
-              source == other.source &&
-              professionClass == other.professionClass;
+      other is ProfessionCareer &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          source == other.source &&
+          professionClass == other.professionClass;
 
   @override
   int get hashCode => id.hashCode ^ name.hashCode ^ source.hashCode ^ professionClass.hashCode;

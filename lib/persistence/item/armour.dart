@@ -51,6 +51,7 @@ class Armour extends Item with SpecialItem {
     return "Armour ($id, $name, $headAP/$bodyAP/$leftArmAP/$rightArmAP/$leftLegAP/$rightLegAP))";
   }
 }
+
 class ArmourFactory extends ItemFactory<Armour> {
   @override
   get tableName => 'armour';
@@ -61,14 +62,14 @@ class ArmourFactory extends ItemFactory<Armour> {
 
   @override
   Map<String, dynamic> get defaultValues => {
-    "ITEM_CATEGORY": "ARMOUR",
-    "HEAD_AP": 0,
-    "BODY_AP": 0,
-    "LEFT_ARM_AP": 0,
-    "RIGHT_ARM_AP": 0,
-    "LEFT_LEG_AP": 0,
-    "RIGHT_LEG_AP": 0
-  };
+        "ITEM_CATEGORY": "ARMOUR",
+        "HEAD_AP": 0,
+        "BODY_AP": 0,
+        "LEFT_ARM_AP": 0,
+        "RIGHT_ARM_AP": 0,
+        "LEFT_LEG_AP": 0,
+        "RIGHT_LEG_AP": 0
+      };
 
   @override
   Future<Armour> fromMap(Map<String, dynamic> map) async {

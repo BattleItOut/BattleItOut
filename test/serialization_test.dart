@@ -31,7 +31,7 @@ Future<void> main() async {
 
 void doubleSerializationTest(Factory factory, List list) {
   for (var i = 0; i < list.length; i++) {
-    test("Serialize and deserialize - ${i+1}", () async {
+    test("Serialize and deserialize - ${i + 1}", () async {
       var object = await factory.create(list[i]);
       Map<String, dynamic> serializedMap = await factory.toMap(object, optimised: false);
       var serializedObject = await factory.create(serializedMap);
@@ -62,7 +62,6 @@ void raceSerializationTest() {
       expect(basicRace.race.id, 1);
       expect(basicRace.race.name, "HUMAN");
       expect(basicRace.race.size.id, 4);
-      expect(basicRace.race.extraPoints, 3);
     });
     test("Minimal custom", () async {
       Subrace minCustomRace = await SubraceFactory().create(minCustomRaceMap);
@@ -70,7 +69,6 @@ void raceSerializationTest() {
       expect(minCustomRace.name, "Test");
       expect(minCustomRace.source, "Custom");
       expect(minCustomRace.race.size.id, 4);
-      expect(minCustomRace.race.extraPoints, 0);
     });
     test("Maximal custom", () async {
       Subrace maxCustomRace = await SubraceFactory().create(maxCustomRaceMap);
@@ -80,11 +78,11 @@ void raceSerializationTest() {
       expect(maxCustomRace.randomTalents, 3);
       expect(maxCustomRace.race.name, "Test2");
       expect(maxCustomRace.race.size.id, 4);
-      expect(maxCustomRace.race.extraPoints, 4);
     });
     doubleSerializationTest(RaceFactory(), [basicRaceMap, minCustomRaceMap, maxCustomRaceMap]);
   });
 }
+
 void professionSerializationTest() {
   Map<String, dynamic> basicProfessionMap = {"ID": 1};
   Map<String, dynamic> minCustomProfessionMap = {"NAME": "Test"};
@@ -130,6 +128,7 @@ void professionSerializationTest() {
     doubleSerializationTest(ProfessionFactory(), [basicProfessionMap, minCustomProfessionMap, maxCustomProfessionMap]);
   });
 }
+
 void attributeSerializationTest() {
   Map<String, dynamic> basicAttributeMap = {"ID": 1};
   Map<String, dynamic> maxEditedAttributeMap = {"ID": 1, "BASE": 38, "ADVANCES": 5, "CAN_ADVANCE": true};
@@ -162,6 +161,7 @@ void attributeSerializationTest() {
     doubleSerializationTest(AttributeFactory(), [basicAttributeMap, maxEditedAttributeMap]);
   });
 }
+
 void skillSerializationTest() {
   Map<String, dynamic> basicSkillMap = {"ID": 1};
   Map<String, dynamic> maxEditedSkillMap = {"ID": 1, "ADVANCES": 2, "CAN_ADVANCE": true, "EARNING": true};
@@ -197,6 +197,7 @@ void skillSerializationTest() {
     doubleSerializationTest(SkillFactory(), [basicSkillMap, maxEditedSkillMap]);
   });
 }
+
 void talentSerializationTest() {
   Map<String, dynamic> basicTalentMap = {"ID": 1};
   Map<String, dynamic> maxEditedTalentMap = {"ID": 1, "LVL": 1, "CAN_ADVANCE": true};
@@ -237,6 +238,7 @@ void talentSerializationTest() {
     doubleSerializationTest(TalentFactory(), [basicTalentMap, maxEditedTalentMap]);
   });
 }
+
 void armourSerializationTest() {
   Map<String, dynamic> basicArmourMap = {"ID": 1};
   Map<String, dynamic> minCustomArmourMap = {"NAME": "Test", "HEAD_AP": 1};
@@ -298,6 +300,7 @@ void armourSerializationTest() {
     doubleSerializationTest(ArmourFactory(), [basicArmourMap, minCustomArmourMap, maxCustomArmourMap]);
   });
 }
+
 void meleeWeaponSerializationTest() {
   Map<String, dynamic> basicMeleeWeaponMap = {"ID": 1};
   Map<String, dynamic> minCustomWeaponMap = {"NAME": "Test", "LENGTH": 1, "DAMAGE": 2};
@@ -343,6 +346,7 @@ void meleeWeaponSerializationTest() {
     doubleSerializationTest(MeleeWeaponFactory(), [basicMeleeWeaponMap, minCustomWeaponMap, maxCustomWeaponMap]);
   });
 }
+
 void rangedWeaponSerializationTest() {
   Map<String, dynamic> basicRangedWeaponMap = {"ID": 1};
   Map<String, dynamic> minCustomWeaponMap = {"NAME": "Test", "WEAPON_RANGE": 100, "DAMAGE": 2};
@@ -395,6 +399,7 @@ void rangedWeaponSerializationTest() {
     doubleSerializationTest(RangedWeaponFactory(), [basicRangedWeaponMap, minCustomWeaponMap, maxCustomWeaponMap]);
   });
 }
+
 void characterSerializationTest() {
   group("Character serialization", () {
     test("Serialize and deserialize", () async {

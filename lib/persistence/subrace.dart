@@ -10,18 +10,24 @@ class Subrace {
 
   Race race;
 
-  Subrace._({required this.id, required this.name, required this.race, this.source = "Custom", this.randomTalents = 0, this.defaultSubrace = true});
+  Subrace._(
+      {required this.id,
+      required this.name,
+      required this.race,
+      this.source = "Custom",
+      this.randomTalents = 0,
+      this.defaultSubrace = true});
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Subrace &&
-              runtimeType == other.runtimeType &&
-              id == other.id &&
-              name == other.name &&
-              source == other.source &&
-              randomTalents == other.randomTalents &&
-              defaultSubrace == other.defaultSubrace;
+      other is Subrace &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          source == other.source &&
+          randomTalents == other.randomTalents &&
+          defaultSubrace == other.defaultSubrace;
 
   @override
   int get hashCode => id.hashCode ^ name.hashCode ^ source.hashCode ^ randomTalents.hashCode ^ defaultSubrace.hashCode;
@@ -35,11 +41,11 @@ class SubraceFactory extends Factory<Subrace> {
   get tableName => 'subraces';
 
   @override
-  Map<String, dynamic> get defaultValues => {
-    "RANDOM_TALENTS": 0,
-    "SRC": "Custom",
-    "DEF": 1
-  };
+  Map<String, dynamic> get defaultValues => {"RANDOM_TALENTS": 0, "SRC": "Custom", "DEF": 1};
+
+  Future<List<Subrace>> getSubraces(int raceId) async {
+    return await getAll(where: "RACE_ID = $raceId");
+  }
 
   Future<Race> getRace(Map<String, dynamic> map) async {
     if (map["RACE_ID"] != null) {

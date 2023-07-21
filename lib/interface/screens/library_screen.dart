@@ -1,4 +1,4 @@
-import 'package:battle_it_out/persistence/race.dart';
+import 'package:battle_it_out/interface/components/race_library.dart';
 import 'package:flutter/material.dart';
 
 class LibraryScreen extends StatefulWidget {
@@ -16,47 +16,19 @@ class _LibraryScreenState extends State<LibraryScreen> {
         centerTitle: true,
         title: const Text("Library"),
       ),
-      body: const RaceLibrary(),
+      body: RaceLibraryWidget(),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // Fixed
+        type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.accessibility), label: "Races"),
-          BottomNavigationBarItem(icon: Icon(Icons.replay), label: "Turn Order"),
-          BottomNavigationBarItem(icon: Icon(Icons.description), label: "Character Sheets")
+          BottomNavigationBarItem(icon: Icon(Icons.work), label: "Professions"),
+          BottomNavigationBarItem(icon: Icon(Icons.arrow_upward), label: "Skills"),
+          BottomNavigationBarItem(icon: Icon(Icons.star), label: "Talents"),
+          BottomNavigationBarItem(icon: Icon(Icons.now_wallpaper), label: "Items")
         ],
       ),
-    );
-  }
-}
-
-class RaceLibrary extends StatelessWidget {
-  const RaceLibrary({super.key});
-
-  Future<List<Race>> generateRace() async {
-    return await RaceFactory().getAll();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Center(
-          child: FutureBuilder<List<Race>>(
-            future: generateRace(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                return Column(children: [for (Race race in snapshot.data!)
-                  Text(race.name)
-                ]);
-              }
-              return const CircularProgressIndicator();
-            },
-          ),
-        ),
-      ],
     );
   }
 }

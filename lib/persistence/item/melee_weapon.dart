@@ -67,7 +67,8 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
       map.putIfAbsent(key, () => value);
     });
     Attribute? damageAttribute = attributes?.firstWhere((attribute) => attribute.id == map["DAMAGE_ATTRIBUTE"]);
-    MeleeWeapon meleeWeapon = MeleeWeapon._(id: map["ID"] ?? await getNextId(),
+    MeleeWeapon meleeWeapon = MeleeWeapon._(
+        id: map["ID"] ?? await getNextId(),
         name: map["NAME"],
         length: await WeaponLengthFactory().get(map["LENGTH"]),
         damage: map["DAMAGE"],

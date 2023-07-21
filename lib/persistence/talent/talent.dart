@@ -71,8 +71,7 @@ class TalentFactory extends Factory<Talent> {
   get tableName => 'talents';
 
   getAllTalents() async {
-    List<Talent> talents = await getAll(where: "BASE_TALENT_ID IS NOT NULL");
-    return talents;
+    return await getAll(where: "BASE_TALENT_ID IS NOT NULL");
   }
 
   @override

@@ -64,8 +64,7 @@ class RangedWeapon extends Weapon {
           useAmmo == other.useAmmo;
 
   @override
-  int get hashCode =>
-      super.hashCode ^ range.hashCode ^ rangeAttribute.hashCode ^ useAmmo.hashCode;
+  int get hashCode => super.hashCode ^ range.hashCode ^ rangeAttribute.hashCode ^ useAmmo.hashCode;
 
   @override
   String toString() {
@@ -126,7 +125,8 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
       }
     }
     if (map["AMMUNITION"] != null) {
-      rangedWeapon.ammunition.addAll([for (var tempMap in map["AMMUNITION"]) await AmmunitionFactory().create(tempMap)]);
+      rangedWeapon.ammunition
+          .addAll([for (var tempMap in map["AMMUNITION"]) await AmmunitionFactory().create(tempMap)]);
     }
     return rangedWeapon;
   }

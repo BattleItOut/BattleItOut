@@ -43,8 +43,8 @@ abstract class Factory<T> extends DAO implements Serializer<T> {
 
   Future<List<T>> getAll({String? where, List<Object>? whereArgs}) async {
     return [
-      for (var map in await getMapAll(where: where, whereArgs: whereArgs))await fromMap(
-          {for (var entry in map.entries) entry.key: entry.value})
+      for (var map in await getMapAll(where: where, whereArgs: whereArgs))
+        await fromMap({for (var entry in map.entries) entry.key: entry.value})
     ];
   }
 
@@ -54,7 +54,7 @@ abstract class Factory<T> extends DAO implements Serializer<T> {
     if (map["ID"] != null) {
       Map<String, dynamic> defaultMap = await toMap(await get(map["ID"]), optimised: false);
       map.removeWhere((key, value) =>
-      key != "ID" &&
+          key != "ID" &&
           (value is List && listEquals(value, defaultMap[key]) || value is! List && value == defaultMap[key]));
     }
     return map;

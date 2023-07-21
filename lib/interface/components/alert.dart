@@ -9,14 +9,14 @@ void showAlert(
   String title,
   List<Tuple2<Function(String), Type>> fields,
   void Function() onProceedPressed,
-  BuildContext context
+  BuildContext context,
 ) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(title),
-        content: Column(children:[
+        content: Column(children: [
           for (var field in fields)
             TextField(
               onChanged: (value) {
@@ -36,7 +36,7 @@ void showAlert(
           ),
           TextButton(
             onPressed: onProceedPressed,
-            child: Text("PROCEED".localise(context))
+            child: Text("PROCEED".localise(context)),
           ),
         ],
       );

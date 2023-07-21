@@ -16,14 +16,15 @@ class Item {
 
   List<ItemQuality> qualities = [];
 
-  Item({required this.id,
-    required this.name,
-    required this.encumbrance,
-    this.cost,
-    this.availability,
-    this.category,
-    this.count = 1,
-    List<ItemQuality> qualities = const []}) {
+  Item(
+      {required this.id,
+      required this.name,
+      required this.encumbrance,
+      this.cost,
+      this.availability,
+      this.category,
+      this.count = 1,
+      List<ItemQuality> qualities = const []}) {
     this.qualities.addAll(qualities);
   }
 
@@ -38,14 +39,27 @@ class Item {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Item && runtimeType == other.runtimeType && id == other.id && name == other.name &&
-              count == other.count && cost == other.cost && encumbrance == other.encumbrance &&
-              availability == other.availability && category == other.category && listEquals(qualities, other.qualities);
+      other is Item &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          count == other.count &&
+          cost == other.cost &&
+          encumbrance == other.encumbrance &&
+          availability == other.availability &&
+          category == other.category &&
+          listEquals(qualities, other.qualities);
 
   @override
   int get hashCode =>
-      id.hashCode ^ name.hashCode ^ count.hashCode ^ cost.hashCode ^ encumbrance.hashCode ^ availability
-          .hashCode ^ category.hashCode ^ qualities.hashCode;
+      id.hashCode ^
+      name.hashCode ^
+      count.hashCode ^
+      cost.hashCode ^
+      encumbrance.hashCode ^
+      availability.hashCode ^
+      category.hashCode ^
+      qualities.hashCode;
 }
 
 mixin SpecialItem {
@@ -54,7 +68,7 @@ mixin SpecialItem {
   }
 }
 
-class CommonItemFactory extends ItemFactory<Item>  {
+class CommonItemFactory extends ItemFactory<Item> {
   @override
   get tableName => "items";
   @override
@@ -79,7 +93,6 @@ class CommonItemFactory extends ItemFactory<Item>  {
     // TODO: implement toMap
     throw UnimplementedError();
   }
-
 }
 
 abstract class ItemFactory<T extends Item> extends Factory<T> {
