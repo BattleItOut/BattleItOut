@@ -2,19 +2,21 @@ import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
-import 'package:battle_it_out/persistence/entities/character.dart';
-import 'package:battle_it_out/persistence/entities/item/ammunition.dart';
-import 'package:battle_it_out/persistence/entities/item/item.dart';
-import 'package:battle_it_out/persistence/entities/item/melee_weapon.dart';
-import 'package:battle_it_out/persistence/entities/item/ranged_weapon.dart';
-import 'package:battle_it_out/persistence/entities/skill.dart';
-import 'package:battle_it_out/persistence/entities/talent.dart';
+import 'package:battle_it_out/persistence/character/simple_character.dart';
+import 'package:battle_it_out/persistence/item/ammunition.dart';
+import 'package:battle_it_out/persistence/item/item.dart';
+import 'package:battle_it_out/persistence/item/melee_weapon.dart';
+import 'package:battle_it_out/persistence/item/ranged_weapon.dart';
+import 'package:battle_it_out/persistence/skill/skill.dart';
+import 'package:battle_it_out/persistence/skill/skill_base.dart';
+import 'package:battle_it_out/persistence/talent/talent.dart';
+import 'package:battle_it_out/persistence/talent/talent_base.dart';
 import 'package:flutter/material.dart';
 
 class CharacterSheetScreen extends StatefulWidget {
-  const CharacterSheetScreen({Key? key, required this.character}) : super(key: key);
+  final SimpleCharacter character;
 
-  final Character character;
+  const CharacterSheetScreen({Key? key, required this.character}) : super(key: key);
 
   @override
   State<CharacterSheetScreen> createState() => _CharacterSheetScreenState();
@@ -46,10 +48,10 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                       IntegerText(skill.advances),
                       IntegerText(skill.getTotalValue())
                     ])
-            ]
-        )
+            ])
     ];
   }
+
   List<TableLine> createRangedWeapons(List<RangedWeapon> weapons, BuildContext context) {
     List<TableLine> outputList = [];
     for (RangedWeapon weapon in weapons) {
@@ -86,8 +88,10 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               LocalisedText("RACE", context),
               LocalisedText(widget.character.subrace?.getLocalName(context) ?? "", context)
             ]),
-            TableLine(
-                children: [LocalisedText("SIZE", context), LocalisedText(widget.character.subrace?.race.size.name ?? "", context)]),
+            TableLine(children: [
+              LocalisedText("SIZE", context),
+              LocalisedText(widget.character.subrace?.race.size.name ?? "", context)
+            ]),
             TableLine(children: [
               LocalisedText("PROFESSION", context),
               LocalisedText(widget.character.profession?.getLocalName(context) ?? "", context)
@@ -95,24 +99,26 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           ], context: context),
           SingleEntitiesTable(
               title: LocalisedText("ATTRIBUTES", context, style: const TextStyle(fontSize: 24.0)),
-              children: widget.character.attributes.isEmpty ? [] : [
-                TableLine(children: [
-                  for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
-                    LocalisedText(attribute.shortName, context, textAlign: TextAlign.center)
-                ]),
-                TableLine(children: [
-                  for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
-                    IntegerText(attribute.base)
-                ]),
-                TableLine(children: [
-                  for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
-                    IntegerText(attribute.advances)
-                ]),
-                TableLine(children: [
-                  for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
-                    IntegerText(attribute.getTotalValue())
-                ])
-              ],
+              children: widget.character.attributes.isEmpty
+                  ? []
+                  : [
+                      TableLine(children: [
+                        for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
+                          LocalisedText(attribute.shortName, context, textAlign: TextAlign.center)
+                      ]),
+                      TableLine(children: [
+                        for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
+                          IntegerText(attribute.base)
+                      ]),
+                      TableLine(children: [
+                        for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
+                          IntegerText(attribute.advances)
+                      ]),
+                      TableLine(children: [
+                        for (var attribute in widget.character.attributes.where((attr) => attr.importance == 0))
+                          IntegerText(attribute.getTotalValue())
+                      ])
+                    ],
               context: context),
           SingleEntitiesTable(children: [
             for (var attribute in widget.character.attributes.where((attr) => attr.importance > 0))
@@ -202,8 +208,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                         const PaddedText(""),
                         const PaddedText(""),
                       ]),
-                      children: createRangedWeapons(entry.value, context)
-                  )
+                      children: createRangedWeapons(entry.value, context))
               ],
               context: context),
           GroupedEntitiesTable(
@@ -211,20 +216,21 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
               children: [
                 for (MapEntry<String, Map<Item, int>> entry in widget.character.getCommonItemsGrouped().entries)
                   TableSubsection(
-                      header: TableLine(children: [
-                        IntegerText(null),
-                        LocalisedText(entry.key, context, style: const TextStyle(fontWeight: FontWeight.bold)),
-                        IntegerText(null),
-                        const PaddedText(""),
-                      ]),
-                      headerHidden: entry.key=="NONE",
+                    header: TableLine(children: [
+                      IntegerText(null),
+                      LocalisedText(entry.key, context, style: const TextStyle(fontWeight: FontWeight.bold)),
+                      IntegerText(null),
+                      const PaddedText(""),
+                    ]),
+                    headerHidden: entry.key == "NONE",
                     children: [
                       for (MapEntry<Item, int> secondaryEntry in entry.value.entries)
                         TableLine(children: [
                           IntegerText(secondaryEntry.value),
                           LocalisedText(secondaryEntry.key.name, context),
                           IntegerText(secondaryEntry.key.encumbrance),
-                          PaddedText(secondaryEntry.key.qualities.map((quality) => quality.name.localise(context)).join(", "))
+                          PaddedText(
+                              secondaryEntry.key.qualities.map((quality) => quality.name.localise(context)).join(", "))
                         ])
                     ],
                   )

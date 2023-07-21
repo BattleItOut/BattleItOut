@@ -1,7 +1,7 @@
 import 'package:battle_it_out/localisation.dart';
-import 'package:battle_it_out/persistence/entities/profession.dart';
-import 'package:battle_it_out/persistence/entities/race.dart';
-import 'package:battle_it_out/persistence/entities/talent.dart';
+import 'package:battle_it_out/persistence/profession/profession.dart';
+import 'package:battle_it_out/persistence/subrace.dart';
+import 'package:battle_it_out/persistence/talent/talent_test.dart';
 import 'package:flutter/widgets.dart';
 
 extension RaceLocalisation on Subrace {

@@ -1,7 +1,7 @@
-import 'package:battle_it_out/interface/themes.dart';
-import 'package:battle_it_out/interface/screens/turn_order_screen.dart';
-import 'package:battle_it_out/localisation.dart';
+import 'package:battle_it_out/interface/screens/main_screen.dart';
 import 'package:battle_it_out/interface/state_container.dart';
+import 'package:battle_it_out/interface/themes.dart';
+import 'package:battle_it_out/localisation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate
       ],
       supportedLocales: AppLocalizationsDelegate.supportedLocales,
-      home: const TurnOrderScreen(),
+      home: const MainScreen(),
     );
   }
 }

@@ -1,11 +1,7 @@
 {
   "NAME": "Sir Ulfrik von Apfelbaum",
   "SUBRACE": {
-    "NAME": "Człowiek",
-    "SIZE": 3,
-    "SUBRACE": {
-      "ID": 8
-    }
+    "ID": 1
   },
   "PROFESSION": {
     "ID": 245
