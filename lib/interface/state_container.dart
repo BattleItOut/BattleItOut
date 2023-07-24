@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:battle_it_out/persistence/character/character.dart';
-import 'package:battle_it_out/persistence/character/simple_character.dart';
+import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/utils/utilities.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -30,7 +29,7 @@ class StateContainer extends StatefulWidget {
 
 class StateContainerState extends State<StateContainer> {
   final Wrapper<Locale> _localeWrapper = Wrapper();
-  final List<SimpleCharacter> _savedCharacters = [];
+  final List<Character> _savedCharacters = [];
 
   get savedCharacters => _savedCharacters;
   get locale => _localeWrapper.object;
@@ -47,7 +46,7 @@ class StateContainerState extends State<StateContainer> {
 
     for (var template in templates) {
       var json = jsonDecode(await rootBundle.loadString(template));
-      SimpleCharacter character = await CharacterFactory().fromMap(json);
+      Character character = await CharacterFactory().fromMap(json);
       setState(() {
         _savedCharacters.add(character);
       });
@@ -60,7 +59,7 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
-  void addCharacter(SimpleCharacter character) {
+  void addCharacter(Character character) {
     setState(() {
       _savedCharacters.add(character);
     });

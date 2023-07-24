@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:battle_it_out/persistence/attribute.dart';
-import 'package:battle_it_out/persistence/character/character.dart';
+import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:flutter_test/flutter_test.dart';

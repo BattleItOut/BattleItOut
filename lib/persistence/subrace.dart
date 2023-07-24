@@ -1,14 +1,20 @@
 import 'package:battle_it_out/persistence/race.dart';
 import 'package:battle_it_out/persistence/serializer.dart';
+import 'package:battle_it_out/persistence/skill/skill.dart';
+import 'package:battle_it_out/persistence/skill/skill_group.dart';
+import 'package:battle_it_out/persistence/talent/talent.dart';
 
 class Subrace {
   int id;
   String name;
   String source;
   int randomTalents;
+  Race race;
   bool defaultSubrace;
 
-  Race race;
+  List<Skill> linkedSkills = [];
+  List<SkillGroup> linkedGroupSkills = [];
+  List<Talent> linkedTalents = [];
 
   Subrace._(
       {required this.id,
@@ -43,7 +49,7 @@ class SubraceFactory extends Factory<Subrace> {
   @override
   Map<String, dynamic> get defaultValues => {"RANDOM_TALENTS": 0, "SRC": "Custom", "DEF": 1};
 
-  Future<List<Subrace>> getSubraces(int raceId) async {
+  Future<List<Subrace>> getSubracesFromRace(int raceId) async {
     return await getAll(where: "RACE_ID = $raceId");
   }
 
@@ -59,13 +65,17 @@ class SubraceFactory extends Factory<Subrace> {
 
   @override
   Future<Subrace> fromMap(Map<String, dynamic> map) async {
-    return Subrace._(
+    Subrace subrace = Subrace._(
         id: map["ID"] ?? await getNextId(),
         race: await getRace(map),
         name: map["NAME"],
         randomTalents: map["RANDOM_TALENTS"],
         source: map["SRC"],
         defaultSubrace: map["DEF"] == 1);
+    subrace.linkedSkills = await SkillFactory().getLinkedToRace(subrace.id);
+    subrace.linkedGroupSkills = await SkillFactory().getGroupsLinkedToSubrace(subrace.id);
+    subrace.linkedTalents = await TalentFactory().getLinkedToRace(subrace.id);
+    return subrace;
   }
 
   @override

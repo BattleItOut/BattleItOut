@@ -1,4 +1,4 @@
-import 'package:battle_it_out/interface/components/race_library.dart';
+import 'package:battle_it_out/interface/screens/race_library.dart';
 import 'package:flutter/material.dart';
 
 class LibraryScreen extends StatefulWidget {

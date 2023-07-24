@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:battle_it_out/persistence/attribute.dart';
-import 'package:battle_it_out/persistence/character/character.dart';
+import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/item/armour.dart';
 import 'package:battle_it_out/persistence/item/melee_weapon.dart';
 import 'package:battle_it_out/persistence/item/ranged_weapon.dart';
@@ -174,11 +174,11 @@ void skillSerializationTest() {
       expect(basicSkill.specialisation, null);
       expect(basicSkill.advances, 0);
       expect(basicSkill.canAdvance, false);
-      expect(basicSkill.baseSkill!.id, 1);
-      expect(basicSkill.baseSkill!.name, "ATHLETICS");
-      expect(basicSkill.baseSkill!.description, "ATHLETICS_DESC");
-      expect(basicSkill.baseSkill!.advanced, false);
-      expect(basicSkill.baseSkill!.grouped, false);
+      expect(basicSkill.baseSkill.id, 1);
+      expect(basicSkill.baseSkill.name, "ATHLETICS");
+      expect(basicSkill.baseSkill.description, "ATHLETICS_DESC");
+      expect(basicSkill.baseSkill.advanced, false);
+      expect(basicSkill.baseSkill.grouped, false);
     });
     test("Edited", () async {
       Skill maxEditedSkill = await SkillFactory().create(maxEditedSkillMap);
@@ -188,11 +188,11 @@ void skillSerializationTest() {
       expect(maxEditedSkill.advances, 2);
       expect(maxEditedSkill.canAdvance, true);
       expect(maxEditedSkill.earning, true);
-      expect(maxEditedSkill.baseSkill!.id, 1);
-      expect(maxEditedSkill.baseSkill!.name, "ATHLETICS");
-      expect(maxEditedSkill.baseSkill!.description, "ATHLETICS_DESC");
-      expect(maxEditedSkill.baseSkill!.advanced, false);
-      expect(maxEditedSkill.baseSkill!.grouped, false);
+      expect(maxEditedSkill.baseSkill.id, 1);
+      expect(maxEditedSkill.baseSkill.name, "ATHLETICS");
+      expect(maxEditedSkill.baseSkill.description, "ATHLETICS_DESC");
+      expect(maxEditedSkill.baseSkill.advanced, false);
+      expect(maxEditedSkill.baseSkill.grouped, false);
     });
     doubleSerializationTest(SkillFactory(), [basicSkillMap, maxEditedSkillMap]);
   });

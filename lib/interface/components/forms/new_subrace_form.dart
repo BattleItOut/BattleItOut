@@ -18,12 +18,6 @@ class _NewSubraceFormState extends State<NewSubraceForm> {
   final nameTextController = TextEditingController();
 
   String? name;
-  late Size size;
-
-  Future<void> getAsyncData(BuildContext context) async {
-    sizes = await SizeFactory().getAll();
-    size = sizes[3];
-  }
 
   @override
   void dispose() {
@@ -33,47 +27,39 @@ class _NewSubraceFormState extends State<NewSubraceForm> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getAsyncData(context),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          return AlertDialog(
-            title: Text(
-              "Nowe pochodzenie (${widget.race.name.localise(context)})",
-              textAlign: TextAlign.center,
-            ),
-            content: SizedBox(
-              width: 400,
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      controller: nameTextController,
-                      decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Name'),
-                    ),
-                  )
-                ],
+    return AlertDialog(
+      title: Text(
+        "Nowe pochodzenie (${widget.race.name.localise(context)})",
+        textAlign: TextAlign.center,
+      ),
+      content: SizedBox(
+        width: 400,
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: nameTextController,
+                decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Name'),
               ),
-            ),
-            actions: [
-              TextButton(
-                child: Text("CANCEL".localise(context)),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              TextButton(
-                child: Text("PROCEED".localise(context)),
-                onPressed: () {
-                  SubraceFactory().create({"NAME": nameTextController.text, "RACE_ID": widget.race.id});
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        }
-        return const CircularProgressIndicator();
-      },
+            )
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          child: Text("CANCEL".localise(context)),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        TextButton(
+          child: Text("PROCEED".localise(context)),
+          onPressed: () {
+            SubraceFactory().create({"NAME": nameTextController.text, "RACE_ID": widget.race.id}).then(
+                (Subrace? subrace) => Navigator.of(context).pop(subrace!));
+          },
+        ),
+      ],
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
-import 'package:battle_it_out/persistence/character/simple_character.dart';
+import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
 class ListItem extends Container {
@@ -39,18 +39,28 @@ class TileListItem extends ListItem {
 }
 
 class CharacterListItem extends TileListItem {
-  CharacterListItem({Key? key, required SimpleCharacter character, required BuildContext context})
+  CharacterListItem({Key? key, required Character character, required BuildContext context})
       : super(
             key: key,
             child: ListTile(
-              subtitle: Text(
-                  "${character.subrace?.name.localise(context) ?? ""}, ${character.profession?.name.localise(context) ?? ""}"),
+              subtitle: buildSubtitle(character, context),
               trailing: Text(character.initiative?.toString() ?? "", style: const TextStyle(fontSize: 24)),
               title: Text(character.name),
               dense: true,
               textColor: Theme.of(context).floatingActionButtonTheme.foregroundColor,
             ),
             context: context);
+
+  static Text? buildSubtitle(Character character, BuildContext context) {
+    List<String> subtitle = [];
+    if (character.subrace != null) {
+      subtitle.add(character.subrace!.race.name.localise(context));
+    }
+    if (character.profession != null) {
+      subtitle.add(character.profession!.career.name.localise(context));
+    }
+    return character.subrace == null && character.profession == null ? null : Text(subtitle.join(", "));
+  }
 }
 
 class GroupedEntitiesTable extends TileListItem {

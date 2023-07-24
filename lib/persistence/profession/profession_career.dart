@@ -51,7 +51,7 @@ class ProfessionCareerFactory extends Factory<ProfessionCareer> {
         id: map["ID"] ?? await getNextId(),
         name: map["NAME"],
         source: map["SOURCE"],
-        professionClass: await getClass(map));
+        professionClass: (await getClass(map)));
   }
 
   @override

@@ -2,7 +2,7 @@ import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/serializer.dart';
 
 class BaseSkill {
-  int? id;
+  int id;
   String name;
   String? description;
   bool advanced;

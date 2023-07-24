@@ -1,6 +1,6 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/screens/character_selection_screen.dart';
-import 'package:battle_it_out/persistence/character/simple_character.dart';
+import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
 import '../components/list_items.dart';
@@ -14,7 +14,7 @@ class TurnOrderScreen extends StatefulWidget {
 }
 
 class _TurnOrderScreenState extends State<TurnOrderScreen> {
-  var characters = <SimpleCharacter>[];
+  var characters = <Character>[];
   var currentRound = 0;
 
   bool _isPreviousCharacterInPreviousRound() {

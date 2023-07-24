@@ -1,12 +1,6 @@
 {
   "NAME": "Złol Zły",
-  "SUBRACE": {
-    "NAME": "Goblin",
-    "SIZE": 3
-  },
-  "PROFESSION": {
-    "NAME": "Gobliński Wojownik"
-  },
+  "SIZE": 3,
   "ATTRIBUTES": [
     {
       "ID": 1,

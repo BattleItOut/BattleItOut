@@ -3,6 +3,8 @@ import 'package:battle_it_out/persistence/serializer.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/talent/talent_base.dart';
 import 'package:battle_it_out/persistence/talent/talent_test.dart';
+import 'package:battle_it_out/utils/database_provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 class Talent {
   int id;
@@ -71,6 +73,25 @@ class TalentFactory extends Factory<Talent> {
 
   getAllTalents() async {
     return await getAll(where: "BASE_TALENT_ID IS NOT NULL");
+  }
+
+  Future<List<Talent>> getLinkedToRace(int subraceId) async {
+    Database? database = await DatabaseProvider.instance.getDatabase();
+
+    final List<Map<String, dynamic>> map = await database.rawQuery(
+        "SELECT * FROM SUBRACE_TALENTS ST JOIN TALENTS T ON (T.ID = ST.TALENT_ID) WHERE RACE_ID = ?", [subraceId]);
+
+    return [for (Map<String, dynamic> entry in map) await create(entry)];
+  }
+
+  Future<List<Talent>> getLinkedToProfession(int professionId) async {
+    Database? database = await DatabaseProvider.instance.getDatabase();
+
+    final List<Map<String, dynamic>> map = await database.rawQuery(
+        "SELECT * FROM PROF_TALENTS ST JOIN TALENTS T ON (T.ID = ST.TALENT_ID) WHERE PROFESSION_ID = ?",
+        [professionId]);
+
+    return [for (Map<String, dynamic> entry in map) await create(entry)];
   }
 
   @override

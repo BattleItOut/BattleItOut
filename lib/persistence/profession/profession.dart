@@ -1,5 +1,8 @@
 import 'package:battle_it_out/persistence/profession/profession_career.dart';
 import 'package:battle_it_out/persistence/serializer.dart';
+import 'package:battle_it_out/persistence/skill/skill.dart';
+import 'package:battle_it_out/persistence/skill/skill_group.dart';
+import 'package:battle_it_out/persistence/talent/talent.dart';
 
 class Profession {
   int id;
@@ -7,6 +10,10 @@ class Profession {
   String source;
   int level;
   ProfessionCareer career;
+
+  List<Skill> linkedSkills = [];
+  List<SkillGroup> linkedGroupSkills = [];
+  List<Talent> linkedTalents = [];
 
   Profession._({required this.id, required this.name, required this.career, this.level = 1, this.source = "Custom"});
 
@@ -49,13 +56,15 @@ class ProfessionFactory extends Factory<Profession> {
 
   @override
   Future<Profession> fromMap(Map<String, dynamic> map) async {
-    return Profession._(
+    Profession profession = Profession._(
       id: map["ID"] ?? await getNextId(),
       name: map["NAME"],
       level: map["LEVEL"],
       source: map["SOURCE"],
       career: await getCareer(map),
     );
+    profession.linkedTalents = await TalentFactory().getLinkedToRace(profession.id);
+    return profession;
   }
 
   @override

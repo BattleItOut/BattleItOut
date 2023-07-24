@@ -2,7 +2,7 @@ import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
-import 'package:battle_it_out/persistence/character/simple_character.dart';
+import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/item/ammunition.dart';
 import 'package:battle_it_out/persistence/item/item.dart';
 import 'package:battle_it_out/persistence/item/melee_weapon.dart';
@@ -14,7 +14,7 @@ import 'package:battle_it_out/persistence/talent/talent_base.dart';
 import 'package:flutter/material.dart';
 
 class CharacterSheetScreen extends StatefulWidget {
-  final SimpleCharacter character;
+  final Character character;
 
   const CharacterSheetScreen({Key? key, required this.character}) : super(key: key);
 
@@ -23,6 +23,28 @@ class CharacterSheetScreen extends StatefulWidget {
 }
 
 class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
+  SingleEntitiesTable buildMainTable(BuildContext context) {
+    List<TableLine> children = [
+      TableLine(
+        children: [LocalisedText("SIZE", context), LocalisedText(widget.character.getSize()?.name ?? "", context)],
+      )
+    ];
+    if (widget.character.subrace != null) {
+      children.add(TableLine(children: [
+        LocalisedText("RACE", context),
+        LocalisedText(widget.character.subrace?.getLocalName(context) ?? "", context)
+      ]));
+    }
+    if (widget.character.subrace != null) {
+      children.add(TableLine(children: [
+        LocalisedText("PROFESSION", context),
+        LocalisedText(widget.character.profession?.getLocalName(context) ?? "", context)
+      ]));
+    }
+
+    return SingleEntitiesTable(children: children, context: context);
+  }
+
   List<TableSubsection> createSkillsTable(Map<BaseSkill, List<Skill>> groupedMap) {
     return [
       for (MapEntry<BaseSkill, List<Skill>> entry in groupedMap.entries)
@@ -83,20 +105,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           title: Text(widget.character.name),
         ),
         body: ListView(padding: const EdgeInsets.all(12), children: [
-          SingleEntitiesTable(children: [
-            TableLine(children: [
-              LocalisedText("RACE", context),
-              LocalisedText(widget.character.subrace?.getLocalName(context) ?? "", context)
-            ]),
-            TableLine(children: [
-              LocalisedText("SIZE", context),
-              LocalisedText(widget.character.subrace?.race.size.name ?? "", context)
-            ]),
-            TableLine(children: [
-              LocalisedText("PROFESSION", context),
-              LocalisedText(widget.character.profession?.getLocalName(context) ?? "", context)
-            ]),
-          ], context: context),
+          buildMainTable(context),
           SingleEntitiesTable(
               title: LocalisedText("ATTRIBUTES", context, style: const TextStyle(fontSize: 24.0)),
               children: widget.character.attributes.isEmpty
