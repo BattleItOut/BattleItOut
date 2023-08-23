@@ -1,12 +1,13 @@
 import 'package:battle_it_out/persistence/attribute.dart';
-import 'package:battle_it_out/persistence/serializer.dart';
 import 'package:battle_it_out/persistence/skill/skill_base.dart';
 import 'package:battle_it_out/persistence/skill/skill_group.dart';
 import 'package:battle_it_out/utils/database_provider.dart';
+import 'package:battle_it_out/utils/db_object.dart';
+import 'package:battle_it_out/utils/serializer.dart';
 import 'package:sqflite/sqflite.dart';
 
-class Skill {
-  int id;
+class Skill extends DBObject {
+  int? id;
   String name;
   String? specialisation;
   BaseSkill baseSkill;
@@ -15,8 +16,8 @@ class Skill {
   bool earning;
   bool canAdvance;
 
-  Skill._(
-      {required this.id,
+  Skill(
+      {this.id,
       required this.name,
       required this.baseSkill,
       this.specialisation,
@@ -85,7 +86,7 @@ class SkillFactory extends Factory<Skill> {
     final List<Map<String, dynamic>> map = await database.rawQuery(
         "SELECT * FROM SUBRACE_SKILLS RS JOIN SKILLS S ON (S.ID = RS.SKILL_ID) WHERE SUBRACE_ID = ?", [subraceId]);
 
-    return [for (Map<String, dynamic> entry in map) await create(entry)];
+    return [for (Map<String, dynamic> entry in map) await fromDatabase(entry)];
   }
 
   Future<List<SkillGroup>> getGroupsLinkedToSubrace(int subraceId) async {
@@ -104,20 +105,62 @@ class SkillFactory extends Factory<Skill> {
     ];
   }
 
+  Future<List<Skill>> getLinkedToProfession(int professionId) async {
+    Database? database = await DatabaseProvider.instance.getDatabase();
+
+    final List<Map<String, dynamic>> map = await database.rawQuery(
+        "SELECT * FROM PROFESSION_SKILLS PS JOIN SKILLS S ON (PS.SKILL_ID = S.ID) WHERE PROFESSION_ID = ?",
+        [professionId]);
+
+    return [for (Map<String, dynamic> entry in map) await fromDatabase(entry)];
+  }
+
+  Future<List<SkillGroup>> getGroupsLinkedToProfession(int professionId) async {
+    Database? database = await DatabaseProvider.instance.getDatabase();
+
+    List<Map<String, dynamic>> baseSkillsMap = await database.rawQuery(
+        "SELECT * FROM PROFESSION_SKILLS PS JOIN SKILLS_BASE SB ON (PS.BASE_SKILL_ID = SB.ID) WHERE PROFESSION_ID = ?",
+        [professionId]);
+
+    List<SkillGroup> skillGroups = [
+      for (Map<String, dynamic> entry in baseSkillsMap)
+        SkillGroup(
+          name: "${entry["NAME"]}_ANY",
+          skills: await getAll(where: "ID = ?", whereArgs: [entry["BASE_SKILL_ID"]]),
+        )
+    ];
+
+    List<Map<String, dynamic>> groupSkillsMap = await database.rawQuery(
+        "SELECT * FROM PROFESSION_SKILLS PS JOIN SKILL_GROUPS SB ON (PS.SKILL_GROUP_ID = SB.ID) WHERE PROFESSION_ID = ?",
+        [professionId]);
+    for (Map<String, dynamic> entry in groupSkillsMap) {
+      List<Map<String, dynamic>> skillsMap = await database.rawQuery(
+          "SELECT * FROM SKILL_GROUPS_HIERARCHY SGH JOIN SKILLS S on S.ID = SGH.CHILD_ID WHERE PARENT_ID = ?",
+          [entry["SKILL_GROUP_ID"] as int]);
+      skillGroups.add(
+        SkillGroup(
+          name: entry["NAME"],
+          skills: [for (Map<String, dynamic> skillEntry in skillsMap) await fromDatabase(skillEntry)],
+        ),
+      );
+    }
+    return skillGroups;
+  }
+
   @override
-  Future<Skill> fromMap(Map<String, dynamic> map) async {
-    return Skill._(
+  Future<Skill> fromDatabase(Map<String, dynamic> map) async {
+    return Skill(
         id: map["ID"],
         name: map["NAME"],
         specialisation: map["SPECIALISATION"],
         baseSkill: await BaseSkillFactory(attributes).get(map["BASE_SKILL_ID"]),
         advances: map["ADVANCES"] ?? 0,
-        earning: map["EARNING"] ?? false,
+        earning: map["EARNING"] == 1,
         canAdvance: map["CAN_ADVANCE"] ?? false);
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(Skill object, {optimised = true, database = false}) async {
+  Future<Map<String, dynamic>> toDatabase(Skill object) async {
     Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,
@@ -126,12 +169,28 @@ class SkillFactory extends Factory<Skill> {
       "EARNING": object.earning,
       "CAN_ADVANCE": object.canAdvance
     };
-    if (optimised) {
-      map = await optimise(map);
-    }
-    if ((object.baseSkill != await BaseSkillFactory().get(object.baseSkill.id))) {
-      map["BASE_SKILL"] = BaseSkillFactory().toMap(object.baseSkill);
+    if ((object.baseSkill != await BaseSkillFactory().get(object.baseSkill.id!))) {
+      map["BASE_SKILL"] = BaseSkillFactory().toDatabase(object.baseSkill);
     }
     return map;
   }
+
+  // @override
+  // Future<Map<String, dynamic>> toMap(Skill object, {optimised = true, database = false}) async {
+  //   Map<String, dynamic> map = {
+  //     "ID": object.id,
+  //     "NAME": object.name,
+  //     "SPECIALISATION": object.specialisation,
+  //     "ADVANCES": object.advances,
+  //     "EARNING": object.earning,
+  //     "CAN_ADVANCE": object.canAdvance
+  //   };
+  //   if (optimised) {
+  //     map = await optimise(map);
+  //   }
+  //   if ((object.baseSkill != await BaseSkillFactory().get(object.baseSkill.id))) {
+  //     map["BASE_SKILL"] = BaseSkillFactory().toDatabase(object.baseSkill);
+  //   }
+  //   return map;
+  // }
 }

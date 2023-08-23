@@ -1,6 +1,7 @@
-import 'package:battle_it_out/persistence/serializer.dart';
+import 'package:battle_it_out/utils/db_object.dart';
+import 'package:battle_it_out/utils/serializer.dart';
 
-class WeaponLength {
+class WeaponLength extends DBObject {
   int? id;
   String name;
   String? description;
@@ -32,8 +33,13 @@ class WeaponLengthFactory extends Factory<WeaponLength> {
   get tableName => 'weapon_lengths';
 
   @override
-  Future<WeaponLength> fromMap(Map<String, dynamic> map) async {
+  Future<WeaponLength> fromDatabase(Map<String, dynamic> map) async {
     return WeaponLength._(id: map["ID"], name: map["NAME"], description: map["DESCRIPTION"], source: map["SOURCE"]);
+  }
+
+  @override
+  Future<Map<String, dynamic>> toDatabase(WeaponLength object) async {
+    return {"ID": object.id, "NAME": object.name, "DESCRIPTION": object.description, "SOURCE": object.source};
   }
 
   @override

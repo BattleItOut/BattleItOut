@@ -62,13 +62,13 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
   Map<String, dynamic> get defaultValues => {"DAMAGE_ATTRIBUTE": 3, "ITEM_CATEGORY": "MELEE_WEAPONS"};
 
   @override
-  Future<MeleeWeapon> fromMap(Map<String, dynamic> map) async {
+  Future<MeleeWeapon> fromDatabase(Map<String, dynamic> map) async {
     defaultValues.forEach((key, value) {
       map.putIfAbsent(key, () => value);
     });
     Attribute? damageAttribute = attributes?.firstWhere((attribute) => attribute.id == map["DAMAGE_ATTRIBUTE"]);
     MeleeWeapon meleeWeapon = MeleeWeapon._(
-        id: map["ID"] ?? await getNextId(),
+        id: map["ID"],
         name: map["NAME"],
         length: await WeaponLengthFactory().get(map["LENGTH"]),
         damage: map["DAMAGE"],
@@ -83,7 +83,7 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
     }
     if (map["QUALITIES"] != null) {
       for (Map<String, dynamic> map in map["QUALITIES"]) {
-        ItemQuality quality = await ItemQualityFactory().create(map);
+        ItemQuality quality = await ItemQualityFactory().fromDatabase(map);
         if (!meleeWeapon.qualities.contains(quality)) {
           meleeWeapon.qualities.add(quality);
         }
@@ -93,8 +93,8 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(MeleeWeapon object, {optimised = true, database = false}) async {
-    Map<String, dynamic> map = {
+  Future<Map<String, dynamic>> toDatabase(MeleeWeapon object) async {
+    return {
       "ID": object.id,
       "NAME": object.name,
       "LENGTH": object.length.id,
@@ -103,12 +103,25 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
       "DAMAGE_ATTRIBUTE": object.damageAttribute?.id,
       "ITEM_CATEGORY": object.category,
     };
-    if (!database) {
-      map["QUALITIES"] = [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toMap(quality)];
-      if (optimised) {
-        map = await optimise(map);
-      }
-    }
-    return map;
   }
+
+  // @override
+  // Future<Map<String, dynamic>> toMap(MeleeWeapon object, {optimised = true, database = false}) async {
+  //   Map<String, dynamic> map = {
+  //     "ID": object.id,
+  //     "NAME": object.name,
+  //     "LENGTH": object.length.id,
+  //     "DAMAGE": object.damage,
+  //     "SKILL": object.skill?.id,
+  //     "DAMAGE_ATTRIBUTE": object.damageAttribute?.id,
+  //     "ITEM_CATEGORY": object.category,
+  //   };
+  //   if (!database) {
+  //     map["QUALITIES"] = [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toDatabase(quality)];
+  //     if (optimised) {
+  //       map = await optimise(map);
+  //     }
+  //   }
+  //   return map;
+  // }
 }

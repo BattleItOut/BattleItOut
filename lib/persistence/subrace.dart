@@ -1,11 +1,12 @@
 import 'package:battle_it_out/persistence/race.dart';
-import 'package:battle_it_out/persistence/serializer.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/skill/skill_group.dart';
 import 'package:battle_it_out/persistence/talent/talent.dart';
+import 'package:battle_it_out/persistence/talent/talent_group.dart';
+import 'package:battle_it_out/utils/db_object.dart';
+import 'package:battle_it_out/utils/serializer.dart';
 
-class Subrace {
-  int id;
+class Subrace extends DBObject {
   String name;
   String source;
   int randomTalents;
@@ -15,9 +16,10 @@ class Subrace {
   List<Skill> linkedSkills = [];
   List<SkillGroup> linkedGroupSkills = [];
   List<Talent> linkedTalents = [];
+  List<TalentGroup> linkedGroupTalents = [];
 
-  Subrace._(
-      {required this.id,
+  Subrace(
+      {super.id,
       required this.name,
       required this.race,
       this.source = "Custom",
@@ -65,17 +67,46 @@ class SubraceFactory extends Factory<Subrace> {
 
   @override
   Future<Subrace> fromMap(Map<String, dynamic> map) async {
-    Subrace subrace = Subrace._(
+    Subrace subrace = Subrace(
         id: map["ID"] ?? await getNextId(),
         race: await getRace(map),
         name: map["NAME"],
         randomTalents: map["RANDOM_TALENTS"],
         source: map["SRC"],
         defaultSubrace: map["DEF"] == 1);
-    subrace.linkedSkills = await SkillFactory().getLinkedToRace(subrace.id);
-    subrace.linkedGroupSkills = await SkillFactory().getGroupsLinkedToSubrace(subrace.id);
-    subrace.linkedTalents = await TalentFactory().getLinkedToRace(subrace.id);
+    subrace.linkedSkills = await SkillFactory().getLinkedToRace(subrace.id!);
+    subrace.linkedGroupSkills = await SkillFactory().getGroupsLinkedToSubrace(subrace.id!);
+    subrace.linkedTalents = await TalentFactory().getLinkedToSubrace(subrace.id!);
+    subrace.linkedGroupTalents = await TalentFactory().getGroupsLinkedToSubrace(subrace.id!);
     return subrace;
+  }
+
+  @override
+  Future<Subrace> fromDatabase(Map<String, dynamic> map) async {
+    Subrace subrace = Subrace(
+        id: map["ID"],
+        race: await RaceFactory().get(map["RACE_ID"]),
+        name: map["NAME"],
+        randomTalents: map["RANDOM_TALENTS"],
+        source: map["SRC"],
+        defaultSubrace: map["DEF"] == 1);
+    subrace.linkedSkills = await SkillFactory().getLinkedToRace(map["ID"]);
+    subrace.linkedGroupSkills = await SkillFactory().getGroupsLinkedToSubrace(map["ID"]);
+    subrace.linkedTalents = await TalentFactory().getLinkedToSubrace(map["ID"]);
+    subrace.linkedGroupTalents = await TalentFactory().getGroupsLinkedToSubrace(map["ID"]);
+    return subrace;
+  }
+
+  @override
+  Future<Map<String, dynamic>> toDatabase(Subrace object, {optimised = true, database = false}) async {
+    return {
+      "ID": object.id,
+      "RACE_ID": object.race.id,
+      "NAME": object.name,
+      "RANDOM_TALENTS": object.randomTalents,
+      "SRC": object.source,
+      "DEF": object.defaultSubrace ? 1 : 0
+    };
   }
 
   @override

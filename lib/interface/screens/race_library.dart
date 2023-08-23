@@ -22,7 +22,7 @@ class _RaceLibraryWidgetState extends State<RaceLibraryWidget> {
     List<Race> races = await RaceFactory().getAll();
     races.sort((a, b) => a.name.localise(context).compareTo(b.name.localise(context)));
     for (Race race in races) {
-      data[race] = await SubraceFactory().getSubracesFromRace(race.id);
+      data[race] = await SubraceFactory().getSubracesFromRace(race.id!);
     }
 
     // Sizes
@@ -58,7 +58,7 @@ class _RaceLibraryWidgetState extends State<RaceLibraryWidget> {
                       padding: const EdgeInsets.all(7),
                       child: Text(
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                        "NEW_RASE".localise(context),
+                        "NEW_RACE".localise(context),
                       ),
                     ),
                   ),

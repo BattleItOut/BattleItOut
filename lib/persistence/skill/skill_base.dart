@@ -1,8 +1,9 @@
 import 'package:battle_it_out/persistence/attribute.dart';
-import 'package:battle_it_out/persistence/serializer.dart';
+import 'package:battle_it_out/utils/db_object.dart';
+import 'package:battle_it_out/utils/serializer.dart';
 
-class BaseSkill {
-  int id;
+class BaseSkill extends DBObject {
+  int? id;
   String name;
   String? description;
   bool advanced;
@@ -56,7 +57,7 @@ class BaseSkillFactory extends Factory<BaseSkill> {
   get tableName => 'skills_base';
 
   @override
-  Future<BaseSkill> fromMap(Map<String, dynamic> map) async {
+  Future<BaseSkill> fromDatabase(Map<String, dynamic> map) async {
     Attribute? attribute = attributes?.firstWhere((attribute) => attribute.id == map["ATTRIBUTE_ID"]);
     return BaseSkill._(
         id: map["ID"],
@@ -65,6 +66,18 @@ class BaseSkillFactory extends Factory<BaseSkill> {
         grouped: map["GROUPED"] == 1,
         description: map["DESCRIPTION"],
         attribute: attribute ?? await AttributeFactory().get(map["ATTRIBUTE_ID"]));
+  }
+
+  @override
+  Future<Map<String, dynamic>> toDatabase(BaseSkill object) async {
+    return {
+      "ID": object.id,
+      "NAME": object.name,
+      "DESCRIPTION": object.description,
+      "ADVANCED": object.advanced ? 1 : 0,
+      "GROUPED": object.grouped ? 1 : 0,
+      "ATTRIBUTE_ID": object.attribute.id
+    };
   }
 
   @override

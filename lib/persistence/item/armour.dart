@@ -72,9 +72,9 @@ class ArmourFactory extends ItemFactory<Armour> {
       };
 
   @override
-  Future<Armour> fromMap(Map<String, dynamic> map) async {
+  Future<Armour> fromDatabase(Map<String, dynamic> map) async {
     Armour armour = Armour._(
-        id: map["ID"] ?? await getNextId(),
+        id: map["ID"],
         name: map["NAME"],
         headAP: map["HEAD_AP"],
         bodyAP: map["BODY_AP"],
@@ -87,7 +87,7 @@ class ArmourFactory extends ItemFactory<Armour> {
     }
     if (map["QUALITIES"] != null) {
       for (Map<String, dynamic> map in map["QUALITIES"]) {
-        ItemQuality quality = await ItemQualityFactory().create(map);
+        ItemQuality quality = await ItemQualityFactory().fromDatabase(map);
         if (!armour.qualities.contains(quality)) {
           armour.qualities.add(quality);
         }
@@ -97,8 +97,8 @@ class ArmourFactory extends ItemFactory<Armour> {
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(Armour object, {optimised = true, database = false}) async {
-    Map<String, dynamic> map = {
+  Future<Map<String, dynamic>> toDatabase(Armour object) async {
+    return {
       "ID": object.id,
       "NAME": object.name,
       "HEAD_AP": object.headAP,
@@ -109,12 +109,27 @@ class ArmourFactory extends ItemFactory<Armour> {
       "RIGHT_LEG_AP": object.rightLegAP,
       "ITEM_CATEGORY": object.category
     };
-    if (!database) {
-      map["QUALITIES"] = [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toMap(quality)];
-      if (optimised) {
-        map = await optimise(map);
-      }
-    }
-    return map;
   }
+
+  // @override
+  // Future<Map<String, Object?>> toMap(Armour object, {optimised = true, database = false}) async {
+  //   Map<String, dynamic> map = {
+  //     "ID": object.id,
+  //     "NAME": object.name,
+  //     "HEAD_AP": object.headAP,
+  //     "BODY_AP": object.bodyAP,
+  //     "LEFT_ARM_AP": object.leftArmAP,
+  //     "RIGHT_ARM_AP": object.rightArmAP,
+  //     "LEFT_LEG_AP": object.leftLegAP,
+  //     "RIGHT_LEG_AP": object.rightLegAP,
+  //     "ITEM_CATEGORY": object.category
+  //   };
+  //   if (!database) {
+  //     map["QUALITIES"] = [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toDatabase(quality)];
+  //     if (optimised) {
+  //       map = await optimise(map);
+  //     }
+  //   }
+  //   return map;
+  // }
 }

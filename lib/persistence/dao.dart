@@ -4,8 +4,11 @@ import 'package:sqflite/sqflite.dart';
 abstract class DAO {
   get tableName;
 
-  Future<Map<String, Object?>> getMap(int id) async {
-    return getMapWhere(where: "ID = ?", whereArgs: [id]);
+  Future<int> getNextId() async {
+    Database? database = await DatabaseProvider.instance.getDatabase();
+
+    Map<String, Object?>? list = (await database.rawQuery("SELECT MAX(ID)+1 AS NEXT_ID FROM $tableName")).firstOrNull;
+    return (list?["NEXT_ID"] as int?) ?? 1;
   }
 
   Future<Map<String, Object?>> getMapWhere({String? where, List<Object>? whereArgs}) async {
@@ -13,13 +16,6 @@ abstract class DAO {
 
     List<Map<String, Object?>> list = (await database.query(tableName, where: where, whereArgs: whereArgs));
     return list.firstOrNull ?? {};
-  }
-
-  Future<int> getNextId() async {
-    Database? database = await DatabaseProvider.instance.getDatabase();
-
-    Map<String, Object?>? list = (await database.rawQuery("SELECT MAX(ID)+1 AS NEXT_ID FROM $tableName")).firstOrNull;
-    return (list?["NEXT_ID"] as int?) ?? 1;
   }
 
   Future<List<Map<String, Object?>>> getMapAll({String? where, List<Object>? whereArgs}) async {

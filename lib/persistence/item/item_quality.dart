@@ -1,7 +1,8 @@
-import 'package:battle_it_out/persistence/serializer.dart';
+import 'package:battle_it_out/utils/db_object.dart';
+import 'package:battle_it_out/utils/serializer.dart';
 
-class ItemQuality {
-  int id;
+class ItemQuality extends DBObject {
+  int? id;
   String name;
   bool positive;
   String? equipment;
@@ -47,9 +48,9 @@ class ItemQualityFactory extends Factory<ItemQuality> {
   get tableName => 'item_qualities';
 
   @override
-  Future<ItemQuality> fromMap(Map<String, dynamic> map) async {
+  Future<ItemQuality> fromDatabase(Map<String, dynamic> map) async {
     return ItemQuality(
-        id: map['ID'] ?? await getNextId(),
+        id: map['ID'],
         name: map['NAME'],
         positive: map['TYPE'] == 1,
         equipment: map['EQUIPMENT'],
@@ -58,20 +59,24 @@ class ItemQualityFactory extends Factory<ItemQuality> {
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(ItemQuality object, {optimised = true, database = false}) async {
-    Map<String, dynamic> map = {
+  Future<Map<String, dynamic>> toDatabase(ItemQuality object) async {
+    return {
       "ID": object.id,
       "NAME": object.name,
       "POSITIVE": object.positive ? 1 : 0,
       "EQUIPMENT": object.equipment,
       "DESCRIPTION": object.description
     };
-    if (!database) {
-      map["VALUE"] = object.value;
-      if (optimised) {
-        map = await optimise(map);
-      }
-    }
-    return map;
+  }
+
+  @override
+  Future<Map<String, Object?>> toMap(ItemQuality object, {optimised = true, database = false}) async {
+    return {
+      "ID": object.id,
+      "NAME": object.name,
+      "POSITIVE": object.positive ? 1 : 0,
+      "EQUIPMENT": object.equipment,
+      "DESCRIPTION": object.description
+    };
   }
 }

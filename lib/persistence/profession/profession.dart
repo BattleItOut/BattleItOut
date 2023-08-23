@@ -1,11 +1,13 @@
 import 'package:battle_it_out/persistence/profession/profession_career.dart';
-import 'package:battle_it_out/persistence/serializer.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/skill/skill_group.dart';
 import 'package:battle_it_out/persistence/talent/talent.dart';
+import 'package:battle_it_out/persistence/talent/talent_group.dart';
+import 'package:battle_it_out/utils/db_object.dart';
+import 'package:battle_it_out/utils/serializer.dart';
 
-class Profession {
-  int id;
+class Profession extends DBObject {
+  int? id;
   String name;
   String source;
   int level;
@@ -14,6 +16,7 @@ class Profession {
   List<Skill> linkedSkills = [];
   List<SkillGroup> linkedGroupSkills = [];
   List<Talent> linkedTalents = [];
+  List<TalentGroup> linkedGroupTalents = [];
 
   Profession._({required this.id, required this.name, required this.career, this.level = 1, this.source = "Custom"});
 
@@ -48,27 +51,29 @@ class ProfessionFactory extends Factory<Profession> {
     if (map["CAREER_ID"] != null) {
       return ProfessionCareerFactory().get(map["CAREER_ID"]);
     } else if (map["CAREER"] != null) {
-      return ProfessionCareerFactory().create(map["CAREER"]);
+      return ProfessionCareerFactory().fromDatabase(map["CAREER"]);
     } else {
-      return ProfessionCareerFactory().create(map);
+      return ProfessionCareerFactory().fromDatabase(map);
     }
   }
 
   @override
-  Future<Profession> fromMap(Map<String, dynamic> map) async {
+  Future<Profession> fromDatabase(Map<String, dynamic> map) async {
     Profession profession = Profession._(
-      id: map["ID"] ?? await getNextId(),
+      id: map["ID"],
       name: map["NAME"],
       level: map["LEVEL"],
       source: map["SOURCE"],
       career: await getCareer(map),
     );
-    profession.linkedTalents = await TalentFactory().getLinkedToRace(profession.id);
+    profession.linkedTalents = await TalentFactory().getLinkedToProfession(profession.id!);
+    profession.linkedSkills = await SkillFactory().getLinkedToProfession(profession.id!);
+    profession.linkedGroupSkills = await SkillFactory().getGroupsLinkedToProfession(profession.id!);
     return profession;
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(Profession object, {optimised = true, database = false}) async {
+  Future<Map<String, dynamic>> toDatabase(Profession object) async {
     Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,
@@ -76,12 +81,27 @@ class ProfessionFactory extends Factory<Profession> {
       "SOURCE": object.source,
       "CAREER_ID": object.career.id
     };
-    if (optimised) {
-      map = await optimise(map);
-    }
-    if ((object.career != await ProfessionCareerFactory().get(object.career.id))) {
-      map["CAREER"] = await ProfessionCareerFactory().toMap(object.career);
+    if ((object.career != await ProfessionCareerFactory().get(object.career.id!))) {
+      map["CAREER"] = await ProfessionCareerFactory().toDatabase(object.career);
     }
     return map;
   }
+
+  // @override
+  // Future<Map<String, dynamic>> toMap(Profession object, {optimised = true, database = false}) async {
+  //   Map<String, dynamic> map = {
+  //     "ID": object.id,
+  //     "NAME": object.name,
+  //     "LEVEL": object.level,
+  //     "SOURCE": object.source,
+  //     "CAREER_ID": object.career.id
+  //   };
+  //   if (optimised) {
+  //     map = await optimise(map);
+  //   }
+  //   if ((object.career != await ProfessionCareerFactory().get(object.career.id))) {
+  //     map["CAREER"] = await ProfessionCareerFactory().toDatabase(object.career);
+  //   }
+  //   return map;
+  // }
 }

@@ -36,7 +36,7 @@ class StateContainerState extends State<StateContainer> {
 
   @override
   initState() {
-    loadCharacters().then((value) => debugPrint("Characters loaded"));
+    loadCharactersDB().then((value) => debugPrint("Characters DB loaded"));
     super.initState();
   }
 
@@ -46,7 +46,15 @@ class StateContainerState extends State<StateContainer> {
 
     for (var template in templates) {
       var json = jsonDecode(await rootBundle.loadString(template));
-      Character character = await CharacterFactory().fromMap(json);
+      Character character = await CharacterFactory().fromDatabase(json);
+      setState(() {
+        _savedCharacters.add(character);
+      });
+    }
+  }
+
+  Future<void> loadCharactersDB() async {
+    for (var character in await CharacterFactory().getAll()) {
       setState(() {
         _savedCharacters.add(character);
       });

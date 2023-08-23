@@ -1,7 +1,8 @@
-import 'package:battle_it_out/persistence/serializer.dart';
+import 'package:battle_it_out/utils/db_object.dart';
+import 'package:battle_it_out/utils/serializer.dart';
 
-class Trait {
-  int id;
+class Trait extends DBObject {
+  int? id;
   String name;
   String description;
 
@@ -18,12 +19,21 @@ class TraitFactory extends Factory<Trait> {
   get tableName => 'npc_traits';
 
   @override
-  Future<Trait> fromMap(Map<String, dynamic> map) async {
+  Future<Trait> fromDatabase(Map<String, dynamic> map) async {
     return Trait._(id: map["ID"], name: map["NAME"], description: map["DESCRIPTION"]);
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(Trait object, {optimised = true, database = false}) async {
+  Future<Map<String, dynamic>> toDatabase(Trait object, {optimised = true, database = false}) async {
+    return {
+      "ID": object.id,
+      "NAME": object.name,
+      "DESCRIPTION": object.description,
+    };
+  }
+
+  @override
+  Future<Map<String, Object?>> toMap(Trait object, {optimised = true, database = false}) async {
     return {
       "ID": object.id,
       "NAME": object.name,

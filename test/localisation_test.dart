@@ -41,6 +41,7 @@ Future<void> main() async {
           }
         });
       }
+
       performLocTest("Check npc traits localisations", TraitFactory(), (item) => [item.name, item.description]);
       performLocTest("Check base talent localisations", BaseTalentFactory(), (item) => [item.name, item.description]);
       performLocTest("Check talent localisations", TalentFactory(), (item) => [item.name, item.specialisation]);
@@ -52,10 +53,12 @@ Future<void> main() async {
       performLocTest("Check subrace localisations", SubraceFactory(), (item) => [item.name]);
       performLocTest("Check size localisations", SizeFactory(), (item) => [item.name]);
       performLocTest("Check armour localisations", ArmourFactory(), (item) => [item.name]);
-      performLocTest("Check attribute localisations", AttributeFactory(), (item) => [item.name, item.shortName, item.description]);
+      performLocTest(
+          "Check attribute localisations", AttributeFactory(), (item) => [item.name, item.shortName, item.description]);
       performLocTest("Check base skill localisations", BaseSkillFactory(), (item) => [item.name, item.description]);
       performLocTest("Check skill localisations", SkillFactory(), (item) => [item.name, item.specialisation]);
-      performLocTest("Check weapon length localisations", WeaponLengthFactory(), (item) => [item.name, item.description]);
+      performLocTest(
+          "Check weapon length localisations", WeaponLengthFactory(), (item) => [item.name, item.description]);
       performLocTest("Check melee weapon localisations", MeleeWeaponFactory(), (item) => [item.name]);
       performLocTest("Check ranged weapon localisations", RangedWeaponFactory(), (item) => [item.name]);
       performLocTest("Check ranged weapon ammo localisations", AmmunitionFactory(), (item) => [item.name]);

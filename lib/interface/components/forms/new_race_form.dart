@@ -49,6 +49,13 @@ class _NewRaceFormState extends State<NewRaceForm> {
                   return DropdownMenuItem<Size>(value: value, child: Text(value.name.localise(context)));
                 }).toList(),
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: nameTextController,
+                decoration: const InputDecoration(border: OutlineInputBorder(), labelText: 'Name'),
+              ),
             )
           ],
         ),
@@ -61,8 +68,9 @@ class _NewRaceFormState extends State<NewRaceForm> {
         TextButton(
           child: Text("PROCEED".localise(context)),
           onPressed: () {
-            RaceFactory().create({"NAME": nameTextController.text, "SIZE": size!.id}).then(
-                (value) => Navigator.of(context).pop<Race>(value));
+            RaceFactory()
+                .insert(Race(name: nameTextController.text, size: size!))
+                .then((Race race) => Navigator.of(context).pop(race));
           },
         ),
       ],
