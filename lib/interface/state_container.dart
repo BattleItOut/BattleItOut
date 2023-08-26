@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/utils/utilities.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class _InheritedStateContainer extends InheritedWidget {
   final StateContainerState data;
@@ -35,14 +32,6 @@ class StateContainerState extends State<StateContainer> {
   get locale => _localeWrapper.object;
 
   Future<void> loadCharacters() async {
-    final manifestJson = await rootBundle.loadString('AssetManifest.json');
-    final templates = json.decode(manifestJson).keys.where((String key) => key.startsWith('assets/templates'));
-    for (var template in templates) {
-      var json = jsonDecode(await rootBundle.loadString(template));
-      Character character = await CharacterFactory().fromMap(json);
-      CharacterFactory().update(character);
-    }
-
     List<Character> characters = await CharacterFactory().getAll();
     setState(() {
       _savedCharacters = characters;
