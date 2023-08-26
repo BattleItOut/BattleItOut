@@ -1,11 +1,11 @@
+import 'package:battle_it_out/utils/db_object.dart';
 import 'package:flutter/foundation.dart';
 
-class SkillGroup {
-  int? id;
+class SkillGroup extends DBObject {
   String name;
   List<dynamic> skills;
 
-  SkillGroup({this.id, required this.name, required this.skills});
+  SkillGroup({super.id, required this.name, required this.skills});
 
   @override
   bool operator ==(Object other) =>

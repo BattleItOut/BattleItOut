@@ -1,22 +1,44 @@
-import 'package:battle_it_out/persistence/dao.dart';
+import 'package:battle_it_out/utils/dao.dart';
 import 'package:battle_it_out/utils/db_object.dart';
 import 'package:flutter/foundation.dart';
 
-abstract class DBSerializer<T> {
+mixin DBSerializer<T> {
   Future<T> fromDatabase(Map<String, dynamic> map);
 
   Future<Map<String, Object?>> toDatabase(T object);
 }
 
-abstract class JSONSerializer<T> {
+mixin JSONSerializer<T> implements DAO {
+  get defaultValues => {};
+
   Future<Map<String, Object?>> toMap(T object, {optimised = true});
 
   Future<T> fromMap(Map<String, dynamic> map);
+
+  Future<T> create(Map<String, dynamic> map) async {
+    Map<String, Object?> newMap = {};
+    if (map["ID"] != null) {
+      newMap.addAll(await getMapWhere(where: "ID = ?", whereArgs: [map["ID"]]));
+    }
+    defaultValues.forEach((key, value) => newMap.putIfAbsent(key, () => value));
+    map.forEach((key, newValue) => newMap.update(key, (oldValue) => newValue, ifAbsent: () => newValue));
+    return fromMap(newMap);
+  }
+
+  Future<Map<String, dynamic>> optimise(Map<String, dynamic> map) async {
+    map.removeWhere((key, value) => value == null || defaultValues[key] == value);
+    map.removeWhere((key, value) => value is List && value.isEmpty);
+    if (map["ID"] != null) {
+      Map<String, dynamic> defaultMap = await getMapWhere(where: "ID = ?", whereArgs: [map["ID"]]);
+      map.removeWhere((key, value) =>
+          key != "ID" &&
+          (value is List && listEquals(value, defaultMap[key]) || value is! List && value == defaultMap[key]));
+    }
+    return map;
+  }
 }
 
-abstract class Factory<T extends DBObject> extends DAO implements DBSerializer<T>, JSONSerializer<T> {
-  get defaultValues => {};
-
+abstract class Factory<T extends DBObject> extends DAO with JSONSerializer<T>, DBSerializer<T> {
   @override
   Future<Map<String, Object?>> toMap(T object, {optimised = true}) {
     return toDatabase(object);
@@ -27,7 +49,7 @@ abstract class Factory<T extends DBObject> extends DAO implements DBSerializer<T
     return fromDatabase(map);
   }
 
-  Future<T> insert(T object) async {
+  Future<T> update(T object) async {
     object.id ??= await getNextId();
     insertMap(await toDatabase(object));
     return object;
@@ -57,32 +79,5 @@ abstract class Factory<T extends DBObject> extends DAO implements DBSerializer<T
       for (var map in await getMapAll(where: where, whereArgs: whereArgs))
         await fromDatabase({for (var entry in map.entries) entry.key: entry.value})
     ];
-  }
-
-  Future<T> create(Map<String, dynamic> map) async {
-    Map<String, Object?> newMap = {};
-    if (map["ID"] != null) {
-      newMap.addAll(await getMapWhere(where: "ID = ?", whereArgs: [map["ID"]]));
-    }
-    defaultValues.forEach((key, value) => newMap.putIfAbsent(key, () => value));
-    map.forEach((key, newValue) => newMap.update(key, (oldValue) => newValue, ifAbsent: () => newValue));
-
-    T object = await fromMap(newMap);
-    if (map["ID"] == null) {
-      await insert(object);
-    }
-    return object;
-  }
-
-  Future<Map<String, dynamic>> optimise(Map<String, dynamic> map) async {
-    map.removeWhere((key, value) => value == null || defaultValues[key] == value);
-    map.removeWhere((key, value) => value is List && value.isEmpty);
-    if (map["ID"] != null) {
-      Map<String, dynamic> defaultMap = await toMap(await get(map["ID"]), optimised: false);
-      map.removeWhere((key, value) =>
-          key != "ID" &&
-          (value is List && listEquals(value, defaultMap[key]) || value is! List && value == defaultMap[key]));
-    }
-    return map;
   }
 }

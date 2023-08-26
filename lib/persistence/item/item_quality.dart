@@ -1,8 +1,7 @@
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/serializer.dart';
+import 'package:battle_it_out/utils/factory.dart';
 
 class ItemQuality extends DBObject {
-  int? id;
   String name;
   bool positive;
   String? equipment;
@@ -10,7 +9,7 @@ class ItemQuality extends DBObject {
   int? value;
 
   ItemQuality(
-      {required this.id,
+      {super.id,
       required this.name,
       required this.positive,
       required this.equipment,
@@ -60,17 +59,6 @@ class ItemQualityFactory extends Factory<ItemQuality> {
 
   @override
   Future<Map<String, dynamic>> toDatabase(ItemQuality object) async {
-    return {
-      "ID": object.id,
-      "NAME": object.name,
-      "POSITIVE": object.positive ? 1 : 0,
-      "EQUIPMENT": object.equipment,
-      "DESCRIPTION": object.description
-    };
-  }
-
-  @override
-  Future<Map<String, Object?>> toMap(ItemQuality object, {optimised = true, database = false}) async {
     return {
       "ID": object.id,
       "NAME": object.name,

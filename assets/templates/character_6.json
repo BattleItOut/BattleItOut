@@ -1,4 +1,5 @@
 {
+  "ID": 6,
   "NAME": "Złol Zły",
   "SIZE": 3,
   "ATTRIBUTES": [
@@ -63,17 +64,17 @@
     {
       "ID": 12,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 24,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 11,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 17,
@@ -82,7 +83,7 @@
     {
       "ID": 4,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true,
+      "CAN_ADVANCE": 1,
       "EARNING": 1
     },
     {
@@ -92,7 +93,7 @@
     {
       "ID": 34,
       "ADVANCES": 12,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 13,
@@ -101,7 +102,7 @@
     {
       "ID": 7,
       "ADVANCES": 8,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 197,
@@ -114,12 +115,12 @@
     {
       "ID": 146,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 9,
       "ADVANCES": 12,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 46,
@@ -150,22 +151,22 @@
     {
       "ID": 14,
       "LVL": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 31,
       "LVL": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 124,
       "LVL": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 48,
       "LVL": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     }
   ],
   "ARMOUR": [

@@ -1,9 +1,9 @@
 import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/serializer.dart';
+import 'package:battle_it_out/utils/factory.dart';
+import 'package:collection/collection.dart';
 
 class BaseTalent extends DBObject {
-  int? id;
   String name;
   String? description;
   String source;
@@ -13,7 +13,7 @@ class BaseTalent extends DBObject {
   bool grouped;
 
   BaseTalent._(
-      {required this.id,
+      {super.id,
       required this.name,
       required this.source,
       this.description,
@@ -66,7 +66,7 @@ class BaseTalentFactory extends Factory<BaseTalent> {
   Future<BaseTalent> fromDatabase(Map<String, dynamic> map) async {
     Attribute? attribute;
     if (map["MAX_LVL"] != null) {
-      attribute = attributes?.firstWhere((attribute) => attribute.id == map["MAX_LVL"]);
+      attribute = attributes?.firstWhereOrNull((attribute) => attribute.id == map["MAX_LVL"]);
     }
     return BaseTalent._(
         id: map['ID'],

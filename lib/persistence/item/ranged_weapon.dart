@@ -4,6 +4,7 @@ import 'package:battle_it_out/persistence/item/item.dart';
 import 'package:battle_it_out/persistence/item/item_quality.dart';
 import 'package:battle_it_out/persistence/item/weapon.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
+import 'package:collection/collection.dart';
 
 class RangedWeapon extends Weapon {
   int range;
@@ -92,11 +93,11 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
   Future<RangedWeapon> fromDatabase(Map<String, dynamic> map) async {
     Attribute? rangeAttribute;
     if (map["RANGE_ATTRIBUTE"] != null) {
-      rangeAttribute = attributes?.firstWhere((attribute) => attribute.id == map["RANGE_ATTRIBUTE"]);
+      rangeAttribute = attributes?.firstWhereOrNull((attribute) => attribute.id == map["RANGE_ATTRIBUTE"]);
     }
     Attribute? damageAttribute;
     if (map["RANGE_ATTRIBUTE"] != null) {
-      damageAttribute = attributes?.firstWhere((attribute) => attribute.id == map["DAMAGE_ATTRIBUTE"]);
+      damageAttribute = attributes?.firstWhereOrNull((attribute) => attribute.id == map["DAMAGE_ATTRIBUTE"]);
     }
     RangedWeapon rangedWeapon = RangedWeapon(
       id: map["ID"],
@@ -110,7 +111,7 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
       damageAttribute: damageAttribute,
     );
     if (map["SKILL"] != null) {
-      Skill? skill = skills?.firstWhere((element) => element.id == map['SKILL']);
+      Skill? skill = skills?.firstWhereOrNull((element) => element.id == map['SKILL']);
       rangedWeapon.skill = skill ?? await SkillFactory(attributes).get(map['SKILL']);
     }
     if (map["ID"] != null) {
@@ -118,7 +119,7 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
     }
     if (map["QUALITIES"] != null) {
       for (Map<String, dynamic> map in map["QUALITIES"]) {
-        ItemQuality quality = await ItemQualityFactory().fromDatabase(map);
+        ItemQuality quality = await ItemQualityFactory().create(map);
         if (!rangedWeapon.qualities.contains(quality)) {
           rangedWeapon.qualities.add(quality);
         }
@@ -126,7 +127,7 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
     }
     if (map["AMMUNITION"] != null) {
       rangedWeapon.ammunition
-          .addAll([for (var tempMap in map["AMMUNITION"]) await AmmunitionFactory().fromDatabase(tempMap)]);
+          .addAll([for (var tempMap in map["AMMUNITION"]) await AmmunitionFactory().create(tempMap)]);
     }
     return rangedWeapon;
   }
@@ -145,25 +146,23 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
     };
   }
 
-  // @override
-  // Future<Map<String, dynamic>> toMap(RangedWeapon object, {optimised = true, database = false}) async {
-  //   Map<String, dynamic> map = {
-  //     "ID": object.id,
-  //     "NAME": object.name,
-  //     "WEAPON_RANGE": object.range,
-  //     "RANGE_ATTRIBUTE": object.rangeAttribute?.id,
-  //     "DAMAGE": object.damage,
-  //     "DAMAGE_ATTRIBUTE": object.damageAttribute?.id,
-  //     "SKILL": object.skill?.id,
-  //     "USE_AMMO": object.useAmmo ? 1 : 0
-  //   };
-  //   if (!database) {
-  //     map["QUALITIES"] = [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toDatabase(quality)];
-  //     map["AMMUNITION"] = [for (Ammunition ammo in object.ammunition) await AmmunitionFactory().toDatabase(ammo)];
-  //     if (optimised) {
-  //       map = await optimise(map);
-  //     }
-  //   }
-  //   return map;
-  // }
+  @override
+  Future<Map<String, dynamic>> toMap(RangedWeapon object, {optimised = true}) async {
+    Map<String, dynamic> map = {
+      "ID": object.id,
+      "NAME": object.name,
+      "WEAPON_RANGE": object.range,
+      "RANGE_ATTRIBUTE": object.rangeAttribute?.id,
+      "DAMAGE": object.damage,
+      "DAMAGE_ATTRIBUTE": object.damageAttribute?.id,
+      "SKILL": object.skill?.id,
+      "USE_AMMO": object.useAmmo ? 1 : 0,
+      "QUALITIES": [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toDatabase(quality)],
+      "AMMUNITION": [for (Ammunition ammo in object.ammunition) await AmmunitionFactory().toDatabase(ammo)]
+    };
+    if (optimised) {
+      map = await optimise(map);
+    }
+    return map;
+  }
 }

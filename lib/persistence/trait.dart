@@ -1,12 +1,11 @@
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/serializer.dart';
+import 'package:battle_it_out/utils/factory.dart';
 
 class Trait extends DBObject {
-  int? id;
   String name;
   String description;
 
-  Trait._({required this.id, required this.name, required this.description});
+  Trait({super.id, required this.name, required this.description});
 
   @override
   String toString() {
@@ -20,7 +19,7 @@ class TraitFactory extends Factory<Trait> {
 
   @override
   Future<Trait> fromDatabase(Map<String, dynamic> map) async {
-    return Trait._(id: map["ID"], name: map["NAME"], description: map["DESCRIPTION"]);
+    return Trait(id: map["ID"], name: map["NAME"], description: map["DESCRIPTION"]);
   }
 
   @override

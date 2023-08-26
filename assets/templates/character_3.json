@@ -1,4 +1,5 @@
 {
+  "ID": 3,
   "NAME": "Lienhart Herz",
   "SUBRACE": {
     "ID": 1
@@ -19,13 +20,13 @@
       "ID": 3,
       "BASE": 41,
       "ADVANCES": 9,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 4,
       "BASE": 36,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 5,
@@ -39,7 +40,7 @@
       "ID": 7,
       "BASE": 36,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 8,
@@ -58,32 +59,32 @@
     {
       "ID": 106,
       "ADVANCES": 0,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 1,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 8,
       "ADVANCES": 0,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 12,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 24,
       "ADVANCES": 10,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 11,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 22,
@@ -104,7 +105,7 @@
     {
       "ID": 99,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 13,
@@ -113,7 +114,7 @@
     {
       "ID": 27,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 197,
@@ -130,17 +131,17 @@
     {
       "ID": 27,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 82,
       "ADVANCES": 10,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 200,
       "ADVANCES": 2,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     }
   ],
   "TALENTS": [
@@ -167,22 +168,22 @@
     {
       "ID": 6,
       "LVL": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 244,
       "LVL": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 243,
       "LVL": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 83,
       "LVL": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     }
   ],
   "MELEE_WEAPONS": [

@@ -18,12 +18,15 @@ import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:battle_it_out/persistence/talent/talent_base.dart';
 import 'package:battle_it_out/persistence/talent/talent_test.dart';
 import 'package:battle_it_out/persistence/trait.dart';
+import 'package:battle_it_out/utils/database_provider.dart';
 import 'package:battle_it_out/utils/utilities.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
+  await DatabaseProvider.instance.connect(test: true);
+
   var languages = await AppLocalizationsDelegate.loadYML();
   for (var entry in languages.entries) {
     String languageName = entry.key;

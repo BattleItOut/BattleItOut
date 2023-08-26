@@ -1,4 +1,5 @@
 {
+  "ID": 4,
   "NAME": "Maddoc Wiatrownik",
   "SUBRACE": {
     "ID": 3
@@ -27,13 +28,13 @@
       "ID": 5,
       "BASE": 37,
       "ADVANCES": 3,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 6,
       "BASE": 34,
       "ADVANCES": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 7,
@@ -43,7 +44,7 @@
       "ID": 8,
       "BASE": 29,
       "ADVANCES": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 9,
@@ -58,7 +59,7 @@
     {
       "ID": 19,
       "ADVANCES": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 3,
@@ -71,7 +72,7 @@
     {
       "ID": 8,
       "ADVANCES": 0,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 12,
@@ -84,12 +85,12 @@
     {
       "ID": 17,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 22,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 6,
@@ -98,7 +99,7 @@
     {
       "ID": 16,
       "ADVANCES": 10,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 101,
@@ -119,7 +120,7 @@
     {
       "ID": 57,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 124,
@@ -128,7 +129,7 @@
     {
       "ID": 135,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 44,
@@ -179,22 +180,22 @@
     {
       "ID": 31,
       "LVL": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 50,
       "LVL": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 92,
       "LVL": 0,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 179,
       "LVL": 0,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     }
   ],
   "MELEE_WEAPONS": [

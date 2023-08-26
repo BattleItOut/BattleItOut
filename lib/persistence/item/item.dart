@@ -1,12 +1,9 @@
 import 'package:battle_it_out/persistence/item/item_quality.dart';
-import 'package:battle_it_out/utils/database_provider.dart';
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/serializer.dart';
+import 'package:battle_it_out/utils/factory.dart';
 import 'package:flutter/foundation.dart' hide Factory;
-import 'package:sqflite/sqlite_api.dart';
 
 class Item extends DBObject {
-  int? id;
   String name;
   int count;
 
@@ -18,7 +15,7 @@ class Item extends DBObject {
   List<ItemQuality> qualities = [];
 
   Item(
-      {required this.id,
+      {super.id,
       required this.name,
       required this.encumbrance,
       this.cost,
@@ -107,8 +104,6 @@ abstract class ItemFactory<T extends Item> extends Factory<T> {
   get linkTableName;
 
   Future<List<ItemQuality>> getQualities(int id) async {
-    Database? database = await DatabaseProvider.instance.getDatabase();
-
     final List<Map<String, dynamic>> map = await database.query(linkTableName, where: "ITEM_ID = ?", whereArgs: [id]);
     List<ItemQuality> qualities = [];
     for (var entry in map) {
@@ -119,12 +114,12 @@ abstract class ItemFactory<T extends Item> extends Factory<T> {
   }
 
   @override
-  Future<T> insert(T object) async {
-    Map<String, dynamic> objectMap = await toDatabase(object);
+  Future<T> update(T object) async {
+    object = await super.update(object);
     for (ItemQuality quality in object.qualities) {
+      await ItemQualityFactory().update(quality);
       await insertMap({"ITEM_ID": object.id, "QUALITY_ID": quality.id, "VALUE": quality.value}, linkTableName);
     }
-    await insertMap(objectMap);
     return object;
   }
 }

@@ -1,4 +1,5 @@
 {
+  "ID": 2,
   "NAME": "Matei Gwiazdowróż",
   "SUBRACE": {
     "ID": 6
@@ -11,7 +12,7 @@
       "ID": 1,
       "BASE": 29,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 2,
@@ -41,13 +42,13 @@
       "ID": 8,
       "BASE": 44,
       "ADVANCES": 7,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 9,
       "BASE": 57,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 10,
@@ -58,12 +59,12 @@
     {
       "ID": 3,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 8,
       "ADVANCES": 3,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 12,
@@ -72,7 +73,7 @@
     {
       "ID": 24,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 161,
@@ -89,32 +90,32 @@
     {
       "ID": 6,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 38,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 33,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 15,
       "ADVANCES": 10,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 104,
       "ADVANCES": 5,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 58,
       "ADVANCES": 15,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 53,
@@ -127,14 +128,14 @@
     {
       "ID": 128,
       "ADVANCES": 9,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     }
   ],
   "TALENTS": [
     {
       "ID": 31,
       "LVL": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 38,
@@ -147,7 +148,7 @@
     {
       "ID": 134,
       "LVL": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 74,
@@ -160,12 +161,12 @@
     {
       "ID": 38,
       "LVL": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     },
     {
       "ID": 223,
       "LVL": 1,
-      "CAN_ADVANCE": true
+      "CAN_ADVANCE": 1
     }
   ],
   "MELEE_WEAPONS": [

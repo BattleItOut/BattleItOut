@@ -69,7 +69,7 @@ class _NewRaceFormState extends State<NewRaceForm> {
           child: Text("PROCEED".localise(context)),
           onPressed: () {
             RaceFactory()
-                .insert(Race(name: nameTextController.text, size: size!))
+                .update(Race(name: nameTextController.text, size: size!))
                 .then((Race race) => Navigator.of(context).pop(race));
           },
         ),

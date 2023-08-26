@@ -4,7 +4,7 @@ import 'package:battle_it_out/persistence/skill/skill_group.dart';
 import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:battle_it_out/persistence/talent/talent_group.dart';
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/serializer.dart';
+import 'package:battle_it_out/utils/factory.dart';
 
 class Subrace extends DBObject {
   String name;

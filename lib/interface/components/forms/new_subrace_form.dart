@@ -56,7 +56,7 @@ class _NewSubraceFormState extends State<NewSubraceForm> {
           child: Text("PROCEED".localise(context)),
           onPressed: () {
             SubraceFactory()
-                .insert(Subrace(name: nameTextController.text, race: widget.race))
+                .update(Subrace(name: nameTextController.text, race: widget.race))
                 .then((Subrace subrace) => Navigator.of(context).pop(subrace));
           },
         ),

@@ -1,8 +1,7 @@
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/serializer.dart';
+import 'package:battle_it_out/utils/factory.dart';
 
 class Attribute extends DBObject {
-  int? id;
   String name;
   String shortName;
   String description;
@@ -14,7 +13,7 @@ class Attribute extends DBObject {
   bool canAdvance;
 
   Attribute(
-      {this.id,
+      {super.id,
       required this.name,
       required this.shortName,
       required this.description,
@@ -73,8 +72,34 @@ class AttributeFactory extends Factory<Attribute> {
   }
 
   @override
+  Future<Attribute> fromMap(Map<String, dynamic> map) async {
+    return Attribute(
+        id: map['ID'],
+        name: map['NAME'],
+        shortName: map["SHORT_NAME"],
+        description: map["DESCRIPTION"],
+        canRoll: map['CAN_ROLL'] == 1,
+        importance: map['IMPORTANCE'],
+        base: map["BASE"] ?? 0,
+        advances: map["ADVANCES"] ?? 0,
+        canAdvance: map["CAN_ADVANCE"] == 1);
+  }
+
+  @override
   Future<Map<String, dynamic>> toDatabase(Attribute object) async {
     return {
+      "ID": object.id,
+      "NAME": object.name,
+      "SHORT_NAME": object.shortName,
+      "DESCRIPTION": object.description,
+      "IMPORTANCE": object.importance,
+      "CAN_ROLL": object.canRoll ? 1 : 0
+    };
+  }
+
+  @override
+  Future<Map<String, dynamic>> toMap(Attribute object, {optimised = true, database = false}) async {
+    Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,
       "SHORT_NAME": object.shortName,
@@ -83,16 +108,11 @@ class AttributeFactory extends Factory<Attribute> {
       "IMPORTANCE": object.importance,
       "BASE": object.base,
       "ADVANCES": object.advances,
-      "CAN_ADVANCE": object.canAdvance
+      "CAN_ADVANCE": object.canAdvance ? 1 : 0
     };
+    if (optimised) {
+      map = await optimise(map);
+    }
+    return map;
   }
-
-  // @override
-  // Future<Map<String, dynamic>> toMap(Attribute object, {optimised = true, database = false}) async {
-  //   Map<String, dynamic> map = await toDatabase(object);
-  //   if (optimised) {
-  //     map = await optimise(map);
-  //   }
-  //   return map;
-  // }
 }

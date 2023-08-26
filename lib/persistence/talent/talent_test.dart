@@ -3,10 +3,9 @@ import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/skill/skill_base.dart';
 import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/serializer.dart';
+import 'package:battle_it_out/utils/factory.dart';
 
 class TalentTest extends DBObject {
-  int? id;
   Talent? talent;
   String? comment;
 
@@ -14,7 +13,7 @@ class TalentTest extends DBObject {
   Skill? skill;
   Attribute? attribute;
 
-  TalentTest._({required this.id, required this.talent, this.comment, this.baseSkill, this.skill, this.attribute});
+  TalentTest({super.id, required this.talent, this.comment, this.baseSkill, this.skill, this.attribute});
 
   @override
   String toString() {
@@ -36,7 +35,7 @@ class TalentTestFactory extends Factory<TalentTest> {
 
   @override
   Future<TalentTest> fromDatabase(Map<String, dynamic> map) async {
-    return TalentTest._(
+    return TalentTest(
         id: map['ID'],
         talent: talent,
         comment: map["COMMENT"],

@@ -1,12 +1,11 @@
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/serializer.dart';
+import 'package:battle_it_out/utils/factory.dart';
 
 class Size extends DBObject {
-  int? id;
   String name;
   String source;
 
-  Size._({this.id, required this.name, this.source = "Custom"});
+  Size({super.id, required this.name, this.source = "Custom"});
 
   @override
   bool operator ==(Object other) =>
@@ -32,7 +31,7 @@ class SizeFactory extends Factory<Size> {
 
   @override
   Future<Size> fromDatabase(Map<String, dynamic> map) async {
-    return Size._(id: map["ID"], name: map["NAME"], source: map["SOURCE"] ?? 'Custom');
+    return Size(id: map["ID"], name: map["NAME"], source: map["SOURCE"] ?? 'Custom');
   }
 
   @override

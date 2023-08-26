@@ -1,12 +1,12 @@
+import 'package:battle_it_out/utils/db_object.dart';
 import 'package:flutter/foundation.dart';
 
-class TalentGroup {
-  int? id;
+class TalentGroup extends DBObject {
   String name;
   bool randomTalent;
   List<dynamic> talents;
 
-  TalentGroup({this.id, required this.name, required this.talents, required this.randomTalent});
+  TalentGroup({super.id, required this.name, required this.talents, required this.randomTalent});
 
   @override
   bool operator ==(Object other) =>

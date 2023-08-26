@@ -13,7 +13,7 @@ import 'package:battle_it_out/persistence/talent/talent_base.dart';
 import 'package:battle_it_out/persistence/trait.dart';
 import 'package:battle_it_out/utils/database_provider.dart';
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/serializer.dart';
+import 'package:battle_it_out/utils/factory.dart';
 import 'package:flutter/foundation.dart' hide Factory;
 import 'package:sqflite/sqflite.dart';
 
@@ -28,6 +28,7 @@ class Character extends DBObject {
   List<Talent> talents = [];
   List<Trait> traits = [];
   List<Item> items = [];
+  List<Armour> armour = [];
 
   // Temporary
   int? initiative;
@@ -86,7 +87,7 @@ class Character extends DBObject {
   Map<BaseTalent, List<Talent>> getTalentsGrouped() {
     Map<BaseTalent, List<Talent>> output = {};
     for (var talent in talents) {
-      var category = talent.baseTalent!;
+      var category = talent.baseTalent;
       if (output.containsKey(category)) {
         output[category]!.add(talent);
       } else {
@@ -156,7 +157,7 @@ class Character extends DBObject {
         name: character.name,
         subrace: character.subrace,
         profession: character.profession,
-        attributes: character.attributes,
+        attributes: character.attributes.toList(),
         skills: character.skills,
         talents: character.talents,
         traits: character.traits,
@@ -194,83 +195,67 @@ class Character extends DBObject {
 }
 
 class CharacterFactory extends Factory<Character> {
+  final Database database = DatabaseProvider.instance.database;
+
   @override
   get tableName => 'characters';
 
   @override
-  Future<Character> fromDatabase(dynamic json) async {
-    int? id = json['ID'];
-    String name = json['NAME'];
-    Size? size = await SizeFactory().getNullable(json["SIZE"]);
-    Subrace? subrace = await SubraceFactory().getNullable(json["ANCESTRY"]);
-    Profession? profession = await ProfessionFactory().get(json["PROFESSION"]);
-    List<Attribute> attributes = await getCharactersAttributes(json['ID']);
-    List<Skill> skills = await _createSkills(json['SKILLS'] ?? [], attributes);
-    List<Talent> talents = [
-      for (var map in json['TALENTS'] ?? []) await TalentFactory(attributes, skills).fromDatabase(map)
-    ];
-    List<Item> items = [
-      for (var map in json["MELEE_WEAPONS"] ?? []) await MeleeWeaponFactory(attributes, skills).fromDatabase(map),
-      for (var map in json["RANGED_WEAPONS"] ?? []) await RangedWeaponFactory(attributes, skills).fromDatabase(map),
-      for (var map in json["ARMOUR"] ?? []) await ArmourFactory().fromDatabase(map),
-      for (var map in json["ITEMS"] ?? []) await CommonItemFactory().fromDatabase(map)
-    ];
+  Future<Character> fromDatabase(dynamic map) async {
+    List<Attribute> attributes = await getCharacterAttributes(map['ID']);
+    List<Skill> skills = await getCharacterSkills(map['ID'], attributes);
+    List<Talent> talents = await getCharacterTalents(map['ID'], attributes, skills);
 
-    return Character(
-        id: id,
-        name: name,
-        size: size,
-        subrace: subrace,
-        profession: profession,
+    Character character = Character(
+        id: map['ID'],
+        name: map['NAME'],
+        size: await SizeFactory().getNullable(map["SIZE"]),
+        subrace: await SubraceFactory().getNullable(map["ANCESTRY"]),
+        profession: await ProfessionFactory().getNullable(map["PROFESSION"]),
         attributes: attributes,
         skills: skills,
         talents: talents,
-        items: items);
+        items: [
+          for (var m in map["MELEE_WEAPONS"] ?? []) await MeleeWeaponFactory(attributes, skills).fromDatabase(m),
+          for (var m in map["RANGED_WEAPONS"] ?? []) await RangedWeaponFactory(attributes, skills).fromDatabase(m),
+          for (var m in map["ARMOUR"] ?? []) await ArmourFactory().fromDatabase(m),
+          for (var m in map["ITEMS"] ?? []) await CommonItemFactory().fromDatabase(m)
+        ]);
+    character.armour = await getCharacterArmour(map["ID"]);
+    return character;
   }
 
   @override
   Future<Character> fromMap(dynamic map) async {
-    String name = map['NAME'];
-    Size? size = map["SIZE"] != null ? await SizeFactory().get(map["SIZE"]) : null;
-    Subrace? subrace = map["SUBRACE"] != null ? await SubraceFactory().create(map["SUBRACE"]) : null;
-    Profession? profession = map["PROFESSION"] != null ? await ProfessionFactory().create(map["PROFESSION"]) : null;
     List<Attribute> attributes = await _createAttributes(map["ATTRIBUTES"]);
     List<Skill> skills = await _createSkills(map['SKILLS'] ?? [], attributes);
-    List<Talent> talents = [
-      for (var talentMap in map['TALENTS'] ?? []) await TalentFactory(attributes, skills).create(talentMap)
-    ];
-    List<Item> items = [
-      for (var meleeWeaponMap in map["MELEE_WEAPONS"] ?? [])
-        await MeleeWeaponFactory(attributes, skills).create(meleeWeaponMap),
-      for (var rangedWeaponMap in map["RANGED_WEAPONS"] ?? [])
-        await RangedWeaponFactory(attributes, skills).create(rangedWeaponMap),
-      for (var armourMap in map["ARMOUR"] ?? []) await ArmourFactory().create(armourMap),
-      for (var itemMap in map["ITEMS"] ?? []) await CommonItemFactory().create(itemMap)
-    ];
+    List<Talent> talents = [for (var m in map['TALENTS'] ?? []) await TalentFactory(attributes, skills).create(m)];
 
     return Character(
-        name: name,
-        size: size,
-        subrace: subrace,
-        profession: profession,
+        id: map['ID'],
+        name: map['NAME'],
+        size: map["SIZE"] != null ? await SizeFactory().get(map["SIZE"]) : null,
+        subrace: map["SUBRACE"] != null ? await SubraceFactory().create(map["SUBRACE"]) : null,
+        profession: map["PROFESSION"] != null ? await ProfessionFactory().create(map["PROFESSION"]) : null,
         attributes: attributes,
         skills: skills,
         talents: talents,
-        items: items);
+        items: [
+          for (var m in map["MELEE_WEAPONS"] ?? []) await MeleeWeaponFactory(attributes, skills).create(m),
+          for (var m in map["RANGED_WEAPONS"] ?? []) await RangedWeaponFactory(attributes, skills).create(m),
+          for (var m in map["ARMOUR"] ?? []) await ArmourFactory().create(m),
+          for (var m in map["ITEMS"] ?? []) await CommonItemFactory().create(m)
+        ]);
   }
 
   @override
   Future<Map<String, Object?>> toDatabase(Character object) async {
     return {
+      "ID": object.id,
       "NAME": object.name,
-      "SUBRACE": await SubraceFactory().toDatabase(object.subrace!),
-      "PROFESSION": await ProfessionFactory().toDatabase(object.profession!),
-      "ATTRIBUTES": [for (var attribute in object.attributes) await AttributeFactory().toDatabase(attribute)],
-      "SKILLS": [for (var skill in object.skills.where((s) => s.isImportant())) await SkillFactory().toDatabase(skill)],
-      "TALENTS": [for (var talent in object.talents) await TalentFactory().toDatabase(talent)],
-      "MELEE_WEAPONS": [for (var weapon in object.getMeleeWeapons()) await MeleeWeaponFactory().toDatabase(weapon)],
-      "RANGED_WEAPONS": [for (var weapon in object.getRangedWeapons()) await RangedWeaponFactory().toDatabase(weapon)],
-      "ARMOUR": [for (var armour in object.getArmour()) await ArmourFactory().toDatabase(armour)],
+      "ANCESTRY": object.subrace?.id,
+      "SIZE": object.size?.id,
+      "PROFESSION": object.profession?.id,
     };
   }
 
@@ -280,12 +265,12 @@ class CharacterFactory extends Factory<Character> {
       "NAME": object.name,
       "SUBRACE": await SubraceFactory().toDatabase(object.subrace!),
       "PROFESSION": await ProfessionFactory().toDatabase(object.profession!),
-      "ATTRIBUTES": [for (var attribute in object.attributes) await AttributeFactory().toDatabase(attribute)],
-      "SKILLS": [for (var skill in object.skills.where((s) => s.isImportant())) await SkillFactory().toDatabase(skill)],
-      "TALENTS": [for (var talent in object.talents) await TalentFactory().toDatabase(talent)],
-      "MELEE_WEAPONS": [for (var weapon in object.getMeleeWeapons()) await MeleeWeaponFactory().toDatabase(weapon)],
-      "RANGED_WEAPONS": [for (var weapon in object.getRangedWeapons()) await RangedWeaponFactory().toDatabase(weapon)],
-      "ARMOUR": [for (var armour in object.getArmour()) await ArmourFactory().toDatabase(armour)],
+      "ATTRIBUTES": [for (var attribute in object.attributes) await AttributeFactory().toMap(attribute)],
+      "SKILLS": [for (var skill in object.skills.where((s) => s.isImportant())) await SkillFactory().toMap(skill)],
+      "TALENTS": [for (var talent in object.talents) await TalentFactory().toMap(talent)],
+      "MELEE_WEAPONS": [for (var weapon in object.getMeleeWeapons()) await MeleeWeaponFactory().toMap(weapon)],
+      "RANGED_WEAPONS": [for (var weapon in object.getRangedWeapons()) await RangedWeaponFactory().toMap(weapon)],
+      "ARMOUR": [for (var armour in object.getArmour()) await ArmourFactory().toMap(armour)],
     };
     if (optimised) {
       map = await optimise(map);
@@ -293,9 +278,52 @@ class CharacterFactory extends Factory<Character> {
     return map;
   }
 
-  Future<List<Attribute>> getCharactersAttributes(int characterId) async {
-    Database? database = await DatabaseProvider.instance.getDatabase();
+  @override
+  Future<Character> update(Character object) async {
+    await super.update(object);
+    for (Attribute attribute in object.attributes) {
+      await AttributeFactory().update(attribute);
+      await insertMap({
+        "ATTRIBUTE_ID": attribute.id,
+        "CHARACTER_ID": object.id,
+        "BASE_VALUE": attribute.base,
+        "ADVANCES": attribute.advances,
+        "CAN_ADVANCE": attribute.canAdvance ? 1 : 0
+      }, "character_attributes");
+    }
+    for (Skill skill in object.skills) {
+      await SkillFactory().update(skill);
+      await insertMap({
+        "SKILL_ID": skill.id,
+        "CHARACTER_ID": object.id,
+        "ADVANCES": skill.advances,
+        "CAN_ADVANCE": skill.canAdvance ? 1 : 0,
+        "EARNING": skill.earning ? 1 : 0
+      }, "character_skills");
+    }
+    for (Talent talent in object.talents) {
+      await TalentFactory().update(talent);
+      await insertMap({
+        "TALENT_ID": talent.id,
+        "CHARACTER_ID": object.id,
+        "LEVEL": talent.currentLvl,
+        "CAN_ADVANCE": talent.canAdvance ? 1 : 0,
+      }, "character_talents");
+    }
+    for (Armour armour in object.armour) {
+      await ArmourFactory().update(armour);
+      await insertMap({
+        "ARMOUR_ID": armour.id,
+        "CHARACTER_ID": object.id,
+        "AMOUNT": armour.count,
+      }, "character_armour");
+    }
+    return object;
+  }
 
+  //--------------
+
+  Future<List<Attribute>> getCharacterAttributes(int characterId) async {
     final List<Map<String, dynamic>> map = await database.rawQuery(
         "SELECT * FROM CHARACTER_ATTRIBUTES CA JOIN ATTRIBUTES A on A.ID = CA.ATTRIBUTE_ID WHERE CA.CHARACTER_ID = ?",
         [characterId]);
@@ -310,6 +338,58 @@ class CharacterFactory extends Factory<Character> {
     }
     return attributes;
   }
+
+  Future<List<Skill>> getCharacterSkills(int characterId, List<Attribute>? attributes) async {
+    final List<Map<String, dynamic>> map = await database.rawQuery(
+        "SELECT * FROM CHARACTER_SKILLS CS JOIN SKILLS S on S.ID = CS.SKILL_ID WHERE CS.CHARACTER_ID = ?",
+        [characterId]);
+
+    List<Skill> skills = await SkillFactory(attributes).getSkills(advanced: false);
+    for (Map<String, dynamic> entry in map) {
+      Skill skill = await SkillFactory(attributes).fromDatabase(entry);
+      int index = skills.indexOf(skill);
+      if (index != -1) {
+        skills[index] = skill;
+      } else {
+        skills.add(skill);
+      }
+    }
+    return skills;
+  }
+
+  Future<List<Talent>> getCharacterTalents(int characterId, List<Attribute>? attributes, List<Skill>? skills) async {
+    final List<Map<String, dynamic>> map = await database.rawQuery(
+        "SELECT * FROM CHARACTER_TALENTS CT JOIN TALENTS T on T.ID = CT.TALENT_ID WHERE CT.CHARACTER_ID = ?",
+        [characterId]);
+
+    List<Talent> talents = [];
+    for (Map<String, dynamic> entry in map) {
+      Talent talent = await TalentFactory(attributes, skills).fromDatabase(entry);
+      talent.currentLvl = entry["LEVEL"];
+      talent.canAdvance = entry["CAN_ADVANCE"] == 1;
+      int index = talents.indexOf(talent);
+      if (index != -1) {
+        talents[index] = talent;
+      } else {
+        talents.add(talent);
+      }
+    }
+    return talents;
+  }
+
+  Future<List<Armour>> getCharacterArmour(int characterId) async {
+    List<Armour> armourList = [];
+    for (Map<String, dynamic> entry in await database.rawQuery(
+        "SELECT * FROM CHARACTER_ARMOUR CA JOIN TALENTS T on T.ID = CA.ARMOUR_ID WHERE CA.CHARACTER_ID = ?",
+        [characterId])) {
+      Armour armour = await ArmourFactory().fromDatabase(entry);
+      armour.count = entry["AMOUNT"];
+      armourList.add(armour);
+    }
+    return armourList;
+  }
+
+  //--------------
 
   Future<List<Attribute>> _createAttributes(json) async {
     List<Attribute> attributes = await AttributeFactory().getAll();

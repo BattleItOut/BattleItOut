@@ -1,17 +1,17 @@
 import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/serializer.dart';
+import 'package:battle_it_out/utils/factory.dart';
+import 'package:collection/collection.dart';
 
 class BaseSkill extends DBObject {
-  int? id;
   String name;
   String? description;
   bool advanced;
   bool grouped;
   Attribute attribute;
 
-  BaseSkill._(
-      {required this.id,
+  BaseSkill(
+      {super.id,
       required this.name,
       this.description,
       required this.attribute,
@@ -58,8 +58,8 @@ class BaseSkillFactory extends Factory<BaseSkill> {
 
   @override
   Future<BaseSkill> fromDatabase(Map<String, dynamic> map) async {
-    Attribute? attribute = attributes?.firstWhere((attribute) => attribute.id == map["ATTRIBUTE_ID"]);
-    return BaseSkill._(
+    Attribute? attribute = attributes?.firstWhereOrNull((attribute) => attribute.id == map["ATTRIBUTE_ID"]);
+    return BaseSkill(
         id: map["ID"],
         name: map["NAME"],
         advanced: map["ADVANCED"] == 1,

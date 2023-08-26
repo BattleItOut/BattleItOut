@@ -10,7 +10,7 @@ class Armour extends Item with SpecialItem {
   int leftLegAP;
   int rightLegAP;
 
-  Armour._(
+  Armour(
       {required this.headAP,
       required this.bodyAP,
       required this.leftArmAP,
@@ -73,7 +73,20 @@ class ArmourFactory extends ItemFactory<Armour> {
 
   @override
   Future<Armour> fromDatabase(Map<String, dynamic> map) async {
-    Armour armour = Armour._(
+    return Armour(
+        id: map["ID"],
+        name: map["NAME"],
+        headAP: map["HEAD_AP"],
+        bodyAP: map["BODY_AP"],
+        leftArmAP: map["LEFT_ARM_AP"],
+        rightArmAP: map["RIGHT_ARM_AP"],
+        leftLegAP: map["LEFT_LEG_AP"],
+        rightLegAP: map["RIGHT_LEG_AP"]);
+  }
+
+  @override
+  Future<Armour> fromMap(Map<String, dynamic> map) async {
+    Armour armour = Armour(
         id: map["ID"],
         name: map["NAME"],
         headAP: map["HEAD_AP"],
@@ -87,7 +100,7 @@ class ArmourFactory extends ItemFactory<Armour> {
     }
     if (map["QUALITIES"] != null) {
       for (Map<String, dynamic> map in map["QUALITIES"]) {
-        ItemQuality quality = await ItemQualityFactory().fromDatabase(map);
+        ItemQuality quality = await ItemQualityFactory().create(map);
         if (!armour.qualities.contains(quality)) {
           armour.qualities.add(quality);
         }
@@ -111,25 +124,23 @@ class ArmourFactory extends ItemFactory<Armour> {
     };
   }
 
-  // @override
-  // Future<Map<String, Object?>> toMap(Armour object, {optimised = true, database = false}) async {
-  //   Map<String, dynamic> map = {
-  //     "ID": object.id,
-  //     "NAME": object.name,
-  //     "HEAD_AP": object.headAP,
-  //     "BODY_AP": object.bodyAP,
-  //     "LEFT_ARM_AP": object.leftArmAP,
-  //     "RIGHT_ARM_AP": object.rightArmAP,
-  //     "LEFT_LEG_AP": object.leftLegAP,
-  //     "RIGHT_LEG_AP": object.rightLegAP,
-  //     "ITEM_CATEGORY": object.category
-  //   };
-  //   if (!database) {
-  //     map["QUALITIES"] = [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toDatabase(quality)];
-  //     if (optimised) {
-  //       map = await optimise(map);
-  //     }
-  //   }
-  //   return map;
-  // }
+  @override
+  Future<Map<String, Object?>> toMap(Armour object, {optimised = true, database = false}) async {
+    Map<String, dynamic> map = {
+      "ID": object.id,
+      "NAME": object.name,
+      "HEAD_AP": object.headAP,
+      "BODY_AP": object.bodyAP,
+      "LEFT_ARM_AP": object.leftArmAP,
+      "RIGHT_ARM_AP": object.rightArmAP,
+      "LEFT_LEG_AP": object.leftLegAP,
+      "RIGHT_LEG_AP": object.rightLegAP,
+      "ITEM_CATEGORY": object.category,
+      "QUALITIES": [for (ItemQuality quality in object.qualities) await ItemQualityFactory().toDatabase(quality)]
+    };
+    if (optimised) {
+      map = await optimise(map);
+    }
+    return map;
+  }
 }

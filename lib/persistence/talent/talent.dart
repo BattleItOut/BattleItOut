@@ -3,26 +3,23 @@ import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/talent/talent_base.dart';
 import 'package:battle_it_out/persistence/talent/talent_group.dart';
 import 'package:battle_it_out/persistence/talent/talent_test.dart';
-import 'package:battle_it_out/utils/database_provider.dart';
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/serializer.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:battle_it_out/utils/factory.dart';
 
 class Talent extends DBObject {
-  int? id;
   String name;
   String? specialisation;
-  BaseTalent? baseTalent;
-  int? baseTalentID;
+  BaseTalent baseTalent;
   List<TalentTest> tests = [];
 
   int currentLvl = 0;
   bool canAdvance = false;
 
-  Talent._(
-      {required this.id,
+  Talent(
+      {super.id,
       required this.name,
       this.specialisation,
+      required this.baseTalent,
       List<TalentTest> tests = const [],
       this.currentLvl = 0,
       this.canAdvance = false}) {
@@ -34,7 +31,7 @@ class Talent extends DBObject {
   }
 
   int? getMaxLvl() {
-    return baseTalent!.getMaxLvl();
+    return baseTalent.getMaxLvl();
   }
 
   @override
@@ -45,7 +42,7 @@ class Talent extends DBObject {
           id == other.id &&
           name == other.name &&
           specialisation == other.specialisation &&
-          baseTalentID == other.baseTalentID &&
+          baseTalent == other.baseTalent &&
           currentLvl == other.currentLvl &&
           canAdvance == other.canAdvance;
 
@@ -54,7 +51,7 @@ class Talent extends DBObject {
       id.hashCode ^
       name.hashCode ^
       specialisation.hashCode ^
-      baseTalentID.hashCode ^
+      baseTalent.hashCode ^
       currentLvl.hashCode ^
       canAdvance.hashCode;
 
@@ -73,18 +70,14 @@ class TalentFactory extends Factory<Talent> {
   @override
   get tableName => 'talents';
 
-  Future<List<Talent>> getLinkedToSubrace(int subraceId) async {
-    Database? database = await DatabaseProvider.instance.getDatabase();
-
+  Future<List<Talent>> getLinkedToSubrace(int? subraceId) async {
     final List<Map<String, dynamic>> map = await database.rawQuery(
         "SELECT * FROM SUBRACE_TALENTS ST JOIN TALENTS T ON (T.ID = ST.TALENT_ID) WHERE SUBRACE_ID = ?", [subraceId]);
 
     return [for (Map<String, dynamic> entry in map) await fromDatabase(entry)];
   }
 
-  Future<List<TalentGroup>> getGroupsLinkedToSubrace(int subraceId) async {
-    Database? database = await DatabaseProvider.instance.getDatabase();
-
+  Future<List<TalentGroup>> getGroupsLinkedToSubrace(int? subraceId) async {
     List<Map<String, dynamic>> baseSkillsMap = await database.rawQuery(
         "SELECT * FROM SUBRACE_TALENTS ST JOIN TALENTS_BASE SB ON (ST.BASE_TALENT_ID = SB.ID) WHERE SUBRACE_ID = ?",
         [subraceId]);
@@ -116,9 +109,7 @@ class TalentFactory extends Factory<Talent> {
     return talentGroups;
   }
 
-  Future<List<Talent>> getLinkedToProfession(int professionId) async {
-    Database? database = await DatabaseProvider.instance.getDatabase();
-
+  Future<List<Talent>> getLinkedToProfession(int? professionId) async {
     final List<Map<String, dynamic>> map = await database.rawQuery(
         "SELECT * FROM PROFESSION_TALENTS ST JOIN TALENTS T ON (T.ID = ST.TALENT_ID) WHERE PROFESSION_ID = ?",
         [professionId]);
@@ -128,17 +119,13 @@ class TalentFactory extends Factory<Talent> {
 
   @override
   Future<Talent> fromDatabase(Map<String, dynamic> map) async {
-    Talent talent = Talent._(
+    Talent talent = Talent(
         id: map['ID'],
         name: map['NAME'],
         specialisation: map["SPECIALISATION"],
+        baseTalent: await BaseTalentFactory(attributes).get(map["BASE_TALENT_ID"]),
         currentLvl: map["LVL"] ?? 0,
-        canAdvance: map["CAN_ADVANCE"] ?? false);
-
-    // Base talent
-    if (map["BASE_TALENT_ID"] != null) {
-      talent.baseTalent = await BaseTalentFactory(attributes).get(map["BASE_TALENT_ID"]);
-    }
+        canAdvance: map["CAN_ADVANCE"] == 1);
 
     // Tests
     talent.tests = await TalentTestFactory(talent).getAllByTalent(map["ID"]);
@@ -150,36 +137,30 @@ class TalentFactory extends Factory<Talent> {
 
   @override
   Future<Map<String, dynamic>> toDatabase(Talent object) async {
+    return {
+      "ID": object.id,
+      "NAME": object.name,
+      "SPECIALISATION": object.specialisation,
+      "BASE_TALENT_ID": object.baseTalent.id
+    };
+  }
+
+  @override
+  Future<Map<String, dynamic>> toMap(Talent object, {optimised = true, database = false}) async {
     Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,
       "SPECIALISATION": object.specialisation,
       "LVL": object.currentLvl,
-      "CAN_ADVANCE": object.canAdvance
+      "CAN_ADVANCE": object.canAdvance ? 1 : 0
     };
-    if (object.baseTalent != null &&
-        object.baseTalent != await BaseTalentFactory(attributes).get(object.baseTalent!.id!)) {
-      map["BASE_TALENT"] = BaseTalentFactory().toDatabase(object.baseTalent!);
+    if (optimised) {
+      map = await optimise(map);
+    }
+    if ((object.baseTalent.id == null ||
+        object.baseTalent != await BaseTalentFactory(attributes).get(object.baseTalent.id!))) {
+      map["BASE_TALENT"] = BaseTalentFactory().toDatabase(object.baseTalent);
     }
     return map;
   }
-
-  // @override
-  // Future<Map<String, dynamic>> toMap(Talent object, {optimised = true, database = false}) async {
-  //   Map<String, dynamic> map = {
-  //     "ID": object.id,
-  //     "NAME": object.name,
-  //     "SPECIALISATION": object.specialisation,
-  //     "LVL": object.currentLvl,
-  //     "CAN_ADVANCE": object.canAdvance
-  //   };
-  //   if (optimised) {
-  //     map = await optimise(map);
-  //   }
-  //   if (object.baseTalent != null &&
-  //       object.baseTalent != await BaseTalentFactory(attributes).get(object.baseTalent!.id)) {
-  //     map["BASE_TALENT"] = BaseTalentFactory().toDatabase(object.baseTalent!);
-  //   }
-  //   return map;
-  // }
 }

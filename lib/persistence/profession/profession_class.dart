@@ -1,12 +1,11 @@
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/serializer.dart';
+import 'package:battle_it_out/utils/factory.dart';
 
 class ProfessionClass extends DBObject {
-  int? id;
   String name;
   String source;
 
-  ProfessionClass._({required this.id, required this.name, required this.source});
+  ProfessionClass({super.id, required this.name, required this.source});
 
   @override
   String toString() {
@@ -35,20 +34,11 @@ class ProfessionClassFactory extends Factory<ProfessionClass> {
 
   @override
   Future<ProfessionClass> fromDatabase(Map<String, dynamic> map) async {
-    return ProfessionClass._(id: map["ID"], name: map["NAME"], source: map["SOURCE"]);
+    return ProfessionClass(id: map["ID"], name: map["NAME"], source: map["SOURCE"]);
   }
 
   @override
   Future<Map<String, dynamic>> toDatabase(ProfessionClass object) async {
     return {"ID": object.id, "NAME": object.name, "SOURCE": object.source};
   }
-
-  // @override
-  // Future<Map<String, dynamic>> toMap(ProfessionClass object, {optimised = true, database = false}) async {
-  //   Map<String, dynamic> map = {"ID": object.id, "NAME": object.name, "SOURCE": object.source};
-  //   if (optimised) {
-  //     map = await optimise(map);
-  //   }
-  //   return map;
-  // }
 }
