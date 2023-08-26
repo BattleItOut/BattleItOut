@@ -12,7 +12,7 @@ abstract class Weapon extends Item with SpecialItem {
     id,
     required name,
     required this.damage,
-    required this.twoHanded,
+    this.twoHanded = false,
     this.damageAttribute,
     this.skill,
     itemCategory,

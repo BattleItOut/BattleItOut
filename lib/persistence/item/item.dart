@@ -1,13 +1,11 @@
 import 'package:battle_it_out/persistence/item/item_quality.dart';
-import 'package:battle_it_out/persistence/serializer.dart';
-import 'package:battle_it_out/utils/database_provider.dart';
+import 'package:battle_it_out/utils/db_object.dart';
+import 'package:battle_it_out/utils/factory.dart';
 import 'package:flutter/foundation.dart' hide Factory;
-import 'package:sqflite/sqlite_api.dart';
 
-class Item {
-  int id;
+class Item extends DBObject {
   String name;
-  int count;
+  int amount;
 
   int? cost;
   int encumbrance;
@@ -17,13 +15,13 @@ class Item {
   List<ItemQuality> qualities = [];
 
   Item(
-      {required this.id,
+      {super.id,
       required this.name,
       required this.encumbrance,
       this.cost,
       this.availability,
       this.category,
-      this.count = 1,
+      this.amount = 1,
       List<ItemQuality> qualities = const []}) {
     this.qualities.addAll(qualities);
   }
@@ -43,7 +41,7 @@ class Item {
           runtimeType == other.runtimeType &&
           id == other.id &&
           name == other.name &&
-          count == other.count &&
+          amount == other.amount &&
           cost == other.cost &&
           encumbrance == other.encumbrance &&
           availability == other.availability &&
@@ -54,7 +52,7 @@ class Item {
   int get hashCode =>
       id.hashCode ^
       name.hashCode ^
-      count.hashCode ^
+      amount.hashCode ^
       cost.hashCode ^
       encumbrance.hashCode ^
       availability.hashCode ^
@@ -78,7 +76,7 @@ class CommonItemFactory extends ItemFactory<Item> {
   get linkTableName => throw UnimplementedError();
 
   @override
-  Future<Item> fromMap(Map<String, dynamic> map) async {
+  Future<Item> fromDatabase(Map<String, dynamic> map) async {
     return Item(
         id: map["ID"],
         name: map["NAME"],
@@ -89,6 +87,12 @@ class CommonItemFactory extends ItemFactory<Item> {
   }
 
   @override
+  Future<Map<String, dynamic>> toDatabase(Item object) async {
+    // TODO: implement toMap
+    throw UnimplementedError();
+  }
+
+  @override
   Future<Map<String, dynamic>> toMap(Item object, {optimised = true, database = false}) async {
     // TODO: implement toMap
     throw UnimplementedError();
@@ -96,12 +100,10 @@ class CommonItemFactory extends ItemFactory<Item> {
 }
 
 abstract class ItemFactory<T extends Item> extends Factory<T> {
-  get qualitiesTableName;
+  get qualitiesTableName => 'item_qualities';
   get linkTableName;
 
   Future<List<ItemQuality>> getQualities(int id) async {
-    Database? database = await DatabaseProvider.instance.getDatabase();
-
     final List<Map<String, dynamic>> map = await database.query(linkTableName, where: "ITEM_ID = ?", whereArgs: [id]);
     List<ItemQuality> qualities = [];
     for (var entry in map) {
@@ -112,11 +114,12 @@ abstract class ItemFactory<T extends Item> extends Factory<T> {
   }
 
   @override
-  Future<void> insert(T object) async {
-    Map<String, dynamic> objectMap = await toMap(object, database: true);
+  Future<T> update(T object) async {
+    object = await super.update(object);
     for (ItemQuality quality in object.qualities) {
+      await ItemQualityFactory().update(quality);
       await insertMap({"ITEM_ID": object.id, "QUALITY_ID": quality.id, "VALUE": quality.value}, linkTableName);
     }
-    await insertMap(objectMap);
+    return object;
   }
 }

@@ -1,13 +1,13 @@
 import 'package:battle_it_out/persistence/profession/profession_class.dart';
-import 'package:battle_it_out/persistence/serializer.dart';
+import 'package:battle_it_out/utils/db_object.dart';
+import 'package:battle_it_out/utils/factory.dart';
 
-class ProfessionCareer {
-  int id;
+class ProfessionCareer extends DBObject {
   String name;
   String source;
   ProfessionClass professionClass;
 
-  ProfessionCareer._({required this.id, required this.name, required this.professionClass, required this.source});
+  ProfessionCareer({super.id, required this.name, required this.professionClass, required this.source});
 
   @override
   String toString() {
@@ -47,11 +47,22 @@ class ProfessionCareerFactory extends Factory<ProfessionCareer> {
 
   @override
   Future<ProfessionCareer> fromMap(Map<String, dynamic> map) async {
-    return ProfessionCareer._(
-        id: map["ID"] ?? await getNextId(),
+    return ProfessionCareer(
+        id: map["ID"], name: map["NAME"], source: map["SOURCE"], professionClass: (await getClass(map)));
+  }
+
+  @override
+  Future<ProfessionCareer> fromDatabase(Map<String, dynamic> map) async {
+    return ProfessionCareer(
+        id: map["ID"],
         name: map["NAME"],
         source: map["SOURCE"],
-        professionClass: await getClass(map));
+        professionClass: await ProfessionClassFactory().get(map["CLASS_ID"]));
+  }
+
+  @override
+  Future<Map<String, dynamic>> toDatabase(ProfessionCareer object) async {
+    return {"ID": object.id, "NAME": object.name, "SOURCE": object.source, "CLASS_ID": object.professionClass.id};
   }
 
   @override
@@ -65,7 +76,8 @@ class ProfessionCareerFactory extends Factory<ProfessionCareer> {
     if (optimised) {
       map = await optimise(map);
     }
-    if ((object.professionClass != await ProfessionClassFactory().get(object.professionClass.id))) {
+    if (object.professionClass.id == null ||
+        object.professionClass != await ProfessionClassFactory().get(object.professionClass.id!)) {
       map["CLASS"] = await ProfessionClassFactory().toMap(object.professionClass);
     }
     return map;

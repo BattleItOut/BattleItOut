@@ -1,16 +1,17 @@
 import 'package:battle_it_out/persistence/attribute.dart';
-import 'package:battle_it_out/persistence/serializer.dart';
+import 'package:battle_it_out/utils/db_object.dart';
+import 'package:battle_it_out/utils/factory.dart';
+import 'package:collection/collection.dart';
 
-class BaseSkill {
-  int? id;
+class BaseSkill extends DBObject {
   String name;
   String? description;
   bool advanced;
   bool grouped;
   Attribute attribute;
 
-  BaseSkill._(
-      {required this.id,
+  BaseSkill(
+      {super.id,
       required this.name,
       this.description,
       required this.attribute,
@@ -56,15 +57,27 @@ class BaseSkillFactory extends Factory<BaseSkill> {
   get tableName => 'skills_base';
 
   @override
-  Future<BaseSkill> fromMap(Map<String, dynamic> map) async {
-    Attribute? attribute = attributes?.firstWhere((attribute) => attribute.id == map["ATTRIBUTE_ID"]);
-    return BaseSkill._(
+  Future<BaseSkill> fromDatabase(Map<String, dynamic> map) async {
+    Attribute? attribute = attributes?.firstWhereOrNull((attribute) => attribute.id == map["ATTRIBUTE_ID"]);
+    return BaseSkill(
         id: map["ID"],
         name: map["NAME"],
         advanced: map["ADVANCED"] == 1,
         grouped: map["GROUPED"] == 1,
         description: map["DESCRIPTION"],
         attribute: attribute ?? await AttributeFactory().get(map["ATTRIBUTE_ID"]));
+  }
+
+  @override
+  Future<Map<String, dynamic>> toDatabase(BaseSkill object) async {
+    return {
+      "ID": object.id,
+      "NAME": object.name,
+      "DESCRIPTION": object.description,
+      "ADVANCED": object.advanced ? 1 : 0,
+      "GROUPED": object.grouped ? 1 : 0,
+      "ATTRIBUTE_ID": object.attribute.id
+    };
   }
 
   @override

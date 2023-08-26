@@ -1,36 +1,57 @@
+import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:yaml/yaml.dart';
 
 class DatabaseProvider {
   static final DatabaseProvider _instance = DatabaseProvider._();
-  Database? _database;
-
-  DatabaseProvider._();
-
   static DatabaseProvider get instance => _instance;
+  Database get database => _database!;
+  Database? _database;
+  String? _dbPath;
 
-  Future<Database> getDatabase() async {
-    _database ??= await _connect();
-    return _database!;
-  }
-
-  static Future<Database> _connect() async {
+  DatabaseProvider._() {
     if (Platform.isWindows || Platform.isLinux) {
       sqfliteFfiInit();
-      databaseFactory = databaseFactoryFfi;
+      databaseFactoryOrNull = databaseFactoryFfi;
+      log("Using sqflite_ffi");
+    } else {
+      log("Using sqflite");
     }
-    Database database = await databaseFactory.openDatabase(inMemoryDatabasePath,
-        options: OpenDatabaseOptions(
-            version: 1,
-            onCreate: (Database db, int version) async =>
-                await BatchManager.execute("assets/database/create_db.sql", db)));
-    if (kDebugMode) {
-      print("Database loaded");
-    }
-    return database;
+  }
+
+  Future<void> connect({test = false}) async {
+    _dbPath = test ? inMemoryDatabasePath : join(await getDatabasesPath(), 'data.db');
+    log("Connecting the database on $_dbPath...");
+
+    YamlMap parsedYaml = loadYaml(await rootBundle.loadString("assets/database/database.version"));
+    var major = "${parsedYaml["MAJOR"]}".padLeft(1, "0");
+    var minor = "${parsedYaml["MINOR"]}".padLeft(2, "0");
+    var version = "${parsedYaml["VERSION"]}".padLeft(3, "0");
+    var intVersion = int.parse(major + minor + version);
+
+    // await databaseFactory.debugSetLogLevel(sqfliteLogLevelVerbose);
+    _database = await databaseFactory.openDatabase(
+      _dbPath!,
+      options: OpenDatabaseOptions(
+        version: intVersion,
+        singleInstance: true,
+        onCreate: (Database db, int version) async {
+          log("Creating database");
+          await BatchManager.execute("assets/database/create_db.sql", db);
+          log("Database created, version: $intVersion");
+        },
+        onUpgrade: (Database db, int lastVersion, int version) {
+          log("Migrating $lastVersion to $version");
+        },
+        onOpen: (Database db) async {
+          log("Opening database, version: ${await db.getVersion()}");
+        },
+      ),
+    );
   }
 }
 

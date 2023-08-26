@@ -1,18 +1,16 @@
 import 'package:battle_it_out/persistence/attribute.dart';
-import 'package:battle_it_out/persistence/serializer.dart';
 import 'package:battle_it_out/persistence/size.dart';
-import 'package:battle_it_out/utils/database_provider.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:battle_it_out/utils/db_object.dart';
+import 'package:battle_it_out/utils/factory.dart';
 
-class Race {
-  int id;
+class Race extends DBObject {
   String name;
   Size size;
   String source;
   List<Attribute> initialAttributes = [];
 
-  Race._(
-      {required this.id,
+  Race(
+      {super.id,
       required this.name,
       required this.size,
       this.source = "Custom",
@@ -47,14 +45,12 @@ class RaceFactory extends Factory<Race> {
   Map<String, dynamic> get defaultValues => {"EXTRA_POINTS": 0, "SRC": "Custom", "SIZE": 4};
 
   Future<List<Attribute>> getInitialAttributes(int raceId) async {
-    Database? database = await DatabaseProvider.instance.getDatabase();
-
     final List<Map<String, dynamic>> map = await database.rawQuery(
         "SELECT * FROM RACE_ATTRIBUTES RA JOIN ATTRIBUTES A ON (A.ID = RA.ATTR_ID) WHERE RACE_ID = ?", [raceId]);
 
     List<Attribute> attributes = [];
     for (Map<String, dynamic> entry in map) {
-      Attribute attribute = await AttributeFactory().create(entry);
+      Attribute attribute = await AttributeFactory().fromDatabase(entry);
       attribute.base = entry["VALUE"];
       attributes.add(attribute);
     }
@@ -62,15 +58,32 @@ class RaceFactory extends Factory<Race> {
   }
 
   @override
+  Future<Race> fromDatabase(Map<String, dynamic> map) async {
+    Race race = Race(
+      id: map["ID"],
+      name: map["NAME"],
+      source: map["SRC"],
+      size: await SizeFactory().get(map["SIZE"]),
+    );
+    race.initialAttributes = await getInitialAttributes(map["ID"]);
+    return race;
+  }
+
+  @override
   Future<Race> fromMap(Map<String, dynamic> map) async {
-    Race race = Race._(
+    Race race = Race(
       id: map["ID"] ?? await getNextId(),
       name: map["NAME"],
       source: map["SRC"],
       size: await SizeFactory().get(map["SIZE"]),
     );
-    race.initialAttributes = await getInitialAttributes(race.id);
+    race.initialAttributes = await getInitialAttributes(race.id!);
     return race;
+  }
+
+  @override
+  Future<Map<String, dynamic>> toDatabase(Race object) async {
+    return {"ID": object.id, "NAME": object.name, "SIZE": object.size.id, "SRC": object.source};
   }
 
   @override

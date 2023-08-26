@@ -18,12 +18,15 @@ import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:battle_it_out/persistence/talent/talent_base.dart';
 import 'package:battle_it_out/persistence/talent/talent_test.dart';
 import 'package:battle_it_out/persistence/trait.dart';
+import 'package:battle_it_out/utils/database_provider.dart';
 import 'package:battle_it_out/utils/utilities.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
+  await DatabaseProvider.instance.connect(test: true);
+
   var languages = await AppLocalizationsDelegate.loadYML();
   for (var entry in languages.entries) {
     String languageName = entry.key;
@@ -41,6 +44,7 @@ Future<void> main() async {
           }
         });
       }
+
       performLocTest("Check npc traits localisations", TraitFactory(), (item) => [item.name, item.description]);
       performLocTest("Check base talent localisations", BaseTalentFactory(), (item) => [item.name, item.description]);
       performLocTest("Check talent localisations", TalentFactory(), (item) => [item.name, item.specialisation]);
@@ -52,10 +56,12 @@ Future<void> main() async {
       performLocTest("Check subrace localisations", SubraceFactory(), (item) => [item.name]);
       performLocTest("Check size localisations", SizeFactory(), (item) => [item.name]);
       performLocTest("Check armour localisations", ArmourFactory(), (item) => [item.name]);
-      performLocTest("Check attribute localisations", AttributeFactory(), (item) => [item.name, item.shortName, item.description]);
+      performLocTest(
+          "Check attribute localisations", AttributeFactory(), (item) => [item.name, item.shortName, item.description]);
       performLocTest("Check base skill localisations", BaseSkillFactory(), (item) => [item.name, item.description]);
       performLocTest("Check skill localisations", SkillFactory(), (item) => [item.name, item.specialisation]);
-      performLocTest("Check weapon length localisations", WeaponLengthFactory(), (item) => [item.name, item.description]);
+      performLocTest(
+          "Check weapon length localisations", WeaponLengthFactory(), (item) => [item.name, item.description]);
       performLocTest("Check melee weapon localisations", MeleeWeaponFactory(), (item) => [item.name]);
       performLocTest("Check ranged weapon localisations", RangedWeaponFactory(), (item) => [item.name]);
       performLocTest("Check ranged weapon ammo localisations", AmmunitionFactory(), (item) => [item.name]);

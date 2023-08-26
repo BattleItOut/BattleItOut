@@ -2,10 +2,15 @@ import 'package:battle_it_out/interface/screens/main_screen.dart';
 import 'package:battle_it_out/interface/state_container.dart';
 import 'package:battle_it_out/interface/themes.dart';
 import 'package:battle_it_out/localisation.dart';
+import 'package:battle_it_out/utils/database_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-void main() => runApp(const StateContainer(child: MyApp()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseProvider.instance.connect();
+  runApp(const StateContainer(child: MyApp()));
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

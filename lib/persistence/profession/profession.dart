@@ -1,14 +1,23 @@
 import 'package:battle_it_out/persistence/profession/profession_career.dart';
-import 'package:battle_it_out/persistence/serializer.dart';
+import 'package:battle_it_out/persistence/skill/skill.dart';
+import 'package:battle_it_out/persistence/skill/skill_group.dart';
+import 'package:battle_it_out/persistence/talent/talent.dart';
+import 'package:battle_it_out/persistence/talent/talent_group.dart';
+import 'package:battle_it_out/utils/db_object.dart';
+import 'package:battle_it_out/utils/factory.dart';
 
-class Profession {
-  int id;
+class Profession extends DBObject {
   String name;
   String source;
   int level;
   ProfessionCareer career;
 
-  Profession._({required this.id, required this.name, required this.career, this.level = 1, this.source = "Custom"});
+  List<Skill> linkedSkills = [];
+  List<SkillGroup> linkedGroupSkills = [];
+  List<Talent> linkedTalents = [];
+  List<TalentGroup> linkedGroupTalents = [];
+
+  Profession({super.id, required this.name, required this.career, this.level = 1, this.source = "Custom"});
 
   @override
   String toString() {
@@ -48,14 +57,29 @@ class ProfessionFactory extends Factory<Profession> {
   }
 
   @override
-  Future<Profession> fromMap(Map<String, dynamic> map) async {
-    return Profession._(
-      id: map["ID"] ?? await getNextId(),
+  Future<Profession> fromDatabase(Map<String, dynamic> map) async {
+    Profession profession = Profession(
+      id: map["ID"],
       name: map["NAME"],
       level: map["LEVEL"],
       source: map["SOURCE"],
       career: await getCareer(map),
     );
+    profession.linkedTalents = await TalentFactory().getLinkedToProfession(profession.id);
+    profession.linkedSkills = await SkillFactory().getLinkedToProfession(profession.id);
+    profession.linkedGroupSkills = await SkillFactory().getGroupsLinkedToProfession(profession.id);
+    return profession;
+  }
+
+  @override
+  Future<Map<String, dynamic>> toDatabase(Profession object) async {
+    return {
+      "ID": object.id,
+      "NAME": object.name,
+      "LEVEL": object.level,
+      "SOURCE": object.source,
+      "CAREER_ID": object.career.id
+    };
   }
 
   @override
@@ -70,7 +94,7 @@ class ProfessionFactory extends Factory<Profession> {
     if (optimised) {
       map = await optimise(map);
     }
-    if ((object.career != await ProfessionCareerFactory().get(object.career.id))) {
+    if (object.career.id == null || object.career != await ProfessionCareerFactory().get(object.career.id!)) {
       map["CAREER"] = await ProfessionCareerFactory().toMap(object.career);
     }
     return map;

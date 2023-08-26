@@ -1,12 +1,12 @@
-import 'package:battle_it_out/persistence/serializer.dart';
+import 'package:battle_it_out/utils/db_object.dart';
+import 'package:battle_it_out/utils/factory.dart';
 
-class WeaponLength {
-  int? id;
+class WeaponLength extends DBObject {
   String name;
   String? description;
   String source;
 
-  WeaponLength._({this.id, required this.name, this.description, this.source = "Custom"});
+  WeaponLength({super.id, required this.name, this.description, this.source = "Custom"});
 
   @override
   bool operator ==(Object other) =>
@@ -32,12 +32,12 @@ class WeaponLengthFactory extends Factory<WeaponLength> {
   get tableName => 'weapon_lengths';
 
   @override
-  Future<WeaponLength> fromMap(Map<String, dynamic> map) async {
-    return WeaponLength._(id: map["ID"], name: map["NAME"], description: map["DESCRIPTION"], source: map["SOURCE"]);
+  Future<WeaponLength> fromDatabase(Map<String, dynamic> map) async {
+    return WeaponLength(id: map["ID"], name: map["NAME"], description: map["DESCRIPTION"], source: map["SOURCE"]);
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(WeaponLength object, {optimised = true, database = false}) async {
+  Future<Map<String, dynamic>> toDatabase(WeaponLength object) async {
     return {"ID": object.id, "NAME": object.name, "DESCRIPTION": object.description, "SOURCE": object.source};
   }
 }

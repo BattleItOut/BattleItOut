@@ -1,11 +1,11 @@
-import 'package:battle_it_out/persistence/serializer.dart';
+import 'package:battle_it_out/utils/db_object.dart';
+import 'package:battle_it_out/utils/factory.dart';
 
-class ProfessionClass {
-  int id;
+class ProfessionClass extends DBObject {
   String name;
   String source;
 
-  ProfessionClass._({required this.id, required this.name, required this.source});
+  ProfessionClass({super.id, required this.name, required this.source});
 
   @override
   String toString() {
@@ -33,16 +33,12 @@ class ProfessionClassFactory extends Factory<ProfessionClass> {
   Map<String, dynamic> get defaultValues => {"SOURCE": "Custom"};
 
   @override
-  Future<ProfessionClass> fromMap(Map<String, dynamic> map) async {
-    return ProfessionClass._(id: map["ID"] ?? await getNextId(), name: map["NAME"], source: map["SOURCE"]);
+  Future<ProfessionClass> fromDatabase(Map<String, dynamic> map) async {
+    return ProfessionClass(id: map["ID"], name: map["NAME"], source: map["SOURCE"]);
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(ProfessionClass object, {optimised = true, database = false}) async {
-    Map<String, dynamic> map = {"ID": object.id, "NAME": object.name, "SOURCE": object.source};
-    if (optimised) {
-      map = await optimise(map);
-    }
-    return map;
+  Future<Map<String, dynamic>> toDatabase(ProfessionClass object) async {
+    return {"ID": object.id, "NAME": object.name, "SOURCE": object.source};
   }
 }
