@@ -258,9 +258,10 @@ void talentSerializationTest() {
 
 void armourSerializationTest() {
   Map<String, dynamic> basicArmourMap = {"ID": 1};
-  Map<String, dynamic> minCustomArmourMap = {"NAME": "Test", "HEAD_AP": 1};
+  Map<String, dynamic> minCustomArmourMap = {"NAME": "Test", "ENCUMBRANCE": 0, "HEAD_AP": 1};
   Map<String, dynamic> maxCustomArmourMap = {
     "NAME": "Test2",
+    "ENCUMBRANCE": 0,
     "HEAD_AP": 1,
     "BODY_AP": 1,
     "LEFT_ARM_AP": 1,
@@ -423,7 +424,7 @@ void rangedWeaponSerializationTest() {
       expect(maxCustomWeapon.range, 100);
       expect(maxCustomWeapon.damage, 2);
       expect(maxCustomWeapon.ammunition[0].id, 1);
-      expect(maxCustomWeapon.ammunition[0].count, 10);
+      expect(maxCustomWeapon.ammunition[0].amount, 10);
       expect(maxCustomWeapon.qualities[0].id, 1);
       expect(maxCustomWeapon.qualities[0].name, "LIGHTWEIGHT");
       expect(maxCustomWeapon.qualities[1].id, 2);

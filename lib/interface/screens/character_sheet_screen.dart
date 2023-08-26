@@ -87,7 +87,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
       for (Ammunition ammo in weapon.ammunition) {
         outputList.add(TableLine(children: [
           LocalisedText(ammo.name, context, padding: const EdgeInsets.only(left: 40)),
-          IntegerText(ammo.count),
+          IntegerText(ammo.amount),
           IntegerText(weapon.getRange(ammo)),
           PaddedText("${weapon.getTotalDamage(ammo)} + SL", textAlign: TextAlign.center),
           PaddedText(ammo.qualities.map((quality) => quality.name.localise(context)).join(", "))
@@ -171,7 +171,7 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
           SingleEntitiesTable(
               title: LocalisedText("ARMOUR", context, style: const TextStyle(fontSize: 24.0)),
               children: [
-                for (var armour in widget.character.getArmour())
+                for (var armour in widget.character.armour)
                   TableLine(children: [
                     LocalisedText(armour.name, context),
                     IntegerText(armour.headAP),

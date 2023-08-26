@@ -40,9 +40,4 @@ class WeaponLengthFactory extends Factory<WeaponLength> {
   Future<Map<String, dynamic>> toDatabase(WeaponLength object) async {
     return {"ID": object.id, "NAME": object.name, "DESCRIPTION": object.description, "SOURCE": object.source};
   }
-
-  @override
-  Future<Map<String, dynamic>> toMap(WeaponLength object, {optimised = true, database = false}) async {
-    return {"ID": object.id, "NAME": object.name, "DESCRIPTION": object.description, "SOURCE": object.source};
-  }
 }

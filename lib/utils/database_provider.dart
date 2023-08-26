@@ -23,10 +23,6 @@ class DatabaseProvider {
     }
   }
 
-  Future<Database> getDatabase() async {
-    return _database!;
-  }
-
   Future<void> connect({test = false}) async {
     _dbPath = test ? inMemoryDatabasePath : join(await getDatabasesPath(), 'data.db');
     log("Connecting the database on $_dbPath...");
@@ -37,18 +33,22 @@ class DatabaseProvider {
     var version = "${parsedYaml["VERSION"]}".padLeft(3, "0");
     var intVersion = int.parse(major + minor + version);
 
+    // await databaseFactory.debugSetLogLevel(sqfliteLogLevelVerbose);
     _database = await databaseFactory.openDatabase(
       _dbPath!,
       options: OpenDatabaseOptions(
         version: intVersion,
         singleInstance: true,
         onCreate: (Database db, int version) async {
-          log("Creating database...");
+          log("Creating database");
           await BatchManager.execute("assets/database/create_db.sql", db);
           log("Database created, version: $intVersion");
         },
         onUpgrade: (Database db, int lastVersion, int version) {
           log("Migrating $lastVersion to $version");
+        },
+        onOpen: (Database db) async {
+          log("Opening database, version: ${await db.getVersion()}");
         },
       ),
     );

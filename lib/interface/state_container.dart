@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/utils/utilities.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 class _InheritedStateContainer extends InheritedWidget {
   final StateContainerState data;
@@ -29,36 +29,24 @@ class StateContainer extends StatefulWidget {
 
 class StateContainerState extends State<StateContainer> {
   final Wrapper<Locale> _localeWrapper = Wrapper();
-  final List<Character> _savedCharacters = [];
+  List<Character> _savedCharacters = [];
 
   get savedCharacters => _savedCharacters;
   get locale => _localeWrapper.object;
 
-  @override
-  initState() {
-    loadCharactersDB().then((value) => debugPrint("Characters DB loaded"));
-    super.initState();
-  }
-
   Future<void> loadCharacters() async {
     final manifestJson = await rootBundle.loadString('AssetManifest.json');
     final templates = json.decode(manifestJson).keys.where((String key) => key.startsWith('assets/templates'));
-
     for (var template in templates) {
       var json = jsonDecode(await rootBundle.loadString(template));
-      Character character = await CharacterFactory().fromDatabase(json);
-      setState(() {
-        _savedCharacters.add(character);
-      });
+      Character character = await CharacterFactory().fromMap(json);
+      CharacterFactory().update(character);
     }
-  }
 
-  Future<void> loadCharactersDB() async {
-    for (var character in await CharacterFactory().getAll()) {
-      setState(() {
-        _savedCharacters.add(character);
-      });
-    }
+    List<Character> characters = await CharacterFactory().getAll();
+    setState(() {
+      _savedCharacters = characters;
+    });
   }
 
   void setLocale(Locale locale) {
@@ -81,9 +69,7 @@ class StateContainerState extends State<StateContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return _InheritedStateContainer(
-      data: this,
-      child: widget.child,
-    );
+    loadCharacters();
+    return _InheritedStateContainer(data: this, child: widget.child);
   }
 }

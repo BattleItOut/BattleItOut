@@ -9,7 +9,7 @@ import 'package:collection/collection.dart';
 class MeleeWeapon extends Weapon {
   WeaponLength length;
 
-  MeleeWeapon._(
+  MeleeWeapon(
       {required name,
       required this.length,
       required damage,
@@ -55,8 +55,6 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
   @override
   get tableName => 'weapons_melee';
   @override
-  get qualitiesTableName => 'item_qualities';
-  @override
   get linkTableName => 'weapons_melee_qualities';
 
   @override
@@ -68,7 +66,7 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
       map.putIfAbsent(key, () => value);
     });
     Attribute? damageAttribute = attributes?.firstWhereOrNull((attribute) => attribute.id == map["DAMAGE_ATTRIBUTE"]);
-    MeleeWeapon meleeWeapon = MeleeWeapon._(
+    MeleeWeapon meleeWeapon = MeleeWeapon(
         id: map["ID"],
         name: map["NAME"],
         length: await WeaponLengthFactory().get(map["LENGTH"]),

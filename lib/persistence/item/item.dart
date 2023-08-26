@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart' hide Factory;
 
 class Item extends DBObject {
   String name;
-  int count;
+  int amount;
 
   int? cost;
   int encumbrance;
@@ -21,7 +21,7 @@ class Item extends DBObject {
       this.cost,
       this.availability,
       this.category,
-      this.count = 1,
+      this.amount = 1,
       List<ItemQuality> qualities = const []}) {
     this.qualities.addAll(qualities);
   }
@@ -41,7 +41,7 @@ class Item extends DBObject {
           runtimeType == other.runtimeType &&
           id == other.id &&
           name == other.name &&
-          count == other.count &&
+          amount == other.amount &&
           cost == other.cost &&
           encumbrance == other.encumbrance &&
           availability == other.availability &&
@@ -52,7 +52,7 @@ class Item extends DBObject {
   int get hashCode =>
       id.hashCode ^
       name.hashCode ^
-      count.hashCode ^
+      amount.hashCode ^
       cost.hashCode ^
       encumbrance.hashCode ^
       availability.hashCode ^
@@ -100,7 +100,7 @@ class CommonItemFactory extends ItemFactory<Item> {
 }
 
 abstract class ItemFactory<T extends Item> extends Factory<T> {
-  get qualitiesTableName;
+  get qualitiesTableName => 'item_qualities';
   get linkTableName;
 
   Future<List<ItemQuality>> getQualities(int id) async {

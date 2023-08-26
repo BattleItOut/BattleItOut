@@ -4,7 +4,6 @@ import 'package:battle_it_out/utils/db_object.dart';
 import 'package:battle_it_out/utils/factory.dart';
 
 class Race extends DBObject {
-  int? id;
   String name;
   Size size;
   String source;

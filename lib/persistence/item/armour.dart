@@ -2,7 +2,7 @@ import 'package:battle_it_out/persistence/item/item.dart';
 import 'package:battle_it_out/persistence/item/item_quality.dart';
 import 'package:flutter/foundation.dart';
 
-class Armour extends Item with SpecialItem {
+class Armour extends Item {
   int headAP;
   int bodyAP;
   int leftArmAP;
@@ -11,16 +11,18 @@ class Armour extends Item with SpecialItem {
   int rightLegAP;
 
   Armour(
-      {required this.headAP,
+      {super.id,
+      required super.name,
+      super.amount,
+      required super.encumbrance,
+      required this.headAP,
       required this.bodyAP,
       required this.leftArmAP,
       required this.rightArmAP,
       required this.leftLegAP,
       required this.rightLegAP,
-      id,
-      name,
       List<ItemQuality> qualities = const []})
-      : super(id: id, name: name, category: "ARMOUR", encumbrance: 0, qualities: qualities);
+      : super(category: "ARMOUR", qualities: qualities);
 
   @override
   bool operator ==(Object other) =>
@@ -56,8 +58,6 @@ class ArmourFactory extends ItemFactory<Armour> {
   @override
   get tableName => 'armour';
   @override
-  get qualitiesTableName => 'item_qualities';
-  @override
   get linkTableName => 'armour_qualities';
 
   @override
@@ -75,6 +75,7 @@ class ArmourFactory extends ItemFactory<Armour> {
   Future<Armour> fromDatabase(Map<String, dynamic> map) async {
     return Armour(
         id: map["ID"],
+        encumbrance: map["ENCUMBRANCE"],
         name: map["NAME"],
         headAP: map["HEAD_AP"],
         bodyAP: map["BODY_AP"],
@@ -88,6 +89,7 @@ class ArmourFactory extends ItemFactory<Armour> {
   Future<Armour> fromMap(Map<String, dynamic> map) async {
     Armour armour = Armour(
         id: map["ID"],
+        encumbrance: map["ENCUMBRANCE"],
         name: map["NAME"],
         headAP: map["HEAD_AP"],
         bodyAP: map["BODY_AP"],
@@ -114,13 +116,13 @@ class ArmourFactory extends ItemFactory<Armour> {
     return {
       "ID": object.id,
       "NAME": object.name,
+      "ENCUMBRANCE": object.encumbrance,
       "HEAD_AP": object.headAP,
       "BODY_AP": object.bodyAP,
       "LEFT_ARM_AP": object.leftArmAP,
       "RIGHT_ARM_AP": object.rightArmAP,
       "LEFT_LEG_AP": object.leftLegAP,
       "RIGHT_LEG_AP": object.rightLegAP,
-      "ITEM_CATEGORY": object.category
     };
   }
 
@@ -129,6 +131,7 @@ class ArmourFactory extends ItemFactory<Armour> {
     Map<String, dynamic> map = {
       "ID": object.id,
       "NAME": object.name,
+      "ENCUMBRANCE": object.encumbrance,
       "HEAD_AP": object.headAP,
       "BODY_AP": object.bodyAP,
       "LEFT_ARM_AP": object.leftArmAP,

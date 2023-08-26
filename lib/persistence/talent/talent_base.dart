@@ -12,7 +12,7 @@ class BaseTalent extends DBObject {
   int? constLvl;
   bool grouped;
 
-  BaseTalent._(
+  BaseTalent(
       {super.id,
       required this.name,
       required this.source,
@@ -68,7 +68,7 @@ class BaseTalentFactory extends Factory<BaseTalent> {
     if (map["MAX_LVL"] != null) {
       attribute = attributes?.firstWhereOrNull((attribute) => attribute.id == map["MAX_LVL"]);
     }
-    return BaseTalent._(
+    return BaseTalent(
         id: map['ID'],
         name: map['NAME'],
         description: map['DESCRIPTION'],

@@ -13,27 +13,18 @@ class RangedWeapon extends Weapon {
   List<Ammunition> ammunition = [];
 
   RangedWeapon(
-      {required id,
-      required name,
+      {super.id,
+      required super.name,
       required this.range,
       required this.useAmmo,
       required damage,
       required damageAttribute,
       this.rangeAttribute,
-      twoHanded,
-      itemCategory,
-      skill,
+      super.twoHanded,
+      super.skill,
       List<ItemQuality> qualities = const [],
       List<Ammunition> ammunition = const []})
-      : super(
-            id: id,
-            name: name,
-            qualities: qualities,
-            damage: damage,
-            twoHanded: twoHanded,
-            itemCategory: "RANGED_WEAPONS",
-            damageAttribute: damageAttribute,
-            skill: skill) {
+      : super(qualities: qualities, damage: damage, itemCategory: "RANGED_WEAPONS", damageAttribute: damageAttribute) {
     this.ammunition.addAll(ammunition);
   }
 
@@ -82,8 +73,6 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
   @override
   get tableName => 'weapons_ranged';
   @override
-  get qualitiesTableName => 'item_qualities';
-  @override
   get linkTableName => 'weapons_ranged_qualities';
 
   @override
@@ -107,7 +96,6 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
       useAmmo: map["USE_AMMO"] == 1,
       rangeAttribute: rangeAttribute,
       damage: map["DAMAGE"],
-      itemCategory: map["ITEM_CATEGORY"],
       damageAttribute: damageAttribute,
     );
     if (map["SKILL"] != null) {
