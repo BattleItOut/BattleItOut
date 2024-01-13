@@ -1,9 +1,12 @@
 import 'package:battle_it_out/interface/screens/library_screen.dart';
 import 'package:battle_it_out/interface/screens/turn_order_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
+
+  static final log = Logger('WatchInHttpClient');
 
   void _onNavigationTapped(int index, BuildContext context) {
     switch (index) {
@@ -20,6 +23,7 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log.info("Sample log");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
