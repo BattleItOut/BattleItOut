@@ -6,7 +6,7 @@ import 'package:logging/logging.dart';
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
 
-  static final log = Logger('WatchInHttpClient');
+  static final log = Logger('MainScreen');
 
   void _onNavigationTapped(int index, BuildContext context) {
     switch (index) {
