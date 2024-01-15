@@ -11,8 +11,9 @@ class RaceLibraryItemWidget extends StatefulWidget {
   final Race race;
   final List<Subrace> subraces;
   final void Function()? onTap;
+  final void Function()? onLongPress;
 
-  RaceLibraryItemWidget({super.key, required this.race, required this.subraces, this.onTap});
+  const RaceLibraryItemWidget({super.key, required this.race, required this.subraces, this.onTap, this.onLongPress});
 
   @override
   State<RaceLibraryItemWidget> createState() => _RaceLibraryItemWidgetState();
@@ -150,6 +151,7 @@ class _RaceLibraryItemWidgetState extends State<RaceLibraryItemWidget> {
           ),
         ]),
         onTap: widget.onTap,
+        onLongPress: widget.onLongPress,
         textColor: Theme.of(context).floatingActionButtonTheme.foregroundColor,
         dense: true,
       ),

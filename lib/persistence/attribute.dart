@@ -45,25 +45,8 @@ class Attribute extends DBObject {
   }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Attribute &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          name == other.name &&
-          shortName == other.shortName &&
-          description == other.description &&
-          canRoll == other.canRoll &&
-          importance == other.importance;
-
-  @override
-  int get hashCode =>
-      id.hashCode ^ name.hashCode ^ shortName.hashCode ^ description.hashCode ^ canRoll.hashCode ^ importance.hashCode;
-
-  @override
-  String toString() {
-    return "Attribute (id=$id, name=$name, base=$base, advances=$advances)";
-  }
+  List<Object> get props =>
+      super.props..addAll([name, shortName, description, canRoll, importance, base, advances, canAdvance]);
 }
 
 class AttributeFactory extends Factory<Attribute> {

@@ -4,7 +4,7 @@ class EditableTable extends StatefulWidget {
   final List header;
   final List data;
   final List? enabled;
-  final void Function(List list, List editedList)? onChanged;
+  final void Function(List editedList)? onChanged;
 
   const EditableTable({super.key, required this.header, required this.data, this.onChanged, this.enabled});
   EditableTable.from({key, data, onChanged, enabled})
@@ -69,7 +69,7 @@ class _EditableTableState extends State<EditableTable> {
                           initialValue: list[rowIndex].toString(),
                           onChanged: (value) {
                             editedData[index][rowIndex] = value;
-                            widget.onChanged!.call(widget.data, editedData);
+                            widget.onChanged!.call(editedData);
                           },
                           decoration: const InputDecoration(contentPadding: EdgeInsets.all(8)),
                         ),

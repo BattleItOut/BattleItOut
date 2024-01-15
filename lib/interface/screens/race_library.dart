@@ -50,10 +50,10 @@ class _RaceLibraryWidgetState extends State<RaceLibraryWidget> {
                 RaceLibraryItemWidget(
                   race: entry.key,
                   subraces: entry.value,
-                  onTap: () {
+                  onLongPress: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => EditRaceScreen(race: entry.key)),
+                      MaterialPageRoute(builder: (context) => EditRaceScreen(race: entry.key, sizes: sizes)),
                     );
                   },
                 ),
