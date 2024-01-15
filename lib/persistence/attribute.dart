@@ -23,6 +23,19 @@ class Attribute extends DBObject {
       this.advances = 0,
       this.canAdvance = false});
 
+  static Attribute copy(Attribute attribute) {
+    return Attribute(
+        id: attribute.id,
+        name: attribute.name,
+        shortName: attribute.shortName,
+        description: attribute.description,
+        canRoll: attribute.canRoll,
+        importance: attribute.importance,
+        base: attribute.base,
+        advances: attribute.advances,
+        canAdvance: attribute.canAdvance);
+  }
+
   int getTotalValue() {
     return base + advances;
   }

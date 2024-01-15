@@ -1,3 +1,4 @@
+import 'package:battle_it_out/interface/screens/character_sheets_library.dart';
 import 'package:battle_it_out/interface/screens/library_screen.dart';
 import 'package:battle_it_out/interface/screens/turn_order_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +18,13 @@ class MainScreen extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (context) => const TurnOrderScreen()));
         break;
       case 2:
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const CharacterSheetsLibrary()));
         break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    log.info("Sample log");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
