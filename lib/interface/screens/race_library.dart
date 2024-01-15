@@ -2,6 +2,7 @@ import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/forms/new_race_form.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/race_library_item.dart';
+import 'package:battle_it_out/interface/screens/edit_race_screen.dart';
 import 'package:battle_it_out/persistence/race.dart';
 import 'package:battle_it_out/persistence/size.dart';
 import 'package:battle_it_out/persistence/subrace.dart';
@@ -46,7 +47,16 @@ class _RaceLibraryWidgetState extends State<RaceLibraryWidget> {
             padding: const EdgeInsets.all(10.0),
             children: [
               for (MapEntry<Race, List<Subrace>> entry in getSortedData())
-                RaceLibraryItemWidget(entry.key, entry.value),
+                RaceLibraryItemWidget(
+                  race: entry.key,
+                  subraces: entry.value,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => EditRaceScreen(race: entry.key)),
+                    );
+                  },
+                ),
               ListItem(
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(8.0)),

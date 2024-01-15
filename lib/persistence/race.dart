@@ -18,23 +18,25 @@ class Race extends DBObject {
     this.initialAttributes.addAll(initialAttributes);
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Race &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          name == other.name &&
-          size == other.size &&
-          source == other.source;
-
-  @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ size.hashCode ^ source.hashCode;
-
-  @override
-  String toString() {
-    return 'Race{id: $id, name: $name, size: $size, source: $source}';
+  static Race copy(Race race) {
+    return Race(
+      id: race.id,
+      name: race.name,
+      size: race.size,
+      source: race.source,
+      initialAttributes: List.generate(
+        race.initialAttributes.length,
+        (index) => Attribute.copy(race.initialAttributes[index]),
+      ),
+    );
   }
+
+  List<Attribute> getInitialAttributes() {
+    return initialAttributes;
+  }
+
+  @override
+  List<Object> get props => super.props..addAll([name, size, source, initialAttributes]);
 }
 
 class RaceFactory extends Factory<Race> {
@@ -59,26 +61,24 @@ class RaceFactory extends Factory<Race> {
 
   @override
   Future<Race> fromDatabase(Map<String, dynamic> map) async {
-    Race race = Race(
-      id: map["ID"],
-      name: map["NAME"],
-      source: map["SRC"],
-      size: await SizeFactory().get(map["SIZE"]),
-    );
-    race.initialAttributes = await getInitialAttributes(map["ID"]);
-    return race;
+    int id = map["ID"];
+    return Race(
+        id: id,
+        name: map["NAME"],
+        source: map["SRC"],
+        size: await SizeFactory().get(map["SIZE"]),
+        initialAttributes: await getInitialAttributes(id));
   }
 
   @override
   Future<Race> fromMap(Map<String, dynamic> map) async {
-    Race race = Race(
-      id: map["ID"] ?? await getNextId(),
-      name: map["NAME"],
-      source: map["SRC"],
-      size: await SizeFactory().get(map["SIZE"]),
-    );
-    race.initialAttributes = await getInitialAttributes(race.id!);
-    return race;
+    int id = map["ID"] ?? await getNextId();
+    return Race(
+        id: id,
+        name: map["NAME"],
+        source: map["SRC"],
+        size: await SizeFactory().get(map["SIZE"]),
+        initialAttributes: await getInitialAttributes(id));
   }
 
   @override

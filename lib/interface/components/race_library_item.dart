@@ -10,8 +10,9 @@ import 'package:flutter/material.dart';
 class RaceLibraryItemWidget extends StatefulWidget {
   final Race race;
   final List<Subrace> subraces;
+  final void Function()? onTap;
 
-  const RaceLibraryItemWidget(this.race, this.subraces, {super.key});
+  RaceLibraryItemWidget({super.key, required this.race, required this.subraces, this.onTap});
 
   @override
   State<RaceLibraryItemWidget> createState() => _RaceLibraryItemWidgetState();
@@ -148,7 +149,7 @@ class _RaceLibraryItemWidgetState extends State<RaceLibraryItemWidget> {
             }),
           ),
         ]),
-        onLongPress: () => {},
+        onTap: widget.onTap,
         textColor: Theme.of(context).floatingActionButtonTheme.foregroundColor,
         dense: true,
       ),

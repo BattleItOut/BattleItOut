@@ -50,7 +50,6 @@ abstract class Factory<T extends DBObject> extends DAO with JSONSerializer<T>, D
   }
 
   Future<T> update(T object) async {
-    object.id ??= await getNextId();
     insertMap(await toDatabase(object));
     return object;
   }
