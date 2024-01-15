@@ -4,7 +4,7 @@ class Themes {
   static MaterialColor colour = Colors.red;
 
   static ThemeData lightTheme = ThemeData(
-    primaryColor: colour.shade600,
+    primaryColor: Colors.white38,
     scaffoldBackgroundColor: Colors.white,
     colorScheme: const ColorScheme.light(),
     appBarTheme: AppBarTheme(backgroundColor: colour.shade600),
@@ -24,7 +24,7 @@ class Themes {
   );
 
   static ThemeData darkTheme = ThemeData(
-    primaryColor: colour.shade900,
+    primaryColor: Colors.white12,
     scaffoldBackgroundColor: Colors.black,
     colorScheme: const ColorScheme.dark(),
     appBarTheme: AppBarTheme(backgroundColor: colour.shade900),
