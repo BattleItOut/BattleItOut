@@ -26,6 +26,10 @@ abstract class DAO {
     return await database.update(tableName, map, where: "ID = ?", whereArgs: [id]);
   }
 
+  Future<int> deleteWhere({String? where, List<Object>? whereArgs}) async {
+    return await database.delete(tableName, where: where, whereArgs: whereArgs);
+  }
+
   Future<int> delete(int id) async {
     return await database.delete(tableName, where: "ID = ?", whereArgs: [id]);
   }

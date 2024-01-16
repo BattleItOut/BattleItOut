@@ -8,7 +8,7 @@ class Size extends DBObject {
   Size({super.id, required this.name, this.source = "Custom"});
 
   @override
-  List<Object> get props => super.props..addAll([name, source]);
+  List<Object?> get props => super.props..addAll([name, source]);
 }
 
 class SizeFactory extends Factory<Size> {

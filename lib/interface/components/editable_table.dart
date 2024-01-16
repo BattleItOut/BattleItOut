@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:tuple/tuple.dart';
 
 class EditableTable extends StatefulWidget {
-  final List header;
-  final List data;
+  final List<String> header;
+  final List<List<String>> data;
   final List? enabled;
-  final void Function(List editedList)? onChanged;
+  final void Function(List<List<String>> editedList)? onChanged;
 
   const EditableTable({super.key, required this.header, required this.data, this.onChanged, this.enabled});
-  EditableTable.from({key, data, onChanged, enabled})
-      : this(key: key, header: data[0], data: data[1], onChanged: onChanged, enabled: enabled);
+  EditableTable.from({key, required Tuple2<List<String>, List<List<String>>> data, onChanged, enabled})
+      : this(key: key, header: data.item1, data: data.item2, onChanged: onChanged, enabled: enabled);
 
   @override
   State<EditableTable> createState() => _EditableTableState();
 }
 
 class _EditableTableState extends State<EditableTable> {
-  List editedData = [];
+  List<List<String>> editedData = [[]];
 
   @override
   void initState() {

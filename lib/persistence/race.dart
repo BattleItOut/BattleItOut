@@ -1,7 +1,47 @@
 import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/size.dart';
+import 'package:battle_it_out/persistence/subrace.dart';
 import 'package:battle_it_out/utils/db_object.dart';
 import 'package:battle_it_out/utils/factory.dart';
+
+class RacePartial extends DBObject {
+  int? id;
+  String? name;
+  Size? size;
+  String? source;
+  List<AttributePartial>? initialAttributes;
+
+  RacePartial({this.id, this.name, this.size, this.source, this.initialAttributes});
+
+  Race toRace() {
+    return Race(
+        id: id,
+        name: name!,
+        size: size!,
+        source: source!,
+        initialAttributes: initialAttributes!.map((e) => e.toAttribute()).toList());
+  }
+
+  RacePartial.fromRace(Race? race)
+      : this(
+          id: race?.id,
+          name: race?.name,
+          size: race?.size,
+          source: race?.source,
+          initialAttributes: race?.initialAttributes.map((e) => AttributePartial.from(e)).toList(),
+        );
+
+  @override
+  List<Object?> get props => super.props..addAll([name, size, source, initialAttributes]);
+
+  bool compareTo(Race? race) {
+    try {
+      return toRace() == race;
+    } on TypeError catch (_) {
+      return false;
+    }
+  }
+}
 
 class Race extends DBObject {
   String name;
@@ -36,7 +76,7 @@ class Race extends DBObject {
   }
 
   @override
-  List<Object> get props => super.props..addAll([name, size, source, initialAttributes]);
+  List<Object?> get props => super.props..addAll([name, size, source, initialAttributes]);
 }
 
 class RaceFactory extends Factory<Race> {
@@ -57,6 +97,12 @@ class RaceFactory extends Factory<Race> {
       attributes.add(attribute);
     }
     return attributes;
+  }
+
+  @override
+  Future<int> delete(int id) async {
+    await SubraceFactory().deleteWhere(where: "RACE_ID = ?", whereArgs: [id]);
+    return super.delete(id);
   }
 
   @override
