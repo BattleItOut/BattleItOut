@@ -1,17 +1,21 @@
 import 'package:battle_it_out/interface/components/editable_table.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
+import 'package:battle_it_out/interface/components/subrace_library_item.dart';
 import 'package:battle_it_out/localisation.dart';
 import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/race.dart';
 import 'package:battle_it_out/persistence/size.dart';
+import 'package:battle_it_out/persistence/subrace.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
 class EditRaceScreen extends StatefulWidget {
   final Race? race;
+  final List<Subrace>? subraces;
   final List<Size> sizes;
   final List<Attribute> attributes;
-  const EditRaceScreen({super.key, this.race, required this.sizes, required this.attributes});
+  const EditRaceScreen({super.key, this.race, this.subraces, required this.sizes, required this.attributes});
 
   @override
   State<EditRaceScreen> createState() => _EditRaceScreenState();
@@ -45,14 +49,14 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
     Race race = racePartial.toRace();
     setState(() {
       RaceFactory().update(race);
-      Navigator.pop(context, race);
+      Navigator.of(context).pop([true, race]);
     });
   }
 
   void delete() {
     setState(() {
       RaceFactory().delete(widget.race!.id!);
-      Navigator.pop(context, null);
+      Navigator.of(context).pop([true, null]);
     });
   }
 
@@ -64,68 +68,79 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop([false, null]),
+        ),
         centerTitle: true,
         title: Text("${widget.race != null ? "Edit" : "New"} Race"),
       ),
-      body: Column(
-        children: [
-          LocalisedText("NAME", context, style: const TextStyle(fontSize: 24)),
-          Container(
-            alignment: Alignment.center,
-            child: TextFormField(
-              textAlign: TextAlign.center,
-              initialValue: racePartial.name != null ? AppLocalizations.of(context).localise(racePartial.name!) : "",
-              onChanged: (val) {
-                setState(() {
-                  if (widget.race?.name != null && val == AppLocalizations.of(context).localise(widget.race!.name)) {
-                    racePartial.name = widget.race!.name;
-                  } else {
-                    racePartial.name = val;
-                  }
-                });
-              },
-              decoration: const InputDecoration(contentPadding: EdgeInsets.all(8)),
-            ),
-          ),
-          LocalisedText("SIZE", context, style: const TextStyle(fontSize: 24)),
-          DropdownButton<Size>(
-            value: racePartial.size,
-            hint: LocalisedText("SIZE", context),
-            isExpanded: true,
-            alignment: Alignment.center,
-            onChanged: (Size? newValue) {
+      body: Column(children: [
+        LocalisedText("NAME", context, style: const TextStyle(fontSize: 24)),
+        Container(
+          alignment: Alignment.center,
+          child: TextFormField(
+            textAlign: TextAlign.center,
+            initialValue: racePartial.name != null ? AppLocalizations.of(context).localise(racePartial.name!) : "",
+            onChanged: (val) {
               setState(() {
-                racePartial.size = newValue!;
-              });
-            },
-            items: [
-              for (Size size in widget.sizes)
-                DropdownMenuItem<Size>(value: size, child: Center(child: LocalisedText(size.name, context)))
-            ],
-          ),
-          LocalisedText("ATTRIBUTES", context, style: const TextStyle(fontSize: 24)),
-          EditableTable.from(
-            data: getTableData(primaryAttributes),
-            onChanged: (List<List<String>> editedData) {
-              setState(() {
-                for (int i = 0; i < editedData[0].length; i++) {
-                  primaryAttributes[i].base = int.parse(editedData[0][i]);
+                if (widget.race?.name != null && val == AppLocalizations.of(context).localise(widget.race!.name)) {
+                  racePartial.name = widget.race!.name;
+                } else {
+                  racePartial.name = val;
                 }
               });
             },
+            decoration: const InputDecoration(contentPadding: EdgeInsets.all(8)),
           ),
-          EditableTable.from(
-            data: getTableData(secondaryAttributes),
-            onChanged: (List<List<String>> editedData) {
-              setState(() {
-                for (int i = 0; i < editedData[0].length; i++) {
-                  secondaryAttributes[i].base = int.parse(editedData[0][i]);
-                }
-              });
-            },
-          ),
-        ],
-      ),
+        ),
+        LocalisedText("SIZE", context, style: const TextStyle(fontSize: 24)),
+        DropdownButton<Size>(
+          value: racePartial.size,
+          hint: LocalisedText("SIZE", context),
+          isExpanded: true,
+          alignment: Alignment.center,
+          onChanged: (Size? newValue) {
+            setState(() {
+              racePartial.size = newValue!;
+            });
+          },
+          items: [
+            for (Size size in widget.sizes)
+              DropdownMenuItem<Size>(
+                value: size,
+                child: Center(child: LocalisedText(size.name, context)),
+              )
+          ],
+        ),
+        LocalisedText("ATTRIBUTES", context, style: const TextStyle(fontSize: 24)),
+        EditableTable.from(
+          data: getTableData(primaryAttributes),
+          onChanged: (List<List<String>> editedData) {
+            setState(() {
+              for (int i = 0; i < editedData[0].length; i++) {
+                primaryAttributes[i].base = int.parse(editedData[0][i]);
+              }
+            });
+          },
+        ),
+        EditableTable.from(
+          data: getTableData(secondaryAttributes),
+          onChanged: (List<List<String>> editedData) {
+            setState(() {
+              for (int i = 0; i < editedData[0].length; i++) {
+                secondaryAttributes[i].base = int.parse(editedData[0][i]);
+              }
+            });
+          },
+        ),
+        ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(10.0),
+            children: widget.subraces!
+                .mapIndexed<Widget>((int i, subrace) => AncestryLibraryItemWidget(ancestry: subrace))
+                .toList())
+      ]),
       floatingActionButton: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
         if (widget.race == null || !racePartial.compareTo(widget.race))
           FloatingActionButton(

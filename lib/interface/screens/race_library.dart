@@ -55,16 +55,23 @@ class _RaceLibraryWidgetState extends State<RaceLibraryWidget> {
                     race: entry.key,
                     subraces: entry.value,
                     onLongPress: () {
-                      Navigator.push<Race>(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => EditRaceScreen(race: entry.key, sizes: sizes, attributes: attributes),
+                          builder: (context) => EditRaceScreen(
+                            race: entry.key,
+                            subraces: entry.value,
+                            sizes: sizes,
+                            attributes: attributes,
+                          ),
                         ),
-                      ).then((Race? value) {
+                      ).then((arguments) {
                         setState(() {
-                          data.remove(entry.key);
-                          if (value != null) {
-                            data[value] = entry.value;
+                          if (arguments[0]) {
+                            data.remove(entry.key);
+                            if (arguments[1] != null) {
+                              data[arguments[1]] = entry.value;
+                            }
                           }
                         });
                       });
