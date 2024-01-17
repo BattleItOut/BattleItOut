@@ -79,6 +79,13 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
     List<AttributePartial> primaryAttributes = initialAttributes.where((e) => e.importance == 0).toList();
     List<AttributePartial> secondaryAttributes = initialAttributes.where((e) => e.importance == 1).toList();
 
+    bool compareAttributes = true;
+    if (widget.initialAttributes != null && widget.initialAttributes!.length == initialAttributes.length) {
+      for (int i = 0; i < initialAttributes.length; i++) {
+        compareAttributes = compareAttributes && initialAttributes[i].compareTo(widget.initialAttributes![i]);
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -148,6 +155,7 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
             });
           },
         ),
+        Center(child: LocalisedText("ANCESTRIES", context, style: const TextStyle(fontSize: 24))),
         ListView(
           shrinkWrap: true,
           padding: const EdgeInsets.all(10.0),
@@ -155,14 +163,17 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
         )
       ]),
       floatingActionButton: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-        if (widget.race == null || !racePartial.compareTo(widget.race))
+        if (widget.race == null ||
+            !racePartial.compareTo(widget.race) ||
+            widget.initialAttributes == null ||
+            !compareAttributes)
           FloatingActionButton(
             heroTag: "btn2",
             child: const Icon(Icons.save),
             onPressed: () async => await save(),
           ),
         const SizedBox(height: 10),
-        if (widget.race != null)
+        if (widget.race != null && widget.initialAttributes != null)
           FloatingActionButton(
             heroTag: "btn1",
             child: const Icon(Icons.delete),

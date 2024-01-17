@@ -23,9 +23,9 @@ class _RaceLibraryWidgetState extends State<RaceLibraryWidget> {
   Future<void> getAsyncData(BuildContext context) async {
     if (data.isEmpty) {
       List<Race> races = await RaceFactory().getAll();
-      races.sort((a, b) => a.name.localise(context).compareTo(b.name.localise(context)));
       for (Race race in races) {
         List<Subrace> subraces = await SubraceFactory().getSubracesFromRace(race.id!);
+        subraces.sort((a, b) => a.name.localise(context).compareTo(b.name.localise(context)));
         List<Attribute> initialAttributes = await RaceFactory().getInitialAttributes(race);
         data[race] = Tuple2(subraces, initialAttributes);
       }
@@ -34,6 +34,12 @@ class _RaceLibraryWidgetState extends State<RaceLibraryWidget> {
     // Get from DB
     if (sizes.isEmpty) sizes = await SizeFactory().getAll();
     if (attributes.isEmpty) attributes = await AttributeFactory().getAll();
+  }
+
+  List<MapEntry<Race, Tuple2<List<Subrace>, List<Attribute>>>> getSortedData() {
+    List<MapEntry<Race, Tuple2<List<Subrace>, List<Attribute>>>> list = data.entries.toList();
+    list.sort((a, b) => a.key.name.localise(context).compareTo(b.key.name.localise(context)));
+    return list;
   }
 
   @override
@@ -46,7 +52,7 @@ class _RaceLibraryWidgetState extends State<RaceLibraryWidget> {
             return ListView(
               shrinkWrap: true,
               padding: const EdgeInsets.all(10.0),
-              children: data.entries.map((MapEntry<Race, Tuple2<List<Subrace>, List<Attribute>>> entry) {
+              children: getSortedData().map((MapEntry<Race, Tuple2<List<Subrace>, List<Attribute>>> entry) {
                 return RaceLibraryItemWidget(
                     race: entry.key,
                     subraces: entry.value.item1,
