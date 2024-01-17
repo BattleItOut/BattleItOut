@@ -10,23 +10,15 @@ class MeleeWeapon extends Weapon {
   WeaponLength length;
 
   MeleeWeapon(
-      {required name,
+      {required super.name,
       required this.length,
-      required damage,
-      required twoHanded,
-      id,
-      damageAttribute,
-      skill,
-      List<ItemQuality> qualities = const []})
-      : super(
-            id: id,
-            name: name,
-            qualities: qualities,
-            damage: damage,
-            twoHanded: twoHanded,
-            damageAttribute: damageAttribute,
-            itemCategory: "MELEE_WEAPONS",
-            skill: skill);
+      required super.damage,
+      required super.twoHanded,
+      super.id,
+      super.damageAttribute,
+      super.skill,
+      super.qualities = const []})
+      : super(category: "MELEE_WEAPONS");
 
   int getTotalSkillValue() {
     return skill!.getTotalValue();

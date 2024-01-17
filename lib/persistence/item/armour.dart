@@ -21,8 +21,8 @@ class Armour extends Item {
       required this.rightArmAP,
       required this.leftLegAP,
       required this.rightLegAP,
-      List<ItemQuality> qualities = const []})
-      : super(category: "ARMOUR", qualities: qualities);
+      super.qualities})
+      : super(category: "ARMOUR");
 
   @override
   bool operator ==(Object other) =>

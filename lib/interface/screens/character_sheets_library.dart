@@ -5,7 +5,7 @@ import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
 class CharacterSheetsLibrary extends StatefulWidget {
-  const CharacterSheetsLibrary({Key? key}) : super(key: key);
+  const CharacterSheetsLibrary({super.key});
 
   @override
   State<CharacterSheetsLibrary> createState() => _CharacterSheetsLibraryState();

@@ -40,7 +40,7 @@ class AttributePartial extends DBObject {
       : this(
             id: attribute?.id,
             name: attribute?.name,
-            shortName: attribute?.shortName!,
+            shortName: attribute?.shortName,
             description: attribute?.description,
             importance: attribute?.importance,
             base: attribute?.base,

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
 class MainScreen extends StatelessWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({super.key});
 
   static final log = Logger('MainScreen');
 
