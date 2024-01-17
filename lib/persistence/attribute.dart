@@ -105,8 +105,7 @@ class Attribute extends DBObject {
   }
 
   @override
-  List<Object?> get props =>
-      super.props..addAll([name, shortName, description, canRoll, importance, base, advances, canAdvance]);
+  List<Object?> get props => super.props..addAll([name, shortName, description, canRoll, importance]);
 }
 
 class AttributeFactory extends Factory<Attribute> {
