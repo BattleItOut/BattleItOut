@@ -67,10 +67,18 @@ class _AncestryLibraryItemWidgetState extends State<AncestryLibraryItemWidget> {
           children: [
             Padding(
               padding: const EdgeInsets.all(7),
-              child: Text(
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                widget.ancestry.name.localise(context),
-              ),
+              child: Column(children: [
+                Text(
+                  widget.ancestry.name.localise(context),
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+                ),
+                widget.ancestry.linkedSkills.isNotEmpty || widget.ancestry.linkedGroupSkills.isNotEmpty
+                    ? buildLinkedSKills(context, widget.ancestry)
+                    : const SizedBox.shrink(),
+                widget.ancestry.linkedTalents.isNotEmpty || widget.ancestry.linkedGroupTalents.isNotEmpty
+                    ? buildLinkedTalents(context, widget.ancestry)
+                    : const SizedBox.shrink(),
+              ]),
             ),
           ],
         ),

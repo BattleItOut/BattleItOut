@@ -32,7 +32,7 @@ class StateContainerState extends State<StateContainer> {
   get locale => _localeWrapper.object;
 
   Future<void> loadCharacters() async {
-    List<Character> characters = await CharacterFactory().getAll();
+    List<Character> characters = []; // await CharacterFactory().getAll();
     setState(() {
       _savedCharacters = characters;
     });
