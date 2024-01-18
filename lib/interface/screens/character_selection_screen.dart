@@ -4,12 +4,11 @@ import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/settings.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/interface/state_container.dart';
-import 'package:battle_it_out/persistence/entities/character.dart';
+import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
 class CharacterSelectionScreen extends StatefulWidget {
-
   const CharacterSelectionScreen({Key? key}) : super(key: key);
 
   @override
@@ -22,53 +21,37 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
   List<CharacterListItem> _generateCharacters() {
     return List<CharacterListItem>.generate(
       savedCharacters.length,
-      (index) => CharacterListItem(
-        character: savedCharacters[index],
-        context: context
-      )
+      (index) => CharacterListItem(character: savedCharacters[index], context: context),
     );
   }
 
   void _select(int index) {
     var character = Character.from(savedCharacters[index]);
-    showAlert(
-      "INITIATIVE".localise(context),
-      [
-        Tuple2((value) { character.initiative = int.parse(value); }, int)
-      ],
-      () {
-        Navigator.of(context).pop();
-        Navigator.pop(context, character);
-      },
-      context
-    );
+    showAlert("INITIATIVE".localise(context), [
+      Tuple2((value) {
+        character.initiative = int.parse(value);
+      }, int)
+    ], () {
+      Navigator.of(context).pop();
+      Navigator.pop(context, character);
+    }, context);
   }
 
   void _info(int index) {
-    Navigator.push(context, MaterialPageRoute(
-      builder: (context) => CharacterSheetScreen(character: savedCharacters[index]),
-    ));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CharacterSheetScreen(character: savedCharacters[index])),
+    );
   }
 
   void _newCharacter() {
     String? name;
-    showAlert(
-      "NAME".localise(context),
-      [
-        Tuple2((value) => name = value, String)
-      ],
-      () {
-        var newCharacter = Character(
-          name: name!,
-        );
-        StateContainer.of(context).addCharacter(newCharacter);
-        Navigator.of(context).pop();
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) => CharacterSheetScreen(character: newCharacter),
-        ));
-      },
-      context
-    );
+    showAlert("NAME".localise(context), [Tuple2((value) => name = value, String)], () {
+      var newCharacter = Character(name: name!);
+      StateContainer.of(context).addCharacter(newCharacter);
+      Navigator.of(context).pop();
+      Navigator.push(context, MaterialPageRoute(builder: (context) => CharacterSheetScreen(character: newCharacter)));
+    }, context);
     // AppCache().characters.add(value)
   }
 
@@ -101,10 +84,10 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
               },
               onLongPress: () {
                 _info(index);
-              }
+              },
             );
-          }
-        )
+          },
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: [

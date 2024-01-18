@@ -1,15 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:battle_it_out/persistence/dao/character_dao.dart';
-import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/character.dart';
-import 'package:battle_it_out/persistence/entities/skill.dart';
-import 'package:battle_it_out/persistence/entities/talent.dart';
+import 'package:battle_it_out/persistence/attribute.dart';
+import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/persistence/skill/skill.dart';
+import 'package:battle_it_out/persistence/talent/talent.dart';
+import 'package:battle_it_out/utils/database_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
+  await DatabaseProvider.instance.connect(test: true);
+
   group('Links between attributes, skills and weapons: ', () {
     test('Start conditions', () async {
       Character character = await createTestCharacter();
@@ -32,7 +34,7 @@ Future<void> main() async {
       expect(talent.getMaxLvl(), 3);
 
       // Weapon
-      expect(character.getMeleeWeapons()[0].getTotalSkillValue(), 44);
+      expect(character.meleeWeapons[0].getTotalSkillValue(), 44);
     });
     test('Increasing base value', () async {
       Character character = await createTestCharacter();
@@ -52,7 +54,7 @@ Future<void> main() async {
       expect(talent.getMaxLvl(), 4);
 
       // Weapon
-      expect(character.getMeleeWeapons()[0].getTotalSkillValue(), 45);
+      expect(character.meleeWeapons[0].getTotalSkillValue(), 45);
     });
     test('Increasing advance value', () async {
       Character character = await createTestCharacter();
@@ -72,7 +74,7 @@ Future<void> main() async {
       expect(talent.getMaxLvl(), 5);
 
       // Weapon
-      expect(character.getMeleeWeapons()[0].getTotalSkillValue(), 55);
+      expect(character.meleeWeapons[0].getTotalSkillValue(), 55);
     });
     test('Increasing skill advance value', () async {
       Character character = await createTestCharacter();
@@ -93,7 +95,7 @@ Future<void> main() async {
       expect(talent.getMaxLvl(), 3);
 
       // Weapon
-      expect(character.getMeleeWeapons()[0].getTotalSkillValue(), 65);
+      expect(character.meleeWeapons[0].getTotalSkillValue(), 65);
     });
   });
 }

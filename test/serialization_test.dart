@@ -1,30 +1,25 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:battle_it_out/persistence/dao/attribute_dao.dart';
-import 'package:battle_it_out/persistence/dao/character_dao.dart';
-import 'package:battle_it_out/persistence/dao/item/armour_dao.dart';
-import 'package:battle_it_out/persistence/dao/item/melee_weapon_dao.dart';
-import 'package:battle_it_out/persistence/dao/item/ranged_weapon_dao.dart';
-import 'package:battle_it_out/persistence/dao/profession_dao.dart';
-import 'package:battle_it_out/persistence/dao/race_dao.dart';
-import 'package:battle_it_out/persistence/dao/serializer.dart';
-import 'package:battle_it_out/persistence/dao/skill_dao.dart';
-import 'package:battle_it_out/persistence/dao/talent_dao.dart';
-import 'package:battle_it_out/persistence/entities/attribute.dart';
-import 'package:battle_it_out/persistence/entities/character.dart';
-import 'package:battle_it_out/persistence/entities/item/armour.dart';
-import 'package:battle_it_out/persistence/entities/item/melee_weapon.dart';
-import 'package:battle_it_out/persistence/entities/item/ranged_weapon.dart';
-import 'package:battle_it_out/persistence/entities/profession.dart';
-import 'package:battle_it_out/persistence/entities/race.dart';
-import 'package:battle_it_out/persistence/entities/skill.dart';
-import 'package:battle_it_out/persistence/entities/talent.dart';
+import 'package:battle_it_out/persistence/attribute.dart';
+import 'package:battle_it_out/persistence/character.dart';
+import 'package:battle_it_out/persistence/item/armour.dart';
+import 'package:battle_it_out/persistence/item/melee_weapon.dart';
+import 'package:battle_it_out/persistence/item/ranged_weapon.dart';
+import 'package:battle_it_out/persistence/profession/profession.dart';
+import 'package:battle_it_out/persistence/race.dart';
+import 'package:battle_it_out/persistence/skill/skill.dart';
+import 'package:battle_it_out/persistence/subrace.dart';
+import 'package:battle_it_out/persistence/talent/talent.dart';
+import 'package:battle_it_out/utils/database_provider.dart';
+import 'package:battle_it_out/utils/factory.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<void> main() async {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  await DatabaseProvider.instance.connect(test: true);
+
   group("Serialization", () {
-    TestWidgetsFlutterBinding.ensureInitialized();
     raceSerializationTest();
     professionSerializationTest();
     attributeSerializationTest();
@@ -39,7 +34,7 @@ Future<void> main() async {
 
 void doubleSerializationTest(Factory factory, List list) {
   for (var i = 0; i < list.length; i++) {
-    test("Serialize and deserialize - ${i+1}", () async {
+    test("Serialize and deserialize - ${i + 1}", () async {
       var object = await factory.create(list[i]);
       Map<String, dynamic> serializedMap = await factory.toMap(object, optimised: false);
       var serializedObject = await factory.create(serializedMap);
@@ -70,29 +65,31 @@ void raceSerializationTest() {
       expect(basicRace.race.id, 1);
       expect(basicRace.race.name, "HUMAN");
       expect(basicRace.race.size.id, 4);
-      expect(basicRace.race.extraPoints, 3);
     });
     test("Minimal custom", () async {
       Subrace minCustomRace = await SubraceFactory().create(minCustomRaceMap);
+      await SubraceFactory().update(minCustomRace);
+
       expect(minCustomRace.id, 10);
       expect(minCustomRace.name, "Test");
       expect(minCustomRace.source, "Custom");
       expect(minCustomRace.race.size.id, 4);
-      expect(minCustomRace.race.extraPoints, 0);
     });
     test("Maximal custom", () async {
       Subrace maxCustomRace = await SubraceFactory().create(maxCustomRaceMap);
+      await SubraceFactory().update(maxCustomRace);
+
       expect(maxCustomRace.id, 11);
       expect(maxCustomRace.name, "Test");
       expect(maxCustomRace.source, "Custom");
       expect(maxCustomRace.randomTalents, 3);
       expect(maxCustomRace.race.name, "Test2");
       expect(maxCustomRace.race.size.id, 4);
-      expect(maxCustomRace.race.extraPoints, 4);
     });
     doubleSerializationTest(RaceFactory(), [basicRaceMap, minCustomRaceMap, maxCustomRaceMap]);
   });
 }
+
 void professionSerializationTest() {
   Map<String, dynamic> basicProfessionMap = {"ID": 1};
   Map<String, dynamic> minCustomProfessionMap = {"NAME": "Test"};
@@ -121,12 +118,16 @@ void professionSerializationTest() {
     });
     test("Minimal custom", () async {
       Profession minCustomProfession = await ProfessionFactory().create(minCustomProfessionMap);
+      await ProfessionFactory().update(minCustomProfession);
+
       expect(minCustomProfession.id, 257);
       expect(minCustomProfession.name, "Test");
       expect(minCustomProfession.source, "Custom");
     });
     test("Maximal custom", () async {
       Profession maxCustomProfession = await ProfessionFactory().create(maxCustomProfessionMap);
+      await ProfessionFactory().update(maxCustomProfession);
+
       expect(maxCustomProfession.id, 258);
       expect(maxCustomProfession.name, "Test");
       expect(maxCustomProfession.source, "Custom");
@@ -138,13 +139,16 @@ void professionSerializationTest() {
     doubleSerializationTest(ProfessionFactory(), [basicProfessionMap, minCustomProfessionMap, maxCustomProfessionMap]);
   });
 }
+
 void attributeSerializationTest() {
   Map<String, dynamic> basicAttributeMap = {"ID": 1};
-  Map<String, dynamic> maxEditedAttributeMap = {"ID": 1, "BASE": 38, "ADVANCES": 5, "CAN_ADVANCE": true};
+  Map<String, dynamic> maxEditedAttributeMap = {"ID": 1, "BASE": 38, "ADVANCES": 5, "CAN_ADVANCE": 1};
 
   group("Attribute serialization", () {
     test("Basic from database", () async {
       Attribute basicAttribute = await AttributeFactory().create(basicAttributeMap);
+      AttributeFactory().update(basicAttribute);
+
       expect(basicAttribute.id, 1);
       expect(basicAttribute.name, "WEAPON_SKILL");
       expect(basicAttribute.shortName, "WEAPON_SKILL_SHORT");
@@ -157,6 +161,8 @@ void attributeSerializationTest() {
     });
     test("Edited", () async {
       Attribute maxEditedAttribute = await AttributeFactory().create(maxEditedAttributeMap);
+      AttributeFactory().update(maxEditedAttribute);
+
       expect(maxEditedAttribute.id, 1);
       expect(maxEditedAttribute.name, "WEAPON_SKILL");
       expect(maxEditedAttribute.shortName, "WEAPON_SKILL_SHORT");
@@ -170,9 +176,10 @@ void attributeSerializationTest() {
     doubleSerializationTest(AttributeFactory(), [basicAttributeMap, maxEditedAttributeMap]);
   });
 }
+
 void skillSerializationTest() {
   Map<String, dynamic> basicSkillMap = {"ID": 1};
-  Map<String, dynamic> maxEditedSkillMap = {"ID": 1, "ADVANCES": 2, "CAN_ADVANCE": true, "EARNING": true};
+  Map<String, dynamic> maxEditedSkillMap = {"ID": 1, "ADVANCES": 2, "CAN_ADVANCE": 1, "EARNING": 1};
 
   group("Skill serialization", () {
     test("Basic from database", () async {
@@ -182,11 +189,11 @@ void skillSerializationTest() {
       expect(basicSkill.specialisation, null);
       expect(basicSkill.advances, 0);
       expect(basicSkill.canAdvance, false);
-      expect(basicSkill.baseSkill!.id, 1);
-      expect(basicSkill.baseSkill!.name, "ATHLETICS");
-      expect(basicSkill.baseSkill!.description, "ATHLETICS_DESC");
-      expect(basicSkill.baseSkill!.advanced, false);
-      expect(basicSkill.baseSkill!.grouped, false);
+      expect(basicSkill.baseSkill.id, 1);
+      expect(basicSkill.baseSkill.name, "ATHLETICS");
+      expect(basicSkill.baseSkill.description, "ATHLETICS_DESC");
+      expect(basicSkill.baseSkill.advanced, false);
+      expect(basicSkill.baseSkill.grouped, false);
     });
     test("Edited", () async {
       Skill maxEditedSkill = await SkillFactory().create(maxEditedSkillMap);
@@ -196,18 +203,19 @@ void skillSerializationTest() {
       expect(maxEditedSkill.advances, 2);
       expect(maxEditedSkill.canAdvance, true);
       expect(maxEditedSkill.earning, true);
-      expect(maxEditedSkill.baseSkill!.id, 1);
-      expect(maxEditedSkill.baseSkill!.name, "ATHLETICS");
-      expect(maxEditedSkill.baseSkill!.description, "ATHLETICS_DESC");
-      expect(maxEditedSkill.baseSkill!.advanced, false);
-      expect(maxEditedSkill.baseSkill!.grouped, false);
+      expect(maxEditedSkill.baseSkill.id, 1);
+      expect(maxEditedSkill.baseSkill.name, "ATHLETICS");
+      expect(maxEditedSkill.baseSkill.description, "ATHLETICS_DESC");
+      expect(maxEditedSkill.baseSkill.advanced, false);
+      expect(maxEditedSkill.baseSkill.grouped, false);
     });
     doubleSerializationTest(SkillFactory(), [basicSkillMap, maxEditedSkillMap]);
   });
 }
+
 void talentSerializationTest() {
   Map<String, dynamic> basicTalentMap = {"ID": 1};
-  Map<String, dynamic> maxEditedTalentMap = {"ID": 1, "LVL": 1, "CAN_ADVANCE": true};
+  Map<String, dynamic> maxEditedTalentMap = {"ID": 1, "LVL": 1, "CAN_ADVANCE": 1};
 
   group("Talent serialization", () {
     test("Basic from database", () async {
@@ -217,39 +225,43 @@ void talentSerializationTest() {
       expect(basicTalent.specialisation, null);
       expect(basicTalent.currentLvl, 0);
       expect(basicTalent.canAdvance, false);
-      expect(basicTalent.baseTalent!.id, 1);
-      expect(basicTalent.baseTalent!.name, "PHARMACIST");
-      expect(basicTalent.baseTalent!.description, "PHARMACIST_DESC");
-      expect(basicTalent.baseTalent!.source, "Main Rulebook");
-      expect(basicTalent.baseTalent!.constLvl, null);
-      expect(basicTalent.baseTalent!.grouped, false);
+      expect(basicTalent.baseTalent.id, 1);
+      expect(basicTalent.baseTalent.name, "PHARMACIST");
+      expect(basicTalent.baseTalent.description, "PHARMACIST_DESC");
+      expect(basicTalent.baseTalent.source, "Main Rulebook");
+      expect(basicTalent.baseTalent.constLvl, null);
+      expect(basicTalent.baseTalent.grouped, false);
       expect(basicTalent.tests[0].id, 1);
       expect(basicTalent.tests[0].comment, null);
     });
     test("Edited", () async {
       Talent maxEditedTalent = await TalentFactory().create(maxEditedTalentMap);
+      await TalentFactory().update(maxEditedTalent);
+
       expect(maxEditedTalent.id, 1);
       expect(maxEditedTalent.name, "PHARMACIST");
       expect(maxEditedTalent.specialisation, null);
       expect(maxEditedTalent.currentLvl, 1);
       expect(maxEditedTalent.canAdvance, true);
-      expect(maxEditedTalent.baseTalent!.id, 1);
-      expect(maxEditedTalent.baseTalent!.name, "PHARMACIST");
-      expect(maxEditedTalent.baseTalent!.description, "PHARMACIST_DESC");
-      expect(maxEditedTalent.baseTalent!.source, "Main Rulebook");
-      expect(maxEditedTalent.baseTalent!.constLvl, null);
-      expect(maxEditedTalent.baseTalent!.grouped, false);
+      expect(maxEditedTalent.baseTalent.id, 1);
+      expect(maxEditedTalent.baseTalent.name, "PHARMACIST");
+      expect(maxEditedTalent.baseTalent.description, "PHARMACIST_DESC");
+      expect(maxEditedTalent.baseTalent.source, "Main Rulebook");
+      expect(maxEditedTalent.baseTalent.constLvl, null);
+      expect(maxEditedTalent.baseTalent.grouped, false);
       expect(maxEditedTalent.tests[0].id, 1);
       expect(maxEditedTalent.tests[0].comment, null);
     });
     doubleSerializationTest(TalentFactory(), [basicTalentMap, maxEditedTalentMap]);
   });
 }
+
 void armourSerializationTest() {
   Map<String, dynamic> basicArmourMap = {"ID": 1};
-  Map<String, dynamic> minCustomArmourMap = {"NAME": "Test", "HEAD_AP": 1};
+  Map<String, dynamic> minCustomArmourMap = {"NAME": "Test", "ENCUMBRANCE": 0, "HEAD_AP": 1};
   Map<String, dynamic> maxCustomArmourMap = {
     "NAME": "Test2",
+    "ENCUMBRANCE": 0,
     "HEAD_AP": 1,
     "BODY_AP": 1,
     "LEFT_ARM_AP": 1,
@@ -277,6 +289,8 @@ void armourSerializationTest() {
     });
     test("Minimal custom", () async {
       Armour minCustomArmour = await ArmourFactory().create(minCustomArmourMap);
+      await ArmourFactory().update(minCustomArmour);
+
       expect(minCustomArmour.id, 15);
       expect(minCustomArmour.name, "Test");
       expect(minCustomArmour.headAP, 1);
@@ -288,6 +302,8 @@ void armourSerializationTest() {
     });
     test("Maximal custom", () async {
       Armour maxCustomArmour = await ArmourFactory().create(maxCustomArmourMap);
+      await ArmourFactory().update(maxCustomArmour);
+
       expect(maxCustomArmour.id, 16);
       expect(maxCustomArmour.name, "Test2");
       expect(maxCustomArmour.headAP, 1);
@@ -306,6 +322,7 @@ void armourSerializationTest() {
     doubleSerializationTest(ArmourFactory(), [basicArmourMap, minCustomArmourMap, maxCustomArmourMap]);
   });
 }
+
 void meleeWeaponSerializationTest() {
   Map<String, dynamic> basicMeleeWeaponMap = {"ID": 1};
   Map<String, dynamic> minCustomWeaponMap = {"NAME": "Test", "LENGTH": 1, "DAMAGE": 2};
@@ -322,6 +339,8 @@ void meleeWeaponSerializationTest() {
   group("Melee weapon serialization", () {
     test("Basic from database", () async {
       MeleeWeapon basicMeleeWeapon = await MeleeWeaponFactory().create(basicMeleeWeaponMap);
+      await MeleeWeaponFactory().update(basicMeleeWeapon);
+
       expect(basicMeleeWeapon.id, 1);
       expect(basicMeleeWeapon.name, "SWORD");
       expect(basicMeleeWeapon.length.id, 4);
@@ -330,6 +349,8 @@ void meleeWeaponSerializationTest() {
     });
     test("Minimal custom", () async {
       MeleeWeapon minCustomWeapon = await MeleeWeaponFactory().create(minCustomWeaponMap);
+      await MeleeWeaponFactory().update(minCustomWeapon);
+
       expect(minCustomWeapon.id, 60);
       expect(minCustomWeapon.name, "Test");
       expect(minCustomWeapon.length.id, 1);
@@ -338,6 +359,8 @@ void meleeWeaponSerializationTest() {
     });
     test("Maximal custom", () async {
       MeleeWeapon maxCustomWeapon = await MeleeWeaponFactory().create(maxCustomWeaponMap);
+      await MeleeWeaponFactory().update(maxCustomWeapon);
+
       expect(maxCustomWeapon.id, 61);
       expect(maxCustomWeapon.name, "Test2");
       expect(maxCustomWeapon.length.id, 1);
@@ -351,6 +374,7 @@ void meleeWeaponSerializationTest() {
     doubleSerializationTest(MeleeWeaponFactory(), [basicMeleeWeaponMap, minCustomWeaponMap, maxCustomWeaponMap]);
   });
 }
+
 void rangedWeaponSerializationTest() {
   Map<String, dynamic> basicRangedWeaponMap = {"ID": 1};
   Map<String, dynamic> minCustomWeaponMap = {"NAME": "Test", "WEAPON_RANGE": 100, "DAMAGE": 2};
@@ -373,6 +397,8 @@ void rangedWeaponSerializationTest() {
   group("Ranged weapon serialization", () {
     test("Basic from database", () async {
       RangedWeapon basicRangedWeapon = await RangedWeaponFactory().create(basicRangedWeaponMap);
+      await RangedWeaponFactory().update(basicRangedWeapon);
+
       expect(basicRangedWeapon.id, 1);
       expect(basicRangedWeapon.name, "BLUNDERBUSS");
       expect(basicRangedWeapon.range, 20);
@@ -381,6 +407,8 @@ void rangedWeaponSerializationTest() {
     });
     test("Minimal custom", () async {
       RangedWeapon minCustomWeapon = await RangedWeaponFactory().create(minCustomWeaponMap);
+      await RangedWeaponFactory().update(minCustomWeapon);
+
       expect(minCustomWeapon.id, 42);
       expect(minCustomWeapon.name, "Test");
       expect(minCustomWeapon.range, 100);
@@ -389,12 +417,14 @@ void rangedWeaponSerializationTest() {
     });
     test("Maximal custom", () async {
       RangedWeapon maxCustomWeapon = await RangedWeaponFactory().create(maxCustomWeaponMap);
+      await RangedWeaponFactory().update(maxCustomWeapon);
+
       expect(maxCustomWeapon.id, 43);
       expect(maxCustomWeapon.name, "Test2");
       expect(maxCustomWeapon.range, 100);
       expect(maxCustomWeapon.damage, 2);
       expect(maxCustomWeapon.ammunition[0].id, 1);
-      expect(maxCustomWeapon.ammunition[0].count, 10);
+      expect(maxCustomWeapon.ammunition[0].amount, 10);
       expect(maxCustomWeapon.qualities[0].id, 1);
       expect(maxCustomWeapon.qualities[0].name, "LIGHTWEIGHT");
       expect(maxCustomWeapon.qualities[1].id, 2);
@@ -403,6 +433,7 @@ void rangedWeaponSerializationTest() {
     doubleSerializationTest(RangedWeaponFactory(), [basicRangedWeaponMap, minCustomWeaponMap, maxCustomWeaponMap]);
   });
 }
+
 void characterSerializationTest() {
   group("Character serialization", () {
     test("Serialize and deserialize", () async {

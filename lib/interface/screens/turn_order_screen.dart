@@ -3,8 +3,10 @@ import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/settings.dart';
 import 'package:battle_it_out/interface/screens/character_selection_screen.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
-import 'package:battle_it_out/persistence/entities/character.dart';
+import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
+import '../components/list_items.dart';
+import 'character_sheet_screen.dart';
 
 class TurnOrderScreen extends StatefulWidget {
   const TurnOrderScreen({Key? key}) : super(key: key);
@@ -22,8 +24,7 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
   }
 
   bool _isNextCharacterInNextRound(int index) {
-    return characters.length != index + 1 &&
-        characters[index].initiative! < characters[index + 1].initiative!;
+    return characters.length != index + 1 && characters[index].initiative! < characters[index + 1].initiative!;
   }
 
   int _getActualIndex(List entries, int index) {
@@ -74,9 +75,11 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
   }
 
   void _info(int index) {
-    Navigator.push(context, MaterialPageRoute(
-      builder: (context) => CharacterSheetScreen(character: characters[index]),
-    ));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CharacterSheetScreen(character: characters[index]),
+        ));
   }
 
   void _onNavigationTapped(int index) {
@@ -128,11 +131,9 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
     for (int i = 0; i < characters.length; i++) {
       if (i == 0) {
         entries.add(LabelListItem(name: '${"CURRENT".localise(context)} (${"ROUND".localise(context)} $currentRound)'));
-      }
-      else if (i != 0 && _isNextCharacterInNextRound(i - 1)) {
+      } else if (i != 0 && _isNextCharacterInNextRound(i - 1)) {
         entries.add(LabelListItem(name: '${"ROUND".localise(context)} ${currentRound + 1}'));
-      }
-      else if (i == 1) {
+      } else if (i == 1) {
         entries.add(LabelListItem(name: "NEXT".localise(context)));
       }
       entries.add(CharacterListItem(character: characters[i], context: context));
@@ -140,26 +141,23 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
     return Scaffold(
       appBar: applicationBar("TURN_ORDER_SCREEN_TITLE".localise(context)),
       body: Center(
-        child: ListView.builder(
-          padding: const EdgeInsets.all(12),
-          itemCount: entries.length,
-          itemBuilder: (BuildContext context, int index) {
-            return InkWell(
-                child: entries[index],
-                onTap: () {
-                  if (entries[index] is CharacterListItem) {
-                    _pop(_getActualIndex(entries, index));
-                  }
-                },
-                onLongPress: () {
-                  if (entries[index] is CharacterListItem) {
-                    _info(_getActualIndex(entries, index));
-                  }
-                }
-            );
-          }
-        )
-      ),
+          child: ListView.builder(
+              padding: const EdgeInsets.all(12),
+              itemCount: entries.length,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                    child: entries[index],
+                    onTap: () {
+                      if (entries[index] is CharacterListItem) {
+                        _pop(_getActualIndex(entries, index));
+                      }
+                    },
+                    onLongPress: () {
+                      if (entries[index] is CharacterListItem) {
+                        _info(_getActualIndex(entries, index));
+                      }
+                    });
+              })),
       endDrawer: settingsDrawer(context),
       bottomNavigationBar: BottomNavigationBar(
         items: [
