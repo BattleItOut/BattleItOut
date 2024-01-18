@@ -1,6 +1,7 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
+import 'package:battle_it_out/interface/components/settings.dart';
 import 'package:battle_it_out/interface/components/table_line.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/item/ammunition.dart';
@@ -244,7 +245,11 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                     ],
                   )
               ],
-              context: context)
-        ]));
+              context: context
+          )
+        ]
+    ),
+    endDrawer: settingsDrawer(context)
+    );
   }
 }

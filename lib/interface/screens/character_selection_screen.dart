@@ -1,6 +1,7 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/alert.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
+import 'package:battle_it_out/interface/components/settings.dart';
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/interface/state_container.dart';
 import 'package:battle_it_out/persistence/character.dart';
@@ -95,6 +96,7 @@ class _CharacterSelectionScreenState extends State<CharacterSelectionScreen> {
         ],
         onTap: _onNavigationTapped,
       ),
+      endDrawer: settingsDrawer(context)
     );
   }
 }
