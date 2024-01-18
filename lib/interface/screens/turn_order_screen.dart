@@ -5,8 +5,6 @@ import 'package:battle_it_out/interface/screens/character_selection_screen.dart'
 import 'package:battle_it_out/interface/screens/character_sheet_screen.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
-import '../components/list_items.dart';
-import 'character_sheet_screen.dart';
 
 class TurnOrderScreen extends StatefulWidget {
   const TurnOrderScreen({Key? key}) : super(key: key);
@@ -76,10 +74,9 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
 
   void _info(int index) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CharacterSheetScreen(character: characters[index]),
-        ));
+      context,
+      MaterialPageRoute(builder: (context) => CharacterSheetScreen(character: characters[index])),
+    );
   }
 
   void _onNavigationTapped(int index) {
@@ -141,23 +138,26 @@ class _TurnOrderScreenState extends State<TurnOrderScreen> {
     return Scaffold(
       appBar: applicationBar("TURN_ORDER_SCREEN_TITLE".localise(context)),
       body: Center(
-          child: ListView.builder(
-              padding: const EdgeInsets.all(12),
-              itemCount: entries.length,
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                    child: entries[index],
-                    onTap: () {
-                      if (entries[index] is CharacterListItem) {
-                        _pop(_getActualIndex(entries, index));
-                      }
-                    },
-                    onLongPress: () {
-                      if (entries[index] is CharacterListItem) {
-                        _info(_getActualIndex(entries, index));
-                      }
-                    });
-              })),
+        child: ListView.builder(
+          padding: const EdgeInsets.all(12),
+          itemCount: entries.length,
+          itemBuilder: (BuildContext context, int index) {
+            return InkWell(
+              child: entries[index],
+              onTap: () {
+                if (entries[index] is CharacterListItem) {
+                  _pop(_getActualIndex(entries, index));
+                }
+              },
+              onLongPress: () {
+                if (entries[index] is CharacterListItem) {
+                  _info(_getActualIndex(entries, index));
+                }
+              },
+            );
+          },
+        ),
+      ),
       endDrawer: settingsDrawer(context),
       bottomNavigationBar: BottomNavigationBar(
         items: [
