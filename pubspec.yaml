@@ -47,6 +47,6 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/test/database_inserts.sql
     - assets/database.version
-    - assets/database_module/resources/database/
-    - assets/database_module/resources/localisation/
+    - assets/database_structure.sql

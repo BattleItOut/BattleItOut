@@ -12,6 +12,7 @@ class DatabaseProvider {
   Database get database => _database!;
   Database? _database;
   String? _dbPath;
+  String? _dataPath;
 
   DatabaseProvider._() {
     if (Platform.isWindows || Platform.isLinux) {
@@ -24,7 +25,12 @@ class DatabaseProvider {
   }
 
   Future<void> connect({test = false}) async {
-    _dbPath = test ? inMemoryDatabasePath : join(await getDatabasesPath(), 'data.db');
+    if (test) {
+      _dbPath = inMemoryDatabasePath;
+      _dataPath = "assets/test/database_inserts.sql";
+    } else {
+      _dbPath = join(await getDatabasesPath(), 'data.db');
+    }
     log("Connecting the database on $_dbPath...");
 
     log("${await Directory("assets/database_module").exists()}");
@@ -33,6 +39,7 @@ class DatabaseProvider {
       File("assets/database_module/resources/database/database_structure.sql")
           .copySync("assets/database_structure.sql");
       File("assets/database_module/resources/database/database.version").copySync("assets/database.version");
+      _dataPath = "assets/database_module/resources/database/database_inserts.sql";
     }
 
     YamlMap parsedYaml = loadYaml(await rootBundle.loadString("assets/database.version"));
@@ -50,6 +57,9 @@ class DatabaseProvider {
         onCreate: (Database db, int version) async {
           log("Creating database");
           await BatchManager.execute("assets/database_structure.sql", db);
+          if (_dataPath != null) {
+            await BatchManager.execute(_dataPath!, db);
+          }
           log("Database created, version: $intVersion");
         },
         onUpgrade: (Database db, int lastVersion, int version) {
