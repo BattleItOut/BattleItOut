@@ -27,7 +27,15 @@ class DatabaseProvider {
     _dbPath = test ? inMemoryDatabasePath : join(await getDatabasesPath(), 'data.db');
     log("Connecting the database on $_dbPath...");
 
-    YamlMap parsedYaml = loadYaml(await rootBundle.loadString("assets/database/database.version"));
+    log("${await Directory("assets/database_module").exists()}");
+    if (await Directory("assets/database_module").exists()) {
+      log("Coping database scripts from module");
+      File("assets/database_module/resources/database/database_structure.sql")
+          .copySync("assets/database_structure.sql");
+      File("assets/database_module/resources/database/database.version").copySync("assets/database.version");
+    }
+
+    YamlMap parsedYaml = loadYaml(await rootBundle.loadString("assets/database.version"));
     var major = "${parsedYaml["MAJOR"]}".padLeft(1, "0");
     var minor = "${parsedYaml["MINOR"]}".padLeft(2, "0");
     var version = "${parsedYaml["VERSION"]}".padLeft(3, "0");
@@ -41,7 +49,7 @@ class DatabaseProvider {
         singleInstance: true,
         onCreate: (Database db, int version) async {
           log("Creating database");
-          await BatchManager.execute("assets/database/create_db.sql", db);
+          await BatchManager.execute("assets/database_structure.sql", db);
           log("Database created, version: $intVersion");
         },
         onUpgrade: (Database db, int lastVersion, int version) {
