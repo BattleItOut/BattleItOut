@@ -45,7 +45,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
     Map<String, Map<String, String>> localizedValues = {};
     final manifestJson = await rootBundle.loadString('AssetManifest.json');
     for (var filePath in json.decode(manifestJson).keys) {
-      if (filePath.startsWith('assets/database/localisation') && filePath.endsWith(".yml")) {
+      if (filePath.startsWith('assets/localisation') && filePath.endsWith(".yml")) {
         YamlMap ymlMap = loadYaml(await rootBundle.loadString(filePath));
         String language = ymlMap.keys.first;
         if (!localizedValues.containsKey(language)) {

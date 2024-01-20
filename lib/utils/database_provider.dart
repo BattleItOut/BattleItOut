@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -27,21 +28,14 @@ class DatabaseProvider {
   Future<void> connect({test = false}) async {
     if (test) {
       _dbPath = inMemoryDatabasePath;
-      _insertScript = File("assets/test/database_inserts.sql").readAsStringSync();
+      _insertScript = await rootBundle.loadString("assets/test/database_inserts.sql");
     } else {
       _dbPath = join(await getDatabasesPath(), 'data.db');
-    }
-    log("Connecting the database on $_dbPath...");
-
-    if (await Directory("assets/database_module/resources").exists()) {
-      log("Coping database scripts from module");
-      File("assets/database_module/resources/database/database_structure.sql")
-          .copySync("assets/database_structure.sql");
-      File("assets/database_module/resources/database/database.version").copySync("assets/database.version");
-      if (!test) {
-        _insertScript = File("assets/database_module/resources/database/database_inserts.sql").readAsStringSync();
+      if (json.decode(await rootBundle.loadString('AssetManifest.json')).containsKey("assets/database_inserts.sql")) {
+        _insertScript = await rootBundle.loadString("assets/database_inserts.sql");
       }
     }
+    log("Connecting the database on $_dbPath...");
 
     YamlMap parsedYaml = loadYaml(await rootBundle.loadString("assets/database.version"));
     var major = "${parsedYaml["MAJOR"]}".padLeft(1, "0");
