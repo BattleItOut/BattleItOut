@@ -1,12 +1,12 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
+import 'package:battle_it_out/persistence/ancestry.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/skill/skill_group.dart';
-import 'package:battle_it_out/persistence/subrace.dart';
 import 'package:flutter/material.dart';
 
 class AncestryLibraryItemWidget extends StatefulWidget {
-  final Subrace ancestry;
+  final Ancestry ancestry;
   final void Function()? onTap;
   final void Function()? onLongPress;
 
@@ -17,9 +17,9 @@ class AncestryLibraryItemWidget extends StatefulWidget {
 }
 
 class _AncestryLibraryItemWidgetState extends State<AncestryLibraryItemWidget> {
-  Text buildLinkedSKills(BuildContext context, Subrace subrace) {
-    List<String> skillNames = [for (Skill skill in subrace.linkedSkills) skill.name.localise(context)];
-    skillNames.addAll([for (SkillGroup skillGroup in subrace.linkedGroupSkills) skillGroup.name.localise(context)]);
+  Text buildLinkedSKills(BuildContext context, Ancestry ancestry) {
+    List<String> skillNames = [for (Skill skill in ancestry.linkedSkills) skill.name.localise(context)];
+    skillNames.addAll([for (SkillGroup skillGroup in ancestry.linkedGroupSkills) skillGroup.name.localise(context)]);
     skillNames.sort((a, b) => a.compareTo(b));
 
     if (skillNames.isEmpty) {
@@ -34,18 +34,18 @@ class _AncestryLibraryItemWidgetState extends State<AncestryLibraryItemWidget> {
     );
   }
 
-  Text buildLinkedTalents(BuildContext context, Subrace subrace) {
-    List<String> talentNames = [for (var talent in subrace.linkedTalents) talent.name.localise(context)];
-    talentNames.addAll([for (var talentGroup in subrace.linkedGroupTalents) talentGroup.name.localise(context)]);
+  Text buildLinkedTalents(BuildContext context, Ancestry ancestry) {
+    List<String> talentNames = [for (var talent in ancestry.linkedTalents) talent.name.localise(context)];
+    talentNames.addAll([for (var talentGroup in ancestry.linkedGroupTalents) talentGroup.name.localise(context)]);
     talentNames.sort((a, b) => a.compareTo(b));
 
     List<TextSpan> children = [
       TextSpan(text: "${"TALENTS".localise(context)}: ", style: const TextStyle(fontWeight: FontWeight.bold)),
       TextSpan(text: talentNames.join(", "))
     ];
-    if (subrace.randomTalents > 0) {
+    if (ancestry.randomTalents > 0) {
       children.add(const TextSpan(text: ", "));
-      children.add(TextSpan(text: "${subrace.randomTalents.toString()} ${"RANDOM_TALENTS".localise(context)}"));
+      children.add(TextSpan(text: "${ancestry.randomTalents.toString()} ${"RANDOM_TALENTS".localise(context)}"));
     }
 
     if (talentNames.isEmpty) {

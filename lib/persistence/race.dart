@@ -1,6 +1,6 @@
+import 'package:battle_it_out/persistence/ancestry.dart';
 import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/size.dart';
-import 'package:battle_it_out/persistence/subrace.dart';
 import 'package:battle_it_out/utils/db_object.dart';
 import 'package:battle_it_out/utils/factory.dart';
 
@@ -15,7 +15,7 @@ class RacePartial extends DBObject {
     return Race(id: id, name: name!, size: size!, source: source!);
   }
 
-  RacePartial.fromRace(Race? race) : this(id: race?.id, name: race?.name, size: race?.size, source: race?.source);
+  RacePartial.from(Race? race) : this(id: race?.id, name: race?.name, size: race?.size, source: race?.source);
 
   @override
   List<Object?> get props => super.props..addAll([name, size, source]);
@@ -33,7 +33,7 @@ class Race extends DBObject {
   String name;
   Size size;
   String source;
-  List<Subrace> ancestries = [];
+  List<Ancestry> ancestries = [];
 
   Race({super.id, required this.name, required this.size, this.source = "Custom"});
 
@@ -67,7 +67,7 @@ class RaceFactory extends Factory<Race> {
 
   @override
   Future<int> delete(int id) async {
-    await SubraceFactory().deleteWhere(where: "RACE_ID = ?", whereArgs: [id]);
+    await AncestryFactory().deleteWhere(where: "RACE_ID = ?", whereArgs: [id]);
     return super.delete(id);
   }
 

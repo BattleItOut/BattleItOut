@@ -1,22 +1,32 @@
 import 'package:battle_it_out/interface/components/ancestry_library_item.dart';
 import 'package:battle_it_out/interface/components/editable_table.dart';
+import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
+import 'package:battle_it_out/interface/screens/edit_ancestry_screen.dart';
 import 'package:battle_it_out/localisation.dart';
+import 'package:battle_it_out/persistence/ancestry.dart';
 import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/race.dart';
 import 'package:battle_it_out/persistence/size.dart';
-import 'package:battle_it_out/persistence/subrace.dart';
+import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
 class EditRaceScreen extends StatefulWidget {
   final Race? race;
-  final List<Subrace>? subraces;
+  final List<Ancestry>? ancestries;
   final List<Attribute>? initialAttributes;
   final List<Size> sizes;
   final List<Attribute> attributes;
+  final List<Skill> skills;
   const EditRaceScreen(
-      {super.key, this.race, this.subraces, this.initialAttributes, required this.sizes, required this.attributes});
+      {super.key,
+      this.race,
+      this.ancestries,
+      this.initialAttributes,
+      required this.sizes,
+      required this.attributes,
+      required this.skills});
 
   @override
   State<EditRaceScreen> createState() => _EditRaceScreenState();
@@ -24,17 +34,17 @@ class EditRaceScreen extends StatefulWidget {
 
 class _EditRaceScreenState extends State<EditRaceScreen> {
   RacePartial racePartial = RacePartial();
-  List<Subrace> ancestries = [];
+  List<Ancestry> ancestries = [];
   List<AttributePartial> initialAttributes = [];
 
   @override
   void initState() {
     super.initState();
-    racePartial = RacePartial.fromRace(widget.race);
+    racePartial = RacePartial.from(widget.race);
     racePartial.source ??= "Custom";
 
-    if (widget.subraces != null) {
-      ancestries = widget.subraces!;
+    if (widget.ancestries != null) {
+      ancestries = widget.ancestries!;
     }
 
     if (widget.initialAttributes != null) {
@@ -159,7 +169,31 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
         ListView(
           shrinkWrap: true,
           padding: const EdgeInsets.all(10.0),
-          children: ancestries.map<Widget>((ancestry) => AncestryLibraryItemWidget(ancestry: ancestry)).toList(),
+          children: [
+            ...ancestries.map<Widget>(
+              (ancestry) => AncestryLibraryItemWidget(
+                ancestry: ancestry,
+                onLongPress: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => EditAncestryScreen(ancestry: ancestry, skills: widget.skills)),
+                ),
+              ),
+            ),
+            ListItem(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                color: Theme.of(context).primaryColor,
+              ),
+              child: ListTile(
+                title: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.add),
+                ),
+                textColor: Theme.of(context).floatingActionButtonTheme.foregroundColor,
+                dense: true,
+              ),
+            )
+          ],
         )
       ]),
       floatingActionButton: Column(mainAxisAlignment: MainAxisAlignment.end, children: [

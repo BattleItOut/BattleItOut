@@ -48,13 +48,13 @@ class CharacterListItem extends TileListItem {
 
   static Text? buildSubtitle(Character character, BuildContext context) {
     List<String> subtitle = [];
-    if (character.subrace != null) {
-      subtitle.add(character.subrace!.race.name.localise(context));
+    if (character.ancestry != null) {
+      subtitle.add(character.ancestry!.race.name.localise(context));
     }
     if (character.profession != null) {
       subtitle.add(character.profession!.career.name.localise(context));
     }
-    return character.subrace == null && character.profession == null ? null : Text(subtitle.join(", "));
+    return character.ancestry == null && character.profession == null ? null : Text(subtitle.join(", "));
   }
 }
 

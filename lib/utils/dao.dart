@@ -22,7 +22,7 @@ abstract class DAO {
 
   Future<List<Map<String, Object?>>> getMapAll({String? where, List<Object>? whereArgs}) async {
     var result = await database.query(tableName, where: where, whereArgs: whereArgs);
-    log.log(Level.FINE, "SELECT (where: $where, whereArgs: $whereArgs, from: $tableName): $result");
+    log.log(Level.FINE, "SELECT ALL (where: $where, whereArgs: $whereArgs, from: $tableName): $result");
     return result;
   }
 

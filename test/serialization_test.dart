@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:battle_it_out/persistence/ancestry.dart';
 import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/item/armour.dart';
@@ -9,7 +10,6 @@ import 'package:battle_it_out/persistence/item/ranged_weapon.dart';
 import 'package:battle_it_out/persistence/profession/profession.dart';
 import 'package:battle_it_out/persistence/race.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
-import 'package:battle_it_out/persistence/subrace.dart';
 import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:battle_it_out/utils/database_provider.dart';
 import 'package:battle_it_out/utils/factory.dart';
@@ -58,7 +58,7 @@ void raceSerializationTest() {
 
   group("Race serialization", () {
     test("Basic from database", () async {
-      Subrace basicRace = await SubraceFactory().create(basicRaceMap);
+      Ancestry basicRace = await AncestryFactory().create(basicRaceMap);
       expect(basicRace.id, 1);
       expect(basicRace.name, "REIKLANDER");
       expect(basicRace.source, "Main Rulebook");
@@ -67,8 +67,8 @@ void raceSerializationTest() {
       expect(basicRace.race.size.id, 4);
     });
     test("Minimal custom", () async {
-      Subrace minCustomRace = await SubraceFactory().create(minCustomRaceMap);
-      await SubraceFactory().update(minCustomRace);
+      Ancestry minCustomRace = await AncestryFactory().create(minCustomRaceMap);
+      await AncestryFactory().update(minCustomRace);
 
       expect(minCustomRace.id, 10);
       expect(minCustomRace.name, "Test");
@@ -76,8 +76,8 @@ void raceSerializationTest() {
       expect(minCustomRace.race.size.id, 4);
     });
     test("Maximal custom", () async {
-      Subrace maxCustomRace = await SubraceFactory().create(maxCustomRaceMap);
-      await SubraceFactory().update(maxCustomRace);
+      Ancestry maxCustomRace = await AncestryFactory().create(maxCustomRaceMap);
+      await AncestryFactory().update(maxCustomRace);
 
       expect(maxCustomRace.id, 11);
       expect(maxCustomRace.name, "Test");

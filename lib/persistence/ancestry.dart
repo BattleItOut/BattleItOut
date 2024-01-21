@@ -8,65 +8,65 @@ import 'package:battle_it_out/persistence/talent/talent_group.dart';
 import 'package:battle_it_out/utils/db_object.dart';
 import 'package:battle_it_out/utils/factory.dart';
 
-class SubracePartial extends DBObject {
+class AncestryPartial extends DBObject {
   String? name;
   String? source;
   int? randomTalents;
   Race? race;
-  bool? defaultSubrace;
+  bool? defaultAncestry;
 
-  SubracePartial({super.id, this.name, this.source, this.randomTalents, this.race, this.defaultSubrace});
+  AncestryPartial({super.id, this.name, this.source, this.randomTalents, this.race, this.defaultAncestry});
 
-  Subrace toSubrace() {
-    return Subrace(
+  Ancestry to() {
+    return Ancestry(
         id: id,
         name: name!,
         source: source!,
         randomTalents: randomTalents!,
         race: race!,
-        defaultSubrace: defaultSubrace!);
+        defaultAncestry: defaultAncestry!);
   }
 
-  SubracePartial.from(Subrace? subrace)
+  AncestryPartial.from(Ancestry? ancestry)
       : this(
-            id: subrace?.id,
-            name: subrace?.name,
-            source: subrace?.source,
-            randomTalents: subrace?.randomTalents,
-            race: subrace?.race,
-            defaultSubrace: subrace?.defaultSubrace);
+            id: ancestry?.id,
+            name: ancestry?.name,
+            source: ancestry?.source,
+            randomTalents: ancestry?.randomTalents,
+            race: ancestry?.race,
+            defaultAncestry: ancestry?.defaultAncestry);
 
   @override
-  List<Object?> get props => super.props..addAll([name, source, randomTalents, race, defaultSubrace]);
+  List<Object?> get props => super.props..addAll([name, source, randomTalents, race, defaultAncestry]);
 
-  bool compareTo(Subrace? subrace) {
+  bool compareTo(Ancestry? ancestry) {
     try {
-      return toSubrace() == subrace;
+      return to() == ancestry;
     } on TypeError catch (_) {
       return false;
     }
   }
 }
 
-class Subrace extends DBObject {
+class Ancestry extends DBObject {
   String name;
   String source;
   int randomTalents;
   Race race;
-  bool defaultSubrace;
+  bool defaultAncestry;
 
   List<Skill> linkedSkills = [];
   List<SkillGroup> linkedGroupSkills = [];
   List<Talent> linkedTalents = [];
   List<TalentGroup> linkedGroupTalents = [];
 
-  Subrace(
+  Ancestry(
       {super.id,
       required this.name,
       required this.race,
       this.source = "Custom",
       this.randomTalents = 0,
-      this.defaultSubrace = true});
+      this.defaultAncestry = true});
 
   @override
   bool get stringify => true;
@@ -78,7 +78,7 @@ class Subrace extends DBObject {
       source,
       randomTalents,
       race,
-      defaultSubrace,
+      defaultAncestry,
       linkedSkills,
       linkedGroupSkills,
       linkedTalents,
@@ -86,14 +86,14 @@ class Subrace extends DBObject {
     ]);
 }
 
-class SubraceFactory extends Factory<Subrace> {
+class AncestryFactory extends Factory<Ancestry> {
   @override
   get tableName => 'subraces';
 
   @override
   Map<String, dynamic> get defaultValues => {"RANDOM_TALENTS": 0, "SRC": "Custom", "DEF": 1};
 
-  Future<List<Subrace>> getSubracesFromRace(int raceId) async {
+  Future<List<Ancestry>> getAncestryFromRace(int raceId) async {
     return await getAll(where: "RACE_ID = $raceId");
   }
 
@@ -108,58 +108,58 @@ class SubraceFactory extends Factory<Subrace> {
   }
 
   @override
-  Future<Subrace> fromMap(Map<String, dynamic> map) async {
-    Subrace subrace = Subrace(
+  Future<Ancestry> fromMap(Map<String, dynamic> map) async {
+    Ancestry ancestry = Ancestry(
         id: map["ID"] ?? await getNextId(),
         race: await getRace(map),
         name: map["NAME"],
         randomTalents: map["RANDOM_TALENTS"],
         source: map["SRC"],
-        defaultSubrace: map["DEF"] == 1);
-    subrace.linkedSkills = await SkillFactory().getLinkedToRace(subrace.id!);
-    subrace.linkedGroupSkills = await SkillFactory().getGroupsLinkedToSubrace(subrace.id!);
-    subrace.linkedTalents = await TalentFactory().getLinkedToSubrace(subrace.id!);
-    subrace.linkedGroupTalents = await TalentFactory().getGroupsLinkedToSubrace(subrace.id!);
-    return subrace;
+        defaultAncestry: map["DEF"] == 1);
+    ancestry.linkedSkills = await SkillFactory().getLinkedToRace(ancestry.id!);
+    ancestry.linkedGroupSkills = await SkillFactory().getGroupsLinkedToAncestry(ancestry.id!);
+    ancestry.linkedTalents = await TalentFactory().getLinkedToAncestry(ancestry.id!);
+    ancestry.linkedGroupTalents = await TalentFactory().getGroupsLinkedToAncestry(ancestry.id!);
+    return ancestry;
   }
 
   @override
-  Future<Subrace> fromDatabase(Map<String, dynamic> map) async {
-    Subrace subrace = Subrace(
+  Future<Ancestry> fromDatabase(Map<String, dynamic> map) async {
+    Ancestry ancestry = Ancestry(
         id: map["ID"],
         race: await RaceFactory().get(map["RACE_ID"]),
         name: map["NAME"],
         randomTalents: map["RANDOM_TALENTS"],
         source: map["SRC"],
-        defaultSubrace: map["DEF"] == 1);
-    subrace.linkedSkills = await SkillFactory().getLinkedToRace(map["ID"]);
-    subrace.linkedGroupSkills = await SkillFactory().getGroupsLinkedToSubrace(map["ID"]);
-    subrace.linkedTalents = await TalentFactory().getLinkedToSubrace(map["ID"]);
-    subrace.linkedGroupTalents = await TalentFactory().getGroupsLinkedToSubrace(map["ID"]);
-    return subrace;
+        defaultAncestry: map["DEF"] == 1);
+    ancestry.linkedSkills = await SkillFactory().getLinkedToRace(map["ID"]);
+    ancestry.linkedGroupSkills = await SkillFactory().getGroupsLinkedToAncestry(map["ID"]);
+    ancestry.linkedTalents = await TalentFactory().getLinkedToAncestry(map["ID"]);
+    ancestry.linkedGroupTalents = await TalentFactory().getGroupsLinkedToAncestry(map["ID"]);
+    return ancestry;
   }
 
   @override
-  Future<Map<String, dynamic>> toDatabase(Subrace object, {optimised = true, database = false}) async {
+  Future<Map<String, dynamic>> toDatabase(Ancestry object, {optimised = true, database = false}) async {
     return {
       "ID": object.id,
       "RACE_ID": object.race.id,
       "NAME": object.name,
       "RANDOM_TALENTS": object.randomTalents,
       "SRC": object.source,
-      "DEF": object.defaultSubrace ? 1 : 0
+      "DEF": object.defaultAncestry ? 1 : 0
     };
   }
 
   @override
-  Future<Map<String, dynamic>> toMap(Subrace object, {optimised = true, database = false}) async {
+  Future<Map<String, dynamic>> toMap(Ancestry object, {optimised = true, database = false}) async {
     Map<String, dynamic> map = {
       "ID": object.id,
       "RACE_ID": object.race.id,
       "NAME": object.name,
       "RANDOM_TALENTS": object.randomTalents,
       "SRC": object.source,
-      "DEF": object.defaultSubrace ? 1 : 0
+      "DEF": object.defaultAncestry ? 1 : 0
     };
     if (optimised) {
       map = await optimise(map);

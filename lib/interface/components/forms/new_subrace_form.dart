@@ -1,19 +1,19 @@
 import 'package:battle_it_out/entities_localisation.dart';
+import 'package:battle_it_out/persistence/ancestry.dart';
 import 'package:battle_it_out/persistence/race.dart';
 import 'package:battle_it_out/persistence/size.dart';
-import 'package:battle_it_out/persistence/subrace.dart';
 import 'package:flutter/material.dart';
 
-class NewSubraceForm extends StatefulWidget {
+class NewAncestryForm extends StatefulWidget {
   final Race race;
 
-  const NewSubraceForm(this.race, {super.key});
+  const NewAncestryForm(this.race, {super.key});
 
   @override
-  State<NewSubraceForm> createState() => _NewSubraceFormState();
+  State<NewAncestryForm> createState() => _NewAncestryFormState();
 }
 
-class _NewSubraceFormState extends State<NewSubraceForm> {
+class _NewAncestryFormState extends State<NewAncestryForm> {
   late List<Size> sizes;
   final nameTextController = TextEditingController();
 
@@ -55,9 +55,9 @@ class _NewSubraceFormState extends State<NewSubraceForm> {
         TextButton(
           child: Text("PROCEED".localise(context)),
           onPressed: () {
-            SubraceFactory()
-                .update(Subrace(name: nameTextController.text, race: widget.race))
-                .then((Subrace subrace) => Navigator.of(context).pop(subrace));
+            AncestryFactory()
+                .update(Ancestry(name: nameTextController.text, race: widget.race))
+                .then((Ancestry ancestry) => Navigator.of(context).pop(ancestry));
           },
         ),
       ],

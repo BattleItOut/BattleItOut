@@ -77,17 +77,17 @@ class SkillFactory extends Factory<Skill> {
     return skills;
   }
 
-  Future<List<Skill>> getLinkedToRace(int? subraceId) async {
+  Future<List<Skill>> getLinkedToRace(int? ancestryId) async {
     final List<Map<String, dynamic>> map = await database.rawQuery(
-        "SELECT * FROM SUBRACE_SKILLS RS JOIN SKILLS S ON (S.ID = RS.SKILL_ID) WHERE SUBRACE_ID = ?", [subraceId]);
+        "SELECT * FROM SUBRACE_SKILLS RS JOIN SKILLS S ON (S.ID = RS.SKILL_ID) WHERE SUBRACE_ID = ?", [ancestryId]);
 
     return [for (Map<String, dynamic> entry in map) await fromDatabase(entry)];
   }
 
-  Future<List<SkillGroup>> getGroupsLinkedToSubrace(int? subraceId) async {
+  Future<List<SkillGroup>> getGroupsLinkedToAncestry(int? ancestryId) async {
     final List<Map<String, dynamic>> map = await database.rawQuery(
         "SELECT * FROM SUBRACE_SKILLS SS JOIN SKILLS_BASE SB ON (SS.BASE_SKILL_ID = SB.ID) WHERE SUBRACE_ID = ?",
-        [subraceId]);
+        [ancestryId]);
 
     return [
       for (Map<String, dynamic> entry in map)

@@ -1,3 +1,4 @@
+import 'package:battle_it_out/persistence/ancestry.dart';
 import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/item/armour.dart';
 import 'package:battle_it_out/persistence/item/item.dart';
@@ -7,7 +8,6 @@ import 'package:battle_it_out/persistence/profession/profession.dart';
 import 'package:battle_it_out/persistence/size.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/skill/skill_base.dart';
-import 'package:battle_it_out/persistence/subrace.dart';
 import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:battle_it_out/persistence/talent/talent_base.dart';
 import 'package:battle_it_out/persistence/trait.dart';
@@ -19,7 +19,7 @@ class Character extends DBObject {
   String name;
   String? description;
   Size? size;
-  Subrace? subrace;
+  Ancestry? ancestry;
   Profession? profession;
   List<Attribute> attributes = [];
   List<Skill> skills = [];
@@ -37,7 +37,7 @@ class Character extends DBObject {
       {super.id,
       required this.name,
       this.size,
-      this.subrace,
+      this.ancestry,
       this.profession,
       this.description,
       this.initiative,
@@ -54,7 +54,7 @@ class Character extends DBObject {
   }
 
   Size? getSize() {
-    return subrace?.race.size ?? size;
+    return ancestry?.race.size ?? size;
   }
 
   // List getters
@@ -140,7 +140,7 @@ class Character extends DBObject {
   static Character from(Character character) {
     return Character(
         name: character.name,
-        subrace: character.subrace,
+        ancestry: character.ancestry,
         profession: character.profession,
         attributes: character.attributes.toList(),
         skills: character.skills,
@@ -156,7 +156,7 @@ class Character extends DBObject {
       other is Character &&
           runtimeType == other.runtimeType &&
           name == other.name &&
-          subrace == other.subrace &&
+          ancestry == other.ancestry &&
           profession == other.profession &&
           listEquals(attributes, other.attributes) &&
           listEquals(skills, other.skills) &&
@@ -166,7 +166,7 @@ class Character extends DBObject {
   @override
   int get hashCode =>
       name.hashCode ^
-      subrace.hashCode ^
+      ancestry.hashCode ^
       profession.hashCode ^
       attributes.hashCode ^
       skills.hashCode ^
@@ -175,7 +175,7 @@ class Character extends DBObject {
 
   @override
   String toString() {
-    return "Character (name=$name, subrace=$subrace, profession=$profession)";
+    return "Character (name=$name, ancestry=$ancestry, profession=$profession)";
   }
 }
 
@@ -193,7 +193,7 @@ class CharacterFactory extends Factory<Character> {
         id: map['ID'],
         name: map['NAME'],
         size: await SizeFactory().getNullable(map["SIZE"]),
-        subrace: await SubraceFactory().getNullable(map["ANCESTRY"]),
+        ancestry: await AncestryFactory().getNullable(map["ANCESTRY"]),
         profession: await ProfessionFactory().getNullable(map["PROFESSION"]),
         attributes: attributes,
         skills: skills,
@@ -215,7 +215,7 @@ class CharacterFactory extends Factory<Character> {
       id: map['ID'],
       name: map['NAME'],
       size: map["SIZE"] != null ? await SizeFactory().get(map["SIZE"]) : null,
-      subrace: map["SUBRACE"] != null ? await SubraceFactory().create(map["SUBRACE"]) : null,
+      ancestry: map["SUBRACE"] != null ? await AncestryFactory().create(map["SUBRACE"]) : null,
       profession: map["PROFESSION"] != null ? await ProfessionFactory().create(map["PROFESSION"]) : null,
       attributes: attributes,
       skills: skills,
@@ -237,7 +237,7 @@ class CharacterFactory extends Factory<Character> {
     return {
       "ID": object.id,
       "NAME": object.name,
-      "ANCESTRY": object.subrace?.id,
+      "ANCESTRY": object.ancestry?.id,
       "SIZE": object.size?.id,
       "PROFESSION": object.profession?.id,
     };
@@ -247,7 +247,7 @@ class CharacterFactory extends Factory<Character> {
   Future<Map<String, dynamic>> toMap(Character object, {optimised = true, database = false}) async {
     Map<String, dynamic> map = {
       "NAME": object.name,
-      "SUBRACE": await SubraceFactory().toDatabase(object.subrace!),
+      "SUBRACE": await AncestryFactory().toDatabase(object.ancestry!),
       "PROFESSION": await ProfessionFactory().toDatabase(object.profession!),
       "ATTRIBUTES": [for (var attribute in object.attributes) await AttributeFactory().toMap(attribute)],
       "SKILLS": [for (var skill in object.skills.where((s) => s.isImportant())) await SkillFactory().toMap(skill)],

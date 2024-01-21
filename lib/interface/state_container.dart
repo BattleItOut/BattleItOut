@@ -32,10 +32,10 @@ class StateContainerState extends State<StateContainer> {
   get locale => _localeWrapper.object;
 
   Future<void> loadCharacters() async {
-    List<Character> characters = await CharacterFactory().getAll();
-    setState(() {
-      _savedCharacters = characters;
-    });
+    // List<Character> characters = await CharacterFactory().getAll();
+    // setState(() {
+    //   _savedCharacters = characters;
+    // });
   }
 
   void setLocale(Locale locale) {
@@ -58,7 +58,14 @@ class StateContainerState extends State<StateContainer> {
 
   @override
   Widget build(BuildContext context) {
-    loadCharacters();
-    return _InheritedStateContainer(data: this, child: widget.child);
+    return FutureBuilder(
+      future: loadCharacters(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return _InheritedStateContainer(data: this, child: widget.child);
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
   }
 }

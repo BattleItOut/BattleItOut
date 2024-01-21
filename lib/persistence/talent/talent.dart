@@ -70,17 +70,17 @@ class TalentFactory extends Factory<Talent> {
   @override
   get tableName => 'talents';
 
-  Future<List<Talent>> getLinkedToSubrace(int? subraceId) async {
+  Future<List<Talent>> getLinkedToAncestry(int? ancestryId) async {
     final List<Map<String, dynamic>> map = await database.rawQuery(
-        "SELECT * FROM SUBRACE_TALENTS ST JOIN TALENTS T ON (T.ID = ST.TALENT_ID) WHERE SUBRACE_ID = ?", [subraceId]);
+        "SELECT * FROM SUBRACE_TALENTS ST JOIN TALENTS T ON (T.ID = ST.TALENT_ID) WHERE SUBRACE_ID = ?", [ancestryId]);
 
     return [for (Map<String, dynamic> entry in map) await fromDatabase(entry)];
   }
 
-  Future<List<TalentGroup>> getGroupsLinkedToSubrace(int? subraceId) async {
+  Future<List<TalentGroup>> getGroupsLinkedToAncestry(int? ancestryId) async {
     List<Map<String, dynamic>> baseSkillsMap = await database.rawQuery(
         "SELECT * FROM SUBRACE_TALENTS ST JOIN TALENTS_BASE SB ON (ST.BASE_TALENT_ID = SB.ID) WHERE SUBRACE_ID = ?",
-        [subraceId]);
+        [ancestryId]);
 
     List<TalentGroup> talentGroups = [
       for (Map<String, dynamic> entry in baseSkillsMap)
@@ -93,7 +93,7 @@ class TalentFactory extends Factory<Talent> {
 
     List<Map<String, dynamic>> groupTalentsMap = await database.rawQuery(
         "SELECT * FROM SUBRACE_TALENTS ST JOIN TALENT_GROUPS TG ON (ST.TALENT_GROUP_ID = TG.ID) WHERE SUBRACE_ID = ?",
-        [subraceId]);
+        [ancestryId]);
     for (Map<String, dynamic> entry in groupTalentsMap) {
       List<Map<String, dynamic>> talentsMap = await database.rawQuery(
           "SELECT * FROM TALENT_GROUPS_HIERARCHY TGH JOIN TALENTS T on T.ID = TGH.CHILD_ID WHERE PARENT_ID = ?",

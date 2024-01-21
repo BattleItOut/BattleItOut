@@ -50,5 +50,6 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/
     - assets/database/
     - assets/database/localisation/

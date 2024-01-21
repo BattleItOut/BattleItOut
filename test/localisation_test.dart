@@ -1,4 +1,5 @@
 import 'package:battle_it_out/localisation.dart';
+import 'package:battle_it_out/persistence/ancestry.dart';
 import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/item/ammunition.dart';
 import 'package:battle_it_out/persistence/item/armour.dart';
@@ -13,7 +14,6 @@ import 'package:battle_it_out/persistence/race.dart';
 import 'package:battle_it_out/persistence/size.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/skill/skill_base.dart';
-import 'package:battle_it_out/persistence/subrace.dart';
 import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:battle_it_out/persistence/talent/talent_base.dart';
 import 'package:battle_it_out/persistence/talent/talent_test.dart';
@@ -53,7 +53,7 @@ Future<void> main() async {
       performLocTest("Check profession career localisations", ProfessionCareerFactory(), (item) => [item.name]);
       performLocTest("Check profession localisations", ProfessionFactory(), (item) => [item.name]);
       performLocTest("Check race localisations", RaceFactory(), (item) => [item.name]);
-      performLocTest("Check subrace localisations", SubraceFactory(), (item) => [item.name]);
+      performLocTest("Check ancestry localisations", AncestryFactory(), (item) => [item.name]);
       performLocTest("Check size localisations", SizeFactory(), (item) => [item.name]);
       performLocTest("Check armour localisations", ArmourFactory(), (item) => [item.name]);
       performLocTest(

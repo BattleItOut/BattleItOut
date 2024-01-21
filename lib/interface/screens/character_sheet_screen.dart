@@ -29,13 +29,13 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
         children: [LocalisedText("SIZE", context), LocalisedText(widget.character.getSize()?.name ?? "", context)],
       )
     ];
-    if (widget.character.subrace != null) {
+    if (widget.character.ancestry != null) {
       children.add(TableLine(children: [
         LocalisedText("RACE", context),
-        LocalisedText(widget.character.subrace?.getLocalName(context) ?? "", context)
+        LocalisedText(widget.character.ancestry?.getLocalName(context) ?? "", context)
       ]));
     }
-    if (widget.character.subrace != null) {
+    if (widget.character.ancestry != null) {
       children.add(TableLine(children: [
         LocalisedText("PROFESSION", context),
         LocalisedText(widget.character.profession?.getLocalName(context) ?? "", context)

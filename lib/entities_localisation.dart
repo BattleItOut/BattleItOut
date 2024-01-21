@@ -1,10 +1,10 @@
 import 'package:battle_it_out/localisation.dart';
+import 'package:battle_it_out/persistence/ancestry.dart';
 import 'package:battle_it_out/persistence/profession/profession.dart';
-import 'package:battle_it_out/persistence/subrace.dart';
 import 'package:battle_it_out/persistence/talent/talent_test.dart';
 import 'package:flutter/widgets.dart';
 
-extension RaceLocalisation on Subrace {
+extension RaceLocalisation on Ancestry {
   String getLocalName(BuildContext context) {
     if (name != race.name) {
       return "${AppLocalizations.of(context).localise(name)} (${AppLocalizations.of(context).localise(race.name)})";

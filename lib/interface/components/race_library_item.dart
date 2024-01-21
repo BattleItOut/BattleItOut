@@ -1,21 +1,21 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
+import 'package:battle_it_out/persistence/ancestry.dart';
 import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/race.dart';
-import 'package:battle_it_out/persistence/subrace.dart';
 import 'package:flutter/material.dart';
 
 class RaceLibraryItemWidget extends StatefulWidget {
   final Race race;
   final List<Attribute> initialAttributes;
-  final List<Subrace> subraces;
+  final List<Ancestry> ancestries;
   final void Function()? onTap;
   final void Function()? onLongPress;
 
   const RaceLibraryItemWidget(
       {super.key,
       required this.race,
-      required this.subraces,
+      required this.ancestries,
       required this.initialAttributes,
       this.onTap,
       this.onLongPress});
@@ -25,12 +25,12 @@ class RaceLibraryItemWidget extends StatefulWidget {
 }
 
 class _RaceLibraryItemWidgetState extends State<RaceLibraryItemWidget> {
-  List<Subrace> subraces = [];
+  List<Ancestry> ancestries = [];
 
   @override
   void initState() {
     super.initState();
-    subraces = widget.subraces;
+    ancestries = widget.ancestries;
   }
 
   @override
@@ -84,13 +84,13 @@ class _RaceLibraryItemWidgetState extends State<RaceLibraryItemWidget> {
           ],
         ),
         subtitle: Column(children: [
-          for (Subrace subrace in subraces)
+          for (Ancestry ancestry in ancestries)
             Padding(
               padding: const EdgeInsets.all(7),
               child: Column(children: [
-                subraces.length != 1
+                ancestries.length != 1
                     ? Text(
-                        subrace.name.localise(context),
+                        ancestry.name.localise(context),
                         style: const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
                       )
                     : const SizedBox.shrink(),
