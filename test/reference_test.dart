@@ -5,12 +5,12 @@ import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/talent/talent.dart';
-import 'package:battle_it_out/utils/database_provider.dart';
+import 'package:battle_it_out/providers/database_provider.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
-  await DatabaseProvider.instance.connect(test: true);
+  await DatabaseProvider().connect(test: true);
 
   group('Links between attributes, skills and weapons: ', () {
     test('Start conditions', () async {

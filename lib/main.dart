@@ -2,19 +2,38 @@ import 'package:battle_it_out/interface/screens/main_screen.dart';
 import 'package:battle_it_out/interface/state_container.dart';
 import 'package:battle_it_out/interface/themes.dart';
 import 'package:battle_it_out/localisation.dart';
-import 'package:battle_it_out/utils/database_provider.dart';
+import 'package:battle_it_out/providers/ancestry_provider.dart';
+import 'package:battle_it_out/providers/attribute_provider.dart';
+import 'package:battle_it_out/providers/database_provider.dart';
+import 'package:battle_it_out/providers/race_provider.dart';
+import 'package:battle_it_out/providers/size_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
-  logs();
   WidgetsFlutterBinding.ensureInitialized();
-  await DatabaseProvider.instance.connect();
-  runApp(const StateContainer(child: MyApp()));
+  setupLogs();
+  setupGetIt();
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<SizeProvider>(create: (_) => GetIt.instance.get<SizeProvider>()),
+    ChangeNotifierProvider<RaceProvider>(create: (_) => GetIt.instance.get<RaceProvider>()),
+    ChangeNotifierProvider<AttributeProvider>(create: (_) => GetIt.instance.get<AttributeProvider>()),
+    ChangeNotifierProvider<AncestryProvider>(create: (_) => GetIt.instance.get<AncestryProvider>()),
+  ], child: const StateContainer(child: MyApp())));
 }
 
-void logs() {
+void setupGetIt() {
+  GetIt.instance.registerSingleton<DatabaseProvider>(DatabaseProvider());
+  GetIt.instance.registerSingleton<SizeProvider>(SizeProvider());
+  GetIt.instance.registerSingleton<RaceProvider>(RaceProvider());
+  GetIt.instance.registerSingleton<AttributeProvider>(AttributeProvider());
+  GetIt.instance.registerSingleton<AncestryProvider>(AncestryProvider());
+}
+
+void setupLogs() {
   Logger.root.level = Level.FINE;
   Logger.root.onRecord.listen((record) {
     // ignore: avoid_print

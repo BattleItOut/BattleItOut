@@ -11,6 +11,9 @@ import 'package:battle_it_out/persistence/skill/skill_base.dart';
 import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:battle_it_out/persistence/talent/talent_base.dart';
 import 'package:battle_it_out/persistence/trait.dart';
+import 'package:battle_it_out/providers/ancestry_provider.dart';
+import 'package:battle_it_out/providers/attribute_provider.dart';
+import 'package:battle_it_out/providers/size_provider.dart';
 import 'package:battle_it_out/utils/db_object.dart';
 import 'package:battle_it_out/utils/factory.dart';
 import 'package:flutter/foundation.dart' hide Factory;
@@ -192,8 +195,8 @@ class CharacterFactory extends Factory<Character> {
     Character character = Character(
         id: map['ID'],
         name: map['NAME'],
-        size: await SizeFactory().getNullable(map["SIZE"]),
-        ancestry: await AncestryFactory().getNullable(map["ANCESTRY"]),
+        size: await SizeProvider().getNullable(map["SIZE"]),
+        ancestry: await AncestryProvider().getNullable(map["ANCESTRY"]),
         profession: await ProfessionFactory().getNullable(map["PROFESSION"]),
         attributes: attributes,
         skills: skills,
@@ -214,8 +217,8 @@ class CharacterFactory extends Factory<Character> {
     Character character = Character(
       id: map['ID'],
       name: map['NAME'],
-      size: map["SIZE"] != null ? await SizeFactory().get(map["SIZE"]) : null,
-      ancestry: map["SUBRACE"] != null ? await AncestryFactory().create(map["SUBRACE"]) : null,
+      size: map["SIZE"] != null ? await SizeProvider().get(map["SIZE"]) : null,
+      ancestry: map["SUBRACE"] != null ? await AncestryProvider().create(map["SUBRACE"]) : null,
       profession: map["PROFESSION"] != null ? await ProfessionFactory().create(map["PROFESSION"]) : null,
       attributes: attributes,
       skills: skills,
@@ -247,9 +250,9 @@ class CharacterFactory extends Factory<Character> {
   Future<Map<String, dynamic>> toMap(Character object, {optimised = true, database = false}) async {
     Map<String, dynamic> map = {
       "NAME": object.name,
-      "SUBRACE": await AncestryFactory().toDatabase(object.ancestry!),
+      "SUBRACE": await AncestryProvider().toDatabase(object.ancestry!),
       "PROFESSION": await ProfessionFactory().toDatabase(object.profession!),
-      "ATTRIBUTES": [for (var attribute in object.attributes) await AttributeFactory().toMap(attribute)],
+      "ATTRIBUTES": [for (var attribute in object.attributes) await AttributeProvider().toMap(attribute)],
       "SKILLS": [for (var skill in object.skills.where((s) => s.isImportant())) await SkillFactory().toMap(skill)],
       "TALENTS": [for (var talent in object.talents) await TalentFactory().toMap(talent)],
       "MELEE_WEAPONS": [for (var weapon in object.meleeWeapons) await MeleeWeaponFactory().toMap(weapon)],
@@ -266,8 +269,8 @@ class CharacterFactory extends Factory<Character> {
   Future<Character> update(Character object) async {
     await super.update(object);
     for (Attribute attribute in object.attributes) {
-      await AttributeFactory().update(attribute);
-      await insertMap({
+      await AttributeProvider().update(attribute);
+      await updateMap({
         "ATTRIBUTE_ID": attribute.id,
         "CHARACTER_ID": object.id,
         "BASE_VALUE": attribute.base,
@@ -277,7 +280,7 @@ class CharacterFactory extends Factory<Character> {
     }
     for (Skill skill in object.skills) {
       await SkillFactory().update(skill);
-      await insertMap({
+      await updateMap({
         "SKILL_ID": skill.id,
         "CHARACTER_ID": object.id,
         "ADVANCES": skill.advances,
@@ -287,7 +290,7 @@ class CharacterFactory extends Factory<Character> {
     }
     for (Talent talent in object.talents) {
       await TalentFactory().update(talent);
-      await insertMap({
+      await updateMap({
         "TALENT_ID": talent.id,
         "CHARACTER_ID": object.id,
         "LEVEL": talent.currentLvl,
@@ -296,7 +299,7 @@ class CharacterFactory extends Factory<Character> {
     }
     for (Armour armour in object.armour) {
       await ArmourFactory().update(armour);
-      await insertMap({
+      await updateMap({
         "ARMOUR_ID": armour.id,
         "CHARACTER_ID": object.id,
         "AMOUNT": armour.amount,
@@ -304,7 +307,7 @@ class CharacterFactory extends Factory<Character> {
     }
     for (MeleeWeapon meleeWeapon in object.meleeWeapons) {
       await MeleeWeaponFactory().update(meleeWeapon);
-      await insertMap({
+      await updateMap({
         "WEAPON_ID": meleeWeapon.id,
         "CHARACTER_ID": object.id,
         "AMOUNT": meleeWeapon.amount,
@@ -312,7 +315,7 @@ class CharacterFactory extends Factory<Character> {
     }
     for (RangedWeapon rangedWeapon in object.rangedWeapons) {
       await RangedWeaponFactory().update(rangedWeapon);
-      await insertMap({
+      await updateMap({
         "WEAPON_ID": rangedWeapon.id,
         "CHARACTER_ID": object.id,
         "AMOUNT": rangedWeapon.amount,
@@ -330,7 +333,7 @@ class CharacterFactory extends Factory<Character> {
 
     List<Attribute> attributes = [];
     for (Map<String, dynamic> entry in map) {
-      Attribute attribute = await AttributeFactory().fromDatabase(entry);
+      Attribute attribute = await AttributeProvider().fromDatabase(entry);
       attribute.base = entry["BASE_VALUE"];
       attribute.advances = entry["ADVANCES"];
       attribute.canAdvance = entry["CAN_ADVANCE"] == 1;
@@ -416,9 +419,9 @@ class CharacterFactory extends Factory<Character> {
   //--------------
 
   Future<List<Attribute>> _createAttributes(json) async {
-    List<Attribute> attributes = await AttributeFactory().getAll();
+    List<Attribute> attributes = await AttributeProvider().getAll();
     for (var map in json ?? []) {
-      Attribute attribute = await AttributeFactory().create(map);
+      Attribute attribute = await AttributeProvider().create(map);
       int index = attributes.indexOf(attribute);
       if (index != -1) {
         attributes[index] = attribute;

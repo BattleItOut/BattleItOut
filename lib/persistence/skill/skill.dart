@@ -142,7 +142,7 @@ class SkillFactory extends Factory<Skill> {
         id: map["ID"],
         name: map["NAME"],
         specialisation: map["SPECIALISATION"],
-        baseSkill: await BaseSkillFactory(attributes).get(map["BASE_SKILL_ID"]),
+        baseSkill: (await BaseSkillFactory(attributes).get(map["BASE_SKILL_ID"]))!,
         advances: map["ADVANCES"] ?? 0,
         earning: map["EARNING"] == 1,
         canAdvance: map["CAN_ADVANCE"] == 1);

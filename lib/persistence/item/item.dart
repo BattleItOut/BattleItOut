@@ -107,8 +107,7 @@ abstract class ItemFactory<T extends Item> extends Factory<T> {
     final List<Map<String, dynamic>> map = await database.query(linkTableName, where: "ITEM_ID = ?", whereArgs: [id]);
     List<ItemQuality> qualities = [];
     for (var entry in map) {
-      ItemQuality itemQuality = await ItemQualityFactory().get(entry["QUALITY_ID"]);
-      qualities.add(itemQuality);
+      qualities.add((await ItemQualityFactory().get(entry["QUALITY_ID"]))!);
     }
     return qualities;
   }
@@ -118,7 +117,7 @@ abstract class ItemFactory<T extends Item> extends Factory<T> {
     object = await super.update(object);
     for (ItemQuality quality in object.qualities) {
       await ItemQualityFactory().update(quality);
-      await insertMap({"ITEM_ID": object.id, "QUALITY_ID": quality.id, "VALUE": quality.value}, linkTableName);
+      await updateMap({"ITEM_ID": object.id, "QUALITY_ID": quality.id, "VALUE": quality.value}, linkTableName);
     }
     return object;
   }

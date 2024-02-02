@@ -1,54 +1,82 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:yaml/yaml.dart';
 
 class DatabaseProvider {
-  static final DatabaseProvider _instance = DatabaseProvider._();
-  static DatabaseProvider get instance => _instance;
+  final log = Logger("DatabaseProvider");
   Database get database => _database!;
   Database? _database;
   String? _dbPath;
+  String? _insertScript;
 
-  DatabaseProvider._() {
+  DatabaseProvider() {
     if (Platform.isWindows || Platform.isLinux) {
       sqfliteFfiInit();
       databaseFactoryOrNull = databaseFactoryFfi;
-      log("Using sqflite_ffi");
+      log.info("Using sqflite_ffi");
     } else {
-      log("Using sqflite");
+      log.info("Using sqflite");
     }
   }
 
-  Future<void> connect({test = false}) async {
-    _dbPath = test ? inMemoryDatabasePath : join(await getDatabasesPath(), 'data.db');
-    log("Connecting the database on $_dbPath...");
+  Future<Database> init({test = false}) async {
+    _database ??= await connect(test: test);
+    return _database!;
+  }
 
-    YamlMap parsedYaml = loadYaml(await rootBundle.loadString("assets/database/database.version"));
+  Future<Database> connect({test = false}) async {
+    if (test) {
+      _dbPath = inMemoryDatabasePath;
+      _insertScript = await rootBundle.loadString("assets/test/database_inserts.sql");
+    } else {
+      _dbPath = join(await getDatabasesPath(), 'data.db');
+      if (json.decode(await rootBundle.loadString('AssetManifest.json')).containsKey("assets/database_inserts.sql")) {
+        _insertScript = await rootBundle.loadString("assets/database_inserts.sql");
+      }
+    }
+    log.info("Connecting the database on $_dbPath...");
+
+    log.info("${await Directory("assets/database_module").exists()}");
+    if (await Directory("assets/database_module").exists()) {
+      log.info("Coping database scripts from module");
+      File("assets/database_module/resources/database/database_structure.sql")
+          .copySync("assets/database_structure.sql");
+      File("assets/database_module/resources/database/database.version").copySync("assets/database.version");
+      if (!test) {
+        _insertScript = File("assets/database_module/resources/database/database_inserts.sql").readAsStringSync();
+      }
+    }
+
+    YamlMap parsedYaml = loadYaml(await rootBundle.loadString("assets/database.version"));
     var major = "${parsedYaml["MAJOR"]}".padLeft(1, "0");
     var minor = "${parsedYaml["MINOR"]}".padLeft(2, "0");
     var version = "${parsedYaml["VERSION"]}".padLeft(3, "0");
     var intVersion = int.parse(major + minor + version);
 
-    // await databaseFactory.debugSetLogLevel(sqfliteLogLevelVerbose);
-    _database = await databaseFactory.openDatabase(
+    return await databaseFactory.openDatabase(
       _dbPath!,
       options: OpenDatabaseOptions(
         version: intVersion,
         singleInstance: true,
         onCreate: (Database db, int version) async {
-          log("Creating database");
-          await BatchManager.execute("assets/database/create_db.sql", db);
-          log("Database created, version: $intVersion");
+          log.info("Creating database");
+          BatchManager.execute(await rootBundle.loadString("assets/database/create_db.sql"), db);
+          if (_insertScript != null) {
+            BatchManager.execute(_insertScript!, db);
+          }
+          log.info("Database created, version: $intVersion");
         },
         onUpgrade: (Database db, int lastVersion, int version) {
-          log("Migrating $lastVersion to $version");
+          log.info("Migrating $lastVersion to $version");
         },
         onOpen: (Database db) async {
-          log("Opening database, version: ${await db.getVersion()}");
+          log.info("Opening database, version: ${await db.getVersion()}");
         },
       ),
     );
@@ -58,10 +86,10 @@ class DatabaseProvider {
 class BatchManager {
   BatchManager._();
 
-  static Future<void> execute(String script, Database database) async {
+  static void execute(String script, Database database) {
     var component = BatchManager._();
     Batch batch = database.batch();
-    await component._open(script, batch);
+    component._open(script, batch);
     batch.commit(continueOnError: true);
   }
 
@@ -86,8 +114,7 @@ class BatchManager {
     return int.tryParse(string) ?? string;
   }
 
-  Future<void> _open(String dbCreateFile, Batch batch) async {
-    String dbCreateString = await rootBundle.loadString(dbCreateFile);
+  void _open(String dbCreateString, Batch batch) {
     String command = "";
     for (String line in dbCreateString.split("\n")) {
       line = line.trim();

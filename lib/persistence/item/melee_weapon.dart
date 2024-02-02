@@ -61,7 +61,7 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
     MeleeWeapon meleeWeapon = MeleeWeapon(
         id: map["ID"],
         name: map["NAME"],
-        length: await WeaponLengthFactory().get(map["LENGTH"]),
+        length: (await WeaponLengthFactory().get(map["LENGTH"]))!,
         damage: map["DAMAGE"],
         twoHanded: map["TWO_HANDED"] == 1,
         damageAttribute: damageAttribute);

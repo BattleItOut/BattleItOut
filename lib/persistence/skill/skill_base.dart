@@ -1,4 +1,5 @@
 import 'package:battle_it_out/persistence/attribute.dart';
+import 'package:battle_it_out/providers/attribute_provider.dart';
 import 'package:battle_it_out/utils/db_object.dart';
 import 'package:battle_it_out/utils/factory.dart';
 import 'package:collection/collection.dart';
@@ -65,7 +66,7 @@ class BaseSkillFactory extends Factory<BaseSkill> {
         advanced: map["ADVANCED"] == 1,
         grouped: map["GROUPED"] == 1,
         description: map["DESCRIPTION"],
-        attribute: attribute ?? await AttributeFactory().get(map["ATTRIBUTE_ID"]));
+        attribute: attribute ?? (await AttributeProvider().get(map["ATTRIBUTE_ID"]))!);
   }
 
   @override

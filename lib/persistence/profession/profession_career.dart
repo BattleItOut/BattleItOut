@@ -37,7 +37,7 @@ class ProfessionCareerFactory extends Factory<ProfessionCareer> {
 
   Future<ProfessionClass> getClass(Map<String, dynamic> map) async {
     if (map["CLASS_ID"] != null) {
-      return ProfessionClassFactory().get(map["CLASS_ID"]);
+      return (await ProfessionClassFactory().get(map["CLASS_ID"]))!;
     } else if (map["CLASS"] != null) {
       return ProfessionClassFactory().create(map["CLASS"]);
     } else {
@@ -57,7 +57,7 @@ class ProfessionCareerFactory extends Factory<ProfessionCareer> {
         id: map["ID"],
         name: map["NAME"],
         source: map["SOURCE"],
-        professionClass: await ProfessionClassFactory().get(map["CLASS_ID"]));
+        professionClass: (await ProfessionClassFactory().get(map["CLASS_ID"]))!);
   }
 
   @override

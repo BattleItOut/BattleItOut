@@ -3,36 +3,38 @@ description: BattleItOut - Flutter
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.0.0
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.2.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  logging: ^1.1.0
-  sqflite: ^2.3.0
-  sqflite_common_ffi: ^2.3.0+2
-  sqlite3_flutter_libs: ^0.5.15
+  logging: ^1.2.0
+  sqflite: ^2.3.2
+  sqflite_common_ffi: ^2.3.2+1
+  sqlite3_flutter_libs: ^0.5.20
   flutter_localizations:
     sdk: flutter
   path_provider:
   yaml: ^3.1.2
-  cupertino_icons: ^1.0.2
-  tuple: ^2.0.0
-  uuid: ^4.2.2
-  collection: ^1.17.1
+  cupertino_icons: ^1.0.6
+  tuple: ^2.0.2
+  uuid: ^4.3.3
+  collection: ^1.18.0
   path: ^1.8.3
   editable: ^2.0.0
   deepcopy: ^1.1.2
   equatable: ^2.0.5
+  provider: ^6.1.1
+  get_it: ^7.6.7
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.1
-  flutter_launcher_icons: "^0.13.1"
+  flutter_launcher_icons: ^0.13.1
 
 flutter_launcher_icons:
   android: true
@@ -48,8 +50,7 @@ flutter_launcher_icons:
 
 flutter:
   uses-material-design: true
-
   assets:
     - assets/
-    - assets/database/
-    - assets/database/localisation/
+    - assets/test/
+    - assets/localisation/

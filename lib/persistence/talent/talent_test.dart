@@ -2,6 +2,7 @@ import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/skill/skill_base.dart';
 import 'package:battle_it_out/persistence/talent/talent.dart';
+import 'package:battle_it_out/providers/attribute_provider.dart';
 import 'package:battle_it_out/utils/db_object.dart';
 import 'package:battle_it_out/utils/factory.dart';
 
@@ -41,7 +42,7 @@ class TalentTestFactory extends Factory<TalentTest> {
         comment: map["COMMENT"],
         baseSkill: map["BASE_SKILL_ID"] == null ? null : await BaseSkillFactory().get(map["BASE_SKILL_ID"]),
         skill: map["SKILL_ID"] == null ? null : await SkillFactory().get(map["SKILL_ID"]),
-        attribute: map["ATTRIBUTE_ID"] == null ? null : await AttributeFactory().get(map["ATTRIBUTE_ID"]));
+        attribute: map["ATTRIBUTE_ID"] == null ? null : await AttributeProvider().get(map["ATTRIBUTE_ID"]));
   }
 
   @override

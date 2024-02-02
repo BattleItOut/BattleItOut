@@ -8,25 +8,17 @@ import 'package:battle_it_out/persistence/ancestry.dart';
 import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/race.dart';
 import 'package:battle_it_out/persistence/size.dart';
-import 'package:battle_it_out/persistence/skill/skill.dart';
+import 'package:battle_it_out/providers/attribute_provider.dart';
+import 'package:battle_it_out/providers/race_provider.dart';
+import 'package:battle_it_out/providers/size_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
 class EditRaceScreen extends StatefulWidget {
   final Race? race;
-  final List<Ancestry>? ancestries;
-  final List<Attribute>? initialAttributes;
-  final List<Size> sizes;
-  final List<Attribute> attributes;
-  final List<Skill> skills;
-  const EditRaceScreen(
-      {super.key,
-      this.race,
-      this.ancestries,
-      this.initialAttributes,
-      required this.sizes,
-      required this.attributes,
-      required this.skills});
+  const EditRaceScreen({super.key, this.race});
 
   @override
   State<EditRaceScreen> createState() => _EditRaceScreenState();
@@ -42,19 +34,11 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
     super.initState();
     racePartial = RacePartial.from(widget.race);
     racePartial.source ??= "Custom";
-
-    if (widget.ancestries != null) {
-      ancestries = widget.ancestries!;
-    }
-
-    if (widget.initialAttributes != null) {
-      initialAttributes = widget.initialAttributes!.map((e) => AttributePartial.from(e)).toList();
-    } else {
-      initialAttributes = widget.attributes
-          .where((e) => e.importance == 0 || e.importance == 1)
-          .map((e) => AttributePartial.from(e))
-          .toList();
-    }
+    ancestries = widget.race!.ancestries.get();
+    initialAttributes = (widget.race?.initialAttributes.get() ?? GetIt.instance.get<AttributeProvider>().items)
+        .where((e) => e.importance == 0 || e.importance == 1)
+        .map((e) => AttributePartial.from(e))
+        .toList();
   }
 
   Tuple2<List<String>, List<List<String>>> getTableData(List<AttributePartial> attributes) {
@@ -68,19 +52,16 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
   }
 
   Future<void> save() async {
-    Race race = racePartial.toRace();
-    race = await RaceFactory().update(race);
+    await GetIt.instance.get<RaceProvider>().update(racePartial.toRace());
     setState(() {
-      Navigator.of(context).pop<Tuple3<bool, Race?, List<Attribute>>>(
-        Tuple3(true, race, initialAttributes.map((e) => e.toAttribute()).toList()),
-      );
+      Navigator.of(context).pop();
     });
   }
 
   Future<void> delete() async {
-    await RaceFactory().delete(widget.race!.id!);
+    await GetIt.instance.get<RaceProvider>().delete(widget.race!);
     setState(() {
-      Navigator.of(context).pop<Tuple3<bool, Race?, List<Attribute>>>(const Tuple3(true, null, []));
+      Navigator.of(context).pop();
     });
   }
 
@@ -90,9 +71,13 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
     List<AttributePartial> secondaryAttributes = initialAttributes.where((e) => e.importance == 1).toList();
 
     bool compareAttributes = true;
-    if (widget.initialAttributes != null && widget.initialAttributes!.length == initialAttributes.length) {
+    if (widget.race?.initialAttributes != null &&
+        widget.race?.initialAttributes.get().length == initialAttributes.length) {
       for (int i = 0; i < initialAttributes.length; i++) {
-        compareAttributes = compareAttributes && initialAttributes[i].compareTo(widget.initialAttributes![i]);
+        if (initialAttributes[i].base != widget.race?.initialAttributes.get()[i].base) {
+          compareAttributes = false;
+          break;
+        }
       }
     }
 
@@ -137,7 +122,7 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
             });
           },
           items: [
-            for (Size size in widget.sizes)
+            for (Size size in Provider.of<SizeProvider>(context).items)
               DropdownMenuItem<Size>(
                 value: size,
                 child: Center(child: LocalisedText(size.name, context)),
@@ -174,8 +159,7 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
               (ancestry) => AncestryLibraryItemWidget(
                 ancestry: ancestry,
                 onLongPress: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => EditAncestryScreen(ancestry: ancestry, skills: widget.skills)),
+                  MaterialPageRoute(builder: (context) => EditAncestryScreen(ancestry: ancestry, skills: const [])),
                 ),
               ),
             ),
@@ -199,7 +183,7 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
       floatingActionButton: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
         if (widget.race == null ||
             !racePartial.compareTo(widget.race) ||
-            widget.initialAttributes == null ||
+            widget.race?.initialAttributes == null ||
             !compareAttributes)
           FloatingActionButton(
             heroTag: "btn2",
@@ -207,7 +191,7 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
             onPressed: () async => await save(),
           ),
         const SizedBox(height: 10),
-        if (widget.race != null && widget.initialAttributes != null)
+        if (widget.race != null && widget.race?.initialAttributes != null)
           FloatingActionButton(
             heroTag: "btn1",
             child: const Icon(Icons.delete),

@@ -123,7 +123,7 @@ class TalentFactory extends Factory<Talent> {
         id: map['ID'],
         name: map['NAME'],
         specialisation: map["SPECIALISATION"],
-        baseTalent: await BaseTalentFactory(attributes).get(map["BASE_TALENT_ID"]),
+        baseTalent: (await BaseTalentFactory(attributes).get(map["BASE_TALENT_ID"]))!,
         currentLvl: map["LVL"] ?? 0,
         canAdvance: map["CAN_ADVANCE"] == 1);
 

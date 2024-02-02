@@ -1,10 +1,11 @@
-import 'package:battle_it_out/utils/database_provider.dart';
+import 'package:battle_it_out/providers/database_provider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 import 'package:sqflite/sqflite.dart';
 
-abstract class DAO {
-  final Database database = DatabaseProvider.instance.database;
-  static Logger log = Logger("DB");
+abstract mixin class DAO {
+  late final Database database = GetIt.instance.get<DatabaseProvider>().database;
+  final Logger log = Logger("DB");
   get tableName;
 
   Future<int> getNextId() async {
@@ -20,15 +21,21 @@ abstract class DAO {
     return result;
   }
 
-  Future<List<Map<String, Object?>>> getMapAll({String? where, List<Object>? whereArgs}) async {
-    var result = await database.query(tableName, where: where, whereArgs: whereArgs);
-    log.log(Level.FINE, "SELECT ALL (where: $where, whereArgs: $whereArgs, from: $tableName): $result");
+  Future<List<Map<String, Object?>>> getRawQuery({required String sql, List<Object?>? sqlArgs}) async {
+    var result = (await database.rawQuery(sql, sqlArgs));
+    log.log(Level.FINE, "SELECT RAW QUERY ($sql $sqlArgs): $result");
     return result;
   }
 
-  Future<int> insertMap(Map<String, Object?> map, [String? tableName]) async {
-    var result = database.insert(tableName ?? this.tableName, map, conflictAlgorithm: ConflictAlgorithm.replace);
-    log.log(Level.FINE, "INSERT ($map, to: $tableName): $result");
+  Future<List<Map<String, Object?>>> getMapAll({String? where, List<Object>? whereArgs}) async {
+    var result = await database.query(tableName, where: where, whereArgs: whereArgs);
+    log.log(Level.FINE, "SELECT ALL (where: $where $whereArgs, from: $tableName): $result");
+    return result;
+  }
+
+  Future<int> updateMap(Map<String, Object?> map, [String? tableName]) async {
+    var result = await database.insert(tableName ?? this.tableName, map, conflictAlgorithm: ConflictAlgorithm.replace);
+    log.log(Level.FINE, "UPDATE ($map, to: ${tableName ?? this.tableName}): $result");
     return result;
   }
 
@@ -40,11 +47,11 @@ abstract class DAO {
 
   Future<int> deleteWhere({String? where, List<Object>? whereArgs}) async {
     var result = await database.delete(tableName, where: where, whereArgs: whereArgs);
-    log.log(Level.FINE, "DELETE (where: $where, whereArgs: $whereArgs, from: $tableName): $result");
+    log.log(Level.FINE, "DELETE (where: $where $whereArgs, from: $tableName): $result");
     return result;
   }
 
-  Future<int> delete(int id) async {
+  Future<int> deleteMap(int id) async {
     var result = await database.delete(tableName, where: "ID = ?", whereArgs: [id]);
     log.log(Level.FINE, "DELETE (where: ID = ?, whereArgs: $id, from: $tableName): $result");
     return result;
