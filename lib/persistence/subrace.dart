@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:battle_it_out/persistence/race.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/skill/skill_group.dart';
@@ -5,6 +7,46 @@ import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:battle_it_out/persistence/talent/talent_group.dart';
 import 'package:battle_it_out/utils/db_object.dart';
 import 'package:battle_it_out/utils/factory.dart';
+
+class SubracePartial extends DBObject {
+  String? name;
+  String? source;
+  int? randomTalents;
+  Race? race;
+  bool? defaultSubrace;
+
+  SubracePartial({super.id, this.name, this.source, this.randomTalents, this.race, this.defaultSubrace});
+
+  Subrace toSubrace() {
+    return Subrace(
+        id: id,
+        name: name!,
+        source: source!,
+        randomTalents: randomTalents!,
+        race: race!,
+        defaultSubrace: defaultSubrace!);
+  }
+
+  SubracePartial.from(Subrace? subrace)
+      : this(
+            id: subrace?.id,
+            name: subrace?.name,
+            source: subrace?.source,
+            randomTalents: subrace?.randomTalents,
+            race: subrace?.race,
+            defaultSubrace: subrace?.defaultSubrace);
+
+  @override
+  List<Object?> get props => super.props..addAll([name, source, randomTalents, race, defaultSubrace]);
+
+  bool compareTo(Subrace? subrace) {
+    try {
+      return toSubrace() == subrace;
+    } on TypeError catch (_) {
+      return false;
+    }
+  }
+}
 
 class Subrace extends DBObject {
   String name;
@@ -27,21 +69,21 @@ class Subrace extends DBObject {
       this.defaultSubrace = true});
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Subrace &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          name == other.name &&
-          source == other.source &&
-          randomTalents == other.randomTalents &&
-          defaultSubrace == other.defaultSubrace;
+  bool get stringify => true;
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ source.hashCode ^ randomTalents.hashCode ^ defaultSubrace.hashCode;
-
-  @override
-  String toString() => 'Subrace ($id, $name)';
+  List<Object?> get props => super.props
+    ..addAll([
+      name,
+      source,
+      randomTalents,
+      race,
+      defaultSubrace,
+      linkedSkills,
+      linkedGroupSkills,
+      linkedTalents,
+      linkedGroupTalents
+    ]);
 }
 
 class SubraceFactory extends Factory<Subrace> {

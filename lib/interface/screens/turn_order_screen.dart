@@ -7,7 +7,7 @@ import '../components/list_items.dart';
 import 'character_sheet_screen.dart';
 
 class TurnOrderScreen extends StatefulWidget {
-  const TurnOrderScreen({Key? key}) : super(key: key);
+  const TurnOrderScreen({super.key});
 
   @override
   State<TurnOrderScreen> createState() => _TurnOrderScreenState();

@@ -8,7 +8,7 @@ mixin DBSerializer<T> {
   Future<Map<String, Object?>> toDatabase(T object);
 }
 
-mixin JSONSerializer<T> implements DAO {
+mixin JSONSerializer<T extends DBObject> implements DAO {
   get defaultValues => {};
 
   Future<Map<String, Object?>> toMap(T object, {optimised = true});
@@ -50,8 +50,7 @@ abstract class Factory<T extends DBObject> extends DAO with JSONSerializer<T>, D
   }
 
   Future<T> update(T object) async {
-    object.id ??= await getNextId();
-    insertMap(await toDatabase(object));
+    object.id = await insertMap(await toDatabase(object));
     return object;
   }
 
@@ -69,7 +68,7 @@ abstract class Factory<T extends DBObject> extends DAO with JSONSerializer<T>, D
     });
   }
 
-  Future<T?> getWhere({where, List<Object>? whereArgs}) async {
+  Future<T?> getWhere({String? where, List<Object>? whereArgs}) async {
     Map<String, dynamic> map = await getMapWhere(where: where, whereArgs: whereArgs);
     return map.isNotEmpty ? fromDatabase(map) : null;
   }

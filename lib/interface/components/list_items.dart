@@ -5,13 +5,12 @@ import 'package:battle_it_out/persistence/character.dart';
 import 'package:flutter/material.dart';
 
 class ListItem extends Container {
-  ListItem({Key? key, Widget? child, double? height, BoxDecoration? decoration})
-      : super(key: key, margin: const EdgeInsets.all(4.0), height: height, decoration: decoration, child: child);
+  ListItem({super.key, super.child, super.height, BoxDecoration? super.decoration})
+      : super(margin: const EdgeInsets.all(4.0));
 }
 
 class ContainerWithTitle extends Container {
-  ContainerWithTitle({Key? key, required Widget child})
-      : super(key: key, child: child, margin: const EdgeInsets.all(8.0));
+  ContainerWithTitle({super.key, required Widget super.child}) : super(margin: const EdgeInsets.all(8.0));
 
   static create({required Widget child, PaddedText? title, Key? key}) {
     List<Widget> widgets = [];
@@ -25,31 +24,27 @@ class ContainerWithTitle extends Container {
 }
 
 class LabelListItem extends ListItem {
-  LabelListItem({Key? key, required String name}) : super(key: key, child: Center(child: Text(name)), height: 32);
+  LabelListItem({super.key, required String name}) : super(child: Center(child: Text(name)), height: 32);
 }
 
 class TileListItem extends ListItem {
-  TileListItem({Key? key, Widget? child, required BuildContext context})
+  TileListItem({super.key, super.child, required BuildContext context})
       : super(
-          key: key,
-          child: child,
           decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(8.0)), color: Theme.of(context).primaryColor),
         );
 }
 
 class CharacterListItem extends TileListItem {
-  CharacterListItem({Key? key, required Character character, required BuildContext context})
+  CharacterListItem({super.key, required Character character, required super.context})
       : super(
-            key: key,
             child: ListTile(
-              subtitle: buildSubtitle(character, context),
-              trailing: Text(character.initiative?.toString() ?? "", style: const TextStyle(fontSize: 24)),
-              title: Text(character.name),
-              dense: true,
-              textColor: Theme.of(context).floatingActionButtonTheme.foregroundColor,
-            ),
-            context: context);
+          subtitle: buildSubtitle(character, context),
+          trailing: Text(character.initiative?.toString() ?? "", style: const TextStyle(fontSize: 24)),
+          title: Text(character.name),
+          dense: true,
+          textColor: Theme.of(context).floatingActionButtonTheme.foregroundColor,
+        ));
 
   static Text? buildSubtitle(Character character, BuildContext context) {
     List<String> subtitle = [];
@@ -64,14 +59,11 @@ class CharacterListItem extends TileListItem {
 }
 
 class GroupedEntitiesTable extends TileListItem {
-  GroupedEntitiesTable(
-      {Key? key, PaddedText? title, required List<TableSubsection> children, required BuildContext context})
+  GroupedEntitiesTable({super.key, PaddedText? title, required List<TableSubsection> children, required super.context})
       : super(
-            key: key,
             child: children.isEmpty
                 ? const SizedBox.shrink()
-                : ContainerWithTitle.create(title: title, child: createTable(children)),
-            context: context);
+                : ContainerWithTitle.create(title: title, child: createTable(children)));
 
   static Widget createTable(List<TableSubsection> children) {
     children.sort((a, b) => a.header!.children[0].text.compareTo(b.header!.children[0].text));
@@ -83,12 +75,8 @@ class GroupedEntitiesTable extends TileListItem {
 }
 
 class SingleEntitiesTable extends GroupedEntitiesTable {
-  SingleEntitiesTable({Key? key, PaddedText? title, required List<TableLine> children, required BuildContext context})
-      : super(
-            title: title,
-            key: key,
-            children: children.isEmpty ? [] : [TableSubsection(children: children)],
-            context: context);
+  SingleEntitiesTable({super.key, super.title, required List<TableLine> children, required super.context})
+      : super(children: children.isEmpty ? [] : [TableSubsection(children: children)]);
 }
 
 extension ItemList on List<dynamic> {

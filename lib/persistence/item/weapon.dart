@@ -9,15 +9,15 @@ abstract class Weapon extends Item with SpecialItem {
   bool twoHanded;
 
   Weapon({
-    id,
-    required name,
+    super.id,
+    required super.name,
     required this.damage,
     this.twoHanded = false,
     this.damageAttribute,
     this.skill,
-    itemCategory,
-    qualities,
-  }) : super(id: id, name: name, category: itemCategory, encumbrance: 0, qualities: qualities);
+    super.category,
+    super.qualities,
+  }) : super(encumbrance: 0);
 
   int getTotalDamage() {
     return damageAttribute?.getTotalBonus() ?? 0 + damage;

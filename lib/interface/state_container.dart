@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class _InheritedStateContainer extends InheritedWidget {
   final StateContainerState data;
 
-  const _InheritedStateContainer({Key? key, required this.data, required Widget child}) : super(key: key, child: child);
+  const _InheritedStateContainer({required this.data, required super.child});
 
   @override
   bool updateShouldNotify(_InheritedStateContainer old) => true;
@@ -14,7 +14,7 @@ class _InheritedStateContainer extends InheritedWidget {
 class StateContainer extends StatefulWidget {
   final Widget child;
 
-  const StateContainer({required this.child, Key? key}) : super(key: key);
+  const StateContainer({required this.child, super.key});
 
   static StateContainerState of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<_InheritedStateContainer>()!.data;

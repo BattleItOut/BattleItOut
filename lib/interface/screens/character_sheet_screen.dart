@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 class CharacterSheetScreen extends StatefulWidget {
   final Character character;
 
-  const CharacterSheetScreen({Key? key, required this.character}) : super(key: key);
+  const CharacterSheetScreen({super.key, required this.character});
 
   @override
   State<CharacterSheetScreen> createState() => _CharacterSheetScreenState();

@@ -17,14 +17,14 @@ class RangedWeapon extends Weapon {
       required super.name,
       required this.range,
       required this.useAmmo,
-      required damage,
-      required damageAttribute,
+      required super.damage,
+      required super.damageAttribute,
       this.rangeAttribute,
       super.twoHanded,
       super.skill,
-      List<ItemQuality> qualities = const [],
+      super.qualities = const [],
       List<Ammunition> ammunition = const []})
-      : super(qualities: qualities, damage: damage, itemCategory: "RANGED_WEAPONS", damageAttribute: damageAttribute) {
+      : super(category: "RANGED_WEAPONS") {
     this.ammunition.addAll(ammunition);
   }
 

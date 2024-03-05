@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
 class CharacterSelectionScreen extends StatefulWidget {
-  const CharacterSelectionScreen({Key? key}) : super(key: key);
+  const CharacterSelectionScreen({super.key});
 
   @override
   State<CharacterSelectionScreen> createState() => _CharacterSelectionScreenState();
