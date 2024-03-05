@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -12,6 +13,7 @@ class DatabaseProvider {
   Database get database => _database!;
   Database? _database;
   String? _dbPath;
+  String? _insertScript;
 
   DatabaseProvider._() {
     if (Platform.isWindows || Platform.isLinux) {
@@ -24,16 +26,23 @@ class DatabaseProvider {
   }
 
   Future<void> connect({test = false}) async {
-    _dbPath = test ? inMemoryDatabasePath : join(await getDatabasesPath(), 'data.db');
+    if (test) {
+      _dbPath = inMemoryDatabasePath;
+      _insertScript = await rootBundle.loadString("assets/test/database_inserts.sql");
+    } else {
+      _dbPath = join(await getDatabasesPath(), 'data.db');
+      if (json.decode(await rootBundle.loadString('AssetManifest.json')).containsKey("assets/database_inserts.sql")) {
+        _insertScript = await rootBundle.loadString("assets/database_inserts.sql");
+      }
+    }
     log("Connecting the database on $_dbPath...");
 
-    YamlMap parsedYaml = loadYaml(await rootBundle.loadString("assets/database/database.version"));
+    YamlMap parsedYaml = loadYaml(await rootBundle.loadString("assets/database.version"));
     var major = "${parsedYaml["MAJOR"]}".padLeft(1, "0");
     var minor = "${parsedYaml["MINOR"]}".padLeft(2, "0");
     var version = "${parsedYaml["VERSION"]}".padLeft(3, "0");
     var intVersion = int.parse(major + minor + version);
 
-    // await databaseFactory.debugSetLogLevel(sqfliteLogLevelVerbose);
     _database = await databaseFactory.openDatabase(
       _dbPath!,
       options: OpenDatabaseOptions(
@@ -41,7 +50,10 @@ class DatabaseProvider {
         singleInstance: true,
         onCreate: (Database db, int version) async {
           log("Creating database");
-          await BatchManager.execute("assets/database/create_db.sql", db);
+          BatchManager.execute(await rootBundle.loadString("assets/database_structure.sql"), db);
+          if (_insertScript != null) {
+            BatchManager.execute(_insertScript!, db);
+          }
           log("Database created, version: $intVersion");
         },
         onUpgrade: (Database db, int lastVersion, int version) {
@@ -58,10 +70,10 @@ class DatabaseProvider {
 class BatchManager {
   BatchManager._();
 
-  static Future<void> execute(String script, Database database) async {
+  static void execute(String script, Database database) {
     var component = BatchManager._();
     Batch batch = database.batch();
-    await component._open(script, batch);
+    component._open(script, batch);
     batch.commit(continueOnError: true);
   }
 
@@ -86,8 +98,7 @@ class BatchManager {
     return int.tryParse(string) ?? string;
   }
 
-  Future<void> _open(String dbCreateFile, Batch batch) async {
-    String dbCreateString = await rootBundle.loadString(dbCreateFile);
+  void _open(String dbCreateString, Batch batch) {
     String command = "";
     for (String line in dbCreateString.split("\n")) {
       line = line.trim();
