@@ -1,6 +1,66 @@
 import 'package:battle_it_out/utils/db_object.dart';
 import 'package:battle_it_out/utils/factory.dart';
 
+class AttributePartial extends DBObject {
+  String? name;
+  String? shortName;
+  String? description;
+  bool? canRoll;
+  int? importance;
+
+  int? base;
+  int? advances;
+  bool? canAdvance;
+
+  AttributePartial(
+      {super.id,
+      this.name,
+      this.shortName,
+      this.description,
+      this.canRoll,
+      this.importance,
+      this.base,
+      this.advances,
+      this.canAdvance});
+
+  Attribute toAttribute() {
+    return Attribute(
+        id: id,
+        name: name!,
+        shortName: shortName!,
+        description: description!,
+        importance: importance!,
+        base: base!,
+        advances: advances!,
+        canRoll: canRoll!,
+        canAdvance: canAdvance!);
+  }
+
+  AttributePartial.from(Attribute? attribute)
+      : this(
+            id: attribute?.id,
+            name: attribute?.name,
+            shortName: attribute?.shortName,
+            description: attribute?.description,
+            importance: attribute?.importance,
+            base: attribute?.base,
+            advances: attribute?.advances,
+            canRoll: attribute?.canRoll,
+            canAdvance: attribute?.canAdvance);
+
+  @override
+  List<Object?> get props =>
+      super.props..addAll([name, shortName, description, canRoll, importance, base, advances, canAdvance]);
+
+  bool compareTo(Attribute? attribute) {
+    try {
+      return toAttribute() == attribute;
+    } on TypeError catch (_) {
+      return false;
+    }
+  }
+}
+
 class Attribute extends DBObject {
   String name;
   String shortName;
@@ -23,6 +83,19 @@ class Attribute extends DBObject {
       this.advances = 0,
       this.canAdvance = false});
 
+  static Attribute copy(Attribute attribute) {
+    return Attribute(
+        id: attribute.id,
+        name: attribute.name,
+        shortName: attribute.shortName,
+        description: attribute.description,
+        canRoll: attribute.canRoll,
+        importance: attribute.importance,
+        base: attribute.base,
+        advances: attribute.advances,
+        canAdvance: attribute.canAdvance);
+  }
+
   int getTotalValue() {
     return base + advances;
   }
@@ -32,25 +105,7 @@ class Attribute extends DBObject {
   }
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Attribute &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          name == other.name &&
-          shortName == other.shortName &&
-          description == other.description &&
-          canRoll == other.canRoll &&
-          importance == other.importance;
-
-  @override
-  int get hashCode =>
-      id.hashCode ^ name.hashCode ^ shortName.hashCode ^ description.hashCode ^ canRoll.hashCode ^ importance.hashCode;
-
-  @override
-  String toString() {
-    return "Attribute (id=$id, name=$name, base=$base, advances=$advances)";
-  }
+  List<Object?> get props => super.props..addAll([name, shortName, description, canRoll, importance]);
 }
 
 class AttributeFactory extends Factory<Attribute> {

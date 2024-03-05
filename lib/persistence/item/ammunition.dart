@@ -1,5 +1,4 @@
 import 'package:battle_it_out/persistence/item/item.dart';
-import 'package:battle_it_out/persistence/item/item_quality.dart';
 
 class Ammunition extends Item {
   double rangeModifier;
@@ -15,8 +14,8 @@ class Ammunition extends Item {
       this.rangeBonus = 0,
       this.damageBonus = 0,
       itemCategory,
-      List<ItemQuality> qualities = const []})
-      : super(category: "AMMUNITION", qualities: qualities);
+      super.qualities})
+      : super(category: "AMMUNITION");
 
   @override
   bool operator ==(Object other) =>
