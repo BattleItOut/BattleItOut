@@ -8,6 +8,13 @@ class AsyncConsumer<T extends Factory> extends StatelessWidget {
   final Widget Function(T) builder;
   final Future<void>? Function(T)? future;
 
+  Future<void>? getAsyncData(T provider) async {
+    if (future != null) {
+      return future!(provider);
+    }
+    return;
+  }
+
   const AsyncConsumer({super.key, required this.builder, this.future});
   @override
   Widget build(BuildContext context) {
@@ -15,8 +22,8 @@ class AsyncConsumer<T extends Factory> extends StatelessWidget {
       future: GetIt.instance.get<T>().init(),
       builder: (BuildContext context) {
         T provider = Provider.of(context);
-        return LoadingFutureBuilder(
-          future: future != null ? future!(provider) : null,
+        return LoadingFutureBuilder<void>(
+          future: getAsyncData(provider),
           builder: (BuildContext context) {
             return builder(provider);
           },

@@ -87,7 +87,7 @@ class TalentFactory extends Factory<Talent> {
         TalentGroup(
           name: "${entry["NAME"]}_ANY",
           randomTalent: entry["RANDOM_TALENT"] == 1,
-          talents: await getAll(where: "ID = ?", whereArgs: [entry["BASE_TALENT_ID"]]),
+          talents: await getMapAll(where: "ID = ?", whereArgs: [entry["BASE_TALENT_ID"]]),
         )
     ];
 

@@ -1,12 +1,9 @@
-import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/skill/skill_base.dart';
 import 'package:battle_it_out/providers/attribute_provider.dart';
 import 'package:battle_it_out/utils/factory.dart';
 import 'package:get_it/get_it.dart';
 
 class BaseSkillProvider extends Factory<BaseSkill> {
-  List<Attribute>? attributes;
-
   @override
   get tableName => 'skills_base';
 

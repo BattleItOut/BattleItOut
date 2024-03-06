@@ -7,6 +7,8 @@ import 'package:battle_it_out/persistence/ancestry.dart';
 import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/race.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
+import 'package:battle_it_out/persistence/skill/skill_group.dart';
+import 'package:battle_it_out/providers/skill_group_provider.dart';
 import 'package:battle_it_out/providers/skill_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
@@ -41,35 +43,39 @@ class _EditAncestryScreenState extends State<EditAncestryScreen> {
         centerTitle: true,
         title: Text("${widget.ancestry != null ? "Edit" : "New"} Ancestry"),
       ),
-      body: AsyncConsumer<SkillProvider>(
-        future: (SkillProvider provider) async {},
-        builder: (SkillProvider provider) {
-          return ListView(shrinkWrap: true, padding: const EdgeInsets.all(10.0), children: [
-            Center(child: LocalisedText("NAME", context, style: const TextStyle(fontSize: 24))),
-            Container(
-              alignment: Alignment.center,
-              child: TextFormField(
-                textAlign: TextAlign.center,
-                initialValue:
-                    ancestryPartial.name != null ? AppLocalizations.of(context).localise(ancestryPartial.name!) : "",
-                onChanged: (val) {},
-                decoration: const InputDecoration(contentPadding: EdgeInsets.all(8)),
+      body: AsyncConsumer<SkillGroupProvider>(builder: (SkillGroupProvider skillGroupProvider) {
+        return AsyncConsumer<SkillProvider>(
+          builder: (SkillProvider skillProvider) {
+            return ListView(shrinkWrap: true, padding: const EdgeInsets.all(10.0), children: [
+              Center(child: LocalisedText("NAME", context, style: const TextStyle(fontSize: 24))),
+              Container(
+                alignment: Alignment.center,
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  initialValue:
+                      ancestryPartial.name != null ? AppLocalizations.of(context).localise(ancestryPartial.name!) : "",
+                  onChanged: (val) {},
+                  decoration: const InputDecoration(contentPadding: EdgeInsets.all(8)),
+                ),
               ),
-            ),
-            SizedBox(
-              height: 500,
-              child: CheckboxListWithSearchBar(
-                title: LocalisedText("SKILLS", context, style: const TextStyle(fontSize: 24)),
-                items: [
-                  ...provider.items.map((Skill s) {
-                    return CheckBoxListTile(name: s.name.localise(context), value: s, img: 'assets/icon.png');
-                  })
-                ],
+              SizedBox(
+                height: 500,
+                child: CheckboxListWithSearchBar(
+                  title: LocalisedText("SKILLS", context, style: const TextStyle(fontSize: 24)),
+                  items: [
+                    ...skillProvider.items.map((Skill s) {
+                      return CheckBoxListTile(name: s.name.localise(context), value: s, img: 'assets/icon.png');
+                    }),
+                    ...skillGroupProvider.items.map((SkillGroup s) {
+                      return CheckBoxListTile(name: s.name.localise(context), value: s, img: 'assets/icon.png');
+                    }),
+                  ],
+                ),
               ),
-            ),
-          ]);
-        },
-      ),
+            ]);
+          },
+        );
+      }),
       floatingActionButton: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
         if (widget.ancestry == null || !ancestryPartial.compareTo(widget.ancestry))
           FloatingActionButton(

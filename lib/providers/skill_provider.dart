@@ -22,27 +22,6 @@ class SkillProvider extends Factory<Skill> {
     return skills;
   }
 
-  Future<List<Skill>> getLinkedToRace(int? ancestryId) async {
-    final List<Map<String, dynamic>> map = await database.rawQuery(
-        "SELECT * FROM SUBRACE_SKILLS RS JOIN SKILLS S ON (S.ID = RS.SKILL_ID) WHERE SUBRACE_ID = ?", [ancestryId]);
-
-    return [for (Map<String, dynamic> entry in map) await fromDatabase(entry)];
-  }
-
-  Future<List<SkillGroup>> getGroupsLinkedToAncestry(int? ancestryId) async {
-    final List<Map<String, dynamic>> map = await database.rawQuery(
-        "SELECT * FROM SUBRACE_SKILLS SS JOIN SKILLS_BASE SB ON (SS.BASE_SKILL_ID = SB.ID) WHERE SUBRACE_ID = ?",
-        [ancestryId]);
-
-    return [
-      for (Map<String, dynamic> entry in map)
-        SkillGroup(
-          name: "${entry["NAME"]}_ANY",
-          skills: await getAll(where: "ID = ?", whereArgs: [entry["BASE_SKILL_ID"]]),
-        )
-    ];
-  }
-
   Future<List<Skill>> getLinkedToProfession(int? professionId) async {
     final List<Map<String, dynamic>> map = await database.rawQuery(
         "SELECT * FROM PROFESSION_SKILLS PS JOIN SKILLS S ON (PS.SKILL_ID = S.ID) WHERE PROFESSION_ID = ?",
@@ -60,7 +39,7 @@ class SkillProvider extends Factory<Skill> {
       for (Map<String, dynamic> entry in baseSkillsMap)
         SkillGroup(
           name: "${entry["NAME"]}_ANY",
-          skills: await getAll(where: "ID = ?", whereArgs: [entry["BASE_SKILL_ID"]]),
+          skills: await getMapAll(where: "ID = ?", whereArgs: [entry["BASE_SKILL_ID"]]),
         )
     ];
 

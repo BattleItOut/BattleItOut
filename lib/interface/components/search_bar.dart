@@ -10,7 +10,7 @@ class CheckboxListWithSearchBar extends StatefulWidget {
   State<CheckboxListWithSearchBar> createState() => _CheckboxListWithSearchBarState();
 }
 
-class _CheckboxListWithSearchBarState<T> extends State<CheckboxListWithSearchBar> {
+class _CheckboxListWithSearchBarState extends State<CheckboxListWithSearchBar> {
   List<CheckBoxListTile> items = [];
   List<CheckBoxListTile> filteredItems = [];
 
@@ -31,8 +31,9 @@ class _CheckboxListWithSearchBarState<T> extends State<CheckboxListWithSearchBar
   late final TextEditingController controller = TextEditingController()
     ..addListener(() {
       setState(() {
-        filteredItems =
-            items.where((e) => e.name.toLowerCase().contains(controller.text.trim().toLowerCase())).toList();
+        filteredItems = items.where((e) {
+          return e.name.toLowerCase().contains(controller.text.trim().toLowerCase());
+        }).toList();
       });
     });
 
@@ -57,21 +58,23 @@ class _CheckboxListWithSearchBarState<T> extends State<CheckboxListWithSearchBar
           crossAxisCount: 2,
           childAspectRatio: 10,
           children: List.generate(filteredItems.length, (index) {
-            return CheckboxListTile(
-                dense: true,
-                title: Text(
-                  filteredItems[index].name,
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.5),
-                ),
-                value: filteredItems[index].checked,
-                secondary: SizedBox(
-                  child: filteredItems[index].img != null
-                      ? Image.asset(filteredItems[index].img!, fit: BoxFit.cover)
-                      : const SizedBox(),
-                ),
-                onChanged: (bool? val) {
-                  itemChange(val!, index);
-                });
+            return Center(
+              child: CheckboxListTile(
+                  dense: true,
+                  title: Text(
+                    filteredItems[index].name,
+                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.5),
+                  ),
+                  value: filteredItems[index].checked,
+                  secondary: SizedBox(
+                    child: filteredItems[index].img != null
+                        ? Image.asset(filteredItems[index].img!, fit: BoxFit.cover)
+                        : const SizedBox(),
+                  ),
+                  onChanged: (bool? val) {
+                    itemChange(val!, index);
+                  }),
+            );
           }).toList(),
         ),
       )

@@ -48,11 +48,6 @@ abstract class Factory<T extends DBObject> with DAO, JSONSerializer<T>, ChangeNo
     return item;
   }
 
-  Future<T?> getWhere({String? where, List<Object>? whereArgs}) async {
-    Map<String, dynamic> map = await getMapWhere(where: where, whereArgs: whereArgs);
-    return map.isNotEmpty ? fromDatabase(map) : null;
-  }
-
   Future<List<T>> getAll({String? where, List<Object>? whereArgs}) async {
     return [
       for (var map in await getMapAll(where: where, whereArgs: whereArgs))

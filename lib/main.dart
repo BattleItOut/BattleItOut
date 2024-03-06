@@ -8,6 +8,7 @@ import 'package:battle_it_out/providers/database_provider.dart';
 import 'package:battle_it_out/providers/race_provider.dart';
 import 'package:battle_it_out/providers/size_provider.dart';
 import 'package:battle_it_out/providers/skill_base_provider.dart';
+import 'package:battle_it_out/providers/skill_group_provider.dart';
 import 'package:battle_it_out/providers/skill_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -26,6 +27,7 @@ void main() async {
     ChangeNotifierProvider<AncestryProvider>(create: (_) => GetIt.instance.get<AncestryProvider>()),
     ChangeNotifierProvider<SkillProvider>(create: (_) => GetIt.instance.get<SkillProvider>()),
     ChangeNotifierProvider<BaseSkillProvider>(create: (_) => GetIt.instance.get<BaseSkillProvider>()),
+    ChangeNotifierProvider<SkillGroupProvider>(create: (_) => GetIt.instance.get<SkillGroupProvider>()),
   ], child: const StateContainer(child: MyApp())));
 }
 
@@ -37,6 +39,7 @@ void setupGetIt() {
   GetIt.instance.registerSingleton<AncestryProvider>(AncestryProvider());
   GetIt.instance.registerSingleton<SkillProvider>(SkillProvider());
   GetIt.instance.registerSingleton<BaseSkillProvider>(BaseSkillProvider());
+  GetIt.instance.registerSingleton<SkillGroupProvider>(SkillGroupProvider());
 }
 
 void setupLogs() {

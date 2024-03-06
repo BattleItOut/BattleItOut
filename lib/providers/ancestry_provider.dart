@@ -17,6 +17,27 @@ class AncestryProvider extends Factory<Ancestry> {
     return items.where((Ancestry ancestry) => ancestry.race.id == raceId).toList();
   }
 
+  // Future<List<Skill>> getLinkedToRace(int? ancestryId) async {
+  //   final List<Map<String, dynamic>> map = await database.rawQuery(
+  //       "SELECT * FROM SUBRACE_SKILLS RS JOIN SKILLS S ON (S.ID = RS.SKILL_ID) WHERE SUBRACE_ID = ?", [ancestryId]);
+  //
+  //   return [for (Map<String, dynamic> entry in map) await fromDatabase(entry)];
+  // }
+
+  // Future<List<SkillGroup>> getGroupsLinkedToAncestry(int? ancestryId) async {
+  //   final List<Map<String, dynamic>> map = await database.rawQuery(
+  //       "SELECT * FROM SUBRACE_SKILLS SS JOIN SKILLS_BASE SB ON (SS.BASE_SKILL_ID = SB.ID) WHERE SUBRACE_ID = ?",
+  //       [ancestryId]);
+  //
+  //   return [
+  //     for (Map<String, dynamic> entry in map)
+  //       SkillGroup(
+  //         name: "${entry["NAME"]}_ANY",
+  //         skills: await getAll(where: "ID = ?", whereArgs: [entry["BASE_SKILL_ID"]]),
+  //       )
+  //   ];
+  // }
+
   Future<Race> getRace(Map<String, dynamic> map) async {
     if (map["RACE_ID"] != null) {
       return (await GetIt.instance.get<RaceProvider>().get(map["RACE_ID"]))!;
