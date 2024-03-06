@@ -31,7 +31,7 @@ class RaceLibraryItemWidget extends StatelessWidget {
               ),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              for (Attribute attribute in race.initialAttributes.get().where((e) => e.importance == 0))
+              for (Attribute attribute in race.attributes.get().where((e) => e.importance == 0))
                 Padding(
                   padding: const EdgeInsets.all(7),
                   child: Column(
@@ -43,7 +43,7 @@ class RaceLibraryItemWidget extends StatelessWidget {
                 ),
             ]),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              for (var attribute in race.initialAttributes.get().where((e) => e.importance == 1))
+              for (var attribute in race.attributes.get().where((e) => e.importance == 1))
                 Padding(
                   padding: const EdgeInsets.all(7),
                   child: Column(

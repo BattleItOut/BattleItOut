@@ -3,6 +3,7 @@ import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/skill/skill_group.dart';
 import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:battle_it_out/persistence/talent/talent_group.dart';
+import 'package:battle_it_out/providers/skill_provider.dart';
 import 'package:battle_it_out/utils/db_object.dart';
 import 'package:battle_it_out/utils/factory.dart';
 
@@ -66,8 +67,8 @@ class ProfessionFactory extends Factory<Profession> {
       career: await getCareer(map),
     );
     profession.linkedTalents = await TalentFactory().getLinkedToProfession(profession.id);
-    profession.linkedSkills = await SkillFactory().getLinkedToProfession(profession.id);
-    profession.linkedGroupSkills = await SkillFactory().getGroupsLinkedToProfession(profession.id);
+    profession.linkedSkills = await SkillProvider().getLinkedToProfession(profession.id);
+    profession.linkedGroupSkills = await SkillProvider().getGroupsLinkedToProfession(profession.id);
     return profession;
   }
 

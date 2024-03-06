@@ -4,6 +4,7 @@ import 'package:battle_it_out/persistence/item/item_quality.dart';
 import 'package:battle_it_out/persistence/item/weapon.dart';
 import 'package:battle_it_out/persistence/item/weapon_length.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
+import 'package:battle_it_out/providers/skill_provider.dart';
 import 'package:collection/collection.dart';
 
 class MeleeWeapon extends Weapon {
@@ -67,7 +68,7 @@ class MeleeWeaponFactory extends ItemFactory<MeleeWeapon> {
         damageAttribute: damageAttribute);
     if (map["SKILL"] != null) {
       Skill? skill = skills?.firstWhereOrNull((element) => element.id == map['SKILL']);
-      meleeWeapon.skill = skill ?? await SkillFactory(attributes).get(map['SKILL']);
+      meleeWeapon.skill = skill ?? await SkillProvider().get(map['SKILL']);
     }
     if (map["ID"] != null) {
       meleeWeapon.qualities = await getQualities(map["ID"]);

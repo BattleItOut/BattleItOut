@@ -14,6 +14,7 @@ import 'package:battle_it_out/persistence/trait.dart';
 import 'package:battle_it_out/providers/ancestry_provider.dart';
 import 'package:battle_it_out/providers/attribute_provider.dart';
 import 'package:battle_it_out/providers/size_provider.dart';
+import 'package:battle_it_out/providers/skill_provider.dart';
 import 'package:battle_it_out/utils/db_object.dart';
 import 'package:battle_it_out/utils/factory.dart';
 import 'package:flutter/foundation.dart' hide Factory;
@@ -68,7 +69,7 @@ class Character extends DBObject {
       if (output.containsKey(category)) {
         output[category]!.add(skill);
       } else {
-        output[category] = [skill];
+        output[category!] = [skill];
       }
     }
     return output;
@@ -81,7 +82,7 @@ class Character extends DBObject {
       if (output.containsKey(category)) {
         output[category]!.add(skill);
       } else {
-        output[category] = [skill];
+        output[category!] = [skill];
       }
     }
     return output;
@@ -253,7 +254,7 @@ class CharacterFactory extends Factory<Character> {
       "SUBRACE": await AncestryProvider().toDatabase(object.ancestry!),
       "PROFESSION": await ProfessionFactory().toDatabase(object.profession!),
       "ATTRIBUTES": [for (var attribute in object.attributes) await AttributeProvider().toMap(attribute)],
-      "SKILLS": [for (var skill in object.skills.where((s) => s.isImportant())) await SkillFactory().toMap(skill)],
+      "SKILLS": [for (var skill in object.skills.where((s) => s.isImportant())) await SkillProvider().toMap(skill)],
       "TALENTS": [for (var talent in object.talents) await TalentFactory().toMap(talent)],
       "MELEE_WEAPONS": [for (var weapon in object.meleeWeapons) await MeleeWeaponFactory().toMap(weapon)],
       "RANGED_WEAPONS": [for (var weapon in object.rangedWeapons) await RangedWeaponFactory().toMap(weapon)],
@@ -279,7 +280,7 @@ class CharacterFactory extends Factory<Character> {
       }, "character_attributes");
     }
     for (Skill skill in object.skills) {
-      await SkillFactory().update(skill);
+      await SkillProvider().update(skill);
       await updateMap({
         "SKILL_ID": skill.id,
         "CHARACTER_ID": object.id,
@@ -347,9 +348,9 @@ class CharacterFactory extends Factory<Character> {
         "SELECT * FROM CHARACTER_SKILLS CS JOIN SKILLS S on S.ID = CS.SKILL_ID WHERE CS.CHARACTER_ID = ?",
         [characterId]);
 
-    List<Skill> skills = await SkillFactory(attributes).getSkills(advanced: false);
+    List<Skill> skills = await SkillProvider().getSkills(advanced: false);
     for (Map<String, dynamic> entry in map) {
-      Skill skill = await SkillFactory(attributes).fromDatabase(entry);
+      Skill skill = await SkillProvider().fromDatabase(entry);
       int index = skills.indexOf(skill);
       if (index != -1) {
         skills[index] = skill;
@@ -433,9 +434,9 @@ class CharacterFactory extends Factory<Character> {
   }
 
   Future<List<Skill>> _createSkills(json, List<Attribute> attributes) async {
-    List<Skill> skills = await SkillFactory(attributes).getSkills(advanced: false);
+    List<Skill> skills = await SkillProvider().getSkills(advanced: false);
     for (var map in json ?? []) {
-      Skill skill = await SkillFactory(attributes).create(map);
+      Skill skill = await SkillProvider().create(map);
       int index = skills.indexOf(skill);
       if (index != -1) {
         skills[index] = skill;

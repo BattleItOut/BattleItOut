@@ -4,6 +4,7 @@ import 'package:battle_it_out/persistence/item/item.dart';
 import 'package:battle_it_out/persistence/item/item_quality.dart';
 import 'package:battle_it_out/persistence/item/weapon.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
+import 'package:battle_it_out/providers/skill_provider.dart';
 import 'package:collection/collection.dart';
 
 class RangedWeapon extends Weapon {
@@ -100,7 +101,7 @@ class RangedWeaponFactory extends ItemFactory<RangedWeapon> {
     );
     if (map["SKILL"] != null) {
       Skill? skill = skills?.firstWhereOrNull((element) => element.id == map['SKILL']);
-      rangedWeapon.skill = skill ?? await SkillFactory(attributes).get(map['SKILL']);
+      rangedWeapon.skill = skill ?? await SkillProvider().get(map['SKILL']);
     }
     if (map["ID"] != null) {
       rangedWeapon.qualities = await getQualities(map["ID"]);

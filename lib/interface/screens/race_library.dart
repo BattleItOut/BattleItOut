@@ -11,7 +11,7 @@ class RaceLibraryWidget extends StatelessWidget {
   Future<void> getAsyncData(RaceProvider provider) async {
     for (Race race in provider.items) {
       await race.ancestries.getAsync();
-      await race.initialAttributes.getAsync();
+      await race.attributes.getAsync();
     }
   }
 

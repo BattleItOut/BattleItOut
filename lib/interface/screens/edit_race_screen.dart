@@ -27,7 +27,7 @@ class EditRaceScreen extends StatefulWidget {
 class _EditRaceScreenState extends State<EditRaceScreen> {
   RacePartial racePartial = RacePartial();
   List<Ancestry> ancestries = [];
-  List<AttributePartial> initialAttributes = [];
+  List<AttributePartial> attributes = [];
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
     racePartial = RacePartial.from(widget.race);
     racePartial.source ??= "Custom";
     ancestries = widget.race!.ancestries.get();
-    initialAttributes = (widget.race?.initialAttributes.get() ?? GetIt.instance.get<AttributeProvider>().items)
+    attributes = (widget.race?.attributes.get() ?? GetIt.instance.get<AttributeProvider>().items)
         .where((e) => e.importance == 0 || e.importance == 1)
         .map((e) => AttributePartial.from(e))
         .toList();
@@ -67,14 +67,13 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<AttributePartial> primaryAttributes = initialAttributes.where((e) => e.importance == 0).toList();
-    List<AttributePartial> secondaryAttributes = initialAttributes.where((e) => e.importance == 1).toList();
+    List<AttributePartial> primaryAttributes = attributes.where((e) => e.importance == 0).toList();
+    List<AttributePartial> secondaryAttributes = attributes.where((e) => e.importance == 1).toList();
 
     bool compareAttributes = true;
-    if (widget.race?.initialAttributes != null &&
-        widget.race?.initialAttributes.get().length == initialAttributes.length) {
-      for (int i = 0; i < initialAttributes.length; i++) {
-        if (initialAttributes[i].base != widget.race?.initialAttributes.get()[i].base) {
+    if (widget.race?.attributes != null && widget.race?.attributes.get().length == attributes.length) {
+      for (int i = 0; i < attributes.length; i++) {
+        if (attributes[i].base != widget.race?.attributes.get()[i].base) {
           compareAttributes = false;
           break;
         }
@@ -159,7 +158,7 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
               (ancestry) => AncestryLibraryItemWidget(
                 ancestry: ancestry,
                 onLongPress: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => EditAncestryScreen(ancestry: ancestry, skills: const [])),
+                  MaterialPageRoute(builder: (context) => EditAncestryScreen(ancestry: ancestry)),
                 ),
               ),
             ),
@@ -169,10 +168,7 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
                 color: Theme.of(context).primaryColor,
               ),
               child: ListTile(
-                title: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.add),
-                ),
+                title: IconButton(onPressed: () {}, icon: const Icon(Icons.add)),
                 textColor: Theme.of(context).floatingActionButtonTheme.foregroundColor,
                 dense: true,
               ),
@@ -183,7 +179,7 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
       floatingActionButton: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
         if (widget.race == null ||
             !racePartial.compareTo(widget.race) ||
-            widget.race?.initialAttributes == null ||
+            widget.race?.attributes == null ||
             !compareAttributes)
           FloatingActionButton(
             heroTag: "btn2",
@@ -191,7 +187,7 @@ class _EditRaceScreenState extends State<EditRaceScreen> {
             onPressed: () async => await save(),
           ),
         const SizedBox(height: 10),
-        if (widget.race != null && widget.race?.initialAttributes != null)
+        if (widget.race != null && widget.race?.attributes != null)
           FloatingActionButton(
             heroTag: "btn1",
             child: const Icon(Icons.delete),

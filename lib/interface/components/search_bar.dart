@@ -1,40 +1,38 @@
 import 'package:flutter/material.dart';
 
-class CheckboxListWithSearchBar<T> extends StatefulWidget {
-  final List<T> items;
+class CheckboxListWithSearchBar extends StatefulWidget {
+  final List<CheckBoxListTile> items;
   final Widget title;
-  final String Function(T item) convert;
 
-  const CheckboxListWithSearchBar({super.key, required this.title, required this.items, required this.convert});
+  const CheckboxListWithSearchBar({super.key, required this.title, required this.items});
 
   @override
-  State<CheckboxListWithSearchBar<T>> createState() => _CheckboxListWithSearchBarState<T>();
+  State<CheckboxListWithSearchBar> createState() => _CheckboxListWithSearchBarState();
 }
 
-class _CheckboxListWithSearchBarState<T> extends State<CheckboxListWithSearchBar<T>> {
-  List<CheckBoxListTileModel> checkBoxItemList = [];
-  List<CheckBoxListTileModel> filteredCheckBoxItemList = [];
+class _CheckboxListWithSearchBarState<T> extends State<CheckboxListWithSearchBar> {
+  List<CheckBoxListTile> items = [];
+  List<CheckBoxListTile> filteredItems = [];
 
   @override
   void initState() {
     super.initState();
-    checkBoxItemList = widget.items.map((e) => CheckBoxListTileModel(title: widget.convert(e))).toList();
-    checkBoxItemList.sort((a, b) => a.title.compareTo(b.title));
-    filteredCheckBoxItemList = checkBoxItemList;
+    items = widget.items;
+    items.sort((a, b) => a.name.compareTo(b.name));
+    filteredItems = items;
   }
 
   void itemChange(bool val, int index) {
     setState(() {
-      checkBoxItemList[index].isCheck = val;
+      items[index].checked = val;
     });
   }
 
   late final TextEditingController controller = TextEditingController()
     ..addListener(() {
       setState(() {
-        filteredCheckBoxItemList = checkBoxItemList
-            .where((e) => e.title.toLowerCase().contains(controller.text.trim().toLowerCase()))
-            .toList();
+        filteredItems =
+            items.where((e) => e.name.toLowerCase().contains(controller.text.trim().toLowerCase())).toList();
       });
     });
 
@@ -58,17 +56,17 @@ class _CheckboxListWithSearchBarState<T> extends State<CheckboxListWithSearchBar
           shrinkWrap: true,
           crossAxisCount: 2,
           childAspectRatio: 10,
-          children: List.generate(filteredCheckBoxItemList.length, (index) {
+          children: List.generate(filteredItems.length, (index) {
             return CheckboxListTile(
                 dense: true,
                 title: Text(
-                  filteredCheckBoxItemList[index].title,
+                  filteredItems[index].name,
                   style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.5),
                 ),
-                value: filteredCheckBoxItemList[index].isCheck,
+                value: filteredItems[index].checked,
                 secondary: SizedBox(
-                  child: filteredCheckBoxItemList[index].img != null
-                      ? Image.asset(filteredCheckBoxItemList[index].img!, fit: BoxFit.cover)
+                  child: filteredItems[index].img != null
+                      ? Image.asset(filteredItems[index].img!, fit: BoxFit.cover)
                       : const SizedBox(),
                 ),
                 onChanged: (bool? val) {
@@ -81,14 +79,16 @@ class _CheckboxListWithSearchBarState<T> extends State<CheckboxListWithSearchBar
   }
 }
 
-class CheckBoxListTileModel {
-  String title;
-  bool isCheck;
+class CheckBoxListTile {
+  String name;
+  dynamic value;
+  bool checked;
   String? img;
 
-  CheckBoxListTileModel({
-    required this.title,
-    this.isCheck = false,
-    this.img = 'assets/icon.png',
+  CheckBoxListTile({
+    required this.name,
+    this.value,
+    this.checked = false,
+    this.img,
   });
 }

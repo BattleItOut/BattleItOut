@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:io/io.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -10,6 +10,7 @@ import 'package:yaml/yaml.dart';
 
 class DatabaseProvider {
   final log = Logger("DatabaseProvider");
+
   Database get database => _database!;
   Database? _database;
   String? _dbPath;
@@ -41,15 +42,13 @@ class DatabaseProvider {
       }
     }
     log.info("Connecting the database on $_dbPath...");
-
-    log.info("${await Directory("assets/database_module").exists()}");
     if (await Directory("assets/database_module").exists()) {
       log.info("Coping database scripts from module");
-      File("assets/database_module/resources/database/database_structure.sql")
-          .copySync("assets/database_structure.sql");
-      File("assets/database_module/resources/database/database.version").copySync("assets/database.version");
+      File("assets/database_module/database/database_structure.sql").copySync("assets/database_structure.sql");
+      File("assets/database_module/database/database.version").copySync("assets/database.version");
+      await copyPath("assets/database_module/localisation", "assets/localisation");
       if (!test) {
-        _insertScript = File("assets/database_module/resources/database/database_inserts.sql").readAsStringSync();
+        _insertScript = File("assets/database_module/database/database_inserts.sql").readAsStringSync();
       }
     }
 
@@ -66,7 +65,7 @@ class DatabaseProvider {
         singleInstance: true,
         onCreate: (Database db, int version) async {
           log.info("Creating database");
-          BatchManager.execute(await rootBundle.loadString("assets/database/create_db.sql"), db);
+          BatchManager.execute(await rootBundle.loadString("assets/database_structure.sql"), db);
           if (_insertScript != null) {
             BatchManager.execute(_insertScript!, db);
           }

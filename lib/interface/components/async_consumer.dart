@@ -9,7 +9,6 @@ class AsyncConsumer<T extends Factory> extends StatelessWidget {
   final Future<void>? Function(T)? future;
 
   const AsyncConsumer({super.key, required this.builder, this.future});
-
   @override
   Widget build(BuildContext context) {
     return LoadingFutureBuilder(

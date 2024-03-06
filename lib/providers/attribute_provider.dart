@@ -71,9 +71,6 @@ class AttributeProvider extends Factory<Attribute> {
       "ADVANCES": object.advances,
       "CAN_ADVANCE": object.canAdvance ? 1 : 0
     };
-    if (optimised) {
-      map = await optimise(map);
-    }
     return map;
   }
 }

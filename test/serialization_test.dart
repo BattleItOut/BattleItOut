@@ -14,6 +14,7 @@ import 'package:battle_it_out/providers/ancestry_provider.dart';
 import 'package:battle_it_out/providers/attribute_provider.dart';
 import 'package:battle_it_out/providers/database_provider.dart';
 import 'package:battle_it_out/providers/race_provider.dart';
+import 'package:battle_it_out/providers/skill_provider.dart';
 import 'package:battle_it_out/utils/factory.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -185,7 +186,7 @@ void skillSerializationTest() {
 
   group("Skill serialization", () {
     test("Basic from database", () async {
-      Skill basicSkill = await SkillFactory().create(basicSkillMap);
+      Skill basicSkill = await SkillProvider().create(basicSkillMap);
       expect(basicSkill.id, 1);
       expect(basicSkill.name, "ATHLETICS");
       expect(basicSkill.specialisation, null);
@@ -198,7 +199,7 @@ void skillSerializationTest() {
       expect(basicSkill.baseSkill.grouped, false);
     });
     test("Edited", () async {
-      Skill maxEditedSkill = await SkillFactory().create(maxEditedSkillMap);
+      Skill maxEditedSkill = await SkillProvider().create(maxEditedSkillMap);
       expect(maxEditedSkill.id, 1);
       expect(maxEditedSkill.name, "ATHLETICS");
       expect(maxEditedSkill.specialisation, null);
@@ -211,7 +212,7 @@ void skillSerializationTest() {
       expect(maxEditedSkill.baseSkill.advanced, false);
       expect(maxEditedSkill.baseSkill.grouped, false);
     });
-    doubleSerializationTest(SkillFactory(), [basicSkillMap, maxEditedSkillMap]);
+    doubleSerializationTest(SkillProvider(), [basicSkillMap, maxEditedSkillMap]);
   });
 }
 

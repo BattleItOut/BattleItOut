@@ -18,12 +18,7 @@ class RacePartial extends DBObject {
 
   Race toRace() {
     return Race(
-        id: id,
-        name: name!,
-        size: size!,
-        source: source!,
-        initialAttributes: initialAttributes!,
-        ancestries: ancestries!);
+        id: id, name: name!, size: size!, source: source!, attributes: initialAttributes!, ancestries: ancestries!);
   }
 
   RacePartial.from(Race? race)
@@ -32,7 +27,7 @@ class RacePartial extends DBObject {
             name: race?.name,
             size: race?.size,
             source: race?.source,
-            initialAttributes: race?.initialAttributes,
+            initialAttributes: race?.attributes,
             ancestries: race?.ancestries);
 
   @override
@@ -52,14 +47,14 @@ class Race extends DBObject {
   Size size;
   String source;
   late Lazy<List<Ancestry>> ancestries;
-  late Lazy<List<Attribute>> initialAttributes;
+  late Lazy<List<Attribute>> attributes;
 
   Race(
       {super.id,
       required this.name,
       required this.size,
       required this.ancestries,
-      required this.initialAttributes,
+      required this.attributes,
       this.source = "CUSTOM"});
 
   Race.fromData(
@@ -69,7 +64,7 @@ class Race extends DBObject {
       List<Attribute>? initialAttributes,
       List<Ancestry>? ancestries,
       this.source = "CUSTOM"}) {
-    this.initialAttributes = Lazy<List<Attribute>>(initialAttributes, () async {
+    this.attributes = Lazy<List<Attribute>>(initialAttributes, () async {
       AttributeProvider provider = GetIt.instance.get<AttributeProvider>();
       await provider.init();
       return await provider.getInitialAttributes(id!);
@@ -87,7 +82,7 @@ class Race extends DBObject {
       name: race.name,
       size: race.size,
       source: race.source,
-      initialAttributes: race.initialAttributes,
+      attributes: race.attributes,
       ancestries: race.ancestries,
     );
   }
