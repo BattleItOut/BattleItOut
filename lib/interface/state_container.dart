@@ -26,7 +26,7 @@ class StateContainer extends StatefulWidget {
 
 class StateContainerState extends State<StateContainer> {
   final Wrapper<Locale> _localeWrapper = Wrapper();
-  List<Character> _savedCharacters = [];
+  final List<Character> _savedCharacters = [];
 
   get savedCharacters => _savedCharacters;
   get locale => _localeWrapper.object;

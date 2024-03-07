@@ -69,7 +69,7 @@ class Character extends DBObject {
       if (output.containsKey(category)) {
         output[category]!.add(skill);
       } else {
-        output[category!] = [skill];
+        output[category] = [skill];
       }
     }
     return output;
@@ -82,7 +82,7 @@ class Character extends DBObject {
       if (output.containsKey(category)) {
         output[category]!.add(skill);
       } else {
-        output[category!] = [skill];
+        output[category] = [skill];
       }
     }
     return output;

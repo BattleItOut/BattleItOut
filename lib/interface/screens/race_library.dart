@@ -5,8 +5,8 @@ import 'package:battle_it_out/persistence/race.dart';
 import 'package:battle_it_out/providers/race_provider.dart';
 import 'package:flutter/material.dart';
 
-class RaceLibraryWidget extends StatelessWidget {
-  const RaceLibraryWidget({super.key});
+class RaceLibrary extends StatelessWidget {
+  const RaceLibrary({super.key});
 
   Future<void> getAsyncData(RaceProvider provider) async {
     for (Race race in provider.items) {

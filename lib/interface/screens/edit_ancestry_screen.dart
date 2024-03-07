@@ -1,7 +1,7 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/async_consumer.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
-import 'package:battle_it_out/interface/components/search_bar.dart';
+import 'package:battle_it_out/interface/components/searchbar/checkbox_search_bar.dart';
 import 'package:battle_it_out/localisation.dart';
 import 'package:battle_it_out/persistence/ancestry.dart';
 import 'package:battle_it_out/persistence/attribute.dart';
@@ -43,38 +43,37 @@ class _EditAncestryScreenState extends State<EditAncestryScreen> {
         centerTitle: true,
         title: Text("${widget.ancestry != null ? "Edit" : "New"} Ancestry"),
       ),
-      body: AsyncConsumer<SkillGroupProvider>(builder: (SkillGroupProvider skillGroupProvider) {
-        return AsyncConsumer<SkillProvider>(
-          builder: (SkillProvider skillProvider) {
-            return ListView(shrinkWrap: true, padding: const EdgeInsets.all(10.0), children: [
-              Center(child: LocalisedText("NAME", context, style: const TextStyle(fontSize: 24))),
-              Container(
-                alignment: Alignment.center,
-                child: TextFormField(
-                  textAlign: TextAlign.center,
-                  initialValue:
-                      ancestryPartial.name != null ? AppLocalizations.of(context).localise(ancestryPartial.name!) : "",
-                  onChanged: (val) {},
-                  decoration: const InputDecoration(contentPadding: EdgeInsets.all(8)),
-                ),
-              ),
-              SizedBox(
-                height: 500,
-                child: CheckboxListWithSearchBar(
-                  title: LocalisedText("SKILLS", context, style: const TextStyle(fontSize: 24)),
-                  items: [
-                    ...skillProvider.items.map((Skill s) {
-                      return CheckBoxListTile(name: s.name.localise(context), value: s, img: 'assets/icon.png');
-                    }),
-                    ...skillGroupProvider.items.map((SkillGroup s) {
-                      return CheckBoxListTile(name: s.name.localise(context), value: s, img: 'assets/icon.png');
-                    }),
-                  ],
-                ),
-              ),
-            ]);
-          },
-        );
+      body: AsyncConsumer2<SkillGroupProvider, SkillProvider>(builder: (
+        SkillGroupProvider skillGroupProvider,
+        SkillProvider skillProvider,
+      ) {
+        return ListView(shrinkWrap: true, padding: const EdgeInsets.all(10.0), children: [
+          Center(child: LocalisedText("NAME", context, style: const TextStyle(fontSize: 24))),
+          Container(
+            alignment: Alignment.center,
+            child: TextFormField(
+              textAlign: TextAlign.center,
+              initialValue:
+                  ancestryPartial.name != null ? AppLocalizations.of(context).localise(ancestryPartial.name!) : "",
+              onChanged: (val) {},
+              decoration: const InputDecoration(contentPadding: EdgeInsets.all(8)),
+            ),
+          ),
+          SizedBox(
+            height: 500,
+            child: SearchBarCheckboxList(
+              title: LocalisedText("SKILLS", context, style: const TextStyle(fontSize: 24)),
+              items: [
+                ...skillProvider.items.map((Skill s) {
+                  return CheckboxSearchListItem(name: s.name.localise(context), value: s, img: 'assets/icon.png');
+                }),
+                ...skillGroupProvider.items.map((SkillGroup s) {
+                  return CheckboxSearchListItem(name: s.name.localise(context), value: s, img: 'assets/icon.png');
+                }),
+              ],
+            ),
+          ),
+        ]);
       }),
       floatingActionButton: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
         if (widget.ancestry == null || !ancestryPartial.compareTo(widget.ancestry))
