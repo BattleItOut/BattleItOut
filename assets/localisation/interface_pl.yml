@@ -31,6 +31,7 @@ pl:
   ARMOUR: "Pancerze"
   MELEE_WEAPONS: "Broń Biała"
   RANGED_WEAPONS: "Broń Zasięgowa"
+  ANCESTRIES: "Pochodzenie"
 
   "Main Rulebook": "Podręcznik Główny"
   "Rough Nights and Hard Days": "Rough Nights and Hard Days"

@@ -4,7 +4,7 @@ import 'package:battle_it_out/providers/size_provider.dart';
 import 'package:battle_it_out/utils/factory.dart';
 import 'package:get_it/get_it.dart';
 
-class RaceProvider extends Factory<Race> {
+class RaceRepository extends Repository<Race> {
   @override
   get tableName => 'races';
 
@@ -13,13 +13,13 @@ class RaceProvider extends Factory<Race> {
 
   @override
   Future<void> init() async {
-    await GetIt.instance.get<SizeProvider>().init();
+    await GetIt.instance.get<SizeRepository>().init();
     await super.init();
   }
 
   @override
   Future<int> delete(Race object) async {
-    await GetIt.instance.get<AncestryProvider>().deleteWhere(where: "RACE_ID = ?", whereArgs: [object.id!]);
+    await GetIt.instance.get<AncestryRepository>().deleteWhere(where: "RACE_ID = ?", whereArgs: [object.id!]);
     return super.delete(object);
   }
 
@@ -29,7 +29,7 @@ class RaceProvider extends Factory<Race> {
       id: map["ID"],
       name: map["NAME"],
       source: map["SRC"],
-      size: (await GetIt.instance.get<SizeProvider>().get(map["SIZE"]))!,
+      size: (await GetIt.instance.get<SizeRepository>().get(map["SIZE"]))!,
     );
   }
 
@@ -39,7 +39,7 @@ class RaceProvider extends Factory<Race> {
       id: map["ID"] ?? await getNextId(),
       name: map["NAME"],
       source: map["SRC"],
-      size: (await GetIt.instance.get<SizeProvider>().get(map["SIZE"]))!,
+      size: (await GetIt.instance.get<SizeRepository>().get(map["SIZE"]))!,
     );
   }
 

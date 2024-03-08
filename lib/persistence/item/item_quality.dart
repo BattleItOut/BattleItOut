@@ -1,5 +1,4 @@
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/factory.dart';
 
 class ItemQuality extends DBObject {
   String name;
@@ -39,32 +38,5 @@ class ItemQuality extends DBObject {
     } else {
       return "Quality (id=$id, name=$name $value)";
     }
-  }
-}
-
-class ItemQualityFactory extends Factory<ItemQuality> {
-  @override
-  get tableName => 'item_qualities';
-
-  @override
-  Future<ItemQuality> fromDatabase(Map<String, dynamic> map) async {
-    return ItemQuality(
-        id: map['ID'],
-        name: map['NAME'],
-        positive: map['TYPE'] == 1,
-        equipment: map['EQUIPMENT'],
-        description: map['DESCRIPTION'],
-        value: map["VALUE"]);
-  }
-
-  @override
-  Future<Map<String, dynamic>> toDatabase(ItemQuality object) async {
-    return {
-      "ID": object.id,
-      "NAME": object.name,
-      "POSITIVE": object.positive ? 1 : 0,
-      "EQUIPMENT": object.equipment,
-      "DESCRIPTION": object.description
-    };
   }
 }

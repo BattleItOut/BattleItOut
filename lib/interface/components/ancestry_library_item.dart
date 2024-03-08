@@ -1,59 +1,14 @@
 import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/list_items.dart';
 import 'package:battle_it_out/persistence/ancestry.dart';
-import 'package:battle_it_out/persistence/skill/skill.dart';
-import 'package:battle_it_out/persistence/skill/skill_group.dart';
 import 'package:flutter/material.dart';
 
-class AncestryLibraryItemWidget extends StatefulWidget {
+class AncestryLibraryItemWidget extends StatelessWidget {
   final Ancestry ancestry;
   final void Function()? onTap;
   final void Function()? onLongPress;
 
   const AncestryLibraryItemWidget({super.key, required this.ancestry, this.onTap, this.onLongPress});
-
-  @override
-  State<AncestryLibraryItemWidget> createState() => _AncestryLibraryItemWidgetState();
-}
-
-class _AncestryLibraryItemWidgetState extends State<AncestryLibraryItemWidget> {
-  Text buildLinkedSKills(BuildContext context, Ancestry ancestry) {
-    List<String> skillNames = [for (Skill skill in ancestry.linkedSkills) skill.name.localise(context)];
-    skillNames.addAll([for (SkillGroup skillGroup in ancestry.linkedGroupSkills) skillGroup.name.localise(context)]);
-    skillNames.sort((a, b) => a.compareTo(b));
-
-    if (skillNames.isEmpty) {
-      return const Text("");
-    }
-    return Text.rich(
-      TextSpan(children: <TextSpan>[
-        TextSpan(text: "${"SKILLS".localise(context)}: ", style: const TextStyle(fontWeight: FontWeight.bold)),
-        TextSpan(text: skillNames.join(", "))
-      ]),
-      textAlign: TextAlign.center,
-    );
-  }
-
-  Text buildLinkedTalents(BuildContext context, Ancestry ancestry) {
-    List<String> talentNames = [for (var talent in ancestry.linkedTalents) talent.name.localise(context)];
-    talentNames.addAll([for (var talentGroup in ancestry.linkedGroupTalents) talentGroup.name.localise(context)]);
-    talentNames.sort((a, b) => a.compareTo(b));
-
-    List<TextSpan> children = [
-      TextSpan(text: "${"TALENTS".localise(context)}: ", style: const TextStyle(fontWeight: FontWeight.bold)),
-      TextSpan(text: talentNames.join(", "))
-    ];
-    if (ancestry.randomTalents > 0) {
-      children.add(const TextSpan(text: ", "));
-      children.add(TextSpan(text: "${ancestry.randomTalents.toString()} ${"RANDOM_TALENTS".localise(context)}"));
-    }
-
-    if (talentNames.isEmpty) {
-      return const Text("");
-    } else {
-      return Text.rich(TextSpan(children: children), textAlign: TextAlign.center);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,27 +18,19 @@ class _AncestryLibraryItemWidgetState extends State<AncestryLibraryItemWidget> {
         color: Theme.of(context).primaryColor,
       ),
       child: ListTile(
-        title: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(7),
-              child: Column(children: [
-                Text(
-                  widget.ancestry.name.localise(context),
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
-                ),
-                widget.ancestry.linkedSkills.isNotEmpty || widget.ancestry.linkedGroupSkills.isNotEmpty
-                    ? buildLinkedSKills(context, widget.ancestry)
-                    : const SizedBox.shrink(),
-                widget.ancestry.linkedTalents.isNotEmpty || widget.ancestry.linkedGroupTalents.isNotEmpty
-                    ? buildLinkedTalents(context, widget.ancestry)
-                    : const SizedBox.shrink(),
-              ]),
-            ),
-          ],
-        ),
-        onTap: widget.onTap,
-        onLongPress: widget.onLongPress,
+        title: Column(children: [
+          Padding(
+            padding: const EdgeInsets.all(7),
+            child: Column(children: [
+              Text(
+                ancestry.name.localise(context),
+                style: const TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+              )
+            ]),
+          ),
+        ]),
+        onTap: onTap,
+        onLongPress: onLongPress,
         textColor: Theme.of(context).floatingActionButtonTheme.foregroundColor,
         dense: true,
       ),

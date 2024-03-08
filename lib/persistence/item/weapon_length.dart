@@ -1,5 +1,4 @@
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/factory.dart';
 
 class WeaponLength extends DBObject {
   String name;
@@ -24,20 +23,5 @@ class WeaponLength extends DBObject {
   @override
   String toString() {
     return "WeaponLength ($id, $name)";
-  }
-}
-
-class WeaponLengthFactory extends Factory<WeaponLength> {
-  @override
-  get tableName => 'weapon_lengths';
-
-  @override
-  Future<WeaponLength> fromDatabase(Map<String, dynamic> map) async {
-    return WeaponLength(id: map["ID"], name: map["NAME"], description: map["DESCRIPTION"], source: map["SOURCE"]);
-  }
-
-  @override
-  Future<Map<String, dynamic>> toDatabase(WeaponLength object) async {
-    return {"ID": object.id, "NAME": object.name, "DESCRIPTION": object.description, "SOURCE": object.source};
   }
 }

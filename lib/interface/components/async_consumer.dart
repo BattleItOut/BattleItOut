@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
-class AsyncConsumer<T extends Factory> extends StatelessWidget {
+class AsyncConsumer<T extends Repository> extends StatelessWidget {
   final Widget Function(T) builder;
   final Future<void>? Function(T)? future;
 
-  Future<void>? getAsyncData(T provider) async {
+  Future<void>? getAsyncData(T repository) async {
     if (future != null) {
-      return future!(provider);
+      return future!(repository);
     }
     return;
   }
@@ -21,11 +21,11 @@ class AsyncConsumer<T extends Factory> extends StatelessWidget {
     return LoadingFutureBuilder(
       future: GetIt.instance.get<T>().init(),
       builder: (BuildContext context) {
-        T provider = Provider.of(context);
+        T repository = Provider.of(context);
         return LoadingFutureBuilder<void>(
-          future: getAsyncData(provider),
+          future: getAsyncData(repository),
           builder: (BuildContext context) {
-            return builder(provider);
+            return builder(repository);
           },
         );
       },
@@ -33,7 +33,7 @@ class AsyncConsumer<T extends Factory> extends StatelessWidget {
   }
 }
 
-class AsyncConsumer2<T1 extends Factory, T2 extends Factory> extends StatelessWidget {
+class AsyncConsumer2<T1 extends Repository, T2 extends Repository> extends StatelessWidget {
   final Widget Function(T1, T2) builder;
   final Future<void>? Function(T1, T2)? future;
 

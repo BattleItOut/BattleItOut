@@ -1,16 +1,16 @@
 import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/skill/skill_group.dart';
-import 'package:battle_it_out/providers/skill_base_provider.dart';
+import 'package:battle_it_out/providers/skill/base_skill_provider.dart';
 import 'package:battle_it_out/utils/factory.dart';
 import 'package:get_it/get_it.dart';
 
-class SkillProvider extends Factory<Skill> {
+class SkillRepository extends Repository<Skill> {
   @override
   get tableName => 'skills';
 
   @override
   Future<void> init() async {
-    await GetIt.instance.get<BaseSkillProvider>().init();
+    await GetIt.instance.get<BaseSkillRepository>().init();
     await super.init();
   }
 
@@ -20,6 +20,12 @@ class SkillProvider extends Factory<Skill> {
       skills = List.of(skills.where((skill) => skill.baseSkill.advanced == advanced));
     }
     return skills;
+  }
+
+  Future<List<Skill>> getLinkedToAncestry(int? ancestryId) async {
+    final List<Map<String, dynamic>> map = await database.rawQuery(
+        "SELECT * FROM SUBRACE_SKILLS RS JOIN SKILLS S ON (S.ID = RS.SKILL_ID) WHERE SUBRACE_ID = ?", [ancestryId]);
+    return [for (Map<String, dynamic> entry in map) await fromDatabase(entry)];
   }
 
   Future<List<Skill>> getLinkedToProfession(int? professionId) async {
@@ -65,7 +71,7 @@ class SkillProvider extends Factory<Skill> {
     return Skill(
         id: map["ID"],
         name: map["NAME"],
-        baseSkill: (await GetIt.instance.get<BaseSkillProvider>().get(map["BASE_SKILL_ID"]))!,
+        baseSkill: (await GetIt.instance.get<BaseSkillRepository>().get(map["BASE_SKILL_ID"]))!,
         specialisation: map["SPECIALISATION"],
         advances: map["ADVANCES"] ?? 0,
         earning: map["EARNING"] == 1,

@@ -2,7 +2,7 @@ import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/item/item.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
 
-abstract class Weapon extends Item with SpecialItem {
+abstract class Weapon extends Item {
   int damage;
   Attribute? damageAttribute;
   Skill? skill;

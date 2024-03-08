@@ -1,7 +1,6 @@
 import 'package:battle_it_out/persistence/item/item_quality.dart';
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/factory.dart';
-import 'package:flutter/foundation.dart' hide Factory;
+import 'package:flutter/foundation.dart';
 
 class Item extends DBObject {
   String name;
@@ -58,67 +57,4 @@ class Item extends DBObject {
       availability.hashCode ^
       category.hashCode ^
       qualities.hashCode;
-}
-
-mixin SpecialItem {
-  bool isCommonItem() {
-    return false;
-  }
-}
-
-class CommonItemFactory extends ItemFactory<Item> {
-  @override
-  get tableName => "items";
-  @override
-  get qualitiesTableName => "items_qualities";
-  @override
-  // TODO: implement linkTableName
-  get linkTableName => throw UnimplementedError();
-
-  @override
-  Future<Item> fromDatabase(Map<String, dynamic> map) async {
-    return Item(
-        id: map["ID"],
-        name: map["NAME"],
-        cost: map["COST"],
-        encumbrance: map["ENCUMBRANCE"],
-        availability: map["AVAILABILITY"],
-        category: map["CATEGORY"]);
-  }
-
-  @override
-  Future<Map<String, dynamic>> toDatabase(Item object) async {
-    // TODO: implement toMap
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Map<String, dynamic>> toMap(Item object, {optimised = true, database = false}) async {
-    // TODO: implement toMap
-    throw UnimplementedError();
-  }
-}
-
-abstract class ItemFactory<T extends Item> extends Factory<T> {
-  get qualitiesTableName => 'item_qualities';
-  get linkTableName;
-
-  Future<List<ItemQuality>> getQualities(int id) async {
-    final List<Map<String, dynamic>> map = await database.query(linkTableName, where: "ITEM_ID = ?", whereArgs: [id]);
-    List<ItemQuality> qualities = [];
-    for (var entry in map) {
-      qualities.add((await ItemQualityFactory().get(entry["QUALITY_ID"]))!);
-    }
-    return qualities;
-  }
-
-  @override
-  Future<T> update(T object) async {
-    object = await super.update(object);
-    for (ItemQuality quality in object.qualities) {
-      await ItemQualityFactory().update(quality);
-      await updateMap({"ITEM_ID": object.id, "QUALITY_ID": quality.id, "VALUE": quality.value}, linkTableName);
-    }
-    return object;
-  }
 }

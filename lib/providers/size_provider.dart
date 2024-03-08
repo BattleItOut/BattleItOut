@@ -1,7 +1,7 @@
 import 'package:battle_it_out/persistence/size.dart';
 import 'package:battle_it_out/utils/factory.dart';
 
-class SizeProvider extends Factory<Size> {
+class SizeRepository extends Repository<Size> {
   @override
   get tableName => 'sizes';
 

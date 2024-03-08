@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logging/logging.dart';
 
-abstract class Factory<T extends DBObject> with DAO, JSONSerializer<T>, ChangeNotifier {
-  Logger log = Logger("Factory");
+abstract class Repository<T extends DBObject> with DAO, JSONSerializer<T>, ChangeNotifier {
+  Logger log = Logger("Repository");
   List<T>? _items;
   List<T> get items => _items!;
 
   Future<void> init() async {
-    await GetIt.instance.get<DatabaseProvider>().init();
     if (_items != null) return;
+    await GetIt.instance.get<DatabaseRepository>().init();
     await refresh();
   }
 

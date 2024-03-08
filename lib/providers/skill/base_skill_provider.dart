@@ -3,13 +3,13 @@ import 'package:battle_it_out/providers/attribute_provider.dart';
 import 'package:battle_it_out/utils/factory.dart';
 import 'package:get_it/get_it.dart';
 
-class BaseSkillProvider extends Factory<BaseSkill> {
+class BaseSkillRepository extends Repository<BaseSkill> {
   @override
   get tableName => 'skills_base';
 
   @override
   Future<void> init() async {
-    await GetIt.instance.get<AttributeProvider>().init();
+    await GetIt.instance.get<AttributeRepository>().init();
     await super.init();
   }
 
@@ -21,7 +21,7 @@ class BaseSkillProvider extends Factory<BaseSkill> {
         advanced: map["ADVANCED"] == 1,
         grouped: map["GROUPED"] == 1,
         description: map["DESCRIPTION"],
-        attribute: (await GetIt.instance.get<AttributeProvider>().get(map["ATTRIBUTE_ID"]))!);
+        attribute: (await GetIt.instance.get<AttributeRepository>().get(map["ATTRIBUTE_ID"]))!);
   }
 
   @override

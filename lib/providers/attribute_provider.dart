@@ -1,7 +1,7 @@
 import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/utils/factory.dart';
 
-class AttributeProvider extends Factory<Attribute> {
+class AttributeRepository extends Repository<Attribute> {
   @override
   get tableName => 'attributes';
 

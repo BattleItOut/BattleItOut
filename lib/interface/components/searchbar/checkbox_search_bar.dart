@@ -11,23 +11,31 @@ class SearchBarCheckboxList extends AbstractSearchList<CheckboxSearchListItem> {
 class _SearchBarCheckboxListState extends AbstractSearchListState<CheckboxSearchListItem, SearchBarCheckboxList> {
   @override
   Widget listEntryGenerator(List<CheckboxSearchListItem> filteredItems, int index) {
-    return CheckboxListTile(
-        dense: true,
-        title: Text(
-          filteredItems[index].name,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.5),
-        ),
+    return ListTile(
+      dense: true,
+      title: Text(
+        filteredItems[index].name,
+        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.5),
+      ),
+      trailing: Checkbox(
         value: filteredItems[index].checked,
-        secondary: SizedBox(
-          child: filteredItems[index].img != null
-              ? Image.asset(filteredItems[index].img!, fit: BoxFit.cover)
-              : const SizedBox(),
-        ),
-        onChanged: (bool? val) {
+        onChanged: (bool? value) {
           setState(() {
-            items[index].checked = val!;
+            items[index].checked = value!;
           });
-        });
+        },
+      ),
+      leading: SizedBox(
+        child: filteredItems[index].img != null
+            ? Image.asset(filteredItems[index].img!, fit: BoxFit.cover)
+            : const SizedBox(),
+      ),
+      onTap: () => {
+        setState(() {
+          items[index].checked = !items[index].checked;
+        })
+      },
+    );
   }
 }
 

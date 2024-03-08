@@ -8,15 +8,15 @@ import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:yaml/yaml.dart';
 
-class DatabaseProvider {
-  final log = Logger("DatabaseProvider");
+class DatabaseRepository {
+  final log = Logger("DatabaseRepository");
 
   Database get database => _database!;
   Database? _database;
   String? _dbPath;
   String? _insertScript;
 
-  DatabaseProvider() {
+  DatabaseRepository() {
     if (Platform.isWindows || Platform.isLinux) {
       sqfliteFfiInit();
       databaseFactoryOrNull = databaseFactoryFfi;

@@ -2,16 +2,12 @@ import 'package:battle_it_out/entities_localisation.dart';
 import 'package:battle_it_out/interface/components/async_consumer.dart';
 import 'package:battle_it_out/interface/components/padded_text.dart';
 import 'package:battle_it_out/interface/components/searchbar/checkbox_search_bar.dart';
-import 'package:battle_it_out/localisation.dart';
 import 'package:battle_it_out/persistence/ancestry.dart';
-import 'package:battle_it_out/persistence/attribute.dart';
-import 'package:battle_it_out/persistence/race.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/skill/skill_group.dart';
-import 'package:battle_it_out/providers/skill_group_provider.dart';
-import 'package:battle_it_out/providers/skill_provider.dart';
+import 'package:battle_it_out/providers/skill/skill_group_provider.dart';
+import 'package:battle_it_out/providers/skill/skill_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:tuple/tuple.dart';
 
 class EditAncestryScreen extends StatefulWidget {
   final Ancestry? ancestry;
@@ -25,6 +21,11 @@ class _EditAncestryScreenState extends State<EditAncestryScreen> {
   AncestryPartial ancestryPartial = AncestryPartial();
   List<Skill> skills = [];
 
+  Future<void> getAsyncData() async {
+    await widget.ancestry?.skills.getAsync();
+    await widget.ancestry?.groupSkills.getAsync();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -37,44 +38,46 @@ class _EditAncestryScreenState extends State<EditAncestryScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () =>
-              Navigator.of(context).pop<Tuple3<bool, Race?, List<Attribute>>>(const Tuple3(false, null, [])),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         centerTitle: true,
         title: Text("${widget.ancestry != null ? "Edit" : "New"} Ancestry"),
       ),
-      body: AsyncConsumer2<SkillGroupProvider, SkillProvider>(builder: (
-        SkillGroupProvider skillGroupProvider,
-        SkillProvider skillProvider,
-      ) {
-        return ListView(shrinkWrap: true, padding: const EdgeInsets.all(10.0), children: [
-          Center(child: LocalisedText("NAME", context, style: const TextStyle(fontSize: 24))),
-          Container(
-            alignment: Alignment.center,
-            child: TextFormField(
-              textAlign: TextAlign.center,
-              initialValue:
-                  ancestryPartial.name != null ? AppLocalizations.of(context).localise(ancestryPartial.name!) : "",
-              onChanged: (val) {},
-              decoration: const InputDecoration(contentPadding: EdgeInsets.all(8)),
+      body: AsyncConsumer2<SkillGroupRepository, SkillRepository>(
+        future: (skillGroupRepository, skillRepository) => getAsyncData(),
+        builder: (SkillGroupRepository skillGroupRepository, SkillRepository skillRepository) {
+          return ListView(shrinkWrap: true, padding: const EdgeInsets.all(10.0), children: [
+            Center(child: LocalisedText("NAME", context, style: const TextStyle(fontSize: 24))),
+            Container(
+              alignment: Alignment.center,
+              child: TextFormField(
+                textAlign: TextAlign.center,
+                initialValue: ancestryPartial.name != null ? ancestryPartial.name!.localise(context) : "",
+                onChanged: (val) {},
+                decoration: const InputDecoration(contentPadding: EdgeInsets.all(8)),
+              ),
             ),
-          ),
-          SizedBox(
-            height: 500,
-            child: SearchBarCheckboxList(
-              title: LocalisedText("SKILLS", context, style: const TextStyle(fontSize: 24)),
-              items: [
-                ...skillProvider.items.map((Skill s) {
-                  return CheckboxSearchListItem(name: s.name.localise(context), value: s, img: 'assets/icon.png');
-                }),
-                ...skillGroupProvider.items.map((SkillGroup s) {
-                  return CheckboxSearchListItem(name: s.name.localise(context), value: s, img: 'assets/icon.png');
-                }),
-              ],
+            SizedBox(
+              height: 500,
+              child: SearchBarCheckboxList(
+                title: LocalisedText("SKILLS", context, style: const TextStyle(fontSize: 24)),
+                items: [
+                  ...skillRepository.items.map((Skill s) {
+                    return CheckboxSearchListItem(
+                        name: s.name.localise(context),
+                        value: s,
+                        img: 'assets/icon.png',
+                        checked: widget.ancestry!.skills.get().contains(s));
+                  }),
+                  ...skillGroupRepository.items.map((SkillGroup s) {
+                    return CheckboxSearchListItem(name: s.name.localise(context), value: s, img: 'assets/icon.png');
+                  }),
+                ],
+              ),
             ),
-          ),
-        ]);
-      }),
+          ]);
+        },
+      ),
       floatingActionButton: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
         if (widget.ancestry == null || !ancestryPartial.compareTo(widget.ancestry))
           FloatingActionButton(

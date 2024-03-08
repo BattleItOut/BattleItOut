@@ -4,7 +4,7 @@ import 'package:logging/logging.dart';
 import 'package:sqflite/sqflite.dart';
 
 abstract mixin class DAO {
-  late final Database database = GetIt.instance.get<DatabaseProvider>().database;
+  late final Database database = GetIt.instance.get<DatabaseRepository>().database;
   final Logger log = Logger("DB");
   get tableName;
 

@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 class RaceLibrary extends StatelessWidget {
   const RaceLibrary({super.key});
 
-  Future<void> getAsyncData(RaceProvider provider) async {
-    for (Race race in provider.items) {
+  Future<void> getAsyncData(RaceRepository repository) async {
+    for (Race race in repository.items) {
       await race.ancestries.getAsync();
       await race.attributes.getAsync();
     }
@@ -18,13 +18,13 @@ class RaceLibrary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AsyncConsumer<RaceProvider>(
-        future: (RaceProvider provider) => getAsyncData(provider),
-        builder: (RaceProvider provider) => ListView(
+      body: AsyncConsumer<RaceRepository>(
+        future: (RaceRepository repository) => getAsyncData(repository),
+        builder: (RaceRepository repository) => ListView(
           shrinkWrap: true,
           padding: const EdgeInsets.all(10.0),
           children: [
-            for (Race race in provider.items)
+            for (Race race in repository.items)
               RaceLibraryItemWidget(
                 race: race,
                 onLongPress: () {
@@ -49,12 +49,12 @@ class RaceLibrary extends StatelessWidget {
     );
   }
 
-  ListView buildListView(RaceProvider provider, BuildContext context) {
+  ListView buildListView(RaceRepository repository, BuildContext context) {
     return ListView(
       shrinkWrap: true,
       padding: const EdgeInsets.all(10.0),
       children: [
-        for (Race race in provider.items)
+        for (Race race in repository.items)
           RaceLibraryItemWidget(
             race: race,
             onLongPress: () {
