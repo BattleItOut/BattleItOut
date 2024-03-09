@@ -73,19 +73,15 @@ class Ancestry extends DBObject {
       {super.id,
       required this.name,
       required this.race,
-      List<Skill>? skills,
-      List<SkillGroup>? groupSkills,
       this.source = "Custom",
       this.randomTalents = 0,
       this.defaultAncestry = true}) {
-    this.skills = Lazy<List<Skill>>(skills, () async {
+    skills = Lazy<List<Skill>>(() async {
       SkillRepository repository = GetIt.instance.get<SkillRepository>();
-      await repository.init();
       return await repository.getLinkedToAncestry(id!);
     });
-    this.groupSkills = Lazy<List<SkillGroup>>(groupSkills, () async {
+    groupSkills = Lazy<List<SkillGroup>>(() async {
       SkillGroupRepository repository = GetIt.instance.get<SkillGroupRepository>();
-      await repository.init();
       return await repository.getLinkedToAncestry(id!);
     });
   }

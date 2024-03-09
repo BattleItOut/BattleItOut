@@ -15,6 +15,7 @@ class ProfessionRepository extends Repository<Profession> {
 
   @override
   Future<void> init() async {
+    if (ready) return;
     await GetIt.instance.get<ProfessionCareerRepository>().init();
     await super.init();
   }

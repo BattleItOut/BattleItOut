@@ -1,17 +1,17 @@
 class Lazy<T> {
   T? item;
+  bool ready = false;
   Future<T> Function() refreshFunc;
-  Lazy(this.item, this.refreshFunc);
+  Lazy(this.refreshFunc);
 
   T get() => item!;
 
-  Future<T?> refresh() async {
-    item = await refreshFunc();
-    return item;
-  }
-
   Future<T> getAsync() async {
-    item ??= await refreshFunc();
+    if (!ready) {
+      T item = await refreshFunc();
+      this.item = item;
+      ready = true;
+    }
     return item!;
   }
 }

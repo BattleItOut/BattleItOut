@@ -18,6 +18,7 @@ class RangedWeaponRepository extends AbstractItemRepository<RangedWeapon> {
 
   @override
   Future<void> init() async {
+    if (ready) return;
     await GetIt.instance.get<SkillRepository>().init();
     await GetIt.instance.get<AmmunitionRepository>().init();
     await super.init();

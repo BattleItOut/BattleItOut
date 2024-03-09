@@ -9,6 +9,7 @@ class BaseSkillRepository extends Repository<BaseSkill> {
 
   @override
   Future<void> init() async {
+    if (ready) return;
     await GetIt.instance.get<AttributeRepository>().init();
     await super.init();
   }

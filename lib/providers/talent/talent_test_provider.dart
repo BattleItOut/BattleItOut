@@ -11,6 +11,7 @@ class TalentTestRepository extends Repository<TalentTest> {
 
   @override
   Future<void> init() async {
+    if (ready) return;
     await GetIt.instance.get<BaseSkillRepository>().init();
     await GetIt.instance.get<SkillRepository>().init();
     await GetIt.instance.get<AttributeRepository>().init();

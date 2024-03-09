@@ -57,19 +57,13 @@ class Race extends DBObject {
       required this.attributes,
       this.source = "CUSTOM"});
 
-  Race.fromData(
-      {super.id,
-      required this.name,
-      required this.size,
-      List<Attribute>? attributes,
-      List<Ancestry>? ancestries,
-      this.source = "CUSTOM"}) {
-    this.attributes = Lazy<List<Attribute>>(attributes, () async {
+  Race.fromData({super.id, required this.name, required this.size, this.source = "CUSTOM"}) {
+    attributes = Lazy<List<Attribute>>(() async {
       AttributeRepository repository = GetIt.instance.get<AttributeRepository>();
       await repository.init();
       return await repository.getInitialAttributes(id!);
     });
-    this.ancestries = Lazy<List<Ancestry>>(ancestries, () async {
+    ancestries = Lazy<List<Ancestry>>(() async {
       AncestryRepository repository = GetIt.instance.get<AncestryRepository>();
       await repository.init();
       return repository.items.where((Ancestry ancestry) => ancestry.race.id == id!).toList();

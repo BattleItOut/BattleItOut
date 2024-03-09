@@ -15,6 +15,7 @@ class AncestryRepository extends Repository<Ancestry> {
 
   @override
   Future<void> init() async {
+    if (ready) return;
     await GetIt.instance.get<RaceRepository>().init();
     await super.init();
   }

@@ -10,6 +10,7 @@ class SkillGroupRepository extends Repository<SkillGroup> {
 
   @override
   Future<void> init() async {
+    if (ready) return;
     await GetIt.instance.get<SkillRepository>().init();
     await GetIt.instance.get<BaseSkillRepository>().init();
     await super.init();

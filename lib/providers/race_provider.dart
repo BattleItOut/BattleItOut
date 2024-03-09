@@ -13,6 +13,7 @@ class RaceRepository extends Repository<Race> {
 
   @override
   Future<void> init() async {
+    if (ready) return;
     await GetIt.instance.get<SizeRepository>().init();
     await super.init();
   }

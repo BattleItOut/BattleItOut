@@ -22,6 +22,7 @@ class MeleeWeaponRepository extends AbstractItemRepository<MeleeWeapon> {
 
   @override
   Future<void> init() async {
+    if (ready) return;
     await GetIt.instance.get<WeaponLengthRepository>().init();
     await super.init();
   }

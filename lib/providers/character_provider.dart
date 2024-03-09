@@ -25,6 +25,7 @@ class CharacterRepository extends Repository<Character> {
 
   @override
   Future<void> init() async {
+    if (ready) return;
     await GetIt.instance.get<SizeRepository>().init();
     await GetIt.instance.get<AncestryRepository>().init();
     await GetIt.instance.get<ProfessionRepository>().init();
