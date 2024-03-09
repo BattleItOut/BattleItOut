@@ -8,12 +8,20 @@ import 'package:battle_it_out/providers/item/ammunition_provider.dart';
 import 'package:battle_it_out/providers/item/item_quality_provider.dart';
 import 'package:battle_it_out/providers/skill/skill_provider.dart';
 import 'package:collection/collection.dart';
+import 'package:get_it/get_it.dart';
 
 class RangedWeaponRepository extends AbstractItemRepository<RangedWeapon> {
   List<Skill>? skills;
   List<Attribute>? attributes;
 
   RangedWeaponRepository([this.attributes, this.skills]);
+
+  @override
+  Future<void> init() async {
+    await GetIt.instance.get<SkillRepository>().init();
+    await GetIt.instance.get<AmmunitionRepository>().init();
+    await super.init();
+  }
 
   @override
   get tableName => 'weapons_ranged';
@@ -45,22 +53,22 @@ class RangedWeaponRepository extends AbstractItemRepository<RangedWeapon> {
     );
     if (map["SKILL"] != null) {
       Skill? skill = skills?.firstWhereOrNull((element) => element.id == map['SKILL']);
-      rangedWeapon.skill = skill ?? await SkillRepository().get(map['SKILL']);
+      rangedWeapon.skill = skill ?? await GetIt.instance.get<SkillRepository>().get(map['SKILL']);
     }
     if (map["ID"] != null) {
       rangedWeapon.qualities = await getQualities(map["ID"]);
     }
     if (map["QUALITIES"] != null) {
       for (Map<String, dynamic> map in map["QUALITIES"]) {
-        ItemQuality quality = await ItemQualityRepository().create(map);
+        ItemQuality quality = await GetIt.instance.get<ItemQualityRepository>().create(map);
         if (!rangedWeapon.qualities.contains(quality)) {
           rangedWeapon.qualities.add(quality);
         }
       }
     }
     if (map["AMMUNITION"] != null) {
-      rangedWeapon.ammunition
-          .addAll([for (var tempMap in map["AMMUNITION"]) await AmmunitionRepository().create(tempMap)]);
+      rangedWeapon.ammunition.addAll(
+          [for (var tempMap in map["AMMUNITION"]) await GetIt.instance.get<AmmunitionRepository>().create(tempMap)]);
     }
     return rangedWeapon;
   }
@@ -90,8 +98,13 @@ class RangedWeaponRepository extends AbstractItemRepository<RangedWeapon> {
       "DAMAGE_ATTRIBUTE": object.damageAttribute?.id,
       "SKILL": object.skill?.id,
       "USE_AMMO": object.useAmmo ? 1 : 0,
-      "QUALITIES": [for (ItemQuality quality in object.qualities) await ItemQualityRepository().toDatabase(quality)],
-      "AMMUNITION": [for (Ammunition ammo in object.ammunition) await AmmunitionRepository().toDatabase(ammo)]
+      "QUALITIES": [
+        for (ItemQuality quality in object.qualities)
+          await GetIt.instance.get<ItemQualityRepository>().toDatabase(quality)
+      ],
+      "AMMUNITION": [
+        for (Ammunition ammo in object.ammunition) await GetIt.instance.get<AmmunitionRepository>().toDatabase(ammo)
+      ]
     };
     if (optimised) {
       map = await optimise(map);

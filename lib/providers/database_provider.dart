@@ -15,8 +15,9 @@ class DatabaseRepository {
   Database? _database;
   String? _dbPath;
   String? _insertScript;
+  bool test;
 
-  DatabaseRepository() {
+  DatabaseRepository({this.test = false}) {
     if (Platform.isWindows || Platform.isLinux) {
       sqfliteFfiInit();
       databaseFactoryOrNull = databaseFactoryFfi;
@@ -26,12 +27,12 @@ class DatabaseRepository {
     }
   }
 
-  Future<Database> init({test = false}) async {
-    _database ??= await connect(test: test);
+  Future<Database> init() async {
+    _database ??= await connect();
     return _database!;
   }
 
-  Future<Database> connect({test = false}) async {
+  Future<Database> connect() async {
     if (test) {
       _dbPath = inMemoryDatabasePath;
       _insertScript = await rootBundle.loadString("assets/test/database_inserts.sql");

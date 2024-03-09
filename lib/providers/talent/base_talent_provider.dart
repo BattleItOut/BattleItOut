@@ -1,7 +1,8 @@
 import 'package:battle_it_out/persistence/attribute.dart';
 import 'package:battle_it_out/persistence/talent/talent_base.dart';
+import 'package:battle_it_out/providers/attribute_provider.dart';
 import 'package:battle_it_out/utils/factory.dart';
-import 'package:collection/collection.dart';
+import 'package:get_it/get_it.dart';
 
 class BaseTalentRepository extends Repository<BaseTalent> {
   List<Attribute>? attributes;
@@ -13,16 +14,12 @@ class BaseTalentRepository extends Repository<BaseTalent> {
 
   @override
   Future<BaseTalent> fromDatabase(Map<String, dynamic> map) async {
-    Attribute? attribute;
-    if (map["MAX_LVL"] != null) {
-      attribute = attributes?.firstWhereOrNull((attribute) => attribute.id == map["MAX_LVL"]);
-    }
     return BaseTalent(
         id: map['ID'],
         name: map['NAME'],
         description: map['DESCRIPTION'],
         source: map['SOURCE'],
-        attribute: attribute,
+        attribute: await GetIt.instance.get<AttributeRepository>().get(map["MAX_LVL"]),
         constLvl: map['CONST_LVL'],
         grouped: map["GROUPED"] == 1 ? true : false);
   }

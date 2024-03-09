@@ -13,18 +13,31 @@ class AncestryRepository extends Repository<Ancestry> {
   @override
   Map<String, dynamic> get defaultValues => {"RANDOM_TALENTS": 0, "SRC": "Custom", "DEF": 1};
 
+  @override
+  Future<void> init() async {
+    await GetIt.instance.get<RaceRepository>().init();
+    await super.init();
+  }
+
   List<Ancestry>? getAncestryFromRace(int raceId) {
     return items.where((Ancestry ancestry) => ancestry.race.id == raceId).toList();
   }
 
   Future<Race> getRace(Map<String, dynamic> map) async {
+    RaceRepository repository = GetIt.instance.get<RaceRepository>();
     if (map["RACE_ID"] != null) {
-      return (await GetIt.instance.get<RaceRepository>().get(map["RACE_ID"]))!;
+      return (await repository.get(map["RACE_ID"]))!;
     } else if (map["RACE"] != null) {
-      return await RaceRepository().create(map["RACE"]);
+      return await repository.create(map["RACE"]);
     } else {
-      return await RaceRepository().create(map);
+      return await repository.create(map);
     }
+  }
+
+  @override
+  Future<Ancestry> update(Ancestry object) async {
+    await GetIt.instance.get<RaceRepository>().update(object.race);
+    return super.update(object);
   }
 
   @override

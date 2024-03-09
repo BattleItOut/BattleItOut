@@ -4,6 +4,7 @@ import 'package:battle_it_out/providers/profession/profession_career_provider.da
 import 'package:battle_it_out/providers/skill/skill_provider.dart';
 import 'package:battle_it_out/providers/talent/talent_provider.dart';
 import 'package:battle_it_out/utils/factory.dart';
+import 'package:get_it/get_it.dart';
 
 class ProfessionRepository extends Repository<Profession> {
   @override
@@ -12,13 +13,19 @@ class ProfessionRepository extends Repository<Profession> {
   @override
   Map<String, dynamic> get defaultValues => {"SOURCE": "Custom", "LEVEL": 1};
 
+  @override
+  Future<void> init() async {
+    await GetIt.instance.get<ProfessionCareerRepository>().init();
+    await super.init();
+  }
+
   Future<ProfessionCareer> getCareer(Map<String, dynamic> map) async {
     if (map["CAREER_ID"] != null) {
-      return (await ProfessionCareerRepository().get(map["CAREER_ID"]))!;
+      return (await GetIt.instance.get<ProfessionCareerRepository>().get(map["CAREER_ID"]))!;
     } else if (map["CAREER"] != null) {
-      return ProfessionCareerRepository().create(map["CAREER"]);
+      return GetIt.instance.get<ProfessionCareerRepository>().create(map["CAREER"]);
     } else {
-      return ProfessionCareerRepository().create(map);
+      return GetIt.instance.get<ProfessionCareerRepository>().create(map);
     }
   }
 
@@ -31,9 +38,10 @@ class ProfessionRepository extends Repository<Profession> {
       source: map["SOURCE"],
       career: await getCareer(map),
     );
-    profession.linkedTalents = await TalentRepository().getLinkedToProfession(profession.id);
-    profession.linkedSkills = await SkillRepository().getLinkedToProfession(profession.id);
-    profession.linkedGroupSkills = await SkillRepository().getGroupsLinkedToProfession(profession.id);
+    profession.linkedTalents = await GetIt.instance.get<TalentRepository>().getLinkedToProfession(profession.id);
+    profession.linkedSkills = await GetIt.instance.get<SkillRepository>().getLinkedToProfession(profession.id);
+    profession.linkedGroupSkills =
+        await GetIt.instance.get<SkillRepository>().getGroupsLinkedToProfession(profession.id);
     return profession;
   }
 
@@ -60,8 +68,9 @@ class ProfessionRepository extends Repository<Profession> {
     if (optimised) {
       map = await optimise(map);
     }
-    if (object.career.id == null || object.career != await ProfessionCareerRepository().get(object.career.id!)) {
-      map["CAREER"] = await ProfessionCareerRepository().toMap(object.career);
+    if (object.career.id == null ||
+        object.career != await GetIt.instance.get<ProfessionCareerRepository>().get(object.career.id!)) {
+      map["CAREER"] = await GetIt.instance.get<ProfessionCareerRepository>().toMap(object.career);
     }
     return map;
   }

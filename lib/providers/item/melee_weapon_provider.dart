@@ -7,6 +7,7 @@ import 'package:battle_it_out/providers/item/item_quality_provider.dart';
 import 'package:battle_it_out/providers/item/weapon_length_provider.dart';
 import 'package:battle_it_out/providers/skill/skill_provider.dart';
 import 'package:collection/collection.dart';
+import 'package:get_it/get_it.dart';
 
 class MeleeWeaponRepository extends AbstractItemRepository<MeleeWeapon> {
   List<Skill>? skills;
@@ -20,6 +21,12 @@ class MeleeWeaponRepository extends AbstractItemRepository<MeleeWeapon> {
   get linkTableName => 'weapons_melee_qualities';
 
   @override
+  Future<void> init() async {
+    await GetIt.instance.get<WeaponLengthRepository>().init();
+    await super.init();
+  }
+
+  @override
   Map<String, dynamic> get defaultValues => {"DAMAGE_ATTRIBUTE": 3, "ITEM_CATEGORY": "MELEE_WEAPONS"};
 
   @override
@@ -31,20 +38,20 @@ class MeleeWeaponRepository extends AbstractItemRepository<MeleeWeapon> {
     MeleeWeapon meleeWeapon = MeleeWeapon(
         id: map["ID"],
         name: map["NAME"],
-        length: (await WeaponLengthRepository().get(map["LENGTH"]))!,
+        length: (await GetIt.instance.get<WeaponLengthRepository>().get(map["LENGTH"]))!,
         damage: map["DAMAGE"],
         twoHanded: map["TWO_HANDED"] == 1,
         damageAttribute: damageAttribute);
     if (map["SKILL"] != null) {
       Skill? skill = skills?.firstWhereOrNull((element) => element.id == map['SKILL']);
-      meleeWeapon.skill = skill ?? await SkillRepository().get(map['SKILL']);
+      meleeWeapon.skill = skill ?? await GetIt.instance.get<SkillRepository>().get(map['SKILL']);
     }
     if (map["ID"] != null) {
       meleeWeapon.qualities = await getQualities(map["ID"]);
     }
     if (map["QUALITIES"] != null) {
       for (Map<String, dynamic> map in map["QUALITIES"]) {
-        ItemQuality quality = await ItemQualityRepository().create(map);
+        ItemQuality quality = await GetIt.instance.get<ItemQualityRepository>().create(map);
         if (!meleeWeapon.qualities.contains(quality)) {
           meleeWeapon.qualities.add(quality);
         }
@@ -76,7 +83,9 @@ class MeleeWeaponRepository extends AbstractItemRepository<MeleeWeapon> {
       "SKILL": object.skill?.id,
       "DAMAGE_ATTRIBUTE": object.damageAttribute?.id,
       "ITEM_CATEGORY": object.category,
-      "QUALITIES": [for (ItemQuality quality in object.qualities) await ItemQualityRepository().toMap(quality)]
+      "QUALITIES": [
+        for (ItemQuality quality in object.qualities) await GetIt.instance.get<ItemQualityRepository>().toMap(quality)
+      ]
     };
     if (optimised) {
       map = await optimise(map);

@@ -5,10 +5,8 @@ import 'package:battle_it_out/utils/serialisers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:logging/logging.dart';
 
 abstract class Repository<T extends DBObject> with DAO, JSONSerializer<T>, ChangeNotifier {
-  Logger log = Logger("Repository");
   List<T>? _items;
   List<T> get items => _items!;
 
@@ -35,23 +33,20 @@ abstract class Repository<T extends DBObject> with DAO, JSONSerializer<T>, Chang
     return id;
   }
 
-  Future<T?> getNullable(int? id) async {
-    if (id == null) {
-      return null;
-    } else {
-      return get(id);
-    }
-  }
-
-  Future<T?> get(int id) async {
-    T? item = items.firstWhereOrNull((T item) => item.id == id);
-    return item;
+  Future<T?> get(int? id) async {
+    return id == null ? null : items.firstWhereOrNull((T item) => item.id == id);
   }
 
   Future<List<T>> getAll({String? where, List<Object>? whereArgs}) async {
+    List<Map<String, Object?>> list = await getMapAll(where: where, whereArgs: whereArgs);
     return [
-      for (var map in await getMapAll(where: where, whereArgs: whereArgs))
-        await fromDatabase({for (var entry in map.entries) entry.key: entry.value})
+      for (Map<String, Object?> map in list) await fromDatabase({for (var entry in map.entries) entry.key: entry.value})
     ];
+  }
+
+  @override
+  Future<T> create(Map<String, dynamic> map) async {
+    await init();
+    return super.create(map);
   }
 }

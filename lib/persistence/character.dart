@@ -44,12 +44,14 @@ class Character extends DBObject {
       List<Skill> skills = const [],
       List<Talent> talents = const [],
       List<Trait> traits = const [],
-      List<Item> items = const []}) {
+      List<Item> items = const [],
+      List<MeleeWeapon> meleeWeapons = const []}) {
     this.items.addAll(items);
     this.attributes.addAll(attributes);
     this.skills.addAll(skills);
     this.talents.addAll(talents);
     this.traits.addAll(traits);
+    this.meleeWeapons.addAll(meleeWeapons);
   }
 
   Size? getSize() {

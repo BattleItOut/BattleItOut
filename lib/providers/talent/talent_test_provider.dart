@@ -4,11 +4,18 @@ import 'package:battle_it_out/providers/attribute_provider.dart';
 import 'package:battle_it_out/providers/skill/base_skill_provider.dart';
 import 'package:battle_it_out/providers/skill/skill_provider.dart';
 import 'package:battle_it_out/utils/factory.dart';
+import 'package:get_it/get_it.dart';
 
 class TalentTestRepository extends Repository<TalentTest> {
   Talent? talent;
 
-  TalentTestRepository([this.talent]);
+  @override
+  Future<void> init() async {
+    await GetIt.instance.get<BaseSkillRepository>().init();
+    await GetIt.instance.get<SkillRepository>().init();
+    await GetIt.instance.get<AttributeRepository>().init();
+    await super.init();
+  }
 
   @override
   get tableName => 'talent_tests';
@@ -23,9 +30,13 @@ class TalentTestRepository extends Repository<TalentTest> {
         id: map['ID'],
         talent: talent,
         comment: map["COMMENT"],
-        baseSkill: map["BASE_SKILL_ID"] == null ? null : await BaseSkillRepository().get(map["BASE_SKILL_ID"]),
-        skill: map["SKILL_ID"] == null ? null : await SkillRepository().get(map["SKILL_ID"]),
-        attribute: map["ATTRIBUTE_ID"] == null ? null : await AttributeRepository().get(map["ATTRIBUTE_ID"]));
+        baseSkill: map["BASE_SKILL_ID"] == null
+            ? null
+            : await GetIt.instance.get<BaseSkillRepository>().get(map["BASE_SKILL_ID"]),
+        skill: map["SKILL_ID"] == null ? null : await GetIt.instance.get<SkillRepository>().get(map["SKILL_ID"]),
+        attribute: map["ATTRIBUTE_ID"] == null
+            ? null
+            : await GetIt.instance.get<AttributeRepository>().get(map["ATTRIBUTE_ID"]));
   }
 
   @override

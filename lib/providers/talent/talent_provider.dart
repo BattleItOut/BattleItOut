@@ -1,19 +1,19 @@
-import 'package:battle_it_out/persistence/attribute.dart';
-import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:battle_it_out/persistence/talent/talent_group.dart';
 import 'package:battle_it_out/providers/talent/base_talent_provider.dart';
 import 'package:battle_it_out/providers/talent/talent_test_provider.dart';
 import 'package:battle_it_out/utils/factory.dart';
+import 'package:get_it/get_it.dart';
 
 class TalentRepository extends Repository<Talent> {
-  List<Attribute>? attributes;
-  List<Skill>? skills;
-
-  TalentRepository([this.attributes, this.skills]);
-
   @override
   get tableName => 'talents';
+
+  @override
+  Future<void> init() async {
+    await GetIt.instance.get<BaseTalentRepository>().init();
+    await super.init();
+  }
 
   Future<List<Talent>> getLinkedToAncestry(int? ancestryId) async {
     final List<Map<String, dynamic>> map = await database.rawQuery(
@@ -68,14 +68,15 @@ class TalentRepository extends Repository<Talent> {
         id: map['ID'],
         name: map['NAME'],
         specialisation: map["SPECIALISATION"],
-        baseTalent: (await BaseTalentRepository(attributes).get(map["BASE_TALENT_ID"]))!,
+        baseTalent: (await GetIt.instance.get<BaseTalentRepository>().get(map["BASE_TALENT_ID"]))!,
         currentLvl: map["LVL"] ?? 0,
         canAdvance: map["CAN_ADVANCE"] == 1);
 
     // Tests
-    talent.tests = await TalentTestRepository(talent).getAllByTalent(map["ID"]);
+    talent.tests = await GetIt.instance.get<TalentTestRepository>().getAllByTalent(map["ID"]);
     if (map["TESTS"] != null) {
-      talent.tests.addAll([for (map in map["TESTS"]) await TalentTestRepository(talent).fromDatabase(map)]);
+      talent.tests
+          .addAll([for (map in map["TESTS"]) await GetIt.instance.get<TalentTestRepository>().fromDatabase(map)]);
     }
     return talent;
   }
@@ -103,8 +104,8 @@ class TalentRepository extends Repository<Talent> {
       map = await optimise(map);
     }
     if ((object.baseTalent.id == null ||
-        object.baseTalent != await BaseTalentRepository(attributes).get(object.baseTalent.id!))) {
-      map["BASE_TALENT"] = BaseTalentRepository().toDatabase(object.baseTalent);
+        object.baseTalent != await GetIt.instance.get<BaseTalentRepository>().get(object.baseTalent.id!))) {
+      map["BASE_TALENT"] = GetIt.instance.get<BaseTalentRepository>().toDatabase(object.baseTalent);
     }
     return map;
   }

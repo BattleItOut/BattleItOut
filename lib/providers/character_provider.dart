@@ -16,10 +16,25 @@ import 'package:battle_it_out/providers/size_provider.dart';
 import 'package:battle_it_out/providers/skill/skill_provider.dart';
 import 'package:battle_it_out/providers/talent/talent_provider.dart';
 import 'package:battle_it_out/utils/factory.dart';
+import 'package:collection/collection.dart';
+import 'package:get_it/get_it.dart';
 
 class CharacterRepository extends Repository<Character> {
   @override
   get tableName => 'characters';
+
+  @override
+  Future<void> init() async {
+    await GetIt.instance.get<SizeRepository>().init();
+    await GetIt.instance.get<AncestryRepository>().init();
+    await GetIt.instance.get<ProfessionRepository>().init();
+    await GetIt.instance.get<SkillRepository>().init();
+    await GetIt.instance.get<TalentRepository>().init();
+    await GetIt.instance.get<ArmourRepository>().init();
+    await GetIt.instance.get<MeleeWeaponRepository>().init();
+    await GetIt.instance.get<RangedWeaponRepository>().init();
+    await super.init();
+  }
 
   @override
   Future<Character> fromDatabase(dynamic map) async {
@@ -30,13 +45,13 @@ class CharacterRepository extends Repository<Character> {
     Character character = Character(
         id: map['ID'],
         name: map['NAME'],
-        size: await SizeRepository().getNullable(map["SIZE"]),
-        ancestry: await AncestryRepository().getNullable(map["ANCESTRY"]),
-        profession: await ProfessionRepository().getNullable(map["PROFESSION"]),
+        size: await GetIt.instance.get<SizeRepository>().get(map["SIZE"]),
+        ancestry: await GetIt.instance.get<AncestryRepository>().get(map["ANCESTRY"]),
+        profession: await GetIt.instance.get<ProfessionRepository>().get(map["PROFESSION"]),
         attributes: attributes,
         skills: skills,
         talents: talents,
-        items: [for (var m in map["ITEMS"] ?? []) await ItemRepository().fromDatabase(m)]);
+        items: [for (var m in map["ITEMS"] ?? []) await GetIt.instance.get<ItemRepository>().fromDatabase(m)]);
     character.armour = await getCharacterArmour(map["ID"]);
     character.meleeWeapons = await getCharacterMeleeWeapons(map["ID"]);
     character.rangedWeapons = await getCharacterRangedWeapons(map["ID"]);
@@ -47,25 +62,26 @@ class CharacterRepository extends Repository<Character> {
   Future<Character> fromMap(dynamic map) async {
     List<Attribute> attributes = await _createAttributes(map["ATTRIBUTES"]);
     List<Skill> skills = await _createSkills(map['SKILLS'] ?? [], attributes);
-    List<Talent> talents = [for (var m in map['TALENTS'] ?? []) await TalentRepository(attributes, skills).create(m)];
+    List<Talent> talents = await _createTalents(map['TALENTS'] ?? [], attributes);
+    List<MeleeWeapon> meleeWeapons = await _createMeleeWeapons(map['MELEE_WEAPONS'] ?? [], attributes, skills);
 
     Character character = Character(
       id: map['ID'],
       name: map['NAME'],
-      size: map["SIZE"] != null ? await SizeRepository().get(map["SIZE"]) : null,
-      ancestry: map["SUBRACE"] != null ? await AncestryRepository().create(map["SUBRACE"]) : null,
-      profession: map["PROFESSION"] != null ? await ProfessionRepository().create(map["PROFESSION"]) : null,
+      size: map["SIZE"] != null ? await GetIt.instance.get<SizeRepository>().get(map["SIZE"]) : null,
+      ancestry: map["SUBRACE"] != null ? await GetIt.instance.get<AncestryRepository>().create(map["SUBRACE"]) : null,
+      profession:
+          map["PROFESSION"] != null ? await GetIt.instance.get<ProfessionRepository>().create(map["PROFESSION"]) : null,
       attributes: attributes,
       skills: skills,
       talents: talents,
-      items: [for (var m in map["ITEMS"] ?? []) await ItemRepository().create(m)],
+      meleeWeapons: meleeWeapons,
+      items: [for (var m in map["ITEMS"] ?? []) await GetIt.instance.get<ItemRepository>().create(m)],
     );
-    character.armour = [for (var m in map["ARMOUR"] ?? []) await ArmourRepository().create(m)];
-    character.meleeWeapons = [
-      for (var m in map["MELEE_WEAPONS"] ?? []) await MeleeWeaponRepository(attributes, skills).create(m)
-    ];
+    character.armour = [for (var m in map["ARMOUR"] ?? []) await GetIt.instance.get<ArmourRepository>().create(m)];
+    character.meleeWeapons = meleeWeapons;
     character.rangedWeapons = [
-      for (var m in map["RANGED_WEAPONS"] ?? []) await RangedWeaponRepository(attributes, skills).create(m)
+      for (var m in map["RANGED_WEAPONS"] ?? []) await GetIt.instance.get<RangedWeaponRepository>().create(m)
     ];
     return character;
   }
@@ -85,14 +101,23 @@ class CharacterRepository extends Repository<Character> {
   Future<Map<String, dynamic>> toMap(Character object, {optimised = true, database = false}) async {
     Map<String, dynamic> map = {
       "NAME": object.name,
-      "SUBRACE": await AncestryRepository().toDatabase(object.ancestry!),
-      "PROFESSION": await ProfessionRepository().toDatabase(object.profession!),
-      "ATTRIBUTES": [for (var attribute in object.attributes) await AttributeRepository().toMap(attribute)],
-      "SKILLS": [for (var skill in object.skills.where((s) => s.isImportant())) await SkillRepository().toMap(skill)],
-      "TALENTS": [for (var talent in object.talents) await TalentRepository().toMap(talent)],
-      "MELEE_WEAPONS": [for (var weapon in object.meleeWeapons) await MeleeWeaponRepository().toMap(weapon)],
-      "RANGED_WEAPONS": [for (var weapon in object.rangedWeapons) await RangedWeaponRepository().toMap(weapon)],
-      "ARMOUR": [for (var armour in object.armour) await ArmourRepository().toMap(armour)],
+      "SUBRACE": await GetIt.instance.get<AncestryRepository>().toDatabase(object.ancestry!),
+      "PROFESSION": await GetIt.instance.get<ProfessionRepository>().toDatabase(object.profession!),
+      "ATTRIBUTES": [
+        for (var attribute in object.attributes) await GetIt.instance.get<AttributeRepository>().toMap(attribute)
+      ],
+      "SKILLS": [
+        for (var skill in object.skills.where((s) => s.isImportant()))
+          await GetIt.instance.get<SkillRepository>().toMap(skill)
+      ],
+      "TALENTS": [for (var talent in object.talents) await GetIt.instance.get<TalentRepository>().toMap(talent)],
+      "MELEE_WEAPONS": [
+        for (var weapon in object.meleeWeapons) await GetIt.instance.get<MeleeWeaponRepository>().toMap(weapon)
+      ],
+      "RANGED_WEAPONS": [
+        for (var weapon in object.rangedWeapons) await GetIt.instance.get<RangedWeaponRepository>().toMap(weapon)
+      ],
+      "ARMOUR": [for (var armour in object.armour) await GetIt.instance.get<ArmourRepository>().toMap(armour)],
     };
     if (optimised) {
       map = await optimise(map);
@@ -104,7 +129,7 @@ class CharacterRepository extends Repository<Character> {
   Future<Character> update(Character object) async {
     await super.update(object);
     for (Attribute attribute in object.attributes) {
-      await AttributeRepository().update(attribute);
+      await GetIt.instance.get<AttributeRepository>().update(attribute);
       await updateMap({
         "ATTRIBUTE_ID": attribute.id,
         "CHARACTER_ID": object.id,
@@ -114,7 +139,7 @@ class CharacterRepository extends Repository<Character> {
       }, "character_attributes");
     }
     for (Skill skill in object.skills) {
-      await SkillRepository().update(skill);
+      await GetIt.instance.get<SkillRepository>().update(skill);
       await updateMap({
         "SKILL_ID": skill.id,
         "CHARACTER_ID": object.id,
@@ -124,7 +149,7 @@ class CharacterRepository extends Repository<Character> {
       }, "character_skills");
     }
     for (Talent talent in object.talents) {
-      await TalentRepository().update(talent);
+      await GetIt.instance.get<TalentRepository>().update(talent);
       await updateMap({
         "TALENT_ID": talent.id,
         "CHARACTER_ID": object.id,
@@ -133,7 +158,7 @@ class CharacterRepository extends Repository<Character> {
       }, "character_talents");
     }
     for (Armour armour in object.armour) {
-      await ArmourRepository().update(armour);
+      await GetIt.instance.get<ArmourRepository>().update(armour);
       await updateMap({
         "ARMOUR_ID": armour.id,
         "CHARACTER_ID": object.id,
@@ -141,7 +166,7 @@ class CharacterRepository extends Repository<Character> {
       }, "character_armour");
     }
     for (MeleeWeapon meleeWeapon in object.meleeWeapons) {
-      await MeleeWeaponRepository().update(meleeWeapon);
+      await GetIt.instance.get<MeleeWeaponRepository>().update(meleeWeapon);
       await updateMap({
         "WEAPON_ID": meleeWeapon.id,
         "CHARACTER_ID": object.id,
@@ -149,7 +174,7 @@ class CharacterRepository extends Repository<Character> {
       }, "character_melee_weapons");
     }
     for (RangedWeapon rangedWeapon in object.rangedWeapons) {
-      await RangedWeaponRepository().update(rangedWeapon);
+      await GetIt.instance.get<RangedWeaponRepository>().update(rangedWeapon);
       await updateMap({
         "WEAPON_ID": rangedWeapon.id,
         "CHARACTER_ID": object.id,
@@ -168,7 +193,7 @@ class CharacterRepository extends Repository<Character> {
 
     List<Attribute> attributes = [];
     for (Map<String, dynamic> entry in map) {
-      Attribute attribute = await AttributeRepository().fromDatabase(entry);
+      Attribute attribute = await GetIt.instance.get<AttributeRepository>().fromDatabase(entry);
       attribute.base = entry["BASE_VALUE"];
       attribute.advances = entry["ADVANCES"];
       attribute.canAdvance = entry["CAN_ADVANCE"] == 1;
@@ -182,9 +207,9 @@ class CharacterRepository extends Repository<Character> {
         "SELECT * FROM CHARACTER_SKILLS CS JOIN SKILLS S on S.ID = CS.SKILL_ID WHERE CS.CHARACTER_ID = ?",
         [characterId]);
 
-    List<Skill> skills = await SkillRepository().getSkills(advanced: false);
+    List<Skill> skills = await GetIt.instance.get<SkillRepository>().getSkills(advanced: false);
     for (Map<String, dynamic> entry in map) {
-      Skill skill = await SkillRepository().fromDatabase(entry);
+      Skill skill = await GetIt.instance.get<SkillRepository>().fromDatabase(entry);
       int index = skills.indexOf(skill);
       if (index != -1) {
         skills[index] = skill;
@@ -202,7 +227,7 @@ class CharacterRepository extends Repository<Character> {
 
     List<Talent> talents = [];
     for (Map<String, dynamic> entry in map) {
-      Talent talent = await TalentRepository(attributes, skills).fromDatabase(entry);
+      Talent talent = await GetIt.instance.get<TalentRepository>().fromDatabase(entry);
       talent.currentLvl = entry["LEVEL"];
       talent.canAdvance = entry["CAN_ADVANCE"] == 1;
       int index = talents.indexOf(talent);
@@ -220,7 +245,7 @@ class CharacterRepository extends Repository<Character> {
     for (Map<String, dynamic> entry in await database.rawQuery(
         "SELECT * FROM CHARACTER_ARMOUR CA JOIN ARMOUR A on A.ID = CA.ARMOUR_ID WHERE CA.CHARACTER_ID = ?",
         [characterId])) {
-      Armour armour = await ArmourRepository().fromDatabase(entry);
+      Armour armour = await GetIt.instance.get<ArmourRepository>().fromDatabase(entry);
       armour.amount = entry["AMOUNT"];
       armourList.add(armour);
     }
@@ -232,7 +257,7 @@ class CharacterRepository extends Repository<Character> {
     for (Map<String, dynamic> entry in await database.rawQuery(
         "SELECT * FROM CHARACTER_MELEE_WEAPONS CMW JOIN WEAPONS_MELEE WM on WM.ID = CMW.WEAPON_ID WHERE CMW.CHARACTER_ID = ?",
         [characterId])) {
-      MeleeWeapon meleeWeapon = await MeleeWeaponRepository().fromDatabase(entry);
+      MeleeWeapon meleeWeapon = await GetIt.instance.get<MeleeWeaponRepository>().fromDatabase(entry);
       meleeWeapon.amount = entry["AMOUNT"];
       meleeWeapons.add(meleeWeapon);
     }
@@ -244,7 +269,7 @@ class CharacterRepository extends Repository<Character> {
     for (Map<String, dynamic> entry in await database.rawQuery(
         "SELECT * FROM CHARACTER_RANGED_WEAPONS CRW JOIN WEAPONS_RANGED WR on WR.ID = CRW.WEAPON_ID WHERE CRW.CHARACTER_ID = ?",
         [characterId])) {
-      RangedWeapon rangedWeapon = await RangedWeaponRepository().fromDatabase(entry);
+      RangedWeapon rangedWeapon = await GetIt.instance.get<RangedWeaponRepository>().fromDatabase(entry);
       rangedWeapon.amount = entry["AMOUNT"];
       rangedWeapons.add(rangedWeapon);
     }
@@ -254,9 +279,9 @@ class CharacterRepository extends Repository<Character> {
   //--------------
 
   Future<List<Attribute>> _createAttributes(json) async {
-    List<Attribute> attributes = await AttributeRepository().getAll();
+    List<Attribute> attributes = await GetIt.instance.get<AttributeRepository>().getAll();
     for (var map in json ?? []) {
-      Attribute attribute = await AttributeRepository().create(map);
+      Attribute attribute = await GetIt.instance.get<AttributeRepository>().create(map);
       int index = attributes.indexOf(attribute);
       if (index != -1) {
         attributes[index] = attribute;
@@ -268,9 +293,10 @@ class CharacterRepository extends Repository<Character> {
   }
 
   Future<List<Skill>> _createSkills(json, List<Attribute> attributes) async {
-    List<Skill> skills = await SkillRepository().getSkills(advanced: false);
+    List<Skill> skills = await GetIt.instance.get<SkillRepository>().getSkills(advanced: false);
     for (var map in json ?? []) {
-      Skill skill = await SkillRepository().create(map);
+      Skill skill = await GetIt.instance.get<SkillRepository>().create(map);
+      linkSkill(attributes, skill);
       int index = skills.indexOf(skill);
       if (index != -1) {
         skills[index] = skill;
@@ -279,5 +305,42 @@ class CharacterRepository extends Repository<Character> {
       }
     }
     return skills;
+  }
+
+  Future<List<Talent>> _createTalents(json, List<Attribute> attributes) async {
+    List<Talent> talents = [];
+    for (var map in json ?? []) {
+      Talent talent = await GetIt.instance.get<TalentRepository>().create(map);
+      linkTalent(attributes, talent);
+      talents.add(talent);
+    }
+    return talents;
+  }
+
+  Future<List<MeleeWeapon>> _createMeleeWeapons(json, List<Attribute> attributes, List<Skill> skills) async {
+    List<MeleeWeapon> meleeWeapons = [];
+    for (var map in json ?? []) {
+      MeleeWeapon weapon = await GetIt.instance.get<MeleeWeaponRepository>().create(map);
+      linkMeleeWeapon(attributes, skills, weapon);
+      meleeWeapons.add(weapon);
+    }
+    return meleeWeapons;
+  }
+
+  void linkSkill(List<Attribute> attributes, Skill skill) {
+    Attribute? linkAttribute = attributes.firstWhereOrNull((a) => a.id == skill.baseSkill.attribute.id);
+    if (linkAttribute != null) skill.baseSkill.attribute = linkAttribute;
+  }
+
+  void linkTalent(List<Attribute> attributes, Talent talent) {
+    Attribute? linkAttribute = attributes.firstWhereOrNull((a) => a.id == talent.baseTalent.attribute?.id);
+    if (linkAttribute != null) talent.baseTalent.attribute = linkAttribute;
+  }
+
+  void linkMeleeWeapon(List<Attribute> attributes, List<Skill> skills, MeleeWeapon weapon) {
+    Attribute? linkAttribute = attributes.firstWhereOrNull((a) => a.id == weapon.damageAttribute?.id);
+    Skill? linkedSkill = skills.firstWhereOrNull((s) => s.id == weapon.skill?.id);
+    if (linkAttribute != null) weapon.damageAttribute = linkAttribute;
+    if (linkedSkill != null) weapon.skill = linkedSkill;
   }
 }

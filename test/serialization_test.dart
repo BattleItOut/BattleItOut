@@ -13,7 +13,6 @@ import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:battle_it_out/providers/ancestry_provider.dart';
 import 'package:battle_it_out/providers/attribute_provider.dart';
 import 'package:battle_it_out/providers/character_provider.dart';
-import 'package:battle_it_out/providers/database_provider.dart';
 import 'package:battle_it_out/providers/item/armour_provider.dart';
 import 'package:battle_it_out/providers/item/melee_weapon_provider.dart';
 import 'package:battle_it_out/providers/item/ranged_weapon_provider.dart';
@@ -22,11 +21,13 @@ import 'package:battle_it_out/providers/race_provider.dart';
 import 'package:battle_it_out/providers/skill/skill_provider.dart';
 import 'package:battle_it_out/providers/talent/talent_provider.dart';
 import 'package:battle_it_out/utils/factory.dart';
+import 'package:battle_it_out/utils/utilities.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
-  await DatabaseRepository().connect(test: true);
+  setupGetIt(test: true);
 
   group("Serialization", () {
     raceSerializationTest();
@@ -44,6 +45,7 @@ Future<void> main() async {
 void doubleSerializationTest(Repository factory, List list) {
   for (var i = 0; i < list.length; i++) {
     test("Serialize and deserialize - ${i + 1}", () async {
+      await factory.init();
       var object = await factory.create(list[i]);
       Map<String, dynamic> serializedMap = await factory.toMap(object, optimised: false);
       var serializedObject = await factory.create(serializedMap);
@@ -66,8 +68,10 @@ void raceSerializationTest() {
   };
 
   group("Race serialization", () {
+    AncestryRepository ancestryRepository = GetIt.instance.get<AncestryRepository>();
+
     test("Basic from database", () async {
-      Ancestry basicRace = await AncestryRepository().create(basicRaceMap);
+      Ancestry basicRace = await ancestryRepository.create(basicRaceMap);
       expect(basicRace.id, 1);
       expect(basicRace.name, "REIKLANDER");
       expect(basicRace.source, "Main Rulebook");
@@ -76,18 +80,16 @@ void raceSerializationTest() {
       expect(basicRace.race.size.id, 4);
     });
     test("Minimal custom", () async {
-      Ancestry minCustomRace = await AncestryRepository().create(minCustomRaceMap);
-      await AncestryRepository().update(minCustomRace);
-
+      Ancestry minCustomRace = await ancestryRepository.create(minCustomRaceMap);
+      await ancestryRepository.update(minCustomRace);
       expect(minCustomRace.id, 2);
       expect(minCustomRace.name, "Test");
       expect(minCustomRace.source, "Custom");
       expect(minCustomRace.race.size.id, 4);
     });
     test("Maximal custom", () async {
-      Ancestry maxCustomRace = await AncestryRepository().create(maxCustomRaceMap);
-      await AncestryRepository().update(maxCustomRace);
-
+      Ancestry maxCustomRace = await ancestryRepository.create(maxCustomRaceMap);
+      await ancestryRepository.update(maxCustomRace);
       expect(maxCustomRace.id, 3);
       expect(maxCustomRace.name, "Test");
       expect(maxCustomRace.source, "Custom");
@@ -95,7 +97,7 @@ void raceSerializationTest() {
       expect(maxCustomRace.race.name, "Test2");
       expect(maxCustomRace.race.size.id, 4);
     });
-    doubleSerializationTest(RaceRepository(), [basicRaceMap, minCustomRaceMap, maxCustomRaceMap]);
+    doubleSerializationTest(GetIt.instance.get<RaceRepository>(), [basicRaceMap, minCustomRaceMap, maxCustomRaceMap]);
   });
 }
 
@@ -113,7 +115,7 @@ void professionSerializationTest() {
 
   group("Profession serialization", () {
     test("Basic from database", () async {
-      Profession basicProfession = await ProfessionRepository().create(basicProfessionMap);
+      Profession basicProfession = await GetIt.instance.get<ProfessionRepository>().create(basicProfessionMap);
       expect(basicProfession.id, 1);
       expect(basicProfession.name, "APOTHECARY_1");
       expect(basicProfession.source, "Main Rulebook");
@@ -126,16 +128,16 @@ void professionSerializationTest() {
       expect(basicProfession.career.professionClass.source, "Main Rulebook");
     });
     test("Minimal custom", () async {
-      Profession minCustomProfession = await ProfessionRepository().create(minCustomProfessionMap);
-      await ProfessionRepository().update(minCustomProfession);
+      Profession minCustomProfession = await GetIt.instance.get<ProfessionRepository>().create(minCustomProfessionMap);
+      await GetIt.instance.get<ProfessionRepository>().update(minCustomProfession);
 
       expect(minCustomProfession.id, 230);
       expect(minCustomProfession.name, "Test");
       expect(minCustomProfession.source, "Custom");
     });
     test("Maximal custom", () async {
-      Profession maxCustomProfession = await ProfessionRepository().create(maxCustomProfessionMap);
-      await ProfessionRepository().update(maxCustomProfession);
+      Profession maxCustomProfession = await GetIt.instance.get<ProfessionRepository>().create(maxCustomProfessionMap);
+      await GetIt.instance.get<ProfessionRepository>().update(maxCustomProfession);
 
       expect(maxCustomProfession.id, 231);
       expect(maxCustomProfession.name, "Test");
@@ -145,8 +147,8 @@ void professionSerializationTest() {
       expect(maxCustomProfession.career.professionClass.name, "Test3");
       expect(maxCustomProfession.career.professionClass.source, "Custom");
     });
-    doubleSerializationTest(
-        ProfessionRepository(), [basicProfessionMap, minCustomProfessionMap, maxCustomProfessionMap]);
+    doubleSerializationTest(GetIt.instance.get<ProfessionRepository>(),
+        [basicProfessionMap, minCustomProfessionMap, maxCustomProfessionMap]);
   });
 }
 
@@ -156,8 +158,8 @@ void attributeSerializationTest() {
 
   group("Attribute serialization", () {
     test("Basic from database", () async {
-      Attribute basicAttribute = await AttributeRepository().create(basicAttributeMap);
-      AttributeRepository().update(basicAttribute);
+      Attribute basicAttribute = await GetIt.instance.get<AttributeRepository>().create(basicAttributeMap);
+      GetIt.instance.get<AttributeRepository>().update(basicAttribute);
 
       expect(basicAttribute.id, 1);
       expect(basicAttribute.name, "WEAPON_SKILL");
@@ -170,8 +172,8 @@ void attributeSerializationTest() {
       expect(basicAttribute.canAdvance, false);
     });
     test("Edited", () async {
-      Attribute maxEditedAttribute = await AttributeRepository().create(maxEditedAttributeMap);
-      AttributeRepository().update(maxEditedAttribute);
+      Attribute maxEditedAttribute = await GetIt.instance.get<AttributeRepository>().create(maxEditedAttributeMap);
+      GetIt.instance.get<AttributeRepository>().update(maxEditedAttribute);
 
       expect(maxEditedAttribute.id, 1);
       expect(maxEditedAttribute.name, "WEAPON_SKILL");
@@ -183,7 +185,7 @@ void attributeSerializationTest() {
       expect(maxEditedAttribute.advances, 5);
       expect(maxEditedAttribute.canAdvance, true);
     });
-    doubleSerializationTest(AttributeRepository(), [basicAttributeMap, maxEditedAttributeMap]);
+    doubleSerializationTest(GetIt.instance.get<AttributeRepository>(), [basicAttributeMap, maxEditedAttributeMap]);
   });
 }
 
@@ -193,7 +195,7 @@ void skillSerializationTest() {
 
   group("Skill serialization", () {
     test("Basic from database", () async {
-      Skill basicSkill = await SkillRepository().create(basicSkillMap);
+      Skill basicSkill = await GetIt.instance.get<SkillRepository>().create(basicSkillMap);
       expect(basicSkill.id, 1);
       expect(basicSkill.name, "ATHLETICS");
       expect(basicSkill.specialisation, null);
@@ -206,7 +208,7 @@ void skillSerializationTest() {
       expect(basicSkill.baseSkill.grouped, false);
     });
     test("Edited", () async {
-      Skill maxEditedSkill = await SkillRepository().create(maxEditedSkillMap);
+      Skill maxEditedSkill = await GetIt.instance.get<SkillRepository>().create(maxEditedSkillMap);
       expect(maxEditedSkill.id, 1);
       expect(maxEditedSkill.name, "ATHLETICS");
       expect(maxEditedSkill.specialisation, null);
@@ -219,7 +221,7 @@ void skillSerializationTest() {
       expect(maxEditedSkill.baseSkill.advanced, false);
       expect(maxEditedSkill.baseSkill.grouped, false);
     });
-    doubleSerializationTest(SkillRepository(), [basicSkillMap, maxEditedSkillMap]);
+    doubleSerializationTest(GetIt.instance.get<SkillRepository>(), [basicSkillMap, maxEditedSkillMap]);
   });
 }
 
@@ -229,7 +231,7 @@ void talentSerializationTest() {
 
   group("Talent serialization", () {
     test("Basic from database", () async {
-      Talent basicTalent = await TalentRepository().create(basicTalentMap);
+      Talent basicTalent = await GetIt.instance.get<TalentRepository>().create(basicTalentMap);
       expect(basicTalent.id, 1);
       expect(basicTalent.name, "PHARMACIST");
       expect(basicTalent.specialisation, null);
@@ -245,8 +247,8 @@ void talentSerializationTest() {
       expect(basicTalent.tests[0].comment, null);
     });
     test("Edited", () async {
-      Talent maxEditedTalent = await TalentRepository().create(maxEditedTalentMap);
-      await TalentRepository().update(maxEditedTalent);
+      Talent maxEditedTalent = await GetIt.instance.get<TalentRepository>().create(maxEditedTalentMap);
+      await GetIt.instance.get<TalentRepository>().update(maxEditedTalent);
 
       expect(maxEditedTalent.id, 1);
       expect(maxEditedTalent.name, "PHARMACIST");
@@ -262,7 +264,7 @@ void talentSerializationTest() {
       expect(maxEditedTalent.tests[0].id, 1);
       expect(maxEditedTalent.tests[0].comment, null);
     });
-    doubleSerializationTest(TalentRepository(), [basicTalentMap, maxEditedTalentMap]);
+    doubleSerializationTest(GetIt.instance.get<TalentRepository>(), [basicTalentMap, maxEditedTalentMap]);
   });
 }
 
@@ -287,7 +289,7 @@ void armourSerializationTest() {
 
   group("Armour serialization", () {
     test("Basic from database", () async {
-      Armour basicArmour = await ArmourRepository().create(basicArmourMap);
+      Armour basicArmour = await GetIt.instance.get<ArmourRepository>().create(basicArmourMap);
       expect(basicArmour.id, 1);
       expect(basicArmour.name, "LEATHER_JACK");
       expect(basicArmour.headAP, 0);
@@ -298,8 +300,8 @@ void armourSerializationTest() {
       expect(basicArmour.rightLegAP, 0);
     });
     test("Minimal custom", () async {
-      Armour minCustomArmour = await ArmourRepository().create(minCustomArmourMap);
-      await ArmourRepository().update(minCustomArmour);
+      Armour minCustomArmour = await GetIt.instance.get<ArmourRepository>().create(minCustomArmourMap);
+      await GetIt.instance.get<ArmourRepository>().update(minCustomArmour);
 
       expect(minCustomArmour.id, 3);
       expect(minCustomArmour.name, "Test");
@@ -311,8 +313,8 @@ void armourSerializationTest() {
       expect(minCustomArmour.rightLegAP, 0);
     });
     test("Maximal custom", () async {
-      Armour maxCustomArmour = await ArmourRepository().create(maxCustomArmourMap);
-      await ArmourRepository().update(maxCustomArmour);
+      Armour maxCustomArmour = await GetIt.instance.get<ArmourRepository>().create(maxCustomArmourMap);
+      await GetIt.instance.get<ArmourRepository>().update(maxCustomArmour);
 
       expect(maxCustomArmour.id, 4);
       expect(maxCustomArmour.name, "Test2");
@@ -329,7 +331,8 @@ void armourSerializationTest() {
       expect(maxCustomArmour.qualities[2].id, 3);
       expect(maxCustomArmour.qualities[2].name, "CUSTOM");
     });
-    doubleSerializationTest(ArmourRepository(), [basicArmourMap, minCustomArmourMap, maxCustomArmourMap]);
+    doubleSerializationTest(
+        GetIt.instance.get<ArmourRepository>(), [basicArmourMap, minCustomArmourMap, maxCustomArmourMap]);
   });
 }
 
@@ -348,8 +351,8 @@ void meleeWeaponSerializationTest() {
 
   group("Melee weapon serialization", () {
     test("Basic from database", () async {
-      MeleeWeapon basicMeleeWeapon = await MeleeWeaponRepository().create(basicMeleeWeaponMap);
-      await MeleeWeaponRepository().update(basicMeleeWeapon);
+      MeleeWeapon basicMeleeWeapon = await GetIt.instance.get<MeleeWeaponRepository>().create(basicMeleeWeaponMap);
+      await GetIt.instance.get<MeleeWeaponRepository>().update(basicMeleeWeapon);
 
       expect(basicMeleeWeapon.id, 1);
       expect(basicMeleeWeapon.name, "SWORD");
@@ -358,8 +361,8 @@ void meleeWeaponSerializationTest() {
       expect(basicMeleeWeapon.qualities.length, 0);
     });
     test("Minimal custom", () async {
-      MeleeWeapon minCustomWeapon = await MeleeWeaponRepository().create(minCustomWeaponMap);
-      await MeleeWeaponRepository().update(minCustomWeapon);
+      MeleeWeapon minCustomWeapon = await GetIt.instance.get<MeleeWeaponRepository>().create(minCustomWeaponMap);
+      await GetIt.instance.get<MeleeWeaponRepository>().update(minCustomWeapon);
 
       expect(minCustomWeapon.id, 26);
       expect(minCustomWeapon.name, "Test");
@@ -368,8 +371,8 @@ void meleeWeaponSerializationTest() {
       expect(minCustomWeapon.qualities.length, 0);
     });
     test("Maximal custom", () async {
-      MeleeWeapon maxCustomWeapon = await MeleeWeaponRepository().create(maxCustomWeaponMap);
-      await MeleeWeaponRepository().update(maxCustomWeapon);
+      MeleeWeapon maxCustomWeapon = await GetIt.instance.get<MeleeWeaponRepository>().create(maxCustomWeaponMap);
+      await GetIt.instance.get<MeleeWeaponRepository>().update(maxCustomWeapon);
 
       expect(maxCustomWeapon.id, 27);
       expect(maxCustomWeapon.name, "Test2");
@@ -381,7 +384,8 @@ void meleeWeaponSerializationTest() {
       expect(maxCustomWeapon.qualities[1].id, 2);
       expect(maxCustomWeapon.qualities[1].name, "PRACTICAL");
     });
-    doubleSerializationTest(MeleeWeaponRepository(), [basicMeleeWeaponMap, minCustomWeaponMap, maxCustomWeaponMap]);
+    doubleSerializationTest(
+        GetIt.instance.get<MeleeWeaponRepository>(), [basicMeleeWeaponMap, minCustomWeaponMap, maxCustomWeaponMap]);
   });
 }
 
@@ -406,8 +410,8 @@ void rangedWeaponSerializationTest() {
 
   group("Ranged weapon serialization", () {
     test("Basic from database", () async {
-      RangedWeapon basicRangedWeapon = await RangedWeaponRepository().create(basicRangedWeaponMap);
-      await RangedWeaponRepository().update(basicRangedWeapon);
+      RangedWeapon basicRangedWeapon = await GetIt.instance.get<RangedWeaponRepository>().create(basicRangedWeaponMap);
+      await GetIt.instance.get<RangedWeaponRepository>().update(basicRangedWeapon);
 
       expect(basicRangedWeapon.id, 1);
       expect(basicRangedWeapon.name, "BLUNDERBUSS");
@@ -416,8 +420,8 @@ void rangedWeaponSerializationTest() {
       expect(basicRangedWeapon.qualities.length, 0);
     });
     test("Minimal custom", () async {
-      RangedWeapon minCustomWeapon = await RangedWeaponRepository().create(minCustomWeaponMap);
-      await RangedWeaponRepository().update(minCustomWeapon);
+      RangedWeapon minCustomWeapon = await GetIt.instance.get<RangedWeaponRepository>().create(minCustomWeaponMap);
+      await GetIt.instance.get<RangedWeaponRepository>().update(minCustomWeapon);
 
       expect(minCustomWeapon.id, 2);
       expect(minCustomWeapon.name, "Test");
@@ -426,8 +430,8 @@ void rangedWeaponSerializationTest() {
       expect(minCustomWeapon.qualities.length, 0);
     });
     test("Maximal custom", () async {
-      RangedWeapon maxCustomWeapon = await RangedWeaponRepository().create(maxCustomWeaponMap);
-      await RangedWeaponRepository().update(maxCustomWeapon);
+      RangedWeapon maxCustomWeapon = await GetIt.instance.get<RangedWeaponRepository>().create(maxCustomWeaponMap);
+      await GetIt.instance.get<RangedWeaponRepository>().update(maxCustomWeapon);
 
       expect(maxCustomWeapon.id, 3);
       expect(maxCustomWeapon.name, "Test2");
@@ -440,7 +444,8 @@ void rangedWeaponSerializationTest() {
       expect(maxCustomWeapon.qualities[1].id, 2);
       expect(maxCustomWeapon.qualities[1].name, "PRACTICAL");
     });
-    doubleSerializationTest(RangedWeaponRepository(), [basicRangedWeaponMap, minCustomWeaponMap, maxCustomWeaponMap]);
+    doubleSerializationTest(
+        GetIt.instance.get<RangedWeaponRepository>(), [basicRangedWeaponMap, minCustomWeaponMap, maxCustomWeaponMap]);
   });
 }
 
@@ -449,9 +454,9 @@ void characterSerializationTest() {
     test("Serialize and deserialize", () async {
       File file = File('assets/test/character_test2.json');
       Map<String, dynamic> serialisedCharacter = jsonDecode(await file.readAsString());
-      Character character = await CharacterRepository().fromMap(serialisedCharacter);
-      Map<String, dynamic> map = await CharacterRepository().toMap(character);
-      Character character2 = await CharacterRepository().fromMap(map);
+      Character character = await GetIt.instance.get<CharacterRepository>().fromMap(serialisedCharacter);
+      Map<String, dynamic> map = await GetIt.instance.get<CharacterRepository>().toMap(character);
+      Character character2 = await GetIt.instance.get<CharacterRepository>().fromMap(map);
       expect(character2, character);
     });
   });

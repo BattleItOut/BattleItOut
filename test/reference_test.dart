@@ -6,12 +6,13 @@ import 'package:battle_it_out/persistence/character.dart';
 import 'package:battle_it_out/persistence/skill/skill.dart';
 import 'package:battle_it_out/persistence/talent/talent.dart';
 import 'package:battle_it_out/providers/character_provider.dart';
-import 'package:battle_it_out/providers/database_provider.dart';
+import 'package:battle_it_out/utils/utilities.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 
 Future<void> main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
-  await DatabaseRepository().connect(test: true);
+  setupGetIt(test: true);
 
   group('Links between attributes, skills and weapons: ', () {
     test('Start conditions', () async {
@@ -103,5 +104,7 @@ Future<void> main() async {
 
 Future<Character> createTestCharacter() async {
   File file = File('assets/test/character_test.json');
-  return await CharacterRepository().fromMap(jsonDecode(await file.readAsString()));
+  CharacterRepository repository = GetIt.instance.get<CharacterRepository>();
+  await repository.init();
+  return await repository.fromMap(jsonDecode(await file.readAsString()));
 }

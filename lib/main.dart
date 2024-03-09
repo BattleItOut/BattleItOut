@@ -4,12 +4,12 @@ import 'package:battle_it_out/interface/themes.dart';
 import 'package:battle_it_out/localisation.dart';
 import 'package:battle_it_out/providers/ancestry_provider.dart';
 import 'package:battle_it_out/providers/attribute_provider.dart';
-import 'package:battle_it_out/providers/database_provider.dart';
 import 'package:battle_it_out/providers/race_provider.dart';
 import 'package:battle_it_out/providers/size_provider.dart';
 import 'package:battle_it_out/providers/skill/base_skill_provider.dart';
 import 'package:battle_it_out/providers/skill/skill_group_provider.dart';
 import 'package:battle_it_out/providers/skill/skill_provider.dart';
+import 'package:battle_it_out/utils/utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
@@ -29,17 +29,6 @@ void main() async {
     ChangeNotifierProvider<BaseSkillRepository>(create: (_) => GetIt.instance.get<BaseSkillRepository>()),
     ChangeNotifierProvider<SkillGroupRepository>(create: (_) => GetIt.instance.get<SkillGroupRepository>()),
   ], child: const StateContainer(child: MyApp())));
-}
-
-void setupGetIt() {
-  GetIt.instance.registerSingleton<DatabaseRepository>(DatabaseRepository());
-  GetIt.instance.registerSingleton<SizeRepository>(SizeRepository());
-  GetIt.instance.registerSingleton<RaceRepository>(RaceRepository());
-  GetIt.instance.registerSingleton<AttributeRepository>(AttributeRepository());
-  GetIt.instance.registerSingleton<AncestryRepository>(AncestryRepository());
-  GetIt.instance.registerSingleton<SkillRepository>(SkillRepository());
-  GetIt.instance.registerSingleton<BaseSkillRepository>(BaseSkillRepository());
-  GetIt.instance.registerSingleton<SkillGroupRepository>(SkillGroupRepository());
 }
 
 void setupLogs() {

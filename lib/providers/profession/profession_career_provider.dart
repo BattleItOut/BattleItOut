@@ -2,6 +2,7 @@ import 'package:battle_it_out/persistence/profession/profession_career.dart';
 import 'package:battle_it_out/persistence/profession/profession_class.dart';
 import 'package:battle_it_out/providers/profession/profession_class_provider.dart';
 import 'package:battle_it_out/utils/factory.dart';
+import 'package:get_it/get_it.dart';
 
 class ProfessionCareerRepository extends Repository<ProfessionCareer> {
   @override
@@ -10,13 +11,19 @@ class ProfessionCareerRepository extends Repository<ProfessionCareer> {
   @override
   Map<String, dynamic> get defaultValues => {"SOURCE": "Custom"};
 
+  @override
+  Future<void> init() async {
+    await GetIt.instance.get<ProfessionClassRepository>().init();
+    await super.init();
+  }
+
   Future<ProfessionClass> getClass(Map<String, dynamic> map) async {
     if (map["CLASS_ID"] != null) {
-      return (await ProfessionClassRepository().get(map["CLASS_ID"]))!;
+      return (await GetIt.instance.get<ProfessionClassRepository>().get(map["CLASS_ID"]))!;
     } else if (map["CLASS"] != null) {
-      return ProfessionClassRepository().create(map["CLASS"]);
+      return GetIt.instance.get<ProfessionClassRepository>().create(map["CLASS"]);
     } else {
-      return ProfessionClassRepository().create(map);
+      return GetIt.instance.get<ProfessionClassRepository>().create(map);
     }
   }
 
@@ -32,7 +39,7 @@ class ProfessionCareerRepository extends Repository<ProfessionCareer> {
         id: map["ID"],
         name: map["NAME"],
         source: map["SOURCE"],
-        professionClass: (await ProfessionClassRepository().get(map["CLASS_ID"]))!);
+        professionClass: (await GetIt.instance.get<ProfessionClassRepository>().get(map["CLASS_ID"]))!);
   }
 
   @override
@@ -52,8 +59,9 @@ class ProfessionCareerRepository extends Repository<ProfessionCareer> {
       map = await optimise(map);
     }
     if (object.professionClass.id == null ||
-        object.professionClass != await ProfessionClassRepository().get(object.professionClass.id!)) {
-      map["CLASS"] = await ProfessionClassRepository().toMap(object.professionClass);
+        object.professionClass !=
+            await GetIt.instance.get<ProfessionClassRepository>().get(object.professionClass.id!)) {
+      map["CLASS"] = await GetIt.instance.get<ProfessionClassRepository>().toMap(object.professionClass);
     }
     return map;
   }
