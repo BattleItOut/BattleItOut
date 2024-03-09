@@ -26,7 +26,7 @@ class RaceRepository extends Repository<Race> {
 
   @override
   Future<Race> fromDatabase(Map<String, dynamic> map) async {
-    return Race.fromData(
+    return Race(
       id: map["ID"],
       name: map["NAME"],
       source: map["SRC"],
@@ -36,7 +36,7 @@ class RaceRepository extends Repository<Race> {
 
   @override
   Future<Race> fromMap(Map<String, dynamic> map) async {
-    return Race.fromData(
+    return Race(
       id: map["ID"] ?? await getNextId(),
       name: map["NAME"],
       source: map["SRC"],

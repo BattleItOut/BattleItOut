@@ -6,7 +6,6 @@ import 'package:battle_it_out/persistence/talent/talent_group.dart';
 import 'package:battle_it_out/providers/skill/skill_group_provider.dart';
 import 'package:battle_it_out/providers/skill/skill_provider.dart';
 import 'package:battle_it_out/utils/db_object.dart';
-import 'package:battle_it_out/utils/lazy.dart';
 import 'package:get_it/get_it.dart';
 
 class AncestryPartial extends DBObject {
@@ -55,8 +54,10 @@ class Ancestry extends DBObject {
   int randomTalents;
   Race race;
   bool defaultAncestry;
-  late Lazy<List<Skill>> skills;
-  late Lazy<List<SkillGroup>> groupSkills;
+  List<Skill>? _skills;
+  List<Skill> get skills => _skills!;
+  List<SkillGroup>? _groupSkills;
+  List<SkillGroup> get groupSkills => _groupSkills!;
 
   List<Talent> linkedTalents = [];
   List<TalentGroup> linkedGroupTalents = [];
@@ -65,25 +66,23 @@ class Ancestry extends DBObject {
       {super.id,
       required this.name,
       required this.race,
-      this.source = "Custom",
-      this.randomTalents = 0,
-      this.defaultAncestry = true});
-
-  Ancestry.fromData(
-      {super.id,
-      required this.name,
-      required this.race,
+      List<Skill>? skills,
+      List<SkillGroup>? groupSkills,
       this.source = "Custom",
       this.randomTalents = 0,
       this.defaultAncestry = true}) {
-    skills = Lazy<List<Skill>>(() async {
-      SkillRepository repository = GetIt.instance.get<SkillRepository>();
-      return await repository.getLinkedToAncestry(id!);
-    });
-    groupSkills = Lazy<List<SkillGroup>>(() async {
-      SkillGroupRepository repository = GetIt.instance.get<SkillGroupRepository>();
-      return await repository.getLinkedToAncestry(id!);
-    });
+    _skills = skills;
+    _groupSkills = groupSkills;
+  }
+
+  Future<void> fetchSkills() async {
+    SkillRepository repository = GetIt.instance.get<SkillRepository>();
+    _skills = await repository.getLinkedToAncestry(id!);
+  }
+
+  Future<void> fetchGroupSkills() async {
+    SkillGroupRepository repository = GetIt.instance.get<SkillGroupRepository>();
+    _groupSkills = await repository.getLinkedToAncestry(id!);
   }
 
   @override

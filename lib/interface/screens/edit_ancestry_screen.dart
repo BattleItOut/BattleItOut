@@ -22,8 +22,8 @@ class _EditAncestryScreenState extends State<EditAncestryScreen> {
   List<Skill> skills = [];
 
   Future<void> getAsyncData() async {
-    await widget.ancestry?.skills.getAsync();
-    await widget.ancestry?.groupSkills.getAsync();
+    await widget.ancestry?.fetchSkills();
+    await widget.ancestry?.fetchGroupSkills();
   }
 
   @override
@@ -67,7 +67,7 @@ class _EditAncestryScreenState extends State<EditAncestryScreen> {
                         name: s.name.localise(context),
                         value: s,
                         img: 'assets/icon.png',
-                        checked: widget.ancestry!.skills.get().contains(s));
+                        checked: widget.ancestry!.skills.contains(s));
                   }),
                   ...skillGroupRepository.items.map((SkillGroup s) {
                     return CheckboxSearchListItem(name: s.name.localise(context), value: s, img: 'assets/icon.png');

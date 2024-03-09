@@ -43,7 +43,7 @@ class AncestryRepository extends Repository<Ancestry> {
 
   @override
   Future<Ancestry> fromMap(Map<String, dynamic> map) async {
-    return Ancestry.fromData(
+    return Ancestry(
         id: map["ID"] ?? await getNextId(),
         race: await getRace(map),
         name: map["NAME"],
@@ -54,7 +54,7 @@ class AncestryRepository extends Repository<Ancestry> {
 
   @override
   Future<Ancestry> fromDatabase(Map<String, dynamic> map) async {
-    return Ancestry.fromData(
+    return Ancestry(
         id: map["ID"],
         race: (await GetIt.instance.get<RaceRepository>().get(map["RACE_ID"]))!,
         name: map["NAME"],

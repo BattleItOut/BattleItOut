@@ -2,21 +2,16 @@ import 'package:battle_it_out/interface/components/async_consumer.dart';
 import 'package:battle_it_out/interface/components/race_library_item.dart';
 import 'package:battle_it_out/interface/screens/edit_race_screen.dart';
 import 'package:battle_it_out/persistence/race.dart';
-import 'package:battle_it_out/providers/ancestry_provider.dart';
-import 'package:battle_it_out/providers/attribute_provider.dart';
 import 'package:battle_it_out/providers/race_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
 class RaceLibrary extends StatelessWidget {
   const RaceLibrary({super.key});
 
   Future<void> getAsyncData(RaceRepository repository) async {
-    GetIt.instance.get<AncestryRepository>().init();
-    GetIt.instance.get<AttributeRepository>().init();
     for (Race race in repository.items) {
-      await race.ancestries.getAsync();
-      await race.attributes.getAsync();
+      await race.fetchAncestries();
+      await race.fetchAttributes();
     }
   }
 
